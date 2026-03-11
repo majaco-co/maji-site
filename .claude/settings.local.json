@@ -1,0 +1,93 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/diamondpeakconsulting/maji-site/ && git -C /Users/diamondpeakconsulting/maji-site log --oneline -5)",
+      "WebFetch(domain:majiai.co)",
+      "WebFetch(domain:www.majiai.co)",
+      "Bash(cp -r src/css ./css && cp -r src/js ./js && cp -r src/assets ./assets && echo \"Directories copied\")",
+      "Bash(ls /Users/diamondpeakconsulting/maji-site/*.html)",
+      "Bash(git add index.html about-maji.html maji-speed-downtime.html maji-splitsolver.html maji-psychology-v1.html maji-pcm-v1.html maji-stock-calculator-v1.html maji-time-hierarchy.html maji-efficiency-formulas.html maji-toc-subordination.html privacy-policy.html maji-sitemap.html css/ js/ assets/ CNAME .gitignore README.md MIGRATION-COMPLETE.md && echo \"Staged\")",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nInitial static site build — migrated from Webflow\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push origin master:main 2>&1)",
+      "Bash(kill 25635)",
+      "Bash(/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/file-activity-hook.sh read:*)",
+      "Bash(/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/file-activity-hook.sh write:*)",
+      "Bash(/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/thinking-hook.sh thinking-start:*)",
+      "Bash(/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/thinking-hook.sh thinking-end:*)",
+      "Bash(ls *.html)",
+      "Bash(git -C /Users/diamondpeakconsulting/maji-site status)",
+      "Bash(git -C /Users/diamondpeakconsulting/maji-site log --oneline -5)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/file-activity-hook.sh read-start"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/file-activity-hook.sh write-start"
+          }
+        ]
+      },
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/thinking-hook.sh thinking-end"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/file-activity-hook.sh read-end"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/file-activity-hook.sh write-end"
+          }
+        ]
+      },
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/thinking-hook.sh thinking-start"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/diamondpeakconsulting/.npm/_npx/a1888f29b73c51e2/node_modules/codemap-hotel/hooks/thinking-hook.sh thinking-end"
+          }
+        ]
+      }
+    ]
+  }
+}
