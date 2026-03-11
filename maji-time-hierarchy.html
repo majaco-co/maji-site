@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operational Performance Measurement Framework | maji by majaco</title>
+  <meta name="description" content="A comprehensive methodology for measuring manufacturing performance through time-based decomposition, hierarchical efficiency metrics, and constraint-state-dependent financial valuation.">
+  <meta property="og:title" content="Operational Performance Measurement Framework | maji by majaco">
+  <meta property="og:description" content="Time-based decomposition, hierarchical efficiency metrics, and constraint-state-dependent financial valuation for manufacturing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-time-hierarchy">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-time-hierarchy">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <div class="nav__logo-mark" aria-hidden="true">m</div>
+          <span>maji</span>
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="index.html#tools">Tools</a></li>
+          <li><a href="index.html#contact">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu">
+      <a href="about-maji.html">About maji</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#contact">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started →</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html#tools">Tools</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Time Hierarchy Framework</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Framework</p>
+      <h1 class="page-hero__title">Operational Performance <span class="text-yellow">Measurement Framework</span></h1>
+      <p class="page-hero__subtitle">
+        A comprehensive methodology for measuring manufacturing performance through time-based decomposition, hierarchical efficiency metrics, and constraint-state-dependent financial valuation.
+      </p>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+
+        <div class="tool-disclaimer">
+          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+        </div>
+
+        <!-- Why this framework -->
+        <div class="content-card reveal">
+          <h2>Why Time-Based Decomposition?</h2>
+          <p>
+            Traditional OEE (Overall Equipment Effectiveness) uses a multiplicative framework: Availability × Performance × Quality. This produces a single number that obscures the relative magnitude of different loss types.
+          </p>
+          <p>
+            Time-based additive decomposition expresses every loss as a duration of time — making losses directly comparable, additive, and easily converted to financial impact.
+          </p>
+          <p>
+            The result is a framework where managers can say: "We lost 47 minutes to slow running, 23 minutes to unplanned downtime, and 12 minutes to quality waste" — and immediately prioritise the largest opportunity.
+          </p>
+        </div>
+
+        <!-- Time Hierarchy -->
+        <div class="content-card reveal" data-delay="80">
+          <h2>The Time Hierarchy</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Time Category</th><th>Definition</th><th>Accountability</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Calendar Time</strong></td>
+                  <td>24 hours × 7 days × 52 weeks = 8,760 hours/year</td>
+                  <td>Fixed</td>
+                </tr>
+                <tr>
+                  <td><strong>Non-working Time</strong></td>
+                  <td>Weekends, bank holidays, planned shutdown</td>
+                  <td>Business/Commercial</td>
+                </tr>
+                <tr>
+                  <td><strong>Shift Time (Available Time)</strong></td>
+                  <td>Calendar Time − Non-working Time</td>
+                  <td>Operational Management</td>
+                </tr>
+                <tr>
+                  <td><strong>Schedule Loss</strong></td>
+                  <td>Shifts not scheduled — planned but not run</td>
+                  <td>Commercial</td>
+                </tr>
+                <tr>
+                  <td><strong>Planned Production Time</strong></td>
+                  <td>Shift Time − Schedule Loss</td>
+                  <td>Operational Management</td>
+                </tr>
+                <tr>
+                  <td><strong>Planned Downtime</strong></td>
+                  <td>Planned maintenance, changeovers, breaks</td>
+                  <td>Engineering/Planning</td>
+                </tr>
+                <tr>
+                  <td><strong>Operating Time</strong></td>
+                  <td>Planned Production Time − Planned Downtime</td>
+                  <td>Shop Floor</td>
+                </tr>
+                <tr>
+                  <td><strong>Unplanned Downtime (UPDT)</strong></td>
+                  <td>Breakdowns, stoppages, waiting for materials</td>
+                  <td>Shop Floor/Engineering</td>
+                </tr>
+                <tr>
+                  <td><strong>Up Time</strong></td>
+                  <td>Operating Time − Unplanned Downtime</td>
+                  <td>Shop Floor</td>
+                </tr>
+                <tr>
+                  <td><strong>Lost Time Slow Running (LTSR)</strong></td>
+                  <td>Time equivalent of speed loss below target rate</td>
+                  <td>Shop Floor</td>
+                </tr>
+                <tr>
+                  <td><strong>Lost Time Making Waste (LTMW)</strong></td>
+                  <td>Time equivalent of quality losses</td>
+                  <td>Shop Floor/Quality</td>
+                </tr>
+                <tr>
+                  <td><strong>Potential Time</strong></td>
+                  <td>Up Time − LTSR − LTMW</td>
+                  <td>Outcome</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Key Formulas -->
+        <div class="content-card reveal" data-delay="160">
+          <h2>Key Mathematical Relationships</h2>
+          <div class="formula">Available Time = Calendar Time − Non-working Time</div>
+          <div class="formula">Planned Production Time = Available Time − Schedule Loss</div>
+          <div class="formula">Operating Time = Planned Production Time − Planned Downtime</div>
+          <div class="formula">Up Time = Operating Time − Unplanned Downtime</div>
+          <div class="formula">Potential Time = Up Time − LTSR − LTMW</div>
+          <div class="formula">Total Losses = UPDT + LTSR + LTMW + Planned DT + Schedule Loss</div>
+        </div>
+
+        <!-- Efficiency Metrics -->
+        <div class="content-card reveal" data-delay="240">
+          <h2>Efficiency Metrics Hierarchy</h2>
+          <p>The correct efficiency metric depends on the constraint state of the line:</p>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Metric</th><th>Formula</th><th>When to use</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Operating Efficiency</strong></td>
+                  <td>Potential Time / Operating Time</td>
+                  <td>Shop floor — losses within the shift</td>
+                </tr>
+                <tr>
+                  <td><strong>Machine Efficiency (OOE)</strong></td>
+                  <td>Potential Time / Shift Time</td>
+                  <td>Operational management — all planned and unplanned losses</td>
+                </tr>
+                <tr>
+                  <td><strong>Labour Efficiency (PPLH)</strong></td>
+                  <td>Machine Efficiency × (Potential Crew / Actual Crew)</td>
+                  <td>Sales-constrained environments — where labour drives profit</td>
+                </tr>
+                <tr>
+                  <td><strong>TEEP</strong></td>
+                  <td>Potential Time / Calendar Time</td>
+                  <td>Production-constrained environments — where every hour of capacity has value</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Constraint state -->
+        <div class="content-card reveal" data-delay="320">
+          <h2>Constraint State Determines Framework Selection</h2>
+          <p>
+            The financial value of a lost hour depends on whether the line is the system constraint and whether demand exceeds capacity.
+          </p>
+          <ul>
+            <li>
+              <strong>Production-constrained</strong> (demand &gt; capacity): Every lost hour of potential time = lost throughput at full margin. Use TEEP. Financial value = Throughput Rate × Lost Hours.
+            </li>
+            <li>
+              <strong>Sales-constrained</strong> (capacity &gt; demand): Lost hours reduce labour efficiency but do not directly reduce sales. Use Labour Efficiency (PPLH). Financial value = Labour Cost × Lost Hours.
+            </li>
+          </ul>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align: center; padding: 3rem 0;">
+          <h2 style="font-size: 1.875rem; font-weight: 900; margin-bottom: 1rem;">Implement time-based measurement</h2>
+          <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
+            majaco can implement this framework in your facility — from data collection design through to live dashboards and management reporting.
+          </p>
+          <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            Talk to majaco
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <div class="footer__logo-mark" aria-hidden="true">m</div>
+            maji
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn">in</a>
+            <a href="#" aria-label="majaco on Facebook">f</a>
+            <a href="#" aria-label="majaco on Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="index.html#tools">Tools</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="#">Careers</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="js/main.js"></script>
+</body>
+</html>

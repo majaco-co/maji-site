@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speed-Downtime Trade-off Calculator | maji by majaco</title>
+  <meta name="description" content="Interactive calculator for sales-constrained environments. Find the optimal line speed where PPLH peaks, accounting for speed-induced reliability and quality degradation.">
+  <meta property="og:title" content="Speed-Downtime Trade-off Calculator | maji by majaco">
+  <meta property="og:description" content="Find the optimal line speed where PPLH peaks, accounting for speed-induced reliability and quality degradation.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-speed-downtime">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-speed-downtime">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <div class="nav__logo-mark" aria-hidden="true">m</div>
+          <span>maji</span>
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="index.html#tools">Tools</a></li>
+          <li><a href="index.html#contact">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="about-maji.html">About maji</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#contact">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started →</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html#tools">Tools</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Speed-Downtime Calculator</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Tool</p>
+      <h1 class="page-hero__title">Speed-Downtime <span class="text-yellow">Trade-off</span></h1>
+      <p class="page-hero__subtitle">
+        Interactive calculator for sales-constrained environments. Find the optimal line speed where PPLH (Packs Per Labour-Hour) peaks, accounting for speed-induced reliability and quality degradation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Tool content -->
+  <main class="tool-page" id="main">
+    <div class="container">
+
+      <div class="tool-disclaimer">
+        This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+      </div>
+
+      <!-- Concept explanation -->
+      <div class="content-card reveal">
+        <h2>Understanding the Speed-Downtime Trade-off</h2>
+        <p>
+          In sales-constrained environments, labour efficiency (PPLH — Packs Per Labour Hour) drives profitability. When demand exceeds capacity, every pack your line can produce has full margin value.
+        </p>
+        <p>
+          Increasing line speed boosts throughput, but typically degrades availability and quality. Run too fast and downtime eats the gains. This calculator models that trade-off to find your optimal operating point.
+        </p>
+      </div>
+
+      <!-- Parameters -->
+      <div class="content-card reveal" data-delay="80">
+        <h2>Baseline Parameters</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Default Value</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Line Speed</td>
+                <td>100 packs/hour</td>
+                <td>Current rated speed of the production line</td>
+              </tr>
+              <tr>
+                <td>Availability (Uptime)</td>
+                <td>85%</td>
+                <td>Proportion of scheduled time the line is running</td>
+              </tr>
+              <tr>
+                <td>Quality (Yield)</td>
+                <td>98%</td>
+                <td>Proportion of output meeting quality standard</td>
+              </tr>
+              <tr>
+                <td>Operators on Line</td>
+                <td>4 people</td>
+                <td>Total labour hours consumed per shift</td>
+              </tr>
+              <tr>
+                <td>Shift Length</td>
+                <td>8 hours</td>
+                <td>Duration of production shift</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Degradation -->
+      <div class="content-card reveal" data-delay="160">
+        <h2>Degradation Sensitivity</h2>
+        <p>When speed increases, both availability and quality typically degrade. Default assumptions:</p>
+        <ul>
+          <li><strong>Availability Loss:</strong> 5% reduction per 10% speed gain</li>
+          <li><strong>Quality Loss:</strong> 2% reduction per 10% speed gain</li>
+        </ul>
+        <p>
+          These rates vary by line type, product, and maintenance standard. Calibrate from your own data for the most accurate results.
+        </p>
+      </div>
+
+      <!-- How PPLH is calculated -->
+      <div class="content-card reveal" data-delay="240">
+        <h2>How PPLH Is Calculated</h2>
+        <p>Packs Per Labour Hour (PPLH) is the key metric for sales-constrained profitability:</p>
+        <div class="formula">
+          PPLH = (Speed × Shift Length × Availability × Quality) ÷ (Operators × Shift Length)
+        </div>
+        <div class="formula">
+          PPLH = Speed × Availability × Quality ÷ Operators
+        </div>
+        <p>
+          The optimal speed is where the product of (Speed × Availability × Quality) is maximised — the point where PPLH peaks before degradation outweighs speed gains.
+        </p>
+
+        <h3 style="margin-top: 1.5rem;">Finding the Optimal Speed</h3>
+        <p>
+          As speed increases, PPLH initially rises. But as availability and quality degrade, PPLH plateaus and then falls. The optimal operating speed sits at the peak of the PPLH curve.
+        </p>
+        <p>
+          For default parameters (85% availability, 98% quality, 5% availability loss and 2% quality loss per 10% speed increase), the optimal speed is at the baseline — meaning any speed increase degrades more than it gains.
+        </p>
+      </div>
+
+      <!-- Results example -->
+      <div class="content-card reveal" data-delay="320">
+        <h2>Results: Key Outputs</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Output</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Baseline PPLH</strong></td>
+                <td>PPLH at current speed — your reference point</td>
+              </tr>
+              <tr>
+                <td><strong>Scenario PPLH</strong></td>
+                <td>PPLH at the proposed speed increase</td>
+              </tr>
+              <tr>
+                <td><strong>Optimal Speed</strong></td>
+                <td>Speed at which PPLH is maximised</td>
+              </tr>
+              <tr>
+                <td><strong>PPLH vs Speed Curve</strong></td>
+                <td>Visual showing the full trade-off relationship</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align: center; padding: 3rem 0;">
+        <h2 style="font-size: 1.875rem; font-weight: 900; margin-bottom: 1rem;">Want maji to analyse your line?</h2>
+        <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
+          majaco can apply this methodology to your actual operational data and identify the optimal operating parameters for your specific environment.
+        </p>
+        <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+          Talk to majaco
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <div class="footer__logo-mark" aria-hidden="true">m</div>
+            maji
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn">in</a>
+            <a href="#" aria-label="majaco on Facebook">f</a>
+            <a href="#" aria-label="majaco on Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="index.html#tools">Tools</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="#">Careers</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Efficiency Formulas Quick Reference | maji by majaco</title>
+  <meta name="description" content="Core majaco methodologies for measuring manufacturing efficiency, labour productivity, and lost time analysis. UK English terminology and time-based measurement principles.">
+  <meta property="og:title" content="Efficiency Formulas Quick Reference | maji by majaco">
+  <meta property="og:description" content="Core formulas for OEE, PPLH, TEEP, Labour Efficiency, and time-based lost time analysis.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-efficiency-formulas">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-efficiency-formulas">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <div class="nav__logo-mark" aria-hidden="true">m</div>
+          <span>maji</span>
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="index.html#tools">Tools</a></li>
+          <li><a href="index.html#contact">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu">
+      <a href="about-maji.html">About maji</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#contact">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started →</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html#tools">Tools</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Efficiency Formulas</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Reference</p>
+      <h1 class="page-hero__title">Efficiency Formulas <span class="text-yellow">Quick Reference</span></h1>
+      <p class="page-hero__subtitle">
+        Core majaco methodologies for measuring manufacturing efficiency, labour productivity, and lost time analysis. All formulas use UK English terminology and time-based measurement principles.
+      </p>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+
+        <div class="tool-disclaimer">
+          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+        </div>
+
+        <!-- Core Time Definitions -->
+        <div class="content-card reveal">
+          <h2>Core Time Definitions</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Term</th><th>Abbreviation</th><th>Definition</th></tr></thead>
+              <tbody>
+                <tr><td>Calendar Time</td><td>CT</td><td>Total time in period (24 × 7 × weeks). Fixed.</td></tr>
+                <tr><td>Non-working Time</td><td>NWT</td><td>Weekends, bank holidays, planned shutdowns not counted as shift time</td></tr>
+                <tr><td>Shift Time (Available Time)</td><td>ST</td><td>CT − NWT. Rostered hours.</td></tr>
+                <tr><td>Schedule Loss</td><td>ScL</td><td>Shifts rostered but not run due to demand</td></tr>
+                <tr><td>Planned Production Time</td><td>PPT</td><td>ST − ScL. Time the line was expected to produce.</td></tr>
+                <tr><td>Planned Downtime</td><td>PDT</td><td>Scheduled maintenance, changeovers, planned cleaning</td></tr>
+                <tr><td>Operating Time</td><td>OT</td><td>PPT − PDT. Time the line should have been running.</td></tr>
+                <tr><td>Unplanned Downtime</td><td>UPDT</td><td>Breakdowns, stoppages, material/labour waiting</td></tr>
+                <tr><td>Up Time</td><td>UT</td><td>OT − UPDT. Time the line was actually running.</td></tr>
+                <tr><td>Lost Time Slow Running</td><td>LTSR</td><td>Time equivalent of running below target speed</td></tr>
+                <tr><td>Lost Time Making Waste</td><td>LTMW</td><td>Time equivalent of producing off-spec product</td></tr>
+                <tr><td>Potential Time</td><td>PT</td><td>UT − LTSR − LTMW. Effective productive time.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Lost Time Formulas -->
+        <div class="content-card reveal" data-delay="80">
+          <h2>Lost Time Category Formulas</h2>
+          <div class="formula">LTSR = (Target Rate − Actual Rate) / Target Rate × Up Time</div>
+          <div class="formula">LTMW = (1 − Yield) × Potential Time (if waste is made at potential rate)</div>
+          <div class="formula">Total Losses = UPDT + LTSR + LTMW + PDT + ScL</div>
+          <div class="formula">Verification: PPT = PT + UPDT + LTSR + LTMW + PDT</div>
+        </div>
+
+        <!-- Efficiency Metrics -->
+        <div class="content-card reveal" data-delay="160">
+          <h2>Efficiency Metrics</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Metric</th><th>Formula</th><th>Denominator includes</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Operating Efficiency</strong></td>
+                  <td>PT / OT</td>
+                  <td>UPDT + LTSR + LTMW only</td>
+                </tr>
+                <tr>
+                  <td><strong>Machine Efficiency (OOE)</strong></td>
+                  <td>PT / ST</td>
+                  <td>All losses including PDT and ScL</td>
+                </tr>
+                <tr>
+                  <td><strong>OEE (standard)</strong></td>
+                  <td>Availability × Performance × Quality</td>
+                  <td>UPDT + LTSR + LTMW (same as Operating Efficiency)</td>
+                </tr>
+                <tr>
+                  <td><strong>TEEP</strong></td>
+                  <td>PT / CT</td>
+                  <td>All time including non-working time</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="formula" style="margin-top: 1.5rem;">OEE Availability = UT / OT</div>
+          <div class="formula">OEE Performance = (Actual Output × Ideal Cycle Time) / UT</div>
+          <div class="formula">OEE Quality = Good Output / Total Output</div>
+          <div class="formula">OEE = Availability × Performance × Quality</div>
+        </div>
+
+        <!-- Labour Efficiency -->
+        <div class="content-card reveal" data-delay="240">
+          <h2>Labour Efficiency Framework</h2>
+          <p>Used in sales-constrained environments where labour cost drives profitability:</p>
+          <div class="formula">PPLH = (Good Output) / (Total Labour Hours Worked)</div>
+          <div class="formula">PPLH = Machine Efficiency × (Potential Crew / Actual Crew) × Target Rate</div>
+          <div class="formula">Labour Efficiency = PPLH Actual / PPLH Target</div>
+          <p style="margin-top: 1rem;">Where <strong>Potential Crew</strong> is the minimum number of people needed to run the line at target rate.</p>
+        </div>
+
+        <!-- Valuation -->
+        <div class="content-card reveal" data-delay="320">
+          <h2>Financial Valuation of Lost Time</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Constraint State</th><th>Value of lost potential time</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Production-constrained (demand &gt; capacity)</td>
+                  <td>Lost PT × Throughput Rate (revenue − truly variable costs)</td>
+                </tr>
+                <tr>
+                  <td>Sales-constrained (capacity &gt; demand)</td>
+                  <td>Lost PT × Labour Cost Rate (savings from fewer people/hours)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="formula" style="margin-top: 1.5rem;">Throughput = Revenue − Truly Variable Costs (materials, packaging, energy)</div>
+          <div class="formula">Value of 1 hour constrained downtime = Throughput Rate × 1 hour</div>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align: center; padding: 3rem 0;">
+          <h2 style="font-size: 1.875rem; font-weight: 900; margin-bottom: 1rem;">Implement these metrics in your facility</h2>
+          <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
+            majaco can design and implement a complete measurement system based on these frameworks — from data capture through to executive reporting.
+          </p>
+          <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            Talk to majaco
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <div class="footer__logo-mark" aria-hidden="true">m</div>
+            maji
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn">in</a>
+            <a href="#" aria-label="majaco on Facebook">f</a>
+            <a href="#" aria-label="majaco on Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="index.html#tools">Tools</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="#">Careers</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="js/main.js"></script>
+</body>
+</html>

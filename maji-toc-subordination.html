@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOC Subordination: The Achilles Heel | maji by majaco</title>
+  <meta name="description" content="Why the hardest part of Theory of Constraints isn't finding the bottleneck — it's getting everything else to serve it properly. Drum-Buffer-Rope explained.">
+  <meta property="og:title" content="Subordination: The Achilles Heel of TOC | maji by majaco">
+  <meta property="og:description" content="Why the hardest part of Theory of Constraints isn't finding the bottleneck. It's getting everything else to serve it properly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-toc-subordination">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-toc-subordination">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <div class="nav__logo-mark" aria-hidden="true">m</div>
+          <span>maji</span>
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="index.html#tools">Tools</a></li>
+          <li><a href="index.html#contact">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu">
+      <a href="about-maji.html">About maji</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#contact">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started →</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html#tools">Tools</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">TOC Subordination</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Guide</p>
+      <h1 class="page-hero__title">Subordination: The Achilles Heel of <span class="text-yellow">TOC</span></h1>
+      <p class="page-hero__subtitle">
+        Why the hardest part of Theory of Constraints isn't finding the bottleneck. It's getting everything else to serve it properly.
+      </p>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+
+        <div class="tool-disclaimer">
+          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+        </div>
+
+        <!-- What is Subordination -->
+        <div class="content-card reveal">
+          <h2>What Subordination Actually Means</h2>
+          <p>
+            The Theory of Constraints (TOC) five focusing steps are: identify the constraint, exploit it, subordinate everything else, elevate it, and repeat. Subordination is Step 3 — and it's where most implementations fail.
+          </p>
+          <p>
+            Subordination means: every non-constraint resource aligns its behaviour to serve the constraint's needs, even when this makes those resources appear inefficient by traditional measures.
+          </p>
+          <div style="background: var(--color-primary-light); border-left: 4px solid var(--color-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1rem 1.5rem; margin-top: 1rem;">
+            <strong>Definition:</strong> A non-constraint that runs at 70% utilisation to perfectly serve the constraint is doing its job correctly. Measuring it on its own utilisation will produce the wrong answer.
+          </div>
+        </div>
+
+        <!-- The Counterintuitive Part -->
+        <div class="content-card reveal" data-delay="80">
+          <h2>The Counterintuitive Part</h2>
+          <p>
+            Local inefficiency can be globally optimal. This is the insight that most managers find hardest to accept, because it runs directly against decades of management accounting and performance metric design.
+          </p>
+          <p>
+            A non-constraint resource running below full capacity is not waste — it may be exactly what the system needs. Forcing it to run at higher utilisation will either:
+          </p>
+          <ul>
+            <li>Create WIP piles upstream of the constraint, increasing lead time and working capital</li>
+            <li>Starve the constraint of its feeding requirements (if it's upstream)</li>
+            <li>Create overproduction that masks the constraint's actual performance</li>
+          </ul>
+        </div>
+
+        <!-- What Subordination Requires -->
+        <div class="content-card reveal" data-delay="160">
+          <h2>What Subordination Requires From Each Resource</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Resource</th><th>Subordination Requirement</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Upstream processes</strong></td>
+                  <td>Maintain constraint buffer without overproduction. Release to schedule, not to capacity.</td>
+                </tr>
+                <tr>
+                  <td><strong>Downstream processes</strong></td>
+                  <td>Maintain buffers and sprint capacity. Be able to absorb constraint output variations without losing throughput.</td>
+                </tr>
+                <tr>
+                  <td><strong>Maintenance</strong></td>
+                  <td>Prioritise constraint availability above all else. A non-constraint machine waiting is a minor inconvenience; a constraint machine waiting is a system loss.</td>
+                </tr>
+                <tr>
+                  <td><strong>Quality</strong></td>
+                  <td>Inspect before the constraint; protect after. Never let defects consume constraint capacity.</td>
+                </tr>
+                <tr>
+                  <td><strong>Scheduling</strong></td>
+                  <td>Minimise constraint changeovers. Sequence production to maximise the constraint's productive time.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Why Subordination Fails -->
+        <div class="content-card reveal" data-delay="240">
+          <h2>Why Subordination Fails</h2>
+          <ul>
+            <li><strong>Local performance metrics:</strong> When non-constraint managers are measured on their own utilisation or efficiency, they will optimise for it — even at the expense of the constraint.</li>
+            <li><strong>Cultural resistance:</strong> "My department is being asked to run slowly so the bottleneck looks good" feels deeply unfair without a shared understanding of system thinking.</li>
+            <li><strong>Lack of constraint visibility:</strong> If operators don't know which resource is the constraint, they cannot make subordination decisions in real time.</li>
+            <li><strong>Metric confusion:</strong> OEE scores, efficiency reports, and utilisation dashboards that don't distinguish constraint from non-constraint resources actively undermine subordination.</li>
+          </ul>
+        </div>
+
+        <!-- DBR -->
+        <div class="content-card reveal" data-delay="320">
+          <h2>Making Subordination Work: Drum-Buffer-Rope</h2>
+          <p>
+            Drum-Buffer-Rope (DBR) is the operational mechanism for implementing subordination in practice:
+          </p>
+          <div class="phase-steps" style="margin-top: 1.5rem;">
+            <div class="phase-step">
+              <div class="phase-step__number">D</div>
+              <div class="phase-step__content">
+                <h3>The Drum</h3>
+                <p>The constraint sets the pace for the entire system. Its schedule is the master schedule. Everything else aligns to it.</p>
+              </div>
+            </div>
+            <div class="phase-step">
+              <div class="phase-step__number">B</div>
+              <div class="phase-step__content">
+                <h3>The Buffer</h3>
+                <p>Time buffers protect the constraint from upstream variation. They are not physical stock targets — they are time targets. If material is not at the constraint buffer location by a certain time, an expediting signal is triggered.</p>
+              </div>
+            </div>
+            <div class="phase-step">
+              <div class="phase-step__number">R</div>
+              <div class="phase-step__content">
+                <h3>The Rope</h3>
+                <p>Material release into the system is tied directly to constraint consumption. The rope prevents overproduction by ensuring the system never puts in more material than the constraint can process within the buffer horizon.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mathematical Justification -->
+        <div class="content-card reveal" data-delay="400">
+          <h2>The Mathematical Justification</h2>
+          <p>For a system with constraint rate R and n non-constraints:</p>
+          <div class="formula">System Throughput = f(Constraint Availability × Constraint Rate)</div>
+          <div class="formula">∂(Throughput) / ∂(Non-constraint Utilisation) = 0 (when constraint is fully fed)</div>
+          <p style="margin-top: 1rem;">
+            This means: once the constraint is fully fed, additional utilisation of any non-constraint resource adds zero throughput. It only adds operating expense and WIP.
+          </p>
+          <p>
+            The corollary: investing in non-constraint improvement when the constraint is not fully utilised produces zero throughput improvement. Every pound invested in non-constraint improvement (when the constraint is not fully protected) is wasted.
+          </p>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align: center; padding: 3rem 0;">
+          <h2 style="font-size: 1.875rem; font-weight: 900; margin-bottom: 1rem;">Implement TOC in your facility</h2>
+          <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
+            majaco has implemented TOC and Drum-Buffer-Rope in manufacturing environments across the UK. Start with a conversation.
+          </p>
+          <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            Talk to majaco
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <div class="footer__logo-mark" aria-hidden="true">m</div>
+            maji
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn">in</a>
+            <a href="#" aria-label="majaco on Facebook">f</a>
+            <a href="#" aria-label="majaco on Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="index.html#tools">Tools</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="#">Careers</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="js/main.js"></script>
+</body>
+</html>

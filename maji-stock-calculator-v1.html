@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raw Material Stock Holdings Calculator | maji by majaco</title>
+  <meta name="description" content="Optimise your service level policy by balancing holding costs against expected stockout costs using majaco's Stock Control methodology.">
+  <meta property="og:title" content="Raw Material Stock Holdings Calculator | maji by majaco">
+  <meta property="og:description" content="Optimise service level policy by balancing holding costs against expected stockout costs using majaco's Stock Control methodology.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-stock-calculator-v1">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-stock-calculator-v1">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <div class="nav__logo-mark" aria-hidden="true">m</div>
+          <span>maji</span>
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="index.html#tools">Tools</a></li>
+          <li><a href="index.html#contact">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu">
+      <a href="about-maji.html">About maji</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#contact">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started →</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html#tools">Tools</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Stock Calculator</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Tool</p>
+      <h1 class="page-hero__title">Raw Material Stock <span class="text-yellow">Holdings Calculator</span></h1>
+      <p class="page-hero__subtitle">
+        Optimises service level policy (how much safety stock to hold) by balancing holding costs against expected stockout costs using majaco's Stock Control methodology.
+      </p>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+
+        <div class="tool-disclaimer">
+          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+        </div>
+
+        <!-- Overview -->
+        <div class="content-card reveal">
+          <h2>What This Calculator Does</h2>
+          <p>
+            Most raw material stock policies are set by intuition — "we keep three weeks' worth" — without formal analysis of the economic trade-off between holding cost and stockout risk.
+          </p>
+          <p>
+            This calculator finds the <strong>economically optimal</strong> service level: the point where the marginal cost of holding one more unit of safety stock exactly equals the marginal reduction in expected stockout cost.
+          </p>
+          <p>
+            The result is a <strong>reorder point</strong>, <strong>safety stock level</strong>, and <strong>order quantity</strong> that minimises total inventory cost whilst achieving a defined service level target.
+          </p>
+        </div>
+
+        <!-- Input Parameters -->
+        <div class="content-card reveal" data-delay="80">
+          <h2>Input Parameters</h2>
+
+          <h3>Demand Characteristics</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>Average demand rate</td><td>Units consumed per day/week under normal conditions</td></tr>
+                <tr><td>Demand variability (CV)</td><td>Coefficient of variation of demand — how predictable consumption is</td></tr>
+                <tr><td>Demand distribution</td><td>Shape of demand distribution (typically normal for finished goods, Poisson for slow movers)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="margin-top: 1.5rem;">Lead Time Characteristics</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>Average lead time</td><td>Mean time from order placement to receipt</td></tr>
+                <tr><td>Lead time variability</td><td>Standard deviation of lead time — supplier reliability</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="margin-top: 1.5rem;">Cost Parameters</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Parameter</th><th>Typical Range</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Holding cost</td>
+                  <td>2–5% of unit cost per year</td>
+                  <td>Warehouse space, handling, insurance, obsolescence risk. Does not include capital cost of the stock itself.</td>
+                </tr>
+                <tr>
+                  <td>Ordering cost</td>
+                  <td>Varies by supplier</td>
+                  <td>Cost of placing and receiving one purchase order</td>
+                </tr>
+                <tr>
+                  <td>Stockout cost</td>
+                  <td>10–50× unit cost per event</td>
+                  <td>Lost margin + expediting cost + customer relationship damage. This is almost always underestimated.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Safety Stock Formula -->
+        <div class="content-card reveal" data-delay="160">
+          <h2>Safety Stock Formula</h2>
+          <p>Safety stock is calculated using the combined variability of demand during lead time:</p>
+          <div class="formula">
+            Safety Stock = z × σ_demand_lead_time
+          </div>
+          <div class="formula">
+            σ_demand_lead_time = √(L̄ × σ_d² + d̄² × σ_L²)
+          </div>
+          <p style="margin-top: 1rem;">Where:</p>
+          <ul>
+            <li><strong>z</strong> = service level z-score (e.g., 1.65 for 95%, 2.33 for 99%)</li>
+            <li><strong>L̄</strong> = average lead time</li>
+            <li><strong>σ_d</strong> = standard deviation of daily demand</li>
+            <li><strong>d̄</strong> = average daily demand</li>
+            <li><strong>σ_L</strong> = standard deviation of lead time</li>
+          </ul>
+          <p style="margin-top: 1rem;">
+            The reorder point is then: <strong>ROP = d̄ × L̄ + Safety Stock</strong>
+          </p>
+        </div>
+
+        <!-- Outputs -->
+        <div class="content-card reveal" data-delay="240">
+          <h2>Optimisation Results</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Output</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>Optimal service level</td><td>The service level that minimises total cost (holding + ordering + expected stockout)</td></tr>
+                <tr><td>Safety stock quantity</td><td>Units of safety stock to hold at the optimal service level</td></tr>
+                <tr><td>Reorder point</td><td>Inventory level that triggers a purchase order</td></tr>
+                <tr><td>Order quantity (EOQ)</td><td>Economic Order Quantity — the order size that minimises total ordering + holding cost</td></tr>
+                <tr><td>Total annual cost</td><td>Holding + ordering + expected stockout cost at the optimal policy</td></tr>
+                <tr><td>Cost curve</td><td>Total cost vs service level chart showing the optimum</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align: center; padding: 3rem 0;">
+          <h2 style="font-size: 1.875rem; font-weight: 900; margin-bottom: 1rem;">Optimise your stock policy</h2>
+          <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
+            majaco can apply this methodology to your full raw material portfolio — identifying which items are over-stocked and which are dangerously under-protected.
+          </p>
+          <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            Talk to majaco
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <div class="footer__logo-mark" aria-hidden="true">m</div>
+            maji
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn">in</a>
+            <a href="#" aria-label="majaco on Facebook">f</a>
+            <a href="#" aria-label="majaco on Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="index.html#tools">Tools</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="#">Careers</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="js/main.js"></script>
+</body>
+</html>
