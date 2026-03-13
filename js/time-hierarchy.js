@@ -1,197 +1,143 @@
 /**
- * maji Time Hierarchy — Nested Overlapping Box Visualisation
+ * maji Time Hierarchy — Vertical Cascade Visualisation
  *
- * Layout: Russian-nesting-doll style. Each level is a flex row where
- * loss block(s) sit on the left and the productive-time block sits
- * on the right.  The productive block *contains* the next nested level.
- * Widths are proportional to hours relative to the parent.
- *
- * Interactivity: start collapsed (only Calendar Time visible),
- * click + to expand one level at a time, Show Me buttons highlight
- * metric paths, hover tooltips.
+ * Layout matches the original majiai.co design:
+ * - Each productive level is a full-width bar that gets progressively
+ *   indented to the right as you go down
+ * - Loss blocks sit as cards in columns to the LEFT
+ * - Only Calendar Time shows "8,760 hours/year"
+ * - Loss cards show "SUBTRACTED" or "LOSS" badges
  */
 (function () {
   'use strict';
 
   /* ================================================================
-     DATA MODEL
+     DATA MODEL — matches original majiai.co exactly
      ================================================================ */
-  var DATA = {
-    id: 'calendar-time',
-    label: 'Calendar Time',
-    desc: '24 h x 365 d = total available hours in a year',
-    formula: 'Fixed: 8,760 hours',
-    hours: 8760,
-    dept: 'FIXED',
-    type: 'root',          // root | productive | loss | amber-loss | outcome
-    children: [
-      {
+  var LEVELS = [
+    {
+      id: 'calendar-time',
+      label: 'Calendar Time (24/7/365)',
+      subtitle: '8,760 hours/year — all time',
+      type: 'bar',        // dark green full-width bar
+      color: 'root',
+      dept: null,
+      loss: null           // no loss peels off from the root
+    },
+    {
+      id: 'shift-time',
+      label: 'Available Time = Shift Time',
+      subtitle: 'Factory open, shifts scheduled',
+      type: 'bar',
+      color: 'productive',
+      dept: null,
+      loss: {
         id: 'non-working-time',
         label: 'Non-working Time',
-        desc: 'Weekends, bank holidays, planned shutdowns',
-        formula: 'Typically 2,000 – 4,000 hrs',
-        hours: 3000,
-        dept: 'COMMERCIAL',
-        type: 'loss',
-        children: []
-      },
-      {
-        id: 'shift-time',
-        label: 'Shift Time (Available Time)',
-        desc: 'Calendar Time minus Non-working Time',
-        formula: 'Shift Time = Calendar Time − Non-working Time',
-        hours: 5760,
-        dept: 'COMMERCIAL',
-        type: 'productive',
-        children: [
-          {
-            id: 'schedule-loss',
-            label: 'Schedule Loss',
-            desc: 'Shifts not scheduled or not run',
-            formula: 'e.g. unused shifts, no demand',
-            hours: 760,
-            dept: 'OPS MANAGEMENT',
-            type: 'loss',
-            children: []
-          },
-          {
-            id: 'planned-production-time',
-            label: 'Planned Production Time',
-            desc: 'Shift Time minus Schedule Loss',
-            formula: 'PPT = Shift Time − Schedule Loss',
-            hours: 5000,
-            dept: 'OPS MANAGEMENT',
-            type: 'productive',
-            children: [
-              {
-                id: 'planned-downtime',
-                label: 'Planned Downtime',
-                desc: 'Maintenance, changeovers, breaks',
-                formula: 'Planned DT = CILs + Changeovers + Breaks',
-                hours: 500,
-                dept: 'ENGINEERING',
-                type: 'loss',
-                children: []
-              },
-              {
-                id: 'operating-time',
-                label: 'Operating Time',
-                desc: 'PPT minus Planned Downtime',
-                formula: 'Operating Time = PPT − Planned DT',
-                hours: 4500,
-                dept: 'ENGINEERING',
-                type: 'productive',
-                children: [
-                  {
-                    id: 'unplanned-downtime',
-                    label: 'Unplanned Downtime (UPDT)',
-                    desc: 'Breakdowns, stoppages, waiting',
-                    formula: 'UPDT = Breakdowns + Minor Stops + Waiting',
-                    hours: 500,
-                    dept: 'SHOP FLOOR',
-                    type: 'loss',
-                    children: []
-                  },
-                  {
-                    id: 'up-time',
-                    label: 'Up Time',
-                    desc: 'Operating Time minus UPDT',
-                    formula: 'Up Time = Operating Time − UPDT',
-                    hours: 4000,
-                    dept: 'SHOP FLOOR',
-                    type: 'productive',
-                    children: [
-                      {
-                        id: 'ltsr',
-                        label: 'Lost Time Slow Running (LTSR)',
-                        desc: 'Speed loss below target rate',
-                        formula: 'LTSR = Up Time − (Actual Output / Target Rate)',
-                        hours: 400,
-                        dept: 'SHOP FLOOR',
-                        type: 'amber-loss',
-                        children: []
-                      },
-                      {
-                        id: 'ltmw',
-                        label: 'Lost Time Making Waste (LTMW)',
-                        desc: 'Quality losses',
-                        formula: 'LTMW = Waste Output / Target Rate',
-                        hours: 200,
-                        dept: 'QUALITY',
-                        type: 'amber-loss',
-                        children: []
-                      },
-                      {
-                        id: 'potential-time',
-                        label: 'Potential Time',
-                        desc: 'Up Time minus LTSR minus LTMW',
-                        formula: 'Potential Time = Up Time − LTSR − LTMW',
-                        hours: 3400,
-                        dept: 'OUTCOME',
-                        type: 'outcome',
-                        children: []
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        badge: 'SUBTRACTED',
+        desc: 'Subtracted from Calendar Time. Includes weekends, bank holidays, and planned shutdowns.',
+        details: []
       }
-    ]
-  };
+    },
+    {
+      id: 'planned-production-time',
+      label: 'Planned Production Time',
+      subtitle: 'Time explicitly scheduled for production, labour present',
+      type: 'bar',
+      color: 'productive',
+      dept: null,
+      loss: {
+        id: 'schedule-loss',
+        label: 'Schedule Loss',
+        badge: 'SUBTRACTED',
+        desc: 'Subtracted from Shift Time to define PPT, but remains a loss when measuring Machine Efficiency/OOE (equipment not producing).',
+        details: []
+      }
+    },
+    {
+      id: 'operating-time',
+      label: 'Operating Time',
+      subtitle: 'Operational window — planned time to produce good units vs actual time line was attempting to run',
+      type: 'bar',
+      color: 'productive-bright',
+      dept: null,
+      badges: ['PLAN LAYER', 'ACTUALS LAYER'],
+      note: '<strong>Planned vs Actuals:</strong> Operating Time represents the same operational window from two perspectives: (1) <strong>Operating Time (Planned)</strong> = time scheduled to produce good units before shift execution, and (2) <strong>Operating Time (Actual)</strong> = actual time line was attempting to run after shift execution. These are usually different. Operating Time (Planned) is used for planning metrics, whereas Operating Time (Actual) is for efficiency measures. Calculate Actual / Planned ratio to determine planning accuracy and schedule adherence.',
+      loss: {
+        id: 'planned-downtime',
+        label: 'Planned Downtime',
+        badge: 'SUBTRACTED',
+        desc: 'Subtracted from PPT to define Operating Time, but remains a loss when measuring OEE (equipment not producing).',
+        details: ['Changeovers', 'Planned maintenance', 'Start-of-shift checks']
+      }
+    },
+    {
+      id: 'up-time',
+      label: 'Up Time',
+      subtitle: 'Time when bottleneck equipment physically operates and produces output',
+      type: 'bar',
+      color: 'productive',
+      dept: null,
+      loss: {
+        id: 'unplanned-downtime',
+        label: 'Unplanned Downtime (UPDT)',
+        badge: 'LOSS',
+        desc: 'Stops exceeding classification threshold, PDT overruns, Schedule Loss overruns.',
+        details: []
+      }
+    }
+  ];
+
+  // Bottom row: losses + outcome
+  var BOTTOM_ROW = [
+    {
+      id: 'ltsr',
+      label: 'Lost Time Slow Running (LTSR)',
+      badge: 'LOSS',
+      desc: 'Production below bottleneck speed — includes micro-stops and speed losses',
+      type: 'amber-loss'
+    },
+    {
+      id: 'ltmw',
+      label: 'Lost Time Making Waste (LTMW)',
+      badge: 'LOSS',
+      desc: 'Time spent producing defective output',
+      type: 'amber-loss'
+    },
+    {
+      id: 'potential-time',
+      label: 'Potential Time',
+      badge: null,
+      desc: 'Good output at bottleneck speed — theoretical minimum time required',
+      type: 'outcome'
+    }
+  ];
 
   /* ================================================================
      STATE
      ================================================================ */
-  var expandedNodes = {};          // keyed by node id
-  var activeMetric  = null;        // null | 'oee' | 'teep' | 'machine-efficiency'
-  var tooltipEl     = null;
+  var expandedLevels = 1; // Start showing just Calendar Time, expand on click
+  var activeMetric = null;
 
-  /* Which node ids are highlighted for each metric */
   var METRIC_MAP = {
     'oee': {
       label: 'OEE (Operating Efficiency)',
-      formula: 'Potential Time / Operating Time = 3,400 / 4,500 = 75.6 %',
-      numerator:   ['potential-time'],
-      denominator: ['operating-time'],
-      path: ['calendar-time', 'shift-time', 'planned-production-time',
-             'operating-time', 'potential-time']
+      formula: 'Potential Time ÷ Operating Time',
+      highlight: ['operating-time', 'up-time', 'ltsr', 'ltmw', 'potential-time']
     },
     'teep': {
       label: 'TEEP',
-      formula: 'Potential Time / Calendar Time = 3,400 / 8,760 = 38.8 %',
-      numerator:   ['potential-time'],
-      denominator: ['calendar-time'],
-      path: ['calendar-time', 'shift-time', 'planned-production-time',
-             'operating-time', 'up-time', 'potential-time']
+      formula: 'Potential Time ÷ Calendar Time',
+      highlight: ['calendar-time', 'shift-time', 'planned-production-time',
+                   'operating-time', 'up-time', 'ltsr', 'ltmw', 'potential-time']
     },
     'machine-efficiency': {
       label: 'Machine Efficiency (OOE)',
-      formula: 'Potential Time / Shift Time = 3,400 / 5,760 = 59.0 %',
-      numerator:   ['potential-time'],
-      denominator: ['shift-time'],
-      path: ['calendar-time', 'shift-time', 'planned-production-time',
-             'operating-time', 'up-time', 'potential-time']
+      formula: 'Potential Time ÷ Shift Time',
+      highlight: ['shift-time', 'planned-production-time', 'operating-time',
+                   'up-time', 'ltsr', 'ltmw', 'potential-time']
     }
   };
-
-  /* ================================================================
-     INITIALISE
-     ================================================================ */
-  function init() {
-    var root = document.getElementById('nth-root');
-    if (!root) return;
-
-    // Create tooltip
-    tooltipEl = document.createElement('div');
-    tooltipEl.className = 'nth-tooltip';
-    document.body.appendChild(tooltipEl);
-
-    render();
-    bindControls();
-  }
 
   /* ================================================================
      RENDER
@@ -200,144 +146,215 @@
     var root = document.getElementById('nth-root');
     if (!root) return;
     root.innerHTML = '';
-    root.appendChild(buildNode(DATA, null));
-  }
 
-  /**
-   * Recursively build the DOM for a node.
-   * A node renders as:
-   *   .nth-box  (the coloured block)
-   *     .nth-box__header   (title, hours, dept badge, expand icon)
-   *     .nth-box__children (flex row of children — only if expanded)
-   *       child-loss-box  child-loss-box ...  child-productive-box
-   *                                            └── recursive
-   */
-  function buildNode(node, parentNode, depth) {
-    depth = depth || 0;
-    var el = document.createElement('div');
-    el.className = 'nth-box nth-box--' + node.type;
-    el.dataset.id = node.id;
-    el.dataset.depth = depth;
+    // Build the cascade
+    var cascade = document.createElement('div');
+    cascade.className = 'th-cascade';
 
-    // Layout strategy: loss blocks get fixed width at depth >= 2,
-    // productive/outcome blocks use flex:1 to fill remaining space
-    if (parentNode) {
-      var isLoss = (node.type === 'loss' || node.type === 'amber-loss');
-      if (depth >= 2 && isLoss) {
-        // Fixed narrow width for loss blocks at deeper levels
-        el.style.flex = '0 0 auto';
-        el.style.width = depth >= 4 ? '100px' : depth >= 3 ? '140px' : '180px';
-      } else if (depth >= 2 && !isLoss) {
-        // Productive blocks fill remaining space
-        el.style.flex = '1 1 auto';
-        el.style.minWidth = '0';
-      } else {
-        // Top levels use proportional widths
-        var pct = (node.hours / parentNode.hours) * 100;
-        el.style.width = pct.toFixed(2) + '%';
-      }
-    }
+    // Track accumulated loss columns for indentation
+    var lossColumns = [];
 
-    // Metric dimming / highlighting
-    if (activeMetric) {
-      var m = METRIC_MAP[activeMetric];
-      if (m.numerator.indexOf(node.id) !== -1) {
-        el.classList.add('nth-highlight-num');
-      } else if (m.denominator.indexOf(node.id) !== -1) {
-        el.classList.add('nth-highlight-den');
-      } else if (m.path.indexOf(node.id) === -1) {
-        el.classList.add('nth-dimmed');
-      }
-    }
+    for (var i = 0; i < LEVELS.length && i < expandedLevels; i++) {
+      var level = LEVELS[i];
+      var row = document.createElement('div');
+      row.className = 'th-row';
+      row.style.animationDelay = (i * 0.08) + 's';
 
-    var hasChildren = node.children && node.children.length > 0;
-    var isExpanded  = !!expandedNodes[node.id];
+      // Add dimming if metric is active
+      var isHighlighted = !activeMetric || METRIC_MAP[activeMetric].highlight.indexOf(level.id) !== -1;
 
-    // Header
-    var header = document.createElement('div');
-    header.className = 'nth-box__header';
-
-    // Expand icon
-    if (hasChildren) {
-      var icon = document.createElement('span');
-      icon.className = 'nth-box__expand';
-      icon.textContent = isExpanded ? '\u2212' : '+';
-      header.appendChild(icon);
-      el.classList.add('nth-box--expandable');
-      if (isExpanded) el.classList.add('nth-box--expanded');
-    }
-
-    // Title
-    var title = document.createElement('span');
-    title.className = 'nth-box__title';
-    title.textContent = node.label;
-    header.appendChild(title);
-
-    // Hours
-    var hrs = document.createElement('span');
-    hrs.className = 'nth-box__hours';
-    hrs.textContent = node.hours.toLocaleString() + ' hrs';
-    header.appendChild(hrs);
-
-    // Dept badge
-    var badge = document.createElement('span');
-    badge.className = 'nth-box__badge';
-    badge.textContent = node.dept;
-    header.appendChild(badge);
-
-    el.appendChild(header);
-
-    // Description (shown below header on larger blocks)
-    var desc = document.createElement('div');
-    desc.className = 'nth-box__desc';
-    desc.textContent = node.desc;
-    el.appendChild(desc);
-
-    // Click to expand
-    if (hasChildren) {
-      header.addEventListener('click', function (e) {
-        e.stopPropagation();
-        if (expandedNodes[node.id]) {
-          collapseNodeAndDescendants(node);
-        } else {
-          expandedNodes[node.id] = true;
+      // Loss columns on the left (from previous levels)
+      if (lossColumns.length > 0) {
+        for (var j = 0; j < lossColumns.length; j++) {
+          var spacer = document.createElement('div');
+          spacer.className = 'th-loss-spacer';
+          // On the row where this loss first appears, show the card
+          // Otherwise show empty spacer
+          row.appendChild(spacer);
         }
-        render();
-        bindControls();
-      });
-    }
-
-    // Tooltip
-    el.addEventListener('mouseenter', function (e) { showTooltip(e, node); });
-    el.addEventListener('mousemove',  function (e) { moveTooltip(e); });
-    el.addEventListener('mouseleave', function ()  { hideTooltip(); });
-
-    // Children container
-    if (hasChildren && isExpanded) {
-      var childRow = document.createElement('div');
-      childRow.className = 'nth-box__children';
-
-      // Connector line from header to children
-      var connector = document.createElement('div');
-      connector.className = 'nth-box__connector';
-      el.appendChild(connector);
-
-      for (var i = 0; i < node.children.length; i++) {
-        childRow.appendChild(buildNode(node.children[i], node, depth + 1));
       }
-      el.appendChild(childRow);
+
+      // The productive bar
+      var bar = document.createElement('div');
+      bar.className = 'th-bar th-bar--' + level.color;
+      bar.dataset.id = level.id;
+      if (!isHighlighted) bar.classList.add('th-dimmed');
+
+      // Expand/collapse icon
+      if (i < LEVELS.length - 1 || true) {
+        var expandIcon = document.createElement('button');
+        expandIcon.className = 'th-bar__expand';
+        expandIcon.textContent = (i < expandedLevels - 1 || i === LEVELS.length - 1) ? '−' : '+';
+        expandIcon.addEventListener('click', (function(levelIndex) {
+          return function(e) {
+            e.stopPropagation();
+            if (expandedLevels > levelIndex + 1) {
+              expandedLevels = levelIndex + 1;
+            } else {
+              expandedLevels = levelIndex + 2;
+              // Also show bottom row if expanding last level
+              if (expandedLevels > LEVELS.length) expandedLevels = LEVELS.length + 1;
+            }
+            render();
+          };
+        })(i));
+        bar.appendChild(expandIcon);
+      }
+
+      var barContent = document.createElement('div');
+      barContent.className = 'th-bar__content';
+
+      var barTitle = document.createElement('div');
+      barTitle.className = 'th-bar__title';
+      barTitle.textContent = level.label;
+      barContent.appendChild(barTitle);
+
+      // Special badges for Operating Time
+      if (level.badges) {
+        var badgeRow = document.createElement('div');
+        badgeRow.className = 'th-bar__badges';
+        level.badges.forEach(function(b) {
+          var badge = document.createElement('span');
+          badge.className = 'th-badge th-badge--layer';
+          badge.textContent = b;
+          badgeRow.appendChild(badge);
+        });
+        barContent.appendChild(badgeRow);
+      }
+
+      var barSub = document.createElement('div');
+      barSub.className = 'th-bar__subtitle';
+      barSub.textContent = level.subtitle;
+      barContent.appendChild(barSub);
+
+      // Special note for Operating Time
+      if (level.note) {
+        var noteEl = document.createElement('div');
+        noteEl.className = 'th-bar__note';
+        noteEl.innerHTML = level.note;
+        barContent.appendChild(noteEl);
+      }
+
+      bar.appendChild(barContent);
+      row.appendChild(bar);
+      cascade.appendChild(row);
+
+      // If this level has a loss AND the next level is visible, show the loss card
+      if (level.loss && i + 1 < expandedLevels) {
+        lossColumns.push(level.loss);
+      }
     }
 
-    return el;
+    // Now render loss cards positioned in their columns
+    // We'll use a separate layer for loss cards
+    var lossLayer = document.createElement('div');
+    lossLayer.className = 'th-loss-layer';
+
+    for (var k = 0; k < lossColumns.length; k++) {
+      var loss = lossColumns[k];
+      var lossCard = createLossCard(loss, k);
+      var isLossHighlighted = !activeMetric || METRIC_MAP[activeMetric].highlight.indexOf(loss.id) !== -1;
+      if (!isLossHighlighted) lossCard.classList.add('th-dimmed');
+      lossLayer.appendChild(lossCard);
+    }
+
+    // Bottom row (LTSR, LTMW, Potential Time)
+    if (expandedLevels > LEVELS.length) {
+      var bottomRow = document.createElement('div');
+      bottomRow.className = 'th-bottom-row';
+      bottomRow.style.marginLeft = (lossColumns.length * 160) + 'px';
+
+      BOTTOM_ROW.forEach(function(item) {
+        var card = document.createElement('div');
+        card.className = 'th-bottom-card th-bottom-card--' + item.type;
+        card.dataset.id = item.id;
+
+        var isItemHighlighted = !activeMetric || METRIC_MAP[activeMetric].highlight.indexOf(item.id) !== -1;
+        if (!isItemHighlighted) card.classList.add('th-dimmed');
+
+        var cardTitle = document.createElement('div');
+        cardTitle.className = 'th-bottom-card__title';
+        cardTitle.textContent = item.label;
+        card.appendChild(cardTitle);
+
+        if (item.badge) {
+          var cardBadge = document.createElement('span');
+          cardBadge.className = 'th-badge th-badge--' + (item.type === 'amber-loss' ? 'loss' : 'outcome');
+          cardBadge.textContent = item.badge;
+          card.appendChild(cardBadge);
+        }
+
+        var cardDesc = document.createElement('div');
+        cardDesc.className = 'th-bottom-card__desc';
+        cardDesc.textContent = item.desc;
+        card.appendChild(cardDesc);
+
+        bottomRow.appendChild(card);
+      });
+
+      cascade.appendChild(bottomRow);
+    }
+
+    // Assemble
+    root.appendChild(cascade);
+    root.appendChild(lossLayer);
+
+    // Position loss cards absolutely relative to the cascade
+    positionLossCards();
   }
 
-  function collapseNodeAndDescendants(node) {
-    delete expandedNodes[node.id];
-    if (node.children) {
-      for (var i = 0; i < node.children.length; i++) {
-        collapseNodeAndDescendants(node.children[i]);
-      }
+  function createLossCard(loss, columnIndex) {
+    var card = document.createElement('div');
+    card.className = 'th-loss-card';
+    card.dataset.id = loss.id;
+    card.dataset.column = columnIndex;
+
+    var title = document.createElement('div');
+    title.className = 'th-loss-card__title';
+    title.textContent = loss.label;
+    card.appendChild(title);
+
+    var badge = document.createElement('span');
+    badge.className = 'th-badge th-badge--subtracted';
+    badge.textContent = loss.badge;
+    card.appendChild(badge);
+
+    var desc = document.createElement('div');
+    desc.className = 'th-loss-card__desc';
+    desc.textContent = loss.desc;
+    card.appendChild(desc);
+
+    if (loss.details && loss.details.length > 0) {
+      var list = document.createElement('ul');
+      list.className = 'th-loss-card__list';
+      loss.details.forEach(function(d) {
+        var li = document.createElement('li');
+        li.textContent = d;
+        list.appendChild(li);
+      });
+      card.appendChild(list);
     }
+
+    return card;
+  }
+
+  function positionLossCards() {
+    // Position loss cards in their columns using CSS grid positioning
+    var cards = document.querySelectorAll('.th-loss-card');
+    var bars = document.querySelectorAll('.th-bar');
+
+    cards.forEach(function(card, index) {
+      var col = parseInt(card.dataset.column);
+      card.style.left = (col * 160) + 'px';
+      card.style.width = '150px';
+      // Position vertically: starts at the row AFTER the bar that introduced it
+      // The bar at index col+1 is where this loss starts
+      if (bars[col + 2]) {
+        card.style.top = bars[col + 2].parentElement.offsetTop + 'px';
+      } else if (bars[col + 1]) {
+        card.style.top = (bars[col + 1].parentElement.offsetTop + bars[col + 1].parentElement.offsetHeight + 8) + 'px';
+      }
+    });
   }
 
   /* ================================================================
@@ -345,64 +362,44 @@
      ================================================================ */
   function bindControls() {
     var collapseBtn = document.querySelector('.nth-collapse-all');
-    var expandBtn   = document.querySelector('.nth-expand-all');
-    var showBtns    = document.querySelectorAll('.nth-show-me');
+    var expandBtn = document.querySelector('.nth-expand-all');
+    var showBtns = document.querySelectorAll('.nth-show-me');
 
     if (collapseBtn) {
-      // re-clone to remove old listeners
-      var newC = collapseBtn.cloneNode(true);
-      collapseBtn.parentNode.replaceChild(newC, collapseBtn);
-      newC.addEventListener('click', function () {
-        expandedNodes = {};
-        activeMetric  = null;
+      collapseBtn.onclick = function() {
+        expandedLevels = 1;
+        activeMetric = null;
         clearShowMeActive();
         render();
-        bindControls();
-      });
+      };
     }
 
     if (expandBtn) {
-      var newE = expandBtn.cloneNode(true);
-      expandBtn.parentNode.replaceChild(newE, expandBtn);
-      newE.addEventListener('click', function () {
-        expandAll(DATA);
+      expandBtn.onclick = function() {
+        expandedLevels = LEVELS.length + 1;
         render();
-        bindControls();
-      });
+      };
     }
 
-    showBtns.forEach(function (btn) {
-      var newB = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newB, btn);
-      newB.addEventListener('click', function () {
+    showBtns.forEach(function(btn) {
+      btn.onclick = function() {
         var metric = this.dataset.metric;
         if (activeMetric === metric) {
           activeMetric = null;
           clearShowMeActive();
         } else {
           activeMetric = metric;
-          expandAll(DATA);
+          expandedLevels = LEVELS.length + 1;
           setShowMeActive(this);
         }
         render();
-        bindControls();
-        // Show formula banner
         showMetricBanner();
-      });
+      };
     });
   }
 
-  function expandAll(node) {
-    if (node.children && node.children.length > 0) {
-      expandedNodes[node.id] = true;
-      for (var i = 0; i < node.children.length; i++) {
-        expandAll(node.children[i]);
-      }
-    }
-  }
-
   function clearShowMeActive() {
-    document.querySelectorAll('.nth-show-me').forEach(function (b) {
+    document.querySelectorAll('.nth-show-me').forEach(function(b) {
       b.classList.remove('nth-show-me--active');
     });
     var banner = document.querySelector('.nth-metric-banner');
@@ -410,7 +407,7 @@
   }
 
   function setShowMeActive(btn) {
-    document.querySelectorAll('.nth-show-me').forEach(function (b) {
+    document.querySelectorAll('.nth-show-me').forEach(function(b) {
       b.classList.remove('nth-show-me--active');
     });
     btn.classList.add('nth-show-me--active');
@@ -425,66 +422,29 @@
     var banner = document.createElement('div');
     banner.className = 'nth-metric-banner';
     banner.innerHTML =
-      '<strong>' + esc(m.label) + '</strong> &mdash; ' +
-      '<span class="nth-metric-banner__formula">' + esc(m.formula) + '</span>' +
+      '<strong>' + m.label + '</strong> = ' + m.formula +
       '<button class="nth-metric-banner__close">&times;</button>';
 
     var viewport = document.querySelector('.nth-viewport');
     if (viewport) viewport.parentNode.insertBefore(banner, viewport);
 
-    banner.querySelector('.nth-metric-banner__close').addEventListener('click', function () {
+    banner.querySelector('.nth-metric-banner__close').onclick = function() {
       activeMetric = null;
       clearShowMeActive();
       render();
-      bindControls();
-    });
+    };
   }
 
   /* ================================================================
-     TOOLTIP
+     INIT
      ================================================================ */
-  function showTooltip(e, node) {
-    if (!tooltipEl) return;
-    tooltipEl.innerHTML =
-      '<div class="nth-tooltip__title">' + esc(node.label) + '</div>' +
-      '<div class="nth-tooltip__dept">' + esc(node.dept) + '</div>' +
-      '<div>' + esc(node.desc) + '</div>' +
-      '<div class="nth-tooltip__hours">' + node.hours.toLocaleString() + ' hours/year</div>' +
-      '<div class="nth-tooltip__formula">' + esc(node.formula) + '</div>';
-    tooltipEl.classList.add('nth-tooltip--visible');
-    moveTooltip(e);
+  function init() {
+    var root = document.getElementById('nth-root');
+    if (!root) return;
+    render();
+    bindControls();
   }
 
-  function moveTooltip(e) {
-    if (!tooltipEl) return;
-    var x = e.clientX + 14;
-    var y = e.clientY + 14;
-    var r = tooltipEl.getBoundingClientRect();
-    if (x + r.width > window.innerWidth - 12)  x = e.clientX - r.width - 14;
-    if (y + r.height > window.innerHeight - 12) y = e.clientY - r.height - 14;
-    tooltipEl.style.left = x + 'px';
-    tooltipEl.style.top  = y + 'px';
-  }
-
-  function hideTooltip() {
-    if (tooltipEl) tooltipEl.classList.remove('nth-tooltip--visible');
-  }
-
-  /* ================================================================
-     UTIL
-     ================================================================ */
-  function esc(s) {
-    if (s == null) return '';
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  /* ================================================================
-     BOOT
-     ================================================================ */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
