@@ -226,7 +226,7 @@
       if (depth >= 2 && isLoss) {
         // Fixed narrow width for loss blocks at deeper levels
         el.style.flex = '0 0 auto';
-        el.style.width = depth >= 4 ? '60px' : depth >= 3 ? '80px' : '110px';
+        el.style.width = depth >= 4 ? '100px' : depth >= 3 ? '140px' : '180px';
       } else if (depth >= 2 && !isLoss) {
         // Productive blocks fill remaining space
         el.style.flex = '1 1 auto';
