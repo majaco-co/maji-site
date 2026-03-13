@@ -964,8 +964,8 @@ textarea.form-control {
 
 .form-message.success {
   display: block;
-  background-color: #DCFCE7;
-  color: #166534;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
 }
 
 .form-message.error {
@@ -1019,11 +1019,12 @@ textarea.form-control {
 }
 
 .tool-disclaimer {
-  background-color: var(--color-primary-light);
-  border: 1px solid rgba(45, 106, 79, 0.3);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md) var(--space-lg);
-  font-size: var(--font-size-sm);
+  background-color: var(--color-bg-alt);
+  border: none;
+  border-top: 2px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.85rem;
   color: var(--color-text-muted);
   margin-bottom: var(--space-2xl);
   display: flex;
@@ -1032,7 +1033,7 @@ textarea.form-control {
 }
 
 .tool-disclaimer::before {
-  content: 'ℹ';
+  content: '\2139\FE0F';
   font-size: var(--font-size-base);
   flex-shrink: 0;
   line-height: 1.4;
@@ -1199,7 +1200,7 @@ tbody tr:hover {
   width: 48px;
   height: 48px;
   background-color: var(--color-primary);
-  color: var(--color-text);
+  color: #FFFFFF;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1248,7 +1249,7 @@ tbody tr:hover {
   width: 42px;
   height: 42px;
   background-color: var(--color-primary);
-  color: var(--color-text);
+  color: #FFFFFF;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -1369,7 +1370,7 @@ tbody tr:hover {
 
 .footer__social a:hover {
   background-color: var(--color-primary);
-  color: var(--color-text);
+  color: #FFFFFF;
 }
 
 .footer__social a:hover img {
@@ -1569,7 +1570,7 @@ tbody tr:hover {
   width: 44px;
   height: 44px;
   background-color: var(--color-primary);
-  color: var(--color-text);
+  color: #FFFFFF;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1917,7 +1918,7 @@ tbody tr:hover {
 
 /* Block types */
 .th-root {
-  background: linear-gradient(135deg, #166534, #15803d);
+  background: linear-gradient(135deg, #1B4332, #2D6A4F);
   color: #fff;
 }
 
@@ -1932,8 +1933,8 @@ tbody tr:hover {
 }
 
 .th-primary {
-  background: #DCFCE7;
-  border: 1px solid #BBF7D0;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-border);
 }
 
 .th-subtracted {
@@ -2105,8 +2106,8 @@ tbody tr:hover {
 }
 
 .ss-node--ok {
-  border-color: #BBF7D0;
-  background: #F0FDF4;
+  border-color: var(--color-border);
+  background: var(--color-bg-alt);
 }
 
 .ss-node--cause {
@@ -2868,8 +2869,8 @@ tbody tr:hover {
 }
 
 .sd-comparison__card.sd-card--you {
-  background: #F3F4F6;
-  border: 2px solid #D1D5DB;
+  background: var(--color-bg-alt);
+  border: 2px solid var(--color-border);
 }
 
 .sd-comparison__card.sd-card--optimal {
@@ -3238,11 +3239,7 @@ tbody tr:hover {
   transition: all 0.3s ease;
 }
 
-/* Enhanced tool disclaimer */
-.tool-disclaimer {
-  background-color: var(--pine-light);
-  border-color: rgba(var(--pine-primary-rgb), 0.3);
-}
+/* tool-disclaimer: styles defined in tool-page section above */
 
 /* Chart canvas container */
 .chart-container {

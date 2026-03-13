@@ -4,21 +4,27 @@
    ============================================= */
 
 :root {
-  /* ---- Colors ---- */
-  --color-primary:       #2D6A4F;
-  --color-primary-dark:  #1B4332;
-  --color-primary-light: #D8F3DC;
+  /* ---- Colors (matches original majiai.co palette) ---- */
+  --color-primary:       #2D6A4F;   /* pine green */
+  --color-primary-dark:  #1B4332;   /* deep pine / forest */
+  --color-primary-light: #D8F3DC;   /* light mint */
   --color-primary-rgb:   45, 106, 79;
 
+  --color-accent:        #40916C;   /* medium green */
+  --color-sage:          #52796F;   /* muted sage */
+  --color-sage-light:    #74A68D;   /* soft sage */
+  --color-amber:         #D4A017;   /* golden amber accent */
+  --color-amber-dark:    #B8860B;   /* dark gold */
+
   --color-bg:            #FFFFFF;
-  --color-bg-alt:        #F7F7F7;
-  --color-bg-dark:       #081C15;
+  --color-bg-alt:        #F0F7F4;   /* barely green white */
+  --color-bg-dark:       #081C15;   /* very dark pine */
   --color-bg-dark-2:     #0D2818;
 
   --color-text:          #1A1A1A;
-  --color-text-muted:    #52796F;
+  --color-text-muted:    #52796F;   /* sage muted */
   --color-text-light:    #FFFFFF;
-  --color-text-subtle:   #999999;
+  --color-text-subtle:   #74A68D;   /* soft sage instead of grey */
 
   --color-border:        #B7E4C7;
   --color-border-dark:   #2E2E2E;
