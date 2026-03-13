@@ -80,31 +80,32 @@
           </p>
         </div>
 
-        <!-- Interactive Cascade Visualisation -->
+        <!-- Interactive Nested Box Visualisation -->
         <div class="content-card reveal" data-delay="80">
           <h2>Interactive Time Hierarchy</h2>
-          <p style="margin-bottom: 0.75rem;">Click any block with a <strong>+</strong> icon to expand and reveal the next level. Use the "Show Me" buttons to highlight how each efficiency metric is constructed.</p>
+          <p style="margin-bottom: 0.75rem;">Click any block with a <strong>+</strong> icon to expand and reveal nested levels. Use the "Show Me" buttons to highlight how each efficiency metric is constructed.</p>
 
-          <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-            <button class="btn btn-sm collapse-all">Collapse All</button>
-            <button class="btn btn-sm expand-all" style="background: var(--pine-light, #D8F3DC); color: var(--pine-dark, #1B4332);">Expand All</button>
-            <button class="btn btn-sm btn-primary show-me-btn" data-metric="operating-efficiency">Show Me: Operating Efficiency</button>
-            <button class="btn btn-sm btn-primary show-me-btn" data-metric="machine-efficiency">Show Me: Machine Efficiency</button>
-            <button class="btn btn-sm btn-primary show-me-btn" data-metric="teep">Show Me: TEEP</button>
+          <div class="nth-controls">
+            <button class="btn btn-sm nth-collapse-all">Collapse All</button>
+            <button class="btn btn-sm nth-expand-all">Expand All</button>
+            <span class="nth-controls__sep"></span>
+            <button class="btn btn-sm btn-primary nth-show-me" data-metric="oee">Show Me: OEE</button>
+            <button class="btn btn-sm btn-primary nth-show-me" data-metric="teep">Show Me: TEEP</button>
+            <button class="btn btn-sm btn-primary nth-show-me" data-metric="machine-efficiency">Show Me: Machine Efficiency</button>
           </div>
 
-          <div class="legend-box">
-            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #1B4332, #2D6A4F);"></span> Root (Calendar Time)</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #B7E4C7, #D8F3DC);"></span> Productive Time</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #F3F4F6, #E5E7EB);"></span> Subtracted Time</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #FEF3C7, #FDE68A);"></span> Loss Category</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #40916C, #2D6A4F);"></span> Outcome (Potential Time)</div>
+          <div class="nth-legend">
+            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--root"></span> Calendar Time</div>
+            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--productive"></span> Productive Time</div>
+            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--loss"></span> Loss / Subtracted</div>
+            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--amber"></span> Speed / Quality Loss</div>
+            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--outcome"></span> Potential Time (Outcome)</div>
           </div>
 
           <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.5rem;">Hover over any block for details. Blocks are sized proportionally to their time component.</p>
 
-          <div class="cascade-scroll" style="overflow-x: auto; margin-top: 1rem;">
-            <div class="cascade-container">
+          <div class="nth-viewport" style="overflow-x: auto; margin-top: 1rem;">
+            <div id="nth-root">
               <!-- Rendered dynamically by JS -->
             </div>
           </div>
