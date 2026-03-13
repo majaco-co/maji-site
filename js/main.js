@@ -194,36 +194,6 @@
     onScroll();
   }
 
-  /* ============================
-     Contact Form (static submit)
-     ============================ */
-  function initContactForm() {
-    const form = document.getElementById('contact-form');
-    if (!form) return;
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const successMsg = document.querySelector('.form-message.success');
-      const errorMsg   = document.querySelector('.form-message.error');
-      const submitBtn  = form.querySelector('[type="submit"]');
-
-      // Hide previous messages
-      if (successMsg) successMsg.style.display = 'none';
-      if (errorMsg)   errorMsg.style.display   = 'none';
-
-      // Simulate sending (static site — redirect to majaco.co)
-      if (submitBtn) {
-        submitBtn.textContent = 'Sending…';
-        submitBtn.disabled = true;
-      }
-
-      setTimeout(function () {
-        // Redirect all form submissions to majaco.co
-        window.location.href = 'https://majaco.co';
-      }, 800);
-    });
-  }
 
   /* ============================
      Stagger Reveal for Grid Items
@@ -252,7 +222,6 @@
       initScrollAnimations();
     });
     initScrollTop();
-    initContactForm();
   }
 
   if (document.readyState === 'loading') {
