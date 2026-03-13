@@ -80,33 +80,132 @@
           </p>
         </div>
 
-        <!-- Interactive Nested Box Visualisation -->
+        <!-- Interactive Time Hierarchy — CSS Grid Cascade -->
         <div class="content-card reveal" data-delay="80">
           <h2>Interactive Time Hierarchy</h2>
-          <p style="margin-bottom: 0.75rem;">Click any block with a <strong>+</strong> icon to expand and reveal nested levels. Use the "Show Me" buttons to highlight how each efficiency metric is constructed.</p>
+          <p style="margin-bottom: 0.75rem;">Click any block with a <strong>+</strong> icon to expand and reveal nested levels. Use the "Show Me" buttons below to highlight how each efficiency metric is constructed.</p>
 
           <div class="nth-controls">
-            <button class="btn btn-sm nth-collapse-all">Collapse All</button>
-            <button class="btn btn-sm nth-expand-all">Expand All</button>
-            <span class="nth-controls__sep"></span>
-            <button class="btn btn-sm btn-primary nth-show-me" data-metric="oee">Show Me: OEE</button>
-            <button class="btn btn-sm btn-primary nth-show-me" data-metric="teep">Show Me: TEEP</button>
-            <button class="btn btn-sm btn-primary nth-show-me" data-metric="machine-efficiency">Show Me: Machine Efficiency</button>
+            <button class="btn btn-sm" onclick="collapseAll()">Collapse All</button>
+            <button class="btn btn-sm" onclick="expandAll()">Expand All</button>
           </div>
 
           <div class="nth-legend">
             <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--root"></span> Calendar Time</div>
             <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--productive"></span> Productive Time</div>
-            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--loss"></span> Loss / Subtracted</div>
+            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--loss"></span> Subtracted / Loss</div>
             <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--amber"></span> Speed / Quality Loss</div>
-            <div class="nth-legend__item"><span class="nth-legend__swatch nth-legend__swatch--outcome"></span> Potential Time (Outcome)</div>
           </div>
 
-          <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.5rem;">Hover over any block for details. Blocks are sized proportionally to their time component.</p>
+          <div class="cascade-scroll">
+            <button class="collapse-all" onclick="collapseAll()">&#8635; Reset</button>
+            <div class="cascade-container">
 
-          <div class="nth-viewport" style="overflow-x: auto; margin-top: 1rem;">
-            <div id="nth-root">
-              <!-- Rendered dynamically by JS -->
+              <!-- ROW 1: Calendar Time -->
+              <div class="block root expandable" style="grid-column:span 100;grid-row:1" onclick="expandBlock(this)" data-expands="2" data-component="calendar">
+                <div class="expand-icon">+</div>
+                <div class="block-title">Calendar Time (24/7/365)</div>
+                <div class="block-desc">8,760 hours/year &mdash; all time</div>
+              </div>
+
+              <!-- ROW 2-7: Non-working Time (spans 6 rows) -->
+              <div class="block subtracted row-hidden" style="grid-column:1/span 15;grid-row:2/span 6" data-row="2" data-component="non-working">
+                <div class="block-title">Non-working Time</div>
+                <div class="block-badge">SUBTRACTED</div>
+                <div class="block-desc">Subtracted from Calendar Time to define Shift Time, but remains a loss when measuring TEEP (in production-constrained environments only)</div>
+                <div class="sub-list">
+                  <div>&bull; Weekends</div>
+                  <div>&bull; Night shifts (if not operating)</div>
+                  <div>&bull; Holidays</div>
+                </div>
+              </div>
+
+              <!-- ROW 2: Shift Time -->
+              <div class="block primary expandable row-hidden" style="grid-column:16/span 85;grid-row:2" onclick="expandBlock(this)" data-expands="3" data-row="2" data-component="shift">
+                <div class="expand-icon">+</div>
+                <div class="block-title">Available Time = Shift Time</div>
+                <div class="block-desc">Factory open, shifts scheduled</div>
+              </div>
+
+              <!-- ROW 3-7: Schedule Loss (spans 5 rows) -->
+              <div class="block subtracted row-hidden" style="grid-column:16/span 15;grid-row:3/span 5" data-row="3" data-component="schedule-loss">
+                <div class="block-title">Schedule Loss</div>
+                <div class="block-badge">SUBTRACTED</div>
+                <div class="block-desc">Subtracted from Shift Time to define PPT, but remains a loss when measuring Machine Efficiency/OOE (equipment not producing)</div>
+                <div class="sub-list">
+                  <div>&bull; Paid breaks and meal periods</div>
+                  <div>&bull; Scheduled maintenance windows during operational hours</div>
+                  <div>&bull; Periods with no customer demand during scheduled time</div>
+                </div>
+              </div>
+
+              <!-- ROW 3: Planned Production Time -->
+              <div class="block primary expandable row-hidden" style="grid-column:31/span 70;grid-row:3" onclick="expandBlock(this)" data-expands="4" data-row="3" data-component="ppt">
+                <div class="expand-icon">+</div>
+                <div class="block-title">Planned Production Time</div>
+                <div class="block-desc">Time explicitly scheduled for production, labour present</div>
+              </div>
+
+              <!-- ROW 4-7: Planned Downtime (spans 4 rows) -->
+              <div class="block subtracted row-hidden" style="grid-column:31/span 14;grid-row:4/span 4" data-row="4" data-component="planned-dt">
+                <div class="block-title">Planned Downtime</div>
+                <div class="block-badge">SUBTRACTED</div>
+                <div class="block-desc">Subtracted from PPT to define Operating Time, but remains a loss when measuring OEE (equipment not producing)</div>
+                <div class="sub-list">
+                  <div>&bull; Changeovers</div>
+                  <div>&bull; Planned maintenance</div>
+                  <div>&bull; Start-of-shift checks</div>
+                </div>
+              </div>
+
+              <!-- ROW 4-5: Operating Time (spans 2 rows) -->
+              <div class="block primary expandable row-hidden" style="grid-column:45/span 56;grid-row:4/span 2" onclick="expandBlock(this)" data-expands="6" data-row="4" data-component="run">
+                <div class="expand-icon">+</div>
+                <div class="block-title">Operating Time</div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <div class="block-badge" style="background:rgba(0,100,88,0.2);color:#006458">PLAN LAYER</div>
+                  <div class="block-badge" style="background:rgba(0,100,88,0.4);color:white">ACTUALS LAYER</div>
+                </div>
+                <div class="block-desc">Operational window &mdash; planned time to produce good units vs actual time line was attempting to run</div>
+                <div class="sub-list" style="margin-top:10px;border-top:1px solid rgba(0,0,0,0.1);padding-top:8px">
+                  <div><strong>Planned vs Actuals:</strong> Operating Time represents the same operational window from two perspectives: (1) <strong>Operating Time (Planned)</strong> = time scheduled to produce good units before shift execution, and (2) <strong>Operating Time (Actual)</strong> = actual time line was attempting to run after shift execution. These are usually different. Operating Time (Planned) is used for planning metrics, whereas Operating Time (Actual) is for efficiency measures. Calculate Actual / Planned ratio to determine planning accuracy and schedule adherence.</div>
+                </div>
+              </div>
+
+              <!-- ROW 6-7: Unplanned Downtime (spans 2 rows) -->
+              <div class="block subtracted row-hidden" style="grid-column:45/span 14;grid-row:6/span 2" data-row="6" data-component="updt">
+                <div class="block-title">Unplanned Downtime (UPDT)</div>
+                <div class="block-badge">LOSS</div>
+                <div class="block-desc">Stops exceeding classification threshold, PDT overruns, Schedule Loss overruns</div>
+              </div>
+
+              <!-- ROW 6: Up Time -->
+              <div class="block primary expandable row-hidden" style="grid-column:59/span 42;grid-row:6" onclick="expandBlock(this)" data-expands="7" data-row="6" data-component="uptime">
+                <div class="expand-icon">+</div>
+                <div class="block-title">Up Time</div>
+                <div class="block-desc">Time when bottleneck equipment physically operates and produces output</div>
+              </div>
+
+              <!-- ROW 7: LTSR -->
+              <div class="block loss row-hidden" style="grid-column:59/span 14;grid-row:7" data-row="7" data-component="ltsr">
+                <div class="block-title">Lost Time Slow Running (LTSR)</div>
+                <div class="block-badge">LOSS</div>
+                <div class="block-desc">Production below bottleneck speed &mdash; includes micro-stops and speed losses</div>
+              </div>
+
+              <!-- ROW 7: LTMW -->
+              <div class="block loss row-hidden" style="grid-column:73/span 14;grid-row:7" data-row="7" data-component="ltmw">
+                <div class="block-title">Lost Time Making Waste (LTMW)</div>
+                <div class="block-badge">LOSS</div>
+                <div class="block-desc">Time spent producing defective output</div>
+              </div>
+
+              <!-- ROW 7: Potential Time -->
+              <div class="block primary row-hidden" style="grid-column:87/span 14;grid-row:7" data-row="7" data-component="potential">
+                <div class="block-title">Potential Time</div>
+                <div class="block-desc">Good output at bottleneck speed &mdash; theoretical minimum time required</div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -114,45 +213,88 @@
         <!-- Key Formulas -->
         <div class="content-card reveal" data-delay="160">
           <h2>Key Mathematical Relationships</h2>
-          <div class="formula">Available Time = Calendar Time &minus; Non-working Time</div>
-          <div class="formula">Planned Production Time = Available Time &minus; Schedule Loss</div>
-          <div class="formula">Operating Time = Planned Production Time &minus; Planned Downtime</div>
-          <div class="formula">Up Time = Operating Time &minus; Unplanned Downtime</div>
-          <div class="formula">Potential Time = Up Time &minus; LTSR &minus; LTMW</div>
-          <div class="formula">Total Losses = UPDT + LTSR + LTMW + Planned DT + Schedule Loss</div>
+          <div class="formula"><strong>Available Time:</strong> <code>Calendar Time &minus; Non-working Time</code></div>
+          <div class="formula"><strong>Planned Production Time:</strong> <code>Shift Time &minus; Schedule Loss</code></div>
+          <div class="formula"><strong>Operating Time (Planned):</strong> <code>Planned Production Time &minus; Planned Downtime</code></div>
+          <div class="formula"><strong>Operating Time (Actual):</strong> <code>Up Time + Unplanned Downtime</code></div>
+          <div class="formula"><strong>Up Time:</strong> <code>Potential Time + Lost Time Slow Running + Lost Time Making Waste</code></div>
+          <div class="formula"><strong>Potential Time:</strong> <code>Good Output / Bottleneck Speed</code></div>
         </div>
 
-        <!-- Efficiency Metrics -->
+        <!-- Efficiency Metrics with Show Me -->
         <div class="content-card reveal" data-delay="240">
-          <h2>Efficiency Metrics Hierarchy</h2>
-          <p>The correct efficiency metric depends on the constraint state of the line:</p>
+          <h2>1. Operating Efficiency (Shop Floor)</h2>
+          <p style="background:var(--color-dark, #1B4332);color:#DAF11B;padding:15px;border-radius:8px;font-family:monospace;font-size:1.1em;margin:10px 0;display:flex;justify-content:space-between;align-items:center">
+            <span>Operating Efficiency = Potential Time / Operating Time</span>
+            <button class="show-me-btn" onclick="highlightMetric(['potential'],['run'])">Show Me</button>
+          </p>
+          <div class="legend-box">
+            <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator</span></div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator</span></div>
+          </div>
+          <p><strong>Critical distinction:</strong> Measures shop floor execution within the operational window provided by planning. Shop floor teams control UPDT, LTSR, and LTMW but cannot influence Schedule Loss or Planned Downtime standards. World-class target: &ge;85%.</p>
+        </div>
+
+        <div class="content-card reveal" data-delay="280">
+          <h2>2. Machine Efficiency / OOE (Operational Management)</h2>
+          <p style="background:var(--color-dark, #1B4332);color:#DAF11B;padding:15px;border-radius:8px;font-family:monospace;font-size:1.1em;margin:10px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+            <span>Machine Efficiency = Potential Time / Shift Time</span>
+            <button class="show-me-btn" onclick="highlightMetric(['potential'],['shift'])">Show Me</button>
+          </p>
+          <div class="legend-box">
+            <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator</span></div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator</span></div>
+          </div>
+          <p><strong>Critical distinction:</strong> Extends accountability beyond shop floor to include Schedule Loss design and Planned Downtime standards. Terminology varies by constraint state: "Machine Efficiency" (sales-constrained cost focus) vs "OOE" (production-constrained throughput focus). Formula identical.</p>
+        </div>
+
+        <div class="content-card reveal" data-delay="320">
+          <h2>3. TEEP (Strategic Leadership)</h2>
+          <p style="background:var(--color-dark, #1B4332);color:#DAF11B;padding:15px;border-radius:8px;font-family:monospace;font-size:1.1em;margin:10px 0;display:flex;justify-content:space-between;align-items:center">
+            <span>TEEP = Potential Time / Calendar Time</span>
+            <button class="show-me-btn" onclick="highlightMetric(['potential'],['calendar'])">Show Me</button>
+          </p>
+          <div class="legend-box">
+            <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator</span></div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator</span></div>
+          </div>
+          <p><strong>Use when production-constrained:</strong> Market demand exceeds production capacity. Every unit of additional capacity translates to additional sales at full margin.</p>
+        </div>
+
+        <!-- Constraint state -->
+        <div class="content-card reveal" data-delay="360">
+          <h2>Constraint State Determines Framework Selection</h2>
           <div class="table-wrapper">
             <table>
-              <thead><tr><th>Metric</th><th>Formula</th><th>When to use</th></tr></thead>
+              <thead>
+                <tr><th>Accountability</th><th>Sales-Constrained</th><th>Production-Constrained</th><th>Formula</th><th>Sphere of Control</th></tr>
+              </thead>
               <tbody>
                 <tr>
-                  <td><strong>Operating Efficiency</strong></td>
-                  <td>Potential Time / Operating Time</td>
-                  <td>Shop floor &mdash; losses within the shift</td>
+                  <td><strong>Shop Floor</strong></td>
+                  <td>Operating Efficiency</td>
+                  <td>Operating Efficiency</td>
+                  <td><code>PT / OT</code></td>
+                  <td>UPDT, LTSR, LTMW</td>
                 </tr>
                 <tr>
-                  <td><strong>Machine Efficiency (OOE)</strong></td>
-                  <td>Potential Time / Shift Time</td>
-                  <td>Operational management &mdash; all planned and unplanned losses</td>
+                  <td><strong>Operational Management</strong></td>
+                  <td>Machine Efficiency</td>
+                  <td>OOE</td>
+                  <td><code>PT / ST</code></td>
+                  <td>All shop floor losses + Schedule Loss + PDT</td>
                 </tr>
                 <tr>
-                  <td><strong>Labour Efficiency (PPLH)</strong></td>
-                  <td>Machine Efficiency &times; (Potential Crew / Actual Crew)</td>
-                  <td>Sales-constrained environments</td>
-                </tr>
-                <tr>
-                  <td><strong>TEEP</strong></td>
-                  <td>Potential Time / Calendar Time</td>
-                  <td>Production-constrained environments</td>
+                  <td><strong>Strategic Leadership</strong></td>
+                  <td>Labour Efficiency</td>
+                  <td>TEEP</td>
+                  <td><code>PT / CT</code></td>
+                  <td>All operational losses + crewing/shift pattern strategy</td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <p style="margin-top:1rem"><strong>Note:</strong> Machine Efficiency and OOE are mathematically identical; terminology reflects strategic context. Labour Efficiency formula: Machine Efficiency &times; (Potential Crew / Actual Crew). TEEP formula abbreviations: PT=Potential Time, OT=Operating Time (Actual), ST=Shift Time, CT=Calendar Time, PDT=Planned Downtime.</p>
         </div>
 
         <!-- Constraint state -->
