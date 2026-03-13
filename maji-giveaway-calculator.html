@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giveaway Reduction Calculator | maji by majaco</title>
+  <meta name="description" content="Visualise how reducing fill weight standard deviation reduces giveaway and quantify the annual financial saving.">
+  <meta property="og:title" content="Giveaway Reduction Calculator | maji by majaco">
+  <meta property="og:description" content="FMCG giveaway reduction calculator — tighten SD, reduce overfill, save money.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-giveaway-calculator">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-giveaway-calculator">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    /* Giveaway Calculator — scoped styles */
+    .gc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+    .gc-panel{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem}
+    .gc-panel h3{font-size:1.1rem;font-weight:800;margin-bottom:1rem;color:#001412;border-bottom:2px solid #006458;padding-bottom:0.5rem}
+    .gc-group{margin-bottom:1rem}
+    .gc-group label{display:block;font-size:0.82rem;font-weight:600;margin-bottom:0.3rem;color:#333}
+    .gc-group .gc-hint{font-size:0.72rem;color:#888;margin-top:0.2rem}
+    .gc-group input[type="number"],.gc-group select{width:100%;padding:0.5rem 0.75rem;border:1px solid #ddd;border-radius:8px;font-size:0.9rem;font-family:inherit;transition:border-color 0.2s,box-shadow 0.2s}
+    .gc-group input:focus,.gc-group select:focus{outline:none;border-color:#006458;box-shadow:0 0 0 3px rgba(0,100,88,0.15)}
+    .gc-slider-wrap{display:flex;align-items:center;gap:0.75rem}
+    .gc-slider-wrap input[type="range"]{flex:1;height:6px;-webkit-appearance:none;appearance:none;background:linear-gradient(to right,#006458 0%,#006458 var(--fill,50%),#ddd var(--fill,50%),#ddd 100%);border-radius:999px;outline:none}
+    .gc-slider-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#006458;cursor:pointer;box-shadow:0 2px 6px rgba(0,100,88,0.3)}
+    .gc-slider-wrap input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#006458;cursor:pointer;border:none}
+    .gc-slider-val{min-width:60px;text-align:right;font-weight:700;color:#006458;font-size:0.9rem}
+    .gc-output{background:#f8f9fa;border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.6rem;display:flex;justify-content:space-between;align-items:center}
+    .gc-output .gc-olabel{font-size:0.82rem;color:#555}
+    .gc-output .gc-ovalue{font-size:1.1rem;font-weight:800;color:#006458}
+    .gc-hero{background:linear-gradient(135deg,#001412,#006458);border-radius:16px;padding:1.5rem;text-align:center;margin-bottom:1rem}
+    .gc-hero .gc-olabel{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:0.25rem}
+    .gc-hero .gc-ovalue{color:#DAF11B;font-size:2.4rem;font-weight:900;line-height:1.1}
+    .gc-hero .gc-osub{color:rgba(255,255,255,0.5);font-size:0.75rem;margin-top:0.25rem}
+    .gc-warn{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.8rem;color:#856404;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
+    .gc-warn::before{content:'⚠';font-size:1rem}
+    .gc-chart-card{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
+    .gc-chart-card h3{font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;color:#001412}
+    .gc-chart-card p{font-size:0.8rem;color:#888;margin-bottom:1rem}
+    .gc-tne-table{font-size:0.75rem;width:100%;border-collapse:collapse;margin-top:0.5rem}
+    .gc-tne-table th{background:#006458;color:#fff;padding:4px 8px;text-align:left;font-weight:600}
+    .gc-tne-table td{padding:4px 8px;border-bottom:1px solid #eee}
+    .gc-tne-table tr:nth-child(even) td{background:#f9f9f9}
+    .gc-tne-toggle{font-size:0.75rem;color:#006458;cursor:pointer;text-decoration:underline;margin-top:0.25rem;display:inline-block}
+    .gc-compliance-row{display:flex;gap:0.75rem}
+    .gc-compliance-row>div{flex:1}
+    @media(max-width:768px){.gc-grid{grid-template-columns:1fr}.gc-compliance-row{flex-direction:column}}
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="#">Careers</a></li>
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu">
+      <a href="#">Careers</a>
+      <a href="about-maji.html">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started &rarr;</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="about-maji.html">About maji</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Giveaway Reduction Calculator</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Tool</p>
+      <h1 class="page-hero__title">Giveaway Reduction <span class="text-green">Calculator</span></h1>
+      <p class="page-hero__subtitle">
+        Visualise how reducing the standard deviation of pack fill weight reduces giveaway, and quantify the annual financial saving.
+      </p>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <div class="tool-disclaimer">
+          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+        </div>
+
+        <div id="giveaway-root">
+          <p style="text-align:center;padding:3rem;color:#888;">Loading calculator&hellip;</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="text-align:center;padding:3rem 0;">
+      <h2 style="font-size:1.875rem;font-weight:900;margin-bottom:1rem;">Reduce giveaway in your facility</h2>
+      <p style="color:var(--color-text-muted);margin-bottom:2rem;max-width:500px;margin-inline:auto;">
+        majaco can implement statistical process control and giveaway reduction programmes — from measurement system design through to real-time dashboards and operator feedback loops.
+      </p>
+      <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Talk to majaco</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <img src="assets/images/logo-mark-full-colour.svg" alt="maji by majaco">
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn"><img src="assets/images/linkedin-grey.svg" alt="LinkedIn"></a>
+            <a href="#" aria-label="majaco on Facebook"><img src="assets/images/facebook-grey.svg" alt="Facebook"></a>
+            <a href="#" aria-label="majaco on Twitter"><img src="assets/images/twitter-grey.svg" alt="Twitter"></a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="#">Careers</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="maji-sitemap.html">Site map</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links" aria-label="Tools navigation">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+            <a href="maji-fee-visualiser.html">Fee Visualiser</a>
+            <a href="maji-giveaway-calculator.html">Giveaway Calculator</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+          <br>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>St Albans</strong>
+            4 Beaconsfield Rd<br>St Albans, AL1 3RD<br>
+            <a href="tel:01223782469">01223 782469</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="#">Careers</a>
+          <a href="maji-sitemap.html">Site map</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">&uarr;</button>
+
+  <!-- React + Recharts via CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/recharts@2.15.0/umd/Recharts.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+  <script type="text/babel" data-type="module">
+  (function(){
+    'use strict';
+
+    const { useState, useMemo } = React;
+    const {
+      ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+      ReferenceLine, ResponsiveContainer, LineChart, Legend
+    } = Recharts;
+
+    /* ── Maths helpers ──────────────────────────── */
+
+    function normalPDF(x, mean, sd) {
+      if (sd <= 0) return 0;
+      const z = (x - mean) / sd;
+      return (1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * z * z);
+    }
+
+    function normalCDF(z) {
+      // Abramowitz & Stegun approximation
+      const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+      const sign = z < 0 ? -1 : 1;
+      const t = 1 / (1 + p * Math.abs(z));
+      const y = 1 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-z*z/2);
+      return 0.5 * (1 + sign * y);
+    }
+
+    function complianceRate(mean, sd, legalMin) {
+      if (sd <= 0) return mean >= legalMin ? 100 : 0;
+      const z = (mean - legalMin) / sd;
+      return normalCDF(z) * 100;
+    }
+
+    /* ── TNE lookup (UK Average Quantity Rules) ── */
+
+    function getTNE(nominalG) {
+      if (nominalG < 5) return 0;
+      if (nominalG <= 50)   return nominalG * 0.09;          // 9%
+      if (nominalG <= 100)  return 4.5;                       // 4.5g fixed
+      if (nominalG <= 200)  return nominalG * 0.045;          // 4.5%
+      if (nominalG <= 300)  return 9;                         // 9g fixed
+      if (nominalG <= 500)  return nominalG * 0.03;           // 3%
+      if (nominalG <= 1000) return 15;                        // 15g fixed
+      if (nominalG <= 10000) return nominalG * 0.015;         // 1.5%
+      return nominalG * 0.015;
+    }
+
+    const TNE_TABLE = [
+      { range: '5 – 50 g',      rule: '9% of nominal' },
+      { range: '50 – 100 g',    rule: '4.5 g (fixed)' },
+      { range: '100 – 200 g',   rule: '4.5% of nominal' },
+      { range: '200 – 300 g',   rule: '9 g (fixed)' },
+      { range: '300 – 500 g',   rule: '3% of nominal' },
+      { range: '500 – 1,000 g', rule: '15 g (fixed)' },
+      { range: '1,000 – 10,000 g', rule: '1.5% of nominal' },
+    ];
+
+    const CONFIDENCE = [
+      { label: '99.73% (3σ)',  z: 3.0,   pct: 99.73 },
+      { label: '99.5% (2.81σ)', z: 2.81, pct: 99.5 },
+      { label: '99% (2.58σ)',  z: 2.576, pct: 99.0 },
+    ];
+
+    const fmt  = (v,d=1) => v.toFixed(d);
+    const fmtK = v => v.toLocaleString('en-GB', { maximumFractionDigits: 0 });
+    const fmtGBP = v => '£' + v.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    /* ── Main App ───────────────────────────────── */
+
+    function App() {
+      const [nominal, setNominal]       = useState(200);
+      const [tneManual, setTneManual]   = useState('');
+      const [currentMean, setCurrentMean] = useState(206);
+      const [currentSD, setCurrentSD]   = useState(5);
+      const [targetSD, setTargetSD]     = useState(3.5);
+      const [confIdx, setConfIdx]       = useState(0);
+      const [costPerKg, setCostPerKg]   = useState(3);
+      const [annualVol, setAnnualVol]   = useState(2000000);
+      const [showTNE, setShowTNE]       = useState(false);
+
+      // Derived
+      const tne = tneManual !== '' ? parseFloat(tneManual) || 0 : getTNE(nominal);
+      const z   = CONFIDENCE[confIdx].z;
+      const legalMin = nominal - tne;
+
+      const requiredMeanCurrent = legalMin + z * currentSD;
+      const requiredMeanTarget  = legalMin + z * targetSD;
+
+      const actualGiveaway  = Math.max(0, currentMean - nominal);
+      const targetGiveaway  = Math.max(0, z * targetSD - tne);
+      const giveawayReduction = actualGiveaway - targetGiveaway;
+      const annualKgSaved   = Math.max(0, (giveawayReduction / 1000) * annualVol);
+      const annualSaving    = annualKgSaved * costPerKg;
+
+      const currentCompliance = complianceRate(currentMean, currentSD, legalMin);
+      const targetCompliance  = complianceRate(requiredMeanTarget, targetSD, legalMin);
+
+      const warnNonCompliant = currentMean < requiredMeanCurrent;
+      const warnTargetHigher = targetSD >= currentSD;
+
+      const sliderMax = Math.max(currentSD * 2, 1);
+      const sliderFill = ((sliderMax - targetSD) / sliderMax * 100);
+
+      /* ── Distribution chart data ──────────────── */
+
+      const distData = useMemo(() => {
+        const maxSD = Math.max(currentSD, targetSD, 1);
+        const lo = Math.min(requiredMeanTarget, legalMin, nominal) - 4 * maxSD;
+        const hi = Math.max(currentMean, nominal) + 4 * maxSD;
+        const pts = [];
+        const N = 250;
+        const step = (hi - lo) / N;
+        for (let i = 0; i <= N; i++) {
+          const x = lo + i * step;
+          const cPDF = normalPDF(x, currentMean, currentSD);
+          const tPDF = normalPDF(x, requiredMeanTarget, targetSD);
+          pts.push({
+            x: Math.round(x * 100) / 100,
+            current: cPDF,
+            target: tPDF,
+            currentGA: (x >= nominal && x <= currentMean) ? cPDF : null,
+            targetGA: (x >= nominal && x <= requiredMeanTarget && requiredMeanTarget > nominal) ? tPDF : null,
+            nonComply: (x <= legalMin) ? cPDF : null,
+          });
+        }
+        return pts;
+      }, [currentMean, currentSD, requiredMeanTarget, targetSD, nominal, legalMin]);
+
+      /* ── Sensitivity chart data ───────────────── */
+
+      const sensData = useMemo(() => {
+        const pts = [];
+        const maxS = currentSD * 2;
+        for (let s = 0.1; s <= maxS; s += maxS / 80) {
+          const ga = Math.max(0, z * s - tne);
+          const saving = Math.max(0, ((actualGiveaway - ga) / 1000) * annualVol * costPerKg);
+          pts.push({ sd: Math.round(s * 100) / 100, saving: Math.round(saving) });
+        }
+        return pts;
+      }, [currentSD, z, tne, actualGiveaway, annualVol, costPerKg]);
+
+      /* ── Custom chart tooltip ─────────────────── */
+
+      function DistTooltip({ active, payload }) {
+        if (!active || !payload || !payload.length) return null;
+        const d = payload[0].payload;
+        return (
+          <div style={{background:'#001412',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:'0.78rem',lineHeight:1.5}}>
+            <div><strong>{fmt(d.x,1)} g</strong></div>
+            {d.current != null && <div style={{color:'#60a5fa'}}>Current: {d.current.toExponential(2)}</div>}
+            {d.target != null && <div style={{color:'#DAF11B'}}>Target: {d.target.toExponential(2)}</div>}
+          </div>
+        );
+      }
+
+      function SensTooltip({ active, payload }) {
+        if (!active || !payload || !payload.length) return null;
+        const d = payload[0].payload;
+        return (
+          <div style={{background:'#001412',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:'0.78rem'}}>
+            <div>SD: {d.sd} g</div>
+            <div style={{color:'#DAF11B',fontWeight:700}}>Saving: {fmtGBP(d.saving)}</div>
+          </div>
+        );
+      }
+
+      /* ── Render ────────────────────────────────── */
+
+      return (
+        <div>
+          {/* Warnings */}
+          {warnNonCompliant && (
+            <div className="gc-warn">Current mean fill ({fmt(currentMean)} g) is below the required mean ({fmt(requiredMeanCurrent)} g) for {CONFIDENCE[confIdx].label} compliance. Packs may be non-compliant.</div>
+          )}
+          {warnTargetHigher && (
+            <div className="gc-warn">Target SD ({fmt(targetSD)} g) is not lower than current SD ({fmt(currentSD)} g). Reduce the target to see savings.</div>
+          )}
+
+          {/* Inputs + Outputs grid */}
+          <div className="gc-grid">
+            {/* ── INPUTS ── */}
+            <div className="gc-panel">
+              <h3>Inputs</h3>
+
+              <div className="gc-group">
+                <label>Nominal Weight (g)</label>
+                <input type="number" value={nominal} min={1} step={1}
+                  onChange={e => { setNominal(+e.target.value); setTneManual(''); }} />
+              </div>
+
+              <div className="gc-group">
+                <label>TNE — Tolerable Negative Error (g)</label>
+                <input type="number" value={tneManual !== '' ? tneManual : fmt(tne,2)} step={0.1}
+                  onChange={e => setTneManual(e.target.value)}
+                  placeholder={fmt(tne,2) + ' (auto)'} />
+                <div className="gc-hint">
+                  Auto-calculated from UK rules: <strong>{fmt(tne,2)} g</strong> for {nominal} g nominal.
+                  <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}> {showTNE ? 'Hide' : 'Show'} TNE table</span>
+                </div>
+                {showTNE && (
+                  <table className="gc-tne-table">
+                    <thead><tr><th>Nominal Weight</th><th>TNE</th></tr></thead>
+                    <tbody>{TNE_TABLE.map((r,i) => <tr key={i}><td>{r.range}</td><td>{r.rule}</td></tr>)}</tbody>
+                  </table>
+                )}
+              </div>
+
+              <div className="gc-group">
+                <label>Current Mean Fill (g)</label>
+                <input type="number" value={currentMean} min={0} step={0.1}
+                  onChange={e => setCurrentMean(+e.target.value)} />
+                <div className="gc-hint">Actual measured mean. Required minimum for compliance: {fmt(requiredMeanCurrent)} g</div>
+              </div>
+
+              <div className="gc-group">
+                <label>Current SD (g)</label>
+                <input type="number" value={currentSD} min={0.01} step={0.1}
+                  onChange={e => setCurrentSD(+e.target.value)} />
+              </div>
+
+              <div className="gc-group">
+                <label>Target SD (g) — <strong style={{color:'#006458'}}>{fmt(targetSD)} g</strong></label>
+                <div className="gc-slider-wrap">
+                  <input type="range" min={0.1} max={sliderMax} step={0.1} value={targetSD}
+                    style={{'--fill': sliderFill + '%'}}
+                    onChange={e => setTargetSD(+e.target.value)} />
+                  <input type="number" value={targetSD} min={0.1} step={0.1} style={{width:70}}
+                    onChange={e => setTargetSD(+e.target.value)} />
+                </div>
+              </div>
+
+              <div className="gc-group">
+                <label>Compliance Confidence Level</label>
+                <select value={confIdx} onChange={e => setConfIdx(+e.target.value)}>
+                  {CONFIDENCE.map((c,i) => <option key={i} value={i}>{c.label}</option>)}
+                </select>
+              </div>
+
+              <div className="gc-group">
+                <label>Product Cost (£ / kg)</label>
+                <input type="number" value={costPerKg} min={0} step={0.1}
+                  onChange={e => setCostPerKg(+e.target.value)} />
+              </div>
+
+              <div className="gc-group">
+                <label>Annual Volume (packs / year)</label>
+                <input type="number" value={annualVol} min={0} step={1000}
+                  onChange={e => setAnnualVol(+e.target.value)} />
+              </div>
+            </div>
+
+            {/* ── OUTPUTS ── */}
+            <div className="gc-panel">
+              <h3>Results</h3>
+
+              {/* Hero: annual saving */}
+              <div className="gc-hero">
+                <div className="gc-olabel">Annual Saving</div>
+                <div className="gc-ovalue">{fmtGBP(Math.max(0, annualSaving))}</div>
+                <div className="gc-osub">{fmtK(Math.max(0, Math.round(annualKgSaved)))} kg / year saved</div>
+              </div>
+
+              <div className="gc-output">
+                <span className="gc-olabel">Current giveaway</span>
+                <span className="gc-ovalue">{fmt(actualGiveaway)} g / pack</span>
+              </div>
+              <div className="gc-output">
+                <span className="gc-olabel">Target giveaway</span>
+                <span className="gc-ovalue">{fmt(Math.max(0, targetGiveaway))} g / pack</span>
+              </div>
+              <div className="gc-output">
+                <span className="gc-olabel">Giveaway reduction</span>
+                <span className="gc-ovalue" style={{color: giveawayReduction > 0 ? '#006458' : '#dc3545'}}>
+                  {giveawayReduction > 0 ? '−' : ''}{fmt(Math.abs(giveawayReduction))} g / pack
+                </span>
+              </div>
+              <div className="gc-output">
+                <span className="gc-olabel">Target mean fill</span>
+                <span className="gc-ovalue">{fmt(Math.max(nominal, requiredMeanTarget))} g</span>
+              </div>
+
+              <h3 style={{marginTop:'1.25rem'}}>Compliance</h3>
+              <div className="gc-compliance-row">
+                <div className="gc-output" style={{flexDirection:'column',alignItems:'center',gap:2}}>
+                  <span className="gc-olabel">Current</span>
+                  <span className="gc-ovalue" style={{color: currentCompliance >= CONFIDENCE[confIdx].pct ? '#006458' : '#dc3545'}}>
+                    {fmt(currentCompliance,2)}%
+                  </span>
+                </div>
+                <div className="gc-output" style={{flexDirection:'column',alignItems:'center',gap:2}}>
+                  <span className="gc-olabel">Target</span>
+                  <span className="gc-ovalue">{fmt(targetCompliance,2)}%</span>
+                </div>
+              </div>
+              <div className="gc-hint" style={{textAlign:'center',marginTop:'0.25rem'}}>
+                Legal minimum: {fmt(legalMin)} g &nbsp;|&nbsp; TNE: {fmt(tne,2)} g
+              </div>
+            </div>
+          </div>
+
+          {/* ── Distribution Chart ────────────── */}
+          <div className="gc-chart-card">
+            <h3>Fill Weight Distribution</h3>
+            <p>Blue = current distribution at measured mean. Green = target distribution at minimum compliant mean for target SD. Shaded areas show giveaway bands.</p>
+            <ResponsiveContainer width="100%" height={360}>
+              <ComposedChart data={distData} margin={{top:10,right:30,left:10,bottom:20}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                <XAxis dataKey="x" type="number" domain={['auto','auto']}
+                  tickFormatter={v => fmt(v,0) + 'g'}
+                  label={{value:'Fill Weight (g)',position:'insideBottom',offset:-10,style:{fill:'#888',fontSize:12}}} />
+                <YAxis hide />
+                <Tooltip content={<DistTooltip />} />
+
+                {/* Shaded regions */}
+                <Area type="monotone" dataKey="nonComply" stroke="none" fill="#ef4444" fillOpacity={0.25} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="currentGA" stroke="none" fill="#3b82f6" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="targetGA" stroke="none" fill="#22c55e" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
+
+                {/* Curves */}
+                <Line type="monotone" dataKey="current" stroke="#3b82f6" strokeWidth={2.5} dot={false} name="Current" />
+                <Line type="monotone" dataKey="target" stroke="#22c55e" strokeWidth={2.5} dot={false} name="Target" />
+
+                {/* Reference lines */}
+                <ReferenceLine x={nominal} stroke="#888" strokeWidth={2} label={{value:'Nominal',position:'top',fill:'#888',fontSize:11}} />
+                <ReferenceLine x={legalMin} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Legal Min',position:'top',fill:'#ef4444',fontSize:11}} />
+                <ReferenceLine x={currentMean} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current Mean',position:'top',fill:'#3b82f6',fontSize:11}} />
+                {requiredMeanTarget > nominal - 4 * Math.max(currentSD, targetSD) && (
+                  <ReferenceLine x={requiredMeanTarget} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target Mean',position:'top',fill:'#22c55e',fontSize:11}} />
+                )}
+
+                <Legend verticalAlign="top" height={36} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* ── Sensitivity Chart ─────────────── */}
+          <div className="gc-chart-card">
+            <h3>Sensitivity: Annual Saving vs Standard Deviation</h3>
+            <p>Shows how savings change as SD is reduced. Vertical markers show current and target positions.</p>
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={sensData} margin={{top:10,right:30,left:10,bottom:20}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                <XAxis dataKey="sd" type="number" domain={['auto','auto']}
+                  tickFormatter={v => v + 'g'}
+                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-10,style:{fill:'#888',fontSize:12}}} />
+                <YAxis tickFormatter={v => '£' + fmtK(v)}
+                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:10,style:{fill:'#888',fontSize:12}}} />
+                <Tooltip content={<SensTooltip />} />
+                <Area type="monotone" dataKey="saving" stroke="#006458" fill="#006458" fillOpacity={0.1} strokeWidth={2.5} dot={false} />
+                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current SD',position:'top',fill:'#3b82f6',fontSize:11}} />
+                <ReferenceLine x={targetSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target SD',position:'top',fill:'#22c55e',fontSize:11}} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* ── Methodology ───────────────────── */}
+          <div className="gc-chart-card" style={{background:'#f8f9fa'}}>
+            <h3>Methodology</h3>
+            <p style={{color:'#333',fontSize:'0.85rem',lineHeight:1.7}}>
+              <strong>Legal minimum fill</strong> = Nominal Weight − TNE<br/>
+              <strong>Required mean</strong> = Legal minimum + (z &times; SD)<br/>
+              <strong>Giveaway per pack</strong> = Mean fill − Nominal Weight<br/>
+              <strong>Annual saving</strong> = Giveaway reduction (g) &times; Annual volume &divide; 1000 &times; Product cost (£/kg)<br/><br/>
+              TNE values follow UK/EU Average Quantity (Weights &amp; Measures) regulations. The z-score corresponds to the chosen compliance confidence level — the proportion of packs that must exceed the legal minimum fill weight.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Mount ───────────────────────────────────── */
+
+    const root = ReactDOM.createRoot(document.getElementById('giveaway-root'));
+    root.render(<App />);
+  })();
+  </script>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
