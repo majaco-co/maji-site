@@ -1,16 +1,39 @@
 /**
  * maji Stock Calculator — Raw Material Stock Holdings Calculator
  * Finds the optimal service level that minimises total inventory cost.
+ * Enhanced with animated results, chart tooltips, and visual indicators.
  */
 (function () {
   'use strict';
+
+  // Polyfill for roundRect
+  if (!CanvasRenderingContext2D.prototype.roundRect) {
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+      if (typeof r === 'number') r = [r, r, r, r];
+      var rad = r[0] || 0;
+      this.moveTo(x + rad, y);
+      this.lineTo(x + w - rad, y);
+      this.quadraticCurveTo(x + w, y, x + w, y + rad);
+      this.lineTo(x + w, y + h - rad);
+      this.quadraticCurveTo(x + w, y + h, x + w - rad, y + h);
+      this.lineTo(x + rad, y + h);
+      this.quadraticCurveTo(x, y + h, x, y + h - rad);
+      this.lineTo(x, y + rad);
+      this.quadraticCurveTo(x, y, x + rad, y);
+      this.closePath();
+      return this;
+    };
+  }
+
+  var chartTooltipEl = null;
+  var chartData = [];
+  var chartMeta = {};
 
   /* ---- Standard Normal helpers ---- */
   function normPDF(x) {
     return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
   }
 
-  // Rational approximation for cumulative normal (Abramowitz & Stegun 26.2.17)
   function normCDF(x) {
     if (x < -8) return 0;
     if (x > 8) return 1;
@@ -24,13 +47,11 @@
     return neg ? 1 - c : c;
   }
 
-  // Unit normal loss function: L(z) = phi(z) - z*(1 - Phi(z))
   function unitNormalLoss(z) {
     return normPDF(z) - z * (1 - normCDF(z));
   }
 
   function calculate() {
-    // Read inputs
     var meanDemand = parseFloat(document.getElementById('meanDemand').value);
     var stdDemand = parseFloat(document.getElementById('stdDemand').value);
     var annualDemand = parseFloat(document.getElementById('annualDemand').value);
@@ -43,29 +64,20 @@
     var lostSalesCost = parseFloat(document.getElementById('lostSalesCost').value);
     var rejectionRate = parseFloat(document.getElementById('rejectionRate').value) / 100;
 
-    // Validate
     if ([meanDemand, stdDemand, annualDemand, meanLT, stdLT, orderQty, unitCost, costCapital, storageCost, lostSalesCost].some(isNaN)) {
       alert('Please fill in all fields with valid numbers.');
       return;
     }
     if (isNaN(rejectionRate)) rejectionRate = 0;
 
-    // Combined standard deviation of demand during lead time
     var sigmaDLT = Math.sqrt(meanLT * stdDemand * stdDemand + meanDemand * meanDemand * stdLT * stdLT);
-
-    // Rejection buffer: extra stock to cover rejection rate
     var rejectionBuffer = (rejectionRate / (1 - rejectionRate)) * meanDemand * meanLT;
-
-    // Holding cost per unit per year
     var holdingCostPerUnit = unitCost * costCapital + storageCost;
-
-    // Number of reorder cycles per year
     var cyclesPerYear = annualDemand / orderQty;
 
-    // Search for optimal z-score (0 to 3.5 in 0.01 steps)
     var bestZ = 0;
     var bestCost = Infinity;
-    var chartData = [];
+    chartData = [];
 
     for (var zi = 0; zi <= 350; zi++) {
       var z = zi / 100;
@@ -85,7 +97,6 @@
       }
     }
 
-    // Compute optimal results
     var optSS = bestZ * sigmaDLT + rejectionBuffer;
     var optROP = meanDemand * meanLT + optSS;
     var optAvgInv = optSS + orderQty / 2;
@@ -98,13 +109,9 @@
     var optExpShortage = sigmaDLT * unitNormalLoss(bestZ);
     var optStockoutCost = lostSalesCost * cyclesPerYear * optExpShortage;
 
-    // Stockout frequency: expected number per year
     var stockoutFreq = cyclesPerYear * (1 - normCDF(bestZ));
-
-    // Working capital
     var workingCapital = unitCost * optAvgInv;
 
-    // Volatility drivers
     var demandVar = meanLT * stdDemand * stdDemand;
     var ltVar = meanDemand * meanDemand * stdLT * stdLT;
     var totalVar = demandVar + ltVar;
@@ -120,29 +127,90 @@
       keyInsight = 'Both demand and lead time variability contribute significantly. Address both.';
     }
 
-    // Populate outputs
-    setText('optimalServiceLevel', optServiceLevel.toFixed(1) + '%');
-    setText('optimalZScore', 'z = ' + bestZ.toFixed(2));
-    setText('safetyStock', Math.round(optSS).toLocaleString() + ' units');
-    setText('reorderPoint', Math.round(optROP).toLocaleString() + ' units');
-    setText('maxStock', Math.round(optMaxStock).toLocaleString() + ' units');
-    setText('avgInventory', Math.round(optAvgInv).toLocaleString() + ' units');
-    setText('capitalCost', formatCurrency(optCapCost));
-    setText('physicalStorageCost', formatCurrency(optStorCost));
-    setText('stockoutCost', formatCurrency(optStockoutCost));
-    setText('totalCost', formatCurrency(bestCost));
-    setText('stockoutFreq', stockoutFreq.toFixed(2) + ' events/year');
-    setText('reorderCycles', cyclesPerYear.toFixed(1) + ' cycles/year');
-    setText('workingCapital', formatCurrency(workingCapital));
-    setText('demandComponent', demandPct.toFixed(0) + '%');
-    setText('ltComponent', ltPct.toFixed(0) + '%');
-    setText('keyInsight', keyInsight);
+    // Populate outputs with animated reveal
+    var results = [
+      { id: 'optimalServiceLevel', val: optServiceLevel.toFixed(1) + '%' },
+      { id: 'optimalZScore', val: 'z = ' + bestZ.toFixed(2) },
+      { id: 'safetyStock', val: Math.round(optSS).toLocaleString() + ' units' },
+      { id: 'reorderPoint', val: Math.round(optROP).toLocaleString() + ' units' },
+      { id: 'maxStock', val: Math.round(optMaxStock).toLocaleString() + ' units' },
+      { id: 'avgInventory', val: Math.round(optAvgInv).toLocaleString() + ' units' },
+      { id: 'capitalCost', val: formatCurrency(optCapCost) },
+      { id: 'physicalStorageCost', val: formatCurrency(optStorCost) },
+      { id: 'stockoutCost', val: formatCurrency(optStockoutCost) },
+      { id: 'totalCost', val: formatCurrency(bestCost) },
+      { id: 'stockoutFreq', val: stockoutFreq.toFixed(2) + ' events/year' },
+      { id: 'reorderCycles', val: cyclesPerYear.toFixed(1) + ' cycles/year' },
+      { id: 'workingCapital', val: formatCurrency(workingCapital) },
+      { id: 'demandComponent', val: demandPct.toFixed(0) + '%' },
+      { id: 'ltComponent', val: ltPct.toFixed(0) + '%' },
+      { id: 'keyInsight', val: keyInsight }
+    ];
 
-    // Show results
-    document.getElementById('calc-results').style.display = 'block';
+    // Show results container
+    var resultsEl = document.getElementById('calc-results');
+    resultsEl.style.display = 'block';
+
+    // Animate each result item
+    results.forEach(function (r, idx) {
+      setTimeout(function () {
+        var el = document.getElementById(r.id);
+        if (el) {
+          el.textContent = r.val;
+          var parentItem = el.closest('.result-item');
+          if (parentItem) {
+            parentItem.classList.remove('result-animate-in');
+            void parentItem.offsetWidth; // trigger reflow
+            parentItem.classList.add('result-animate-in');
+            parentItem.style.animationDelay = '0ms';
+          }
+        }
+      }, idx * 40);
+    });
+
+    // Apply visual indicators to cost items
+    setTimeout(function () {
+      applyResultIndicators(optStockoutCost, optCapCost, optStorCost, bestCost, stockoutFreq, optServiceLevel);
+    }, 200);
 
     // Draw chart
+    chartMeta = {
+      optSL: optServiceLevel,
+      optCost: bestCost
+    };
     drawChart(chartData, optServiceLevel);
+  }
+
+  function applyResultIndicators(stockoutCost, capCost, storCost, totalCost, stockoutFreq, serviceLevel) {
+    // Service level indicator
+    var slEl = document.getElementById('optimalServiceLevel');
+    if (slEl) {
+      var parent = slEl.closest('.result-item');
+      if (parent) {
+        parent.classList.remove('result-optimal', 'result-warning', 'result-danger');
+        if (serviceLevel >= 95) parent.classList.add('result-optimal');
+        else if (serviceLevel >= 85) parent.classList.add('result-warning');
+        else parent.classList.add('result-danger');
+      }
+    }
+
+    // Stockout frequency indicator
+    var sfEl = document.getElementById('stockoutFreq');
+    if (sfEl) {
+      var parent = sfEl.closest('.result-item');
+      if (parent) {
+        parent.classList.remove('result-optimal', 'result-warning', 'result-danger');
+        if (stockoutFreq <= 1) parent.classList.add('result-optimal');
+        else if (stockoutFreq <= 3) parent.classList.add('result-warning');
+        else parent.classList.add('result-danger');
+      }
+    }
+
+    // Total cost emphasis
+    var tcEl = document.getElementById('totalCost');
+    if (tcEl) {
+      tcEl.classList.add('result-total-highlight');
+    }
   }
 
   function setText(id, val) {
@@ -154,30 +222,28 @@
     return '\u00A3' + Math.round(v).toLocaleString();
   }
 
-  /* ---- Chart drawing (Canvas) ---- */
+  /* ---- Chart drawing (Canvas) with tooltips ---- */
   function drawChart(data, optSL) {
     var canvas = document.getElementById('costChart');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
 
-    // Hi-DPI support
     var dpr = window.devicePixelRatio || 1;
     var rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width * dpr;
-    canvas.height = 320 * dpr;
+    canvas.height = 360 * dpr;
     canvas.style.width = rect.width + 'px';
-    canvas.style.height = '320px';
+    canvas.style.height = '360px';
     ctx.scale(dpr, dpr);
 
     var W = rect.width;
-    var H = 320;
-    var pad = { top: 20, right: 20, bottom: 50, left: 70 };
+    var H = 360;
+    var pad = { top: 28, right: 24, bottom: 55, left: 75 };
     var plotW = W - pad.left - pad.right;
     var plotH = H - pad.top - pad.bottom;
 
     ctx.clearRect(0, 0, W, H);
 
-    // Find axis ranges from data
     var slMin = 50;
     var slMax = 100;
     var costMax = 0;
@@ -190,20 +256,42 @@
     costMax *= 1.1;
     if (costMax === 0) costMax = 100;
 
+    // Store chart geometry for tooltip lookup
+    chartMeta.slMin = slMin;
+    chartMeta.slMax = slMax;
+    chartMeta.costMax = costMax;
+    chartMeta.pad = pad;
+    chartMeta.plotW = plotW;
+    chartMeta.plotH = plotH;
+    chartMeta.W = W;
+    chartMeta.H = H;
+    chartMeta.filtered = filtered;
+
     function xPos(sl) { return pad.left + (sl - slMin) / (slMax - slMin) * plotW; }
     function yPos(c) { return pad.top + plotH - (c / costMax) * plotH; }
 
-    // Grid
-    ctx.strokeStyle = '#E5E5E5';
-    ctx.lineWidth = 0.5;
+    // Background gradient
+    var bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+    bgGrad.addColorStop(0, '#FAFAFA');
+    bgGrad.addColorStop(1, '#FFFFFF');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid lines
+    ctx.strokeStyle = '#F0F0F0';
+    ctx.lineWidth = 1;
     for (var i = 0; i <= 5; i++) {
       var gy = pad.top + plotH * i / 5;
       ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(W - pad.right, gy); ctx.stroke();
     }
+    for (var s = 50; s <= 100; s += 10) {
+      var gx = xPos(s);
+      ctx.beginPath(); ctx.moveTo(gx, pad.top); ctx.lineTo(gx, pad.top + plotH); ctx.stroke();
+    }
 
     // Axes
-    ctx.strokeStyle = '#999';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#CBD5E1';
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(pad.left, pad.top);
     ctx.lineTo(pad.left, pad.top + plotH);
@@ -211,25 +299,46 @@
     ctx.stroke();
 
     // X-axis labels
-    ctx.fillStyle = '#666';
+    ctx.fillStyle = '#64748B';
     ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'center';
     for (var s = 50; s <= 100; s += 10) {
-      ctx.fillText(s + '%', xPos(s), H - pad.bottom + 20);
+      ctx.fillText(s + '%', xPos(s), H - pad.bottom + 22);
     }
-    ctx.fillText('Service Level', W / 2, H - 5);
+    ctx.font = 'bold 12px Inter, sans-serif';
+    ctx.fillStyle = '#334155';
+    ctx.fillText('Service Level', W / 2, H - 8);
 
     // Y-axis labels
+    ctx.font = '11px Inter, sans-serif';
+    ctx.fillStyle = '#64748B';
     ctx.textAlign = 'right';
     for (var j = 0; j <= 5; j++) {
       var val = costMax * (5 - j) / 5;
-      ctx.fillText('\u00A3' + Math.round(val).toLocaleString(), pad.left - 8, pad.top + plotH * j / 5 + 4);
+      ctx.fillText('\u00A3' + Math.round(val).toLocaleString(), pad.left - 10, pad.top + plotH * j / 5 + 4);
     }
 
-    // Draw lines
-    function drawLine(key, color) {
+    // Area fill under total cost curve
+    ctx.globalAlpha = 0.05;
+    ctx.fillStyle = '#2D6A4F';
+    ctx.beginPath();
+    var started = false;
+    filtered.forEach(function (d) {
+      var x = xPos(d.sl);
+      var y = yPos(d.total);
+      if (!started) { ctx.moveTo(x, y); started = true; }
+      else ctx.lineTo(x, y);
+    });
+    ctx.lineTo(xPos(filtered[filtered.length - 1].sl), pad.top + plotH);
+    ctx.lineTo(xPos(filtered[0].sl), pad.top + plotH);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Draw curves
+    function drawLine(key, color, width) {
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = width || 2;
       ctx.beginPath();
       var started = false;
       filtered.forEach(function (d) {
@@ -241,40 +350,140 @@
       ctx.stroke();
     }
 
-    drawLine('holding', '#22C55E');
-    drawLine('stockout', '#EF4444');
-    drawLine('total', '#40916C');
+    drawLine('holding', '#40916C', 2.5);
+    drawLine('stockout', '#EF4444', 2.5);
+    drawLine('total', '#2D6A4F', 3);
 
-    // Optimal line
+    // Optimal vertical line
     if (optSL >= slMin && optSL <= slMax) {
-      ctx.strokeStyle = '#40916C';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = '#2D6A4F';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 5]);
       var ox = xPos(optSL);
       ctx.beginPath(); ctx.moveTo(ox, pad.top); ctx.lineTo(ox, pad.top + plotH); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#40916C';
-      ctx.font = 'bold 11px Inter, sans-serif';
+
+      // Optimal dot
+      var optDataPoint = filtered.reduce(function (closest, d) {
+        return Math.abs(d.sl - optSL) < Math.abs(closest.sl - optSL) ? d : closest;
+      }, filtered[0]);
+      var optY = yPos(optDataPoint.total);
+
+      // Outer glow
+      ctx.beginPath();
+      ctx.arc(ox, optY, 10, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(45, 106, 79, 0.15)';
+      ctx.fill();
+
+      // Inner dot
+      ctx.beginPath();
+      ctx.arc(ox, optY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#2D6A4F';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Label
+      ctx.fillStyle = '#1B4332';
+      ctx.font = 'bold 12px Inter, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Optimal: ' + optSL.toFixed(1) + '%', ox, pad.top - 4);
+      ctx.fillText('Optimal: ' + optSL.toFixed(1) + '%', ox, pad.top - 10);
     }
 
     // Legend
-    var legX = pad.left + 10;
-    var legY = pad.top + 10;
+    var legX = pad.left + 14;
+    var legY = pad.top + 14;
     var legItems = [
-      { label: 'Total Cost', color: '#40916C' },
-      { label: 'Holding Cost', color: '#22C55E' },
+      { label: 'Total Cost', color: '#2D6A4F' },
+      { label: 'Holding Cost', color: '#40916C' },
       { label: 'Stockout Cost', color: '#EF4444' }
     ];
+
+    // Legend background
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.strokeStyle = '#E5E7EB';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(legX - 8, legY - 10, 130, legItems.length * 20 + 12, 6);
+    ctx.fill();
+    ctx.stroke();
+
     legItems.forEach(function (item, idx) {
-      var ly = legY + idx * 18;
+      var ly = legY + idx * 20;
       ctx.fillStyle = item.color;
-      ctx.fillRect(legX, ly - 4, 14, 3);
-      ctx.fillStyle = '#333';
+      ctx.beginPath();
+      ctx.arc(legX + 4, ly, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#334155';
       ctx.font = '11px Inter, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText(item.label, legX + 20, ly);
+      ctx.fillText(item.label, legX + 14, ly + 4);
+    });
+  }
+
+  /* ---- Chart tooltip on mouse move ---- */
+  function initChartTooltip() {
+    var canvas = document.getElementById('costChart');
+    if (!canvas) return;
+
+    chartTooltipEl = document.createElement('div');
+    chartTooltipEl.className = 'chart-tooltip';
+    document.body.appendChild(chartTooltipEl);
+
+    canvas.addEventListener('mousemove', function (e) {
+      if (!chartMeta.filtered || !chartMeta.filtered.length) return;
+
+      var rect = canvas.getBoundingClientRect();
+      var mouseX = e.clientX - rect.left;
+      var mouseY = e.clientY - rect.top;
+
+      var pad = chartMeta.pad;
+      if (mouseX < pad.left || mouseX > chartMeta.W - pad.right || mouseY < pad.top || mouseY > pad.top + chartMeta.plotH) {
+        chartTooltipEl.classList.remove('visible');
+        return;
+      }
+
+      var slAtMouse = chartMeta.slMin + (mouseX - pad.left) / chartMeta.plotW * (chartMeta.slMax - chartMeta.slMin);
+
+      // Find closest data point
+      var closest = chartMeta.filtered.reduce(function (best, d) {
+        return Math.abs(d.sl - slAtMouse) < Math.abs(best.sl - slAtMouse) ? d : best;
+      }, chartMeta.filtered[0]);
+
+      var html = '<div style="font-weight:700;margin-bottom:4px;">Service Level: ' + closest.sl.toFixed(1) + '%</div>';
+      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#2D6A4F"></span> Total: \u00A3' + Math.round(closest.total).toLocaleString() + '</div>';
+      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#40916C"></span> Holding: \u00A3' + Math.round(closest.holding).toLocaleString() + '</div>';
+      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#EF4444"></span> Stockout: \u00A3' + Math.round(closest.stockout).toLocaleString() + '</div>';
+
+      chartTooltipEl.innerHTML = html;
+      chartTooltipEl.classList.add('visible');
+
+      var tx = e.clientX + 16;
+      var ty = e.clientY - 10;
+      var tooltipRect = chartTooltipEl.getBoundingClientRect();
+      if (tx + tooltipRect.width > window.innerWidth - 10) tx = e.clientX - tooltipRect.width - 16;
+      chartTooltipEl.style.left = tx + 'px';
+      chartTooltipEl.style.top = ty + 'px';
+    });
+
+    canvas.addEventListener('mouseleave', function () {
+      chartTooltipEl.classList.remove('visible');
+    });
+  }
+
+  /* ---- Enhanced input styling ---- */
+  function enhanceInputs() {
+    var inputs = document.querySelectorAll('.calc-row input[type="number"]');
+    inputs.forEach(function (input) {
+      input.addEventListener('focus', function () {
+        this.closest('.calc-row').style.background = 'rgba(45, 106, 79, 0.03)';
+        this.closest('.calc-row').style.borderRadius = '8px';
+        this.closest('.calc-row').style.transition = 'background 0.3s ease';
+      });
+      input.addEventListener('blur', function () {
+        this.closest('.calc-row').style.background = 'none';
+      });
     });
   }
 
@@ -282,6 +491,19 @@
   function init() {
     var btn = document.getElementById('calcBtn');
     if (btn) btn.addEventListener('click', calculate);
+    initChartTooltip();
+    enhanceInputs();
+
+    // Resize handler
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (chartData.length > 0) {
+          drawChart(chartData, chartMeta.optSL);
+        }
+      }, 200);
+    });
   }
 
   if (document.readyState === 'loading') {

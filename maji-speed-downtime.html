@@ -173,10 +173,29 @@
         </div>
       </div>
 
+      <!-- Visual Comparison -->
+      <div class="content-card reveal" data-delay="200">
+        <h2>Your Position vs Optimal</h2>
+        <div class="sd-comparison">
+          <div class="sd-comparison__card sd-card--you">
+            <div class="sd-card__label">Your Scenario</div>
+            <div class="sd-card__value" id="sd-comp-you-value">--</div>
+            <div class="sd-card__sub" id="sd-comp-you-sub">packs/labour-hr</div>
+          </div>
+          <div class="sd-comparison__vs">vs</div>
+          <div class="sd-comparison__card sd-card--optimal">
+            <div class="sd-card__label">Optimal</div>
+            <div class="sd-card__value" id="sd-comp-opt-value">--</div>
+            <div class="sd-card__sub" id="sd-comp-opt-sub">packs/labour-hr</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Chart -->
-      <div class="content-card reveal" data-delay="240">
+      <div class="content-card reveal" data-delay="280">
         <h2>PPLH vs Speed Curve</h2>
-        <div style="width: 100%; overflow-x: auto;">
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 1rem;">Hover over the chart to see PPLH at each speed increase level.</p>
+        <div class="chart-container">
           <canvas id="pplh-chart"></canvas>
         </div>
       </div>

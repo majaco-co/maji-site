@@ -3,6 +3,9 @@
  * Phase 1: Problem Definition
  * Phase 2: Split Tree (recursive MECE decomposition)
  * Phase 3: Root Cause Synthesis & Export
+ *
+ * Enhanced with progress indicator, visual tree connectors,
+ * animated transitions, and polished card-based UI.
  */
 (function () {
   'use strict';
@@ -16,7 +19,7 @@
     actual: '',
     actualUnit: '',
     pattern: '',
-    tree: null, // root node
+    tree: null,
     explanations: {},
     combined: '',
     validation: ''
@@ -37,7 +40,6 @@
       if (saved) {
         var parsed = JSON.parse(saved);
         Object.keys(parsed).forEach(function (k) { state[k] = parsed[k]; });
-        // Ensure nextId is higher than any existing id
         if (state.tree) {
           walkTree(state.tree, function (n) {
             if (n.id >= nextId) nextId = n.id + 1;
@@ -75,10 +77,24 @@
       targetUnit: targetUnit || '',
       actual: actual || '',
       actualUnit: actualUnit || '',
-      status: '?', // '?' = unknown, 'ok' = confirmed OK, 'x' = root cause
+      status: '?',
       children: [],
       splitType: 'additive'
     };
+  }
+
+  /* ---- Count stats ---- */
+  function getTreeStats() {
+    var total = 0, ok = 0, causes = 0, unknown = 0;
+    if (state.tree) {
+      walkTree(state.tree, function (n) {
+        total++;
+        if (n.status === 'ok') ok++;
+        else if (n.status === 'x') causes++;
+        else unknown++;
+      });
+    }
+    return { total: total, ok: ok, causes: causes, unknown: unknown };
   }
 
   /* ---- Rendering ---- */
@@ -88,42 +104,88 @@
 
     var html = '';
 
-    // Phase tabs
-    html += '<div class="ss-tabs">';
-    for (var p = 1; p <= 3; p++) {
-      var active = state.phase === p ? ' ss-tab--active' : '';
-      var label = p === 1 ? '1. Define' : p === 2 ? '2. Split' : '3. Understand';
-      html += '<button class="ss-tab' + active + '" data-phase="' + p + '">' + label + '</button>';
-    }
-    html += '</div>';
+    // Progress indicator
+    html += renderProgress();
 
+    // Phase content
+    html += '<div class="ss-phase-enter">';
     if (state.phase === 1) html += renderPhase1();
     else if (state.phase === 2) html += renderPhase2();
     else html += renderPhase3();
+    html += '</div>';
 
     app.innerHTML = html;
     bindEvents();
   }
 
+  function renderProgress() {
+    var phases = [
+      { num: 1, label: 'Define' },
+      { num: 2, label: 'Split' },
+      { num: 3, label: 'Understand' }
+    ];
+
+    var h = '<div class="ss-progress">';
+    phases.forEach(function (p, idx) {
+      var isActive = state.phase === p.num;
+      var isDone = state.phase > p.num;
+      var cls = isActive ? 'ss-progress__step--active' : isDone ? 'ss-progress__step--done' : '';
+
+      h += '<div class="ss-progress__step ' + cls + '" data-phase="' + p.num + '">';
+      h += '<div class="ss-progress__num">';
+      if (isDone) {
+        h += '&#10003;';
+      } else {
+        h += p.num;
+      }
+      h += '</div>';
+      h += '<div class="ss-progress__label">' + p.label + '</div>';
+      h += '</div>';
+
+      if (idx < phases.length - 1) {
+        var lineFilled = state.phase > p.num;
+        h += '<div class="ss-progress__line' + (lineFilled ? ' ss-progress__line--filled' : '') + '"></div>';
+      }
+    });
+    h += '</div>';
+    return h;
+  }
+
   function renderPhase1() {
     var h = '<div class="ss-phase">';
     h += '<h2>Phase 1: Problem Definition</h2>';
+    h += '<p style="color:var(--color-text-muted);margin-bottom:1.5rem;">Define the problem clearly with measurable targets. A well-defined problem is half-solved.</p>';
+
     h += '<div class="ss-form-group"><label>Problem Statement</label>';
     h += '<textarea id="ss-problem" rows="3" placeholder="e.g., Line 3 afternoon shift shows 15% reject rate vs normal 3%">' + esc(state.problem) + '</textarea></div>';
+
     h += '<div class="ss-row">';
     h += '<div class="ss-form-group ss-flex-1"><label>Key Variable</label><input type="text" id="ss-kv" value="' + esc(state.keyVariable) + '" placeholder="e.g., Reject Rate"></div>';
     h += '</div>';
+
     h += '<div class="ss-row">';
     h += '<div class="ss-form-group"><label>Target</label><input type="number" id="ss-target" value="' + esc(state.target) + '" style="width:100px"></div>';
     h += '<div class="ss-form-group"><label>Unit</label><input type="text" id="ss-target-unit" value="' + esc(state.targetUnit) + '" style="width:80px" placeholder="%"></div>';
     h += '<div class="ss-form-group"><label>Actual</label><input type="number" id="ss-actual" value="' + esc(state.actual) + '" style="width:100px"></div>';
     h += '<div class="ss-form-group"><label>Unit</label><input type="text" id="ss-actual-unit" value="' + esc(state.actualUnit) + '" style="width:80px" placeholder="%"></div>';
     h += '</div>';
+
+    // Show gap if both target and actual are filled
+    if (state.target && state.actual) {
+      var gap = parseFloat(state.actual) - parseFloat(state.target);
+      var gapColor = gap > 0 ? '#EF4444' : '#2D6A4F';
+      var gapSign = gap > 0 ? '+' : '';
+      h += '<div style="background:' + (gap > 0 ? '#FEF2F2' : '#D8F3DC') + ';border-radius:8px;padding:8px 16px;margin-bottom:12px;font-size:0.85rem;">';
+      h += '<strong>Gap:</strong> <span style="color:' + gapColor + ';font-weight:700;">' + gapSign + gap.toFixed(1) + esc(state.actualUnit || state.targetUnit) + '</span>';
+      h += '</div>';
+    }
+
     h += '<div class="ss-form-group"><label>Pattern of Occurrences</label>';
     h += '<textarea id="ss-pattern" rows="3" placeholder="When does it occur? Where? Which products?">' + esc(state.pattern) + '</textarea></div>';
+
     h += '<div class="ss-actions">';
-    h += '<button class="btn btn-sm" id="ss-reset">New</button>';
-    h += '<button class="btn btn-primary btn-sm" id="ss-proceed1">Proceed &rarr;</button>';
+    h += '<button class="btn btn-sm" id="ss-reset" style="color: var(--color-text-muted);">Start New</button>';
+    h += '<button class="btn btn-primary btn-sm" id="ss-proceed1" style="background:#2D6A4F;">Proceed to Split &rarr;</button>';
     h += '</div>';
     h += '</div>';
     return h;
@@ -135,29 +197,54 @@
       saveState();
     }
 
+    var stats = getTreeStats();
+
     var h = '<div class="ss-phase">';
     h += '<h2>Phase 2: Split Tree Analysis</h2>';
-    h += '<div class="ss-review"><strong>Problem:</strong> ' + esc(state.problem) + ' &mdash; <strong>' + esc(state.keyVariable) + '</strong>: Target ' + esc(state.target) + esc(state.targetUnit) + ', Actual ' + esc(state.actual) + esc(state.actualUnit) + '</div>';
-    h += '<div class="ss-tree">';
-    h += renderNode(state.tree, 0);
+
+    // Problem summary card
+    h += '<div class="ss-review">';
+    h += '<strong>Problem:</strong> ' + esc(state.problem) + '<br>';
+    h += '<strong>' + esc(state.keyVariable) + '</strong>: Target ' + esc(state.target) + esc(state.targetUnit) + ', Actual ' + esc(state.actual) + esc(state.actualUnit);
     h += '</div>';
+
+    // Tree stats bar
+    h += '<div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">';
+    h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#D8F3DC;color:#1B4332;">' + stats.ok + ' resolved</span>';
+    h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#FEE2E2;color:#991B1B;">' + stats.causes + ' root cause' + (stats.causes !== 1 ? 's' : '') + '</span>';
+    h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#F3F4F6;color:#6B7280;">' + stats.unknown + ' to investigate</span>';
+    h += '</div>';
+
+    h += '<p style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:1rem;">Split until all branches end with &#10003; (resolved) or X (root cause).</p>';
+
+    h += '<div class="ss-tree ss-tree-v2">';
+    h += renderNode(state.tree, 0, false);
+    h += '</div>';
+
     h += '<div class="ss-actions">';
     h += '<button class="btn btn-sm" id="ss-back2">&larr; Back</button>';
-    h += '<button class="btn btn-sm" id="ss-save2">Save</button>';
-    h += '<button class="btn btn-primary btn-sm" id="ss-proceed2">Proceed &rarr;</button>';
+    h += '<button class="btn btn-sm" id="ss-save2" style="background:#D8F3DC;color:#1B4332;">Save Progress</button>';
+    h += '<button class="btn btn-primary btn-sm" id="ss-proceed2" style="background:#2D6A4F;">Proceed to Understand &rarr;</button>';
     h += '</div>';
     h += '</div>';
     return h;
   }
 
-  function renderNode(node, depth) {
+  function renderNode(node, depth, isLastChild) {
     var statusClass = node.status === 'ok' ? 'ss-node--ok' : node.status === 'x' ? 'ss-node--cause' : 'ss-node--unknown';
     var statusIcon = node.status === 'ok' ? '<span class="ss-status ss-status--ok">&#10003;</span>' :
                      node.status === 'x' ? '<span class="ss-status ss-status--cause">X</span>' :
                      '<span class="ss-status ss-status--unknown">?</span>';
 
     var indent = depth * 28;
-    var h = '<div class="ss-node ' + statusClass + '" style="margin-left:' + indent + 'px" data-id="' + node.id + '">';
+    var h = '';
+
+    // Wrapper with connector
+    if (depth > 0) {
+      h += '<div class="ss-tree-connector" style="margin-left:' + (indent - 28) + 'px">';
+    }
+
+    h += '<div class="ss-node ss-node-enter ' + statusClass + '" style="' + (depth === 0 ? '' : '') + '" data-id="' + node.id + '">';
     h += '<div class="ss-node__header">';
     h += statusIcon;
     h += '<strong>' + esc(node.name) + '</strong>';
@@ -167,23 +254,45 @@
     h += '</div>';
     h += '<div class="ss-node__actions">';
     if (node.status === '?') {
-      h += '<button class="btn btn-primary btn-sm ss-btn-split" data-id="' + node.id + '">Split</button>';
+      h += '<button class="btn btn-primary btn-sm ss-btn-split" data-id="' + node.id + '" style="background:#2D6A4F;font-size:0.7rem;">Split</button>';
     }
-    h += '<button class="btn btn-sm ss-btn-ok" data-id="' + node.id + '" title="Mark OK">&#10003;</button>';
-    h += '<button class="btn btn-sm ss-btn-cause" data-id="' + node.id + '" title="Mark as Root Cause">X</button>';
+    h += '<button class="btn btn-sm ss-btn-ok" data-id="' + node.id + '" title="Mark OK" style="font-size:0.7rem;">&#10003;</button>';
+    h += '<button class="btn btn-sm ss-btn-cause" data-id="' + node.id + '" title="Mark as Root Cause" style="font-size:0.7rem;">X</button>';
     if (node.children.length > 0) {
-      h += '<button class="btn btn-sm ss-btn-del" data-id="' + node.id + '" title="Delete children">Del</button>';
+      h += '<button class="btn btn-sm ss-btn-del" data-id="' + node.id + '" title="Remove children" style="font-size:0.7rem;color:#6B7280;">Del</button>';
     }
     h += '</div>';
     h += '</div>';
 
+    if (depth > 0) {
+      h += '</div>';
+    }
+
     if (node.children.length > 0) {
-      var opSymbol = node.splitType === 'multiplicative' ? ' x ' : ' + ';
-      h += '<div class="ss-equation" style="margin-left:' + (indent + 14) + 'px; font-size:0.8em; color:#666; margin-bottom:4px;">';
+      var opSymbol = node.splitType === 'multiplicative' ? ' &times; ' : ' + ';
+      h += '<div class="ss-equation" style="margin-left:' + (indent + 14) + 'px; font-size:0.8em; color:#6B7280; margin-bottom:4px; padding: 2px 8px; background: #F9FAFB; border-radius: 4px; display: inline-block;">';
       h += esc(node.name) + ' = ' + node.children.map(function (c) { return esc(c.name); }).join(opSymbol);
       h += '</div>';
-      node.children.forEach(function (child) {
-        h += renderNode(child, depth + 1);
+
+      // MECE check
+      if (node.splitType === 'additive') {
+        var childSum = 0;
+        var parentVal = parseFloat(node.actual);
+        var allNumeric = !isNaN(parentVal) && parentVal !== 0;
+        node.children.forEach(function (c) {
+          var cv = parseFloat(c.actual);
+          if (isNaN(cv)) allNumeric = false;
+          else childSum += cv;
+        });
+        if (allNumeric && Math.abs(childSum - parentVal) / parentVal > 0.05) {
+          h += '<div style="margin-left:' + (indent + 14) + 'px; font-size:0.7rem; color:#D97706; margin-bottom:4px; padding: 2px 8px; background: #FEF3C7; border-radius: 4px; display: inline-block;">';
+          h += 'Warning: Children sum (' + childSum.toFixed(1) + ') deviates &gt;5% from parent (' + parentVal.toFixed(1) + ')';
+          h += '</div>';
+        }
+      }
+
+      node.children.forEach(function (child, idx) {
+        h += renderNode(child, depth + 1, idx === node.children.length - 1);
       });
     }
 
@@ -200,20 +309,26 @@
 
     var h = '<div class="ss-phase">';
     h += '<h2>Phase 3: Root Cause Synthesis</h2>';
+    h += '<p style="color:var(--color-text-muted);margin-bottom:1.5rem;">Explain each root cause and validate the combined understanding against Phase 1 observations.</p>';
 
     if (rootCauses.length === 0) {
-      h += '<p>No root causes identified yet. Go back to Phase 2 and mark causes with X.</p>';
+      h += '<div style="text-align:center;padding:2rem;background:#F3F4F6;border-radius:12px;">';
+      h += '<p style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">No root causes identified yet</p>';
+      h += '<p style="color:var(--color-text-muted);">Go back to Phase 2 and mark causes with X.</p>';
+      h += '</div>';
     } else {
-      h += '<h3>Root Causes Identified</h3>';
-      rootCauses.forEach(function (rc) {
-        h += '<div class="ss-cause-card">';
-        h += '<div class="ss-cause-card__header"><strong>' + esc(rc.name) + '</strong>';
+      h += '<h3 style="margin-bottom:1rem;">Root Causes Identified (' + rootCauses.length + ')</h3>';
+      rootCauses.forEach(function (rc, idx) {
+        h += '<div class="ss-cause-card ss-node-enter" style="animation-delay:' + (idx * 100) + 'ms">';
+        h += '<div class="ss-cause-card__header">';
+        h += '<span class="ss-status ss-status--cause" style="display:inline-flex;vertical-align:middle;margin-right:6px;">X</span>';
+        h += '<strong>' + esc(rc.name) + '</strong>';
         if (rc.target !== '' || rc.actual !== '') {
-          h += ' (Target: ' + esc(rc.target) + esc(rc.targetUnit) + ', Actual: ' + esc(rc.actual) + esc(rc.actualUnit) + ')';
+          h += ' <span style="color:var(--color-text-muted);font-size:0.85rem;">(Target: ' + esc(rc.target) + esc(rc.targetUnit) + ', Actual: ' + esc(rc.actual) + esc(rc.actualUnit) + ')</span>';
         }
         h += '</div>';
         h += '<label>Explain the mechanism:</label>';
-        h += '<textarea class="ss-explanation" data-id="' + rc.id + '" rows="2">' + esc(state.explanations[rc.id] || '') + '</textarea>';
+        h += '<textarea class="ss-explanation" data-id="' + rc.id + '" rows="2" placeholder="Why does this cause the problem?">' + esc(state.explanations[rc.id] || '') + '</textarea>';
         h += '</div>';
       });
     }
@@ -226,8 +341,8 @@
 
     h += '<div class="ss-actions">';
     h += '<button class="btn btn-sm" id="ss-back3">&larr; Back</button>';
-    h += '<button class="btn btn-primary btn-sm" id="ss-export">Export PDF</button>';
-    h += '<button class="btn btn-sm" id="ss-reset3">New</button>';
+    h += '<button class="btn btn-primary btn-sm" id="ss-export" style="background:#2D6A4F;">Export PDF</button>';
+    h += '<button class="btn btn-sm" id="ss-reset3" style="color:var(--color-text-muted);">Start New</button>';
     h += '</div>';
     h += '</div>';
     return h;
@@ -251,7 +366,16 @@
 
   /* ---- Event Binding ---- */
   function bindEvents() {
-    // Phase tabs
+    // Progress step clicks
+    document.querySelectorAll('.ss-progress__step').forEach(function (step) {
+      step.addEventListener('click', function () {
+        state.phase = parseInt(this.dataset.phase);
+        saveState();
+        render();
+      });
+    });
+
+    // Phase tabs (kept for backward compatibility)
     document.querySelectorAll('.ss-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
         state.phase = parseInt(this.dataset.phase);
@@ -285,7 +409,18 @@
     if (back2) back2.addEventListener('click', function () { state.phase = 1; saveState(); render(); });
 
     var save2 = document.getElementById('ss-save2');
-    if (save2) save2.addEventListener('click', function () { saveState(); alert('Progress saved.'); });
+    if (save2) save2.addEventListener('click', function () {
+      saveState();
+      this.textContent = 'Saved!';
+      this.style.background = '#2D6A4F';
+      this.style.color = '#fff';
+      var btn = this;
+      setTimeout(function () {
+        btn.textContent = 'Save Progress';
+        btn.style.background = '#D8F3DC';
+        btn.style.color = '#1B4332';
+      }, 1500);
+    });
 
     var proceed2 = document.getElementById('ss-proceed2');
     if (proceed2) proceed2.addEventListener('click', function () { state.phase = 3; saveState(); render(); });
@@ -335,7 +470,6 @@
     var exportBtn = document.getElementById('ss-export');
     if (exportBtn) exportBtn.addEventListener('click', exportPDF);
 
-    // Phase 3 explanations
     document.querySelectorAll('.ss-explanation').forEach(function (ta) {
       ta.addEventListener('input', function () {
         state.explanations[this.dataset.id] = this.value;
@@ -364,29 +498,29 @@
     var nodeEl = document.querySelector('.ss-node[data-id="' + nodeId + '"]');
     if (!nodeEl) return;
 
-    // Remove any existing form
     var existing = document.querySelector('.ss-split-form');
     if (existing) existing.remove();
 
     var form = document.createElement('div');
     form.className = 'ss-split-form';
     form.innerHTML = '<div class="ss-split-form__inner">' +
-      '<h4>Split "' + esc(node.name) + '"</h4>' +
-      '<div class="ss-row" style="margin-bottom:8px;">' +
-      '<label style="margin-right:12px;"><input type="radio" name="splitType" value="additive" checked> Additive (+)</label>' +
-      '<label style="margin-right:12px;"><input type="radio" name="splitType" value="multiplicative"> Multiplicative (&times;)</label>' +
-      '<label><input type="radio" name="splitType" value="other"> Other</label>' +
+      '<h4 style="font-size:0.9rem;margin-bottom:12px;">Split "' + esc(node.name) + '"</h4>' +
+      '<div class="ss-row" style="margin-bottom:10px;">' +
+      '<label style="margin-right:12px;font-size:0.8rem;cursor:pointer;"><input type="radio" name="splitType" value="additive" checked> Additive (+)</label>' +
+      '<label style="margin-right:12px;font-size:0.8rem;cursor:pointer;"><input type="radio" name="splitType" value="multiplicative"> Multiplicative (&times;)</label>' +
+      '<label style="font-size:0.8rem;cursor:pointer;"><input type="radio" name="splitType" value="other"> Other</label>' +
       '</div>' +
       '<div id="ss-split-rows"></div>' +
-      '<div class="ss-actions" style="margin-top:8px;">' +
-      '<button class="btn btn-sm" id="ss-add-row">+ Row</button>' +
-      '<button class="btn btn-primary btn-sm" id="ss-split-ok">OK</button>' +
-      '<button class="btn btn-sm" id="ss-split-cancel">Cancel</button>' +
+      '<div class="ss-actions" style="margin-top:10px;">' +
+      '<button class="btn btn-sm" id="ss-add-row" style="background:#D8F3DC;color:#1B4332;">+ Add Branch</button>' +
+      '<button class="btn btn-primary btn-sm" id="ss-split-ok" style="background:#2D6A4F;">Apply Split</button>' +
+      '<button class="btn btn-sm" id="ss-split-cancel" style="color:var(--color-text-muted);">Cancel</button>' +
       '</div></div>';
 
-    nodeEl.after(form);
+    // Insert after the node's parent container
+    var insertTarget = nodeEl.closest('.ss-tree-connector') || nodeEl;
+    insertTarget.after(form);
 
-    // Add initial 2 rows
     addSplitRow();
     addSplitRow();
 
@@ -425,15 +559,20 @@
     if (!container) return;
     var row = document.createElement('div');
     row.className = 'ss-split-row ss-row';
-    row.innerHTML = '<input type="text" placeholder="Name" style="flex:2;min-width:120px">' +
-      '<input type="number" placeholder="Target" style="width:80px">' +
-      '<input type="text" placeholder="Unit" style="width:60px">' +
-      '<input type="number" placeholder="Actual" style="width:80px">' +
-      '<input type="text" placeholder="Unit" style="width:60px">';
+    row.style.marginBottom = '6px';
+    row.innerHTML = '<input type="text" placeholder="Name" style="flex:2;min-width:120px;padding:6px 10px;border:1.5px solid #D1D5DB;border-radius:6px;font-size:0.8rem;">' +
+      '<input type="number" placeholder="Target" style="width:80px;padding:6px 10px;border:1.5px solid #D1D5DB;border-radius:6px;font-size:0.8rem;">' +
+      '<input type="text" placeholder="Unit" style="width:60px;padding:6px 10px;border:1.5px solid #D1D5DB;border-radius:6px;font-size:0.8rem;">' +
+      '<input type="number" placeholder="Actual" style="width:80px;padding:6px 10px;border:1.5px solid #D1D5DB;border-radius:6px;font-size:0.8rem;">' +
+      '<input type="text" placeholder="Unit" style="width:60px;padding:6px 10px;border:1.5px solid #D1D5DB;border-radius:6px;font-size:0.8rem;">';
     container.appendChild(row);
+
+    // Focus the first input of the new row
+    var firstInput = row.querySelector('input');
+    if (firstInput) setTimeout(function () { firstInput.focus(); }, 50);
   }
 
-  /* ---- Export PDF (simple print-based) ---- */
+  /* ---- Export PDF ---- */
   function exportPDF() {
     savePhase3Inputs();
     var rootCauses = [];
@@ -445,13 +584,15 @@
 
     var w = window.open('', '_blank');
     var html = '<!DOCTYPE html><html><head><title>Split Solve Report</title>';
-    html += '<style>body{font-family:Inter,sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#1a1a1a;}';
-    html += 'h1{font-size:1.5rem;margin-bottom:0.5rem;} h2{font-size:1.2rem;margin-top:1.5rem;border-bottom:2px solid #2D6A4F;padding-bottom:4px;}';
-    html += 'table{width:100%;border-collapse:collapse;margin:1rem 0;} th,td{border:1px solid #ddd;padding:6px 10px;text-align:left;} th{background:#f7f7f7;}';
-    html += '.cause{background:#FEE2E2;padding:8px;border-radius:4px;margin:8px 0;}';
-    html += '@media print{body{margin:0;}}</style></head><body>';
-    html += '<h1>Split Solve Analysis Report</h1>';
-    html += '<p style="color:#666;">Generated by maji (majaco)</p>';
+    html += '<style>body{font-family:Inter,system-ui,sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#1a1a1a;}';
+    html += 'h1{font-size:1.5rem;margin-bottom:0.5rem;color:#1B4332;} h2{font-size:1.2rem;margin-top:1.5rem;border-bottom:2px solid #2D6A4F;padding-bottom:4px;color:#1B4332;}';
+    html += 'table{width:100%;border-collapse:collapse;margin:1rem 0;} th,td{border:1px solid #ddd;padding:6px 10px;text-align:left;} th{background:#D8F3DC;color:#1B4332;}';
+    html += '.cause{background:#FEE2E2;padding:12px;border-radius:8px;margin:8px 0;border-left:3px solid #EF4444;}';
+    html += '.header-bar{background:#1B4332;color:#fff;padding:20px;border-radius:8px;margin-bottom:20px;}';
+    html += '@media print{body{margin:0;}.header-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style></head><body>';
+    html += '<div class="header-bar"><h1 style="color:#fff;margin:0;">Split Solve Analysis Report</h1>';
+    html += '<p style="color:rgba(255,255,255,0.7);margin:4px 0 0;">Generated by maji (majaco)</p></div>';
+
     html += '<h2>Problem Definition</h2>';
     html += '<p><strong>Problem:</strong> ' + esc(state.problem) + '</p>';
     html += '<p><strong>Key Variable:</strong> ' + esc(state.keyVariable) + ' &mdash; Target: ' + esc(state.target) + esc(state.targetUnit) + ', Actual: ' + esc(state.actual) + esc(state.actualUnit) + '</p>';

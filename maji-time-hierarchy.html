@@ -87,132 +87,25 @@
 
           <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
             <button class="btn btn-sm collapse-all">Collapse All</button>
+            <button class="btn btn-sm expand-all" style="background: var(--pine-light, #D8F3DC); color: var(--pine-dark, #1B4332);">Expand All</button>
             <button class="btn btn-sm btn-primary show-me-btn" data-metric="operating-efficiency">Show Me: Operating Efficiency</button>
             <button class="btn btn-sm btn-primary show-me-btn" data-metric="machine-efficiency">Show Me: Machine Efficiency</button>
             <button class="btn btn-sm btn-primary show-me-btn" data-metric="teep">Show Me: TEEP</button>
           </div>
 
           <div class="legend-box">
-            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #166534, #15803d);"></span> Root (Calendar Time)</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: #DCFCE7;"></span> Positive Time</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: #E5E5E5;"></span> Subtracted Time</div>
-            <div class="legend-item"><span class="legend-swatch" style="background: #FEF9C3;"></span> Loss Category</div>
+            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #1B4332, #2D6A4F);"></span> Root (Calendar Time)</div>
+            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #B7E4C7, #D8F3DC);"></span> Productive Time</div>
+            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #F3F4F6, #E5E7EB);"></span> Subtracted Time</div>
+            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #FEF3C7, #FDE68A);"></span> Loss Category</div>
+            <div class="legend-item"><span class="legend-swatch" style="background: linear-gradient(135deg, #40916C, #2D6A4F);"></span> Outcome (Potential Time)</div>
           </div>
 
+          <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.5rem;">Hover over any block for details. Blocks are sized proportionally to their time component.</p>
+
           <div class="cascade-scroll" style="overflow-x: auto; margin-top: 1rem;">
-            <div class="cascade-container" style="display: flex; flex-direction: column; gap: 8px; min-width: 600px;">
-
-              <!-- Row 1: Calendar Time -->
-              <div class="th-block th-root expandable" data-row="1" data-expands="2" data-component="calendar-time">
-                <div class="th-block__inner">
-                  <span class="expand-icon">+</span>
-                  <div class="block-title">Calendar Time</div>
-                  <div class="block-desc">24 &times; 7 &times; 365 = 8,760 hours/year</div>
-                  <div class="block-badge">Fixed</div>
-                </div>
-              </div>
-
-              <!-- Row 2: NWT + Shift Time -->
-              <div class="th-row" data-row="2" style="display:none;">
-                <div class="th-block th-subtracted" data-component="non-working-time">
-                  <div class="th-block__inner">
-                    <div class="block-title">Non-working Time</div>
-                    <div class="block-desc">Weekends, bank holidays, planned shutdown</div>
-                    <div class="block-badge">Commercial</div>
-                  </div>
-                </div>
-                <div class="th-block th-primary expandable" data-expands="3" data-component="shift-time">
-                  <div class="th-block__inner">
-                    <span class="expand-icon">+</span>
-                    <div class="block-title">Shift Time (Available Time)</div>
-                    <div class="block-desc">Calendar Time &minus; Non-working Time</div>
-                    <div class="block-badge">Ops Management</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Row 3: Schedule Loss + PPT -->
-              <div class="th-row" data-row="3" style="display:none;">
-                <div class="th-block th-subtracted" data-component="schedule-loss">
-                  <div class="th-block__inner">
-                    <div class="block-title">Schedule Loss</div>
-                    <div class="block-desc">Shifts not scheduled / not run</div>
-                    <div class="block-badge">Commercial</div>
-                  </div>
-                </div>
-                <div class="th-block th-primary expandable" data-expands="4" data-component="planned-production-time">
-                  <div class="th-block__inner">
-                    <span class="expand-icon">+</span>
-                    <div class="block-title">Planned Production Time</div>
-                    <div class="block-desc">Shift Time &minus; Schedule Loss</div>
-                    <div class="block-badge">Ops Management</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Row 4: Planned DT + Operating Time -->
-              <div class="th-row" data-row="4" style="display:none;">
-                <div class="th-block th-subtracted" data-component="planned-downtime">
-                  <div class="th-block__inner">
-                    <div class="block-title">Planned Downtime</div>
-                    <div class="block-desc">Maintenance, changeovers, breaks</div>
-                    <div class="block-badge">Engineering</div>
-                  </div>
-                </div>
-                <div class="th-block th-primary expandable" data-expands="5" data-component="operating-time">
-                  <div class="th-block__inner">
-                    <span class="expand-icon">+</span>
-                    <div class="block-title">Operating Time</div>
-                    <div class="block-desc">Planned Production Time &minus; Planned Downtime</div>
-                    <div class="block-badge">Shop Floor</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Row 5: UPDT + Up Time -->
-              <div class="th-row" data-row="5" style="display:none;">
-                <div class="th-block th-loss" data-component="unplanned-downtime">
-                  <div class="th-block__inner">
-                    <div class="block-title">Unplanned Downtime (UPDT)</div>
-                    <div class="block-desc">Breakdowns, stoppages, waiting</div>
-                    <div class="block-badge">Shop Floor / Eng.</div>
-                  </div>
-                </div>
-                <div class="th-block th-primary expandable" data-expands="6" data-component="up-time">
-                  <div class="th-block__inner">
-                    <span class="expand-icon">+</span>
-                    <div class="block-title">Up Time</div>
-                    <div class="block-desc">Operating Time &minus; Unplanned Downtime</div>
-                    <div class="block-badge">Shop Floor</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Row 6: LTSR + LTMW + Potential Time -->
-              <div class="th-row" data-row="6" style="display:none;">
-                <div class="th-block th-loss" data-component="ltsr">
-                  <div class="th-block__inner">
-                    <div class="block-title">Lost Time Slow Running (LTSR)</div>
-                    <div class="block-desc">Speed loss below target rate</div>
-                    <div class="block-badge">Shop Floor</div>
-                  </div>
-                </div>
-                <div class="th-block th-loss" data-component="ltmw">
-                  <div class="th-block__inner">
-                    <div class="block-title">Lost Time Making Waste (LTMW)</div>
-                    <div class="block-desc">Quality losses</div>
-                    <div class="block-badge">Quality</div>
-                  </div>
-                </div>
-                <div class="th-block th-primary" data-component="potential-time" style="border: 2px solid var(--color-primary);">
-                  <div class="th-block__inner">
-                    <div class="block-title">Potential Time</div>
-                    <div class="block-desc">Up Time &minus; LTSR &minus; LTMW</div>
-                    <div class="block-badge">Outcome</div>
-                  </div>
-                </div>
-              </div>
-
+            <div class="cascade-container">
+              <!-- Rendered dynamically by JS -->
             </div>
           </div>
         </div>
