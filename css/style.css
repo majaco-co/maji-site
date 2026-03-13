@@ -226,6 +226,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-primary);
 }
 
+.nav__logo img {
+  height: 32px;
+  width: auto;
+}
+
 .nav__logo-mark {
   width: 36px;
   height: 36px;
@@ -584,7 +589,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  padding: var(--space-2xl);
   position: relative;
   overflow: hidden;
   transition: box-shadow var(--transition-base), transform var(--transition-base);
@@ -595,17 +599,18 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-2px);
 }
 
-.problem-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background-color: var(--color-primary);
-  border-radius: var(--radius-full) 0 0 var(--radius-full);
+.problem-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
 }
 
+.problem-card__body {
+  padding: var(--space-xl) var(--space-2xl) var(--space-2xl);
+}
+
+/* Cards without .problem-card__body get padding directly */
 .problem-card__number {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
@@ -624,6 +629,22 @@ h1, h2, h3, h4, h5, h6 {
 .problem-card__text {
   color: var(--color-text-muted);
   line-height: var(--line-height-relaxed);
+}
+
+/* Fallback: cards without images get left accent + padding */
+.problem-card--text-only {
+  padding: var(--space-2xl);
+}
+
+.problem-card--text-only::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full) 0 0 var(--radius-full);
 }
 
 @media (min-width: 768px) {
@@ -1272,6 +1293,11 @@ tbody tr:hover {
   margin-bottom: var(--space-lg);
 }
 
+.footer__logo img {
+  height: 40px;
+  width: auto;
+}
+
 .footer__logo-mark {
   width: 36px;
   height: 36px;
@@ -1312,9 +1338,20 @@ tbody tr:hover {
   font-weight: var(--font-weight-bold);
 }
 
+.footer__social a img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
 .footer__social a:hover {
   background-color: var(--color-primary);
   color: var(--color-text);
+}
+
+.footer__social a:hover img {
+  opacity: 1;
 }
 
 .footer__col-title {
