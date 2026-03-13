@@ -446,7 +446,7 @@
     var w = window.open('', '_blank');
     var html = '<!DOCTYPE html><html><head><title>Split Solve Report</title>';
     html += '<style>body{font-family:Inter,sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#1a1a1a;}';
-    html += 'h1{font-size:1.5rem;margin-bottom:0.5rem;} h2{font-size:1.2rem;margin-top:1.5rem;border-bottom:2px solid #F5C400;padding-bottom:4px;}';
+    html += 'h1{font-size:1.5rem;margin-bottom:0.5rem;} h2{font-size:1.2rem;margin-top:1.5rem;border-bottom:2px solid #2D6A4F;padding-bottom:4px;}';
     html += 'table{width:100%;border-collapse:collapse;margin:1rem 0;} th,td{border:1px solid #ddd;padding:6px 10px;text-align:left;} th{background:#f7f7f7;}';
     html += '.cause{background:#FEE2E2;padding:8px;border-radius:4px;margin:8px 0;}';
     html += '@media print{body{margin:0;}}</style></head><body>';

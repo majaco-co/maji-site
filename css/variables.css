@@ -5,22 +5,22 @@
 
 :root {
   /* ---- Colors ---- */
-  --color-primary:       #F5C400;
-  --color-primary-dark:  #D4A900;
-  --color-primary-light: #FFF5CC;
-  --color-primary-rgb:   245, 196, 0;
+  --color-primary:       #2D6A4F;
+  --color-primary-dark:  #1B4332;
+  --color-primary-light: #D8F3DC;
+  --color-primary-rgb:   45, 106, 79;
 
   --color-bg:            #FFFFFF;
   --color-bg-alt:        #F7F7F7;
-  --color-bg-dark:       #111111;
-  --color-bg-dark-2:     #1C1C1C;
+  --color-bg-dark:       #081C15;
+  --color-bg-dark-2:     #0D2818;
 
   --color-text:          #1A1A1A;
-  --color-text-muted:    #666666;
+  --color-text-muted:    #52796F;
   --color-text-light:    #FFFFFF;
   --color-text-subtle:   #999999;
 
-  --color-border:        #E5E5E5;
+  --color-border:        #B7E4C7;
   --color-border-dark:   #2E2E2E;
 
   --color-success:       #22C55E;
@@ -83,7 +83,7 @@
   --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
   --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.06);
   --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
-  --shadow-yellow: 0 4px 20px rgba(245, 196, 0, 0.30);
+  --shadow-green: 0 4px 20px rgba(45, 106, 79, 0.30);
 
   /* ---- Transitions ---- */
   --transition-fast:   150ms ease;
@@ -108,7 +108,7 @@
   --nav-height: 72px;
 
   /* ---- Dark Nav (matches original Webflow site) ---- */
-  --nav-bg: #111111;
+  --nav-bg: #081C15;
   --nav-text: #FFFFFF;
   --nav-link-color: rgba(255, 255, 255, 0.65);
   --nav-link-hover: #FFFFFF;

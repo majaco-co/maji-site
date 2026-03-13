@@ -243,17 +243,17 @@
 
     drawLine('holding', '#22C55E');
     drawLine('stockout', '#EF4444');
-    drawLine('total', '#F5C400');
+    drawLine('total', '#40916C');
 
     // Optimal line
     if (optSL >= slMin && optSL <= slMax) {
-      ctx.strokeStyle = '#F5C400';
+      ctx.strokeStyle = '#40916C';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       var ox = xPos(optSL);
       ctx.beginPath(); ctx.moveTo(ox, pad.top); ctx.lineTo(ox, pad.top + plotH); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#F5C400';
+      ctx.fillStyle = '#40916C';
       ctx.font = 'bold 11px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Optimal: ' + optSL.toFixed(1) + '%', ox, pad.top - 4);
@@ -263,7 +263,7 @@
     var legX = pad.left + 10;
     var legY = pad.top + 10;
     var legItems = [
-      { label: 'Total Cost', color: '#F5C400' },
+      { label: 'Total Cost', color: '#40916C' },
       { label: 'Holding Cost', color: '#22C55E' },
       { label: 'Stockout Cost', color: '#EF4444' }
     ];

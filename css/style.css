@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
 }
 
-.text-yellow { color: var(--color-primary); }
+.text-yellow, .text-green { color: var(--color-primary); }
 .text-muted  { color: var(--color-text-muted); }
 .text-center { text-align: center; }
 .text-left   { text-align: left; }
@@ -132,12 +132,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: var(--color-bg-dark);
+  color: #FFFFFF;
 }
 
 .btn-primary:hover {
-  background-color: #E0B400;
-  box-shadow: var(--shadow-yellow);
+  background-color: #1B4332;
+  box-shadow: var(--shadow-green);
 }
 
 .btn-dark {
@@ -243,7 +243,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   font-weight: var(--font-weight-black);
   font-size: var(--font-size-base);
-  color: var(--color-bg-dark);
+  color: #FFFFFF;
 }
 
 .nav__links {
@@ -396,7 +396,7 @@ h1, h2, h3, h4, h5, h6 {
   right: -5%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(245, 196, 0, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(45, 106, 79, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -408,7 +408,7 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
-  background-color: rgba(245, 196, 0, 0.15);
+  background-color: rgba(45, 106, 79, 0.15);
   color: var(--color-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -878,7 +878,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-control:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(245, 196, 0, 0.15);
+  box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
 }
 
 .form-control::placeholder {
@@ -975,7 +975,7 @@ textarea.form-control {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
-  background-color: rgba(245, 196, 0, 0.15);
+  background-color: rgba(45, 106, 79, 0.15);
   color: var(--color-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
@@ -1001,7 +1001,7 @@ textarea.form-control {
 
 .tool-disclaimer {
   background-color: var(--color-primary-light);
-  border: 1px solid rgba(245, 196, 0, 0.3);
+  border: 1px solid rgba(45, 106, 79, 0.3);
   border-radius: var(--radius-lg);
   padding: var(--space-md) var(--space-lg);
   font-size: var(--font-size-sm);
@@ -1311,7 +1311,7 @@ tbody tr:hover {
   justify-content: center;
   font-weight: var(--font-weight-black);
   font-size: var(--font-size-base);
-  color: var(--color-bg-dark);
+  color: #FFFFFF;
 }
 
 .footer__tagline {
@@ -1572,7 +1572,7 @@ tbody tr:hover {
 
 .scroll-top:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-yellow);
+  box-shadow: var(--shadow-green);
 }
 
 /* =============================================
