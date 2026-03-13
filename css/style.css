@@ -2374,7 +2374,7 @@ tbody tr:hover {
 }
 
 #nth-root {
-  min-width: 700px;
+  min-width: 900px;
 }
 
 /* ============================
@@ -2386,6 +2386,8 @@ tbody tr:hover {
   position: relative;
   box-sizing: border-box;
   transition: box-shadow 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  min-width: 120px;
 }
 
 /* ---- Type colour variants ---- */
@@ -2426,16 +2428,20 @@ tbody tr:hover {
 .nth-box__header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 4px 8px;
+  flex-wrap: nowrap;
   position: relative;
   z-index: 2;
+  overflow: hidden;
 }
 
 .nth-box__title {
   font-weight: var(--font-weight-bold);
   font-size: 0.82rem;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .nth-box--root .nth-box__title {
@@ -2529,16 +2535,28 @@ tbody tr:hover {
 /* ---- Description ---- */
 .nth-box__desc {
   font-size: 0.72rem;
-  line-height: 1.4;
+  line-height: 1.3;
   opacity: 0.7;
   margin-top: 2px;
   position: relative;
   z-index: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .nth-box--root .nth-box__desc {
   font-size: 0.8rem;
   opacity: 0.8;
+  -webkit-line-clamp: 3;
+}
+
+/* Hide descriptions on non-root top-level children to save space */
+.nth-box__children > .nth-box .nth-box__desc {
+  -webkit-line-clamp: 1;
+  font-size: 0.68rem;
 }
 
 /* ---- Connector line ---- */
@@ -2570,7 +2588,22 @@ tbody tr:hover {
   position: relative;
   z-index: 1;
   animation: nthChildrenIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 0;
 }
+
+/* Scale down text at deeper nesting levels */
+.nth-box__children .nth-box__children .nth-box__title { font-size: 0.75rem; }
+.nth-box__children .nth-box__children .nth-box__desc { display: none; }
+.nth-box__children .nth-box__children .nth-box__hours { font-size: 0.68rem; }
+.nth-box__children .nth-box__children .nth-box__badge { font-size: 0.55rem; padding: 1px 5px; }
+
+.nth-box__children .nth-box__children .nth-box__children .nth-box__title { font-size: 0.7rem; }
+.nth-box__children .nth-box__children .nth-box__children .nth-box__hours { font-size: 0.63rem; }
+.nth-box__children .nth-box__children .nth-box__children .nth-box__badge { display: none; }
+.nth-box__children .nth-box__children .nth-box__children .nth-box { padding: 8px 8px; min-width: 90px; }
+
+.nth-box__children .nth-box__children .nth-box__children .nth-box__children .nth-box__title { font-size: 0.65rem; }
+.nth-box__children .nth-box__children .nth-box__children .nth-box__children .nth-box { padding: 6px 6px; min-width: 70px; }
 
 @keyframes nthChildrenIn {
   from {
