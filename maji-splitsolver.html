@@ -72,88 +72,21 @@
       <div class="content-card reveal">
         <h2>What is Split Solve?</h2>
         <p>
-          Split Solve is a structured problem-solving methodology designed for manufacturing environments. It guides teams from an unclear problem through systematic decomposition to confident root cause identification.
+          Split Solve is a structured problem-solving methodology designed for manufacturing environments. It guides teams from an unclear problem through systematic decomposition to confident root cause identification using MECE (Mutually Exclusive, Collectively Exhaustive) splits.
         </p>
         <p>
-          The methodology uses MECE (Mutually Exclusive, Collectively Exhaustive) splits — ensuring every branch of analysis is both distinct and complete, so nothing is missed and there is no double-counting.
+          Use the interactive tool below to work through all three phases: <strong>Define</strong> your problem, <strong>Split</strong> it into MECE branches, and <strong>Understand</strong> the root causes. Your progress is saved automatically in your browser.
         </p>
       </div>
 
-      <!-- Three phases -->
+      <!-- Interactive Split Solver App -->
       <div class="content-card reveal" data-delay="80">
-        <h2>The Three Phases</h2>
-        <div class="phase-steps">
-          <div class="phase-step">
-            <div class="phase-step__number" aria-hidden="true">1</div>
-            <div class="phase-step__content">
-              <h3>Define — Problem Definition</h3>
-              <p>Before you can solve a problem, you must define it precisely. Vague problem statements lead to unfocused analysis.</p>
-              <ul style="list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Problem Statement:</strong> What is wrong? When and where does it occur? (e.g., "Line 3 afternoon shift shows 15% reject rate vs normal 3%")</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Key Variable:</strong> What metric are you trying to control? (e.g., Reject Rate, Temperature)</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Pattern of Occurrences:</strong> Timing patterns, location patterns, affected products</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="phase-step">
-            <div class="phase-step__number" aria-hidden="true">2</div>
-            <div class="phase-step__content">
-              <h3>Split — Root Cause Analysis</h3>
-              <p>Systematically divide the problem space using MECE splits until every branch ends in either a confirmed root cause or a confirmed non-issue.</p>
-              <ul style="list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>MECE splits:</strong> Each split must be mutually exclusive and collectively exhaustive</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Measurable:</strong> Every branch must be testable with data</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Functional OR geographic:</strong> Splits follow logical boundaries</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Status coding:</strong> ✓ = OK (confirmed non-issue), X = cause identified, ? = needs further splitting</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="phase-step">
-            <div class="phase-step__number" aria-hidden="true">3</div>
-            <div class="phase-step__content">
-              <h3>Understand — Root Cause Synthesis</h3>
-              <p>Once root causes are identified, document and validate the causal mechanism.</p>
-              <ul style="list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Root Causes:</strong> Explain the mechanism of each root cause</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Combined Understanding:</strong> How do multiple root causes combine to produce the problem?</span>
-                </li>
-                <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--color-text-muted);">
-                  <span style="color: var(--color-primary);">▸</span>
-                  <span><strong>Validation:</strong> Does this explanation account for all observations in Phase 1?</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div id="splitsolver-app">
+          <!-- Rendered by JS -->
         </div>
       </div>
 
-      <!-- MECE Rules -->
+      <!-- MECE Rules Reference -->
       <div class="content-card reveal" data-delay="160">
         <h2>MECE Split Rules</h2>
         <p>The power of Split Solve comes from enforcing MECE discipline at every level:</p>
@@ -268,5 +201,6 @@
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>
   <script src="js/main.js"></script>
+  <script src="js/splitsolver.js"></script>
 </body>
 </html>

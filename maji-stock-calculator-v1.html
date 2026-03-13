@@ -8,9 +8,9 @@
   <meta property="og:title" content="Raw Material Stock Holdings Calculator | maji by majaco">
   <meta property="og:description" content="Optimise service level policy by balancing holding costs against expected stockout costs using majaco's Stock Control methodology.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://majiai.co/maji-stock-calculator-v1">
-  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
-  <link rel="canonical" href="https://majiai.co/maji-stock-calculator-v1">
+  <meta property="og:url" content="https://majaco.co/maji-stock-calculator-v1">
+  <meta property="og:image" content="https://majaco.co/assets/og-image.png">
+  <link rel="canonical" href="https://majaco.co/maji-stock-calculator-v1">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -22,7 +22,8 @@
     <div class="container">
       <div class="nav__inner">
         <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
-          <img src="assets/images/logo-white-yellow.svg" alt="maji by majaco">
+          <div class="nav__logo-mark" aria-hidden="true">m</div>
+          <span>maji</span>
         </a>
         <ul class="nav__links" role="list">
           <li><a href="about-maji.html">About maji</a></li>
@@ -158,69 +159,116 @@
           </p>
         </div>
 
-        <!-- Interactive Calculator -->
+        <!-- Calculator -->
         <div class="content-card reveal" data-delay="240">
-          <h2>Calculate Your Optimal Policy</h2>
-          <div class="calc-form">
+          <h2>Calculator</h2>
+          <p style="margin-bottom: 1.5rem;">Enter your parameters below to find the economically optimal service level.</p>
+
+          <div class="calc-grid">
             <h3>Demand Characteristics</h3>
-            <div class="calc-grid">
-              <label class="calc-label">Mean Demand per Week<input type="number" id="meanDemand" class="calc-input" value="500" min="0" step="1"></label>
-              <label class="calc-label">Demand Std Deviation<input type="number" id="stdDemand" class="calc-input" value="100" min="0" step="1"></label>
-              <label class="calc-label">Annual Demand<input type="number" id="annualDemand" class="calc-input" value="26000" min="0" step="1"></label>
+            <div class="calc-row">
+              <label for="meanDemand">Mean Demand per Week</label>
+              <input type="number" id="meanDemand" placeholder="e.g. 500" step="any">
             </div>
-            <h3 style="margin-top:1.5rem;">Lead Time Characteristics</h3>
-            <div class="calc-grid">
-              <label class="calc-label">Mean Lead Time (weeks)<input type="number" id="meanLT" class="calc-input" value="3" min="0" step="0.1"></label>
-              <label class="calc-label">Lead Time Std Deviation<input type="number" id="stdLT" class="calc-input" value="1" min="0" step="0.1"></label>
+            <div class="calc-row">
+              <label for="stdDemand">Demand Std Deviation (weekly)</label>
+              <input type="number" id="stdDemand" placeholder="e.g. 100" step="any">
             </div>
-            <h3 style="margin-top:1.5rem;">Ordering Policy</h3>
-            <div class="calc-grid">
-              <label class="calc-label">Order Quantity<input type="number" id="orderQty" class="calc-input" value="2000" min="1" step="1"></label>
+            <div class="calc-row">
+              <label for="annualDemand">Annual Demand (units)</label>
+              <input type="number" id="annualDemand" placeholder="e.g. 26000" step="any">
             </div>
-            <h3 style="margin-top:1.5rem;">Cost Parameters</h3>
-            <div class="calc-grid">
-              <label class="calc-label">Unit Cost (&pound;)<input type="number" id="unitCost" class="calc-input" value="10" min="0" step="0.01"></label>
-              <label class="calc-label">Cost of Capital (% p.a.)<input type="number" id="costCapital" class="calc-input" value="8" min="0" step="0.1"></label>
-              <label class="calc-label">Storage Cost (&pound;/unit/year)<input type="number" id="storageCost" class="calc-input" value="2" min="0" step="0.01"></label>
-              <label class="calc-label">Lost Sales Cost (&pound;/event)<input type="number" id="lostSalesCost" class="calc-input" value="5000" min="0" step="1"></label>
+
+            <h3 style="margin-top: 1.5rem;">Lead Time</h3>
+            <div class="calc-row">
+              <label for="meanLT">Mean Lead Time (weeks)</label>
+              <input type="number" id="meanLT" placeholder="e.g. 2" step="any">
             </div>
-            <h3 style="margin-top:1.5rem;">Quality</h3>
-            <div class="calc-grid">
-              <label class="calc-label">Rejection Rate (%)<input type="number" id="rejectionRate" class="calc-input" value="2" min="0" max="100" step="0.1"></label>
+            <div class="calc-row">
+              <label for="stdLT">Lead Time Std Deviation (weeks)</label>
+              <input type="number" id="stdLT" placeholder="e.g. 0.5" step="any">
             </div>
-            <div style="margin-top:2rem;text-align:center;">
-              <button class="btn btn-primary btn-lg" id="calcBtn">Calculate Optimal Policy</button>
+
+            <h3 style="margin-top: 1.5rem;">Order &amp; Cost Parameters</h3>
+            <div class="calc-row">
+              <label for="orderQty">Order Quantity (units)</label>
+              <input type="number" id="orderQty" placeholder="e.g. 1000" step="any">
             </div>
+            <div class="calc-row">
+              <label for="unitCost">Unit Cost (&pound;)</label>
+              <input type="number" id="unitCost" placeholder="e.g. 5.00" step="any">
+            </div>
+            <div class="calc-row">
+              <label for="costCapital">Cost of Capital (%)</label>
+              <input type="number" id="costCapital" placeholder="e.g. 15" step="any">
+            </div>
+            <div class="calc-row">
+              <label for="storageCost">Storage Cost per unit/year (&pound;)</label>
+              <input type="number" id="storageCost" placeholder="e.g. 0.50" step="any">
+            </div>
+            <div class="calc-row">
+              <label for="lostSalesCost">Lost Sales Cost per unit (&pound;)</label>
+              <input type="number" id="lostSalesCost" placeholder="e.g. 25" step="any">
+            </div>
+            <div class="calc-row">
+              <label for="rejectionRate">Rejection Rate (%)</label>
+              <input type="number" id="rejectionRate" placeholder="e.g. 2" value="0" step="any">
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 1.5rem;">
+            <button class="btn btn-primary btn-lg" id="calcBtn">Calculate Optimal Policy</button>
           </div>
         </div>
 
-        <!-- Results -->
-        <div class="content-card" id="calc-results" style="display:none;">
-          <h2>Optimisation Results</h2>
-          <div class="calc-results-grid">
-            <div class="calc-result"><span class="calc-result__label">Optimal Service Level</span><span class="calc-result__value" id="optimalServiceLevel">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Safety Stock</span><span class="calc-result__value" id="safetyStock">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Reorder Point</span><span class="calc-result__value" id="reorderPoint">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Maximum Stock Target</span><span class="calc-result__value" id="maxStock">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Average Inventory</span><span class="calc-result__value" id="avgInventory">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Working Capital Cost</span><span class="calc-result__value" id="capitalCost">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Physical Storage Cost</span><span class="calc-result__value" id="physicalStorageCost">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Expected Stockout Cost</span><span class="calc-result__value" id="stockoutCost">&mdash;</span></div>
-            <div class="calc-result calc-result--highlight"><span class="calc-result__label">Total Annual Cost</span><span class="calc-result__value" id="totalCost">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Expected Stockouts</span><span class="calc-result__value" id="stockoutFreq">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Reorder Cycles</span><span class="calc-result__value" id="reorderCycles">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Working Capital Tied Up</span><span class="calc-result__value" id="workingCapital">&mdash;</span></div>
+        <!-- Results (hidden until calculated) -->
+        <div id="calc-results" style="display: none;">
+          <div class="content-card reveal visible" data-delay="0">
+            <h2>Optimisation Results</h2>
+
+            <h3>Optimal Service Level</h3>
+            <div class="result-grid">
+              <div class="result-item"><span class="result-label">Service Level</span><span class="result-value" id="optimalServiceLevel">—</span></div>
+              <div class="result-item"><span class="result-label">Z-Score</span><span class="result-value" id="optimalZScore">—</span></div>
+            </div>
+
+            <h3 style="margin-top: 1.5rem;">Stock Level Policy</h3>
+            <div class="result-grid">
+              <div class="result-item"><span class="result-label">Safety Stock</span><span class="result-value" id="safetyStock">—</span></div>
+              <div class="result-item"><span class="result-label">Reorder Point</span><span class="result-value" id="reorderPoint">—</span></div>
+              <div class="result-item"><span class="result-label">Max Stock</span><span class="result-value" id="maxStock">—</span></div>
+              <div class="result-item"><span class="result-label">Avg Inventory</span><span class="result-value" id="avgInventory">—</span></div>
+            </div>
+
+            <h3 style="margin-top: 1.5rem;">Cost Breakdown (Annual)</h3>
+            <div class="result-grid">
+              <div class="result-item"><span class="result-label">Capital Cost</span><span class="result-value" id="capitalCost">—</span></div>
+              <div class="result-item"><span class="result-label">Physical Storage</span><span class="result-value" id="physicalStorageCost">—</span></div>
+              <div class="result-item"><span class="result-label">Expected Stockout Cost</span><span class="result-value" id="stockoutCost">—</span></div>
+              <div class="result-item"><span class="result-label">Total Annual Cost</span><span class="result-value" id="totalCost" style="font-weight:900; color: var(--color-primary-dark);">—</span></div>
+            </div>
+
+            <h3 style="margin-top: 1.5rem;">Operating Metrics</h3>
+            <div class="result-grid">
+              <div class="result-item"><span class="result-label">Stockout Frequency</span><span class="result-value" id="stockoutFreq">—</span></div>
+              <div class="result-item"><span class="result-label">Reorder Cycles</span><span class="result-value" id="reorderCycles">—</span></div>
+              <div class="result-item"><span class="result-label">Working Capital</span><span class="result-value" id="workingCapital">—</span></div>
+            </div>
+
+            <h3 style="margin-top: 1.5rem;">Volatility Drivers</h3>
+            <div class="result-grid">
+              <div class="result-item"><span class="result-label">Demand Component</span><span class="result-value" id="demandComponent">—</span></div>
+              <div class="result-item"><span class="result-label">Lead Time Component</span><span class="result-value" id="ltComponent">—</span></div>
+            </div>
+            <p id="keyInsight" style="margin-top: 0.75rem; font-style: italic; color: var(--color-text-muted);"></p>
           </div>
-          <h3 style="margin-top:2rem;">Volatility Breakdown</h3>
-          <div class="calc-results-grid" style="grid-template-columns:1fr 1fr;">
-            <div class="calc-result"><span class="calc-result__label">Demand Component</span><span class="calc-result__value" id="demandComponent">&mdash;</span></div>
-            <div class="calc-result"><span class="calc-result__label">Lead Time Component</span><span class="calc-result__value" id="ltComponent">&mdash;</span></div>
+
+          <div class="content-card reveal visible" data-delay="0">
+            <h2>Cost vs Service Level</h2>
+            <div style="width: 100%; overflow-x: auto;">
+              <canvas id="costChart"></canvas>
+            </div>
           </div>
-          <div style="margin-top:1.5rem;padding:1rem 1.5rem;background:var(--color-primary-light);border-radius:var(--radius-md);">
-            <strong>Key Insight:</strong> <span id="keyInsight"></span>
-          </div>
-          <h3 style="margin-top:2rem;">Total Cost vs Service Level</h3>
-          <div style="position:relative;height:350px;"><canvas id="costChart"></canvas></div>
         </div>
 
         <!-- CTA -->
@@ -244,13 +292,14 @@
       <div class="footer__top">
         <div class="footer__brand">
           <a href="index.html" class="footer__logo">
-            <img src="assets/images/logo-mark-full-colour.svg" alt="maji by majaco">
+            <div class="footer__logo-mark" aria-hidden="true">m</div>
+            maji
           </a>
           <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
           <div class="footer__social">
-            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn"><img src="assets/images/linkedin-grey.svg" alt="LinkedIn"></a>
-            <a href="#" aria-label="majaco on Facebook"><img src="assets/images/facebook-grey.svg" alt="Facebook"></a>
-            <a href="#" aria-label="majaco on Twitter"><img src="assets/images/twitter-grey.svg" alt="Twitter"></a>
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn">in</a>
+            <a href="#" aria-label="majaco on Facebook">f</a>
+            <a href="#" aria-label="majaco on Twitter">𝕏</a>
           </div>
         </div>
         <div>
@@ -303,7 +352,6 @@
   </footer>
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
   <script src="js/main.js"></script>
   <script src="js/stock-calculator.js"></script>
 </body>

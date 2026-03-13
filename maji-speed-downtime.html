@@ -76,116 +76,108 @@
           In sales-constrained environments, labour efficiency (PPLH — Packs Per Labour Hour) drives profitability. When demand exceeds capacity, every pack your line can produce has full margin value.
         </p>
         <p>
-          Increasing line speed boosts throughput, but typically degrades availability and quality. Run too fast and downtime eats the gains. This calculator models that trade-off to find your optimal operating point.
+          Increasing line speed boosts throughput, but typically degrades availability and quality. Run too fast and downtime eats the gains. Use the calculator below to find your optimal operating point.
         </p>
-      </div>
-
-      <!-- Parameters -->
-      <div class="content-card reveal" data-delay="80">
-        <h2>Baseline Parameters</h2>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Default Value</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Line Speed</td>
-                <td>100 packs/hour</td>
-                <td>Current rated speed of the production line</td>
-              </tr>
-              <tr>
-                <td>Availability (Uptime)</td>
-                <td>85%</td>
-                <td>Proportion of scheduled time the line is running</td>
-              </tr>
-              <tr>
-                <td>Quality (Yield)</td>
-                <td>98%</td>
-                <td>Proportion of output meeting quality standard</td>
-              </tr>
-              <tr>
-                <td>Operators on Line</td>
-                <td>4 people</td>
-                <td>Total labour hours consumed per shift</td>
-              </tr>
-              <tr>
-                <td>Shift Length</td>
-                <td>8 hours</td>
-                <td>Duration of production shift</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="formula">
+          PPLH = Speed &times; Availability &times; Quality &divide; Operators
         </div>
       </div>
 
-      <!-- Degradation -->
+      <!-- Interactive Calculator -->
+      <div class="content-card reveal speed-downtime-calc" data-delay="80">
+        <h2>Calculator</h2>
+
+        <h3>Baseline Parameters</h3>
+        <div class="slider-group">
+          <div class="slider-row">
+            <label for="speed">Line Speed</label>
+            <input type="range" id="speed" min="10" max="500" value="100" step="5">
+            <span class="slider-value">100 packs/hr</span>
+          </div>
+          <div class="slider-row">
+            <label for="availability">Availability (Uptime)</label>
+            <input type="range" id="availability" min="0" max="100" value="85" step="1">
+            <span class="slider-value">85%</span>
+          </div>
+          <div class="slider-row">
+            <label for="quality">Quality (Yield)</label>
+            <input type="range" id="quality" min="0" max="100" value="98" step="1">
+            <span class="slider-value">98%</span>
+          </div>
+          <div class="slider-row">
+            <label for="operators">Operators on Line</label>
+            <input type="range" id="operators" min="1" max="20" value="4" step="1">
+            <span class="slider-value">4 people</span>
+          </div>
+          <div class="slider-row">
+            <label for="shift">Shift Length</label>
+            <input type="range" id="shift" min="1" max="12" value="8" step="0.5">
+            <span class="slider-value">8 hours</span>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 1.5rem;">Speed Increase Scenario</h3>
+        <div class="slider-group">
+          <div class="slider-row">
+            <label for="speed-increase">Speed Increase</label>
+            <input type="range" id="speed-increase" min="0" max="50" value="0" step="1">
+            <span class="slider-value">+0%</span>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 1.5rem;">Degradation Sensitivity</h3>
+        <div class="slider-group">
+          <div class="slider-row">
+            <label for="avail-sensitivity">Availability Loss</label>
+            <input type="range" id="avail-sensitivity" min="0" max="20" value="5" step="0.5">
+            <span class="slider-value">5% per 10%</span>
+          </div>
+          <div class="slider-row">
+            <label for="quality-sensitivity">Quality Loss</label>
+            <input type="range" id="quality-sensitivity" min="0" max="20" value="2" step="0.5">
+            <span class="slider-value">2% per 10%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
       <div class="content-card reveal" data-delay="160">
-        <h2>Degradation Sensitivity</h2>
-        <p>When speed increases, both availability and quality typically degrade. Default assumptions:</p>
-        <ul>
-          <li><strong>Availability Loss:</strong> 5% reduction per 10% speed gain</li>
-          <li><strong>Quality Loss:</strong> 2% reduction per 10% speed gain</li>
-        </ul>
-        <p>
-          These rates vary by line type, product, and maintenance standard. Calibrate from your own data for the most accurate results.
-        </p>
+        <h2>Results</h2>
+        <div class="result-grid">
+          <div class="result-item">
+            <span class="result-label">Baseline PPLH</span>
+            <span class="result-value" id="baseline-pplh">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Your Scenario PPLH</span>
+            <span class="result-value" id="new-pplh">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Change</span>
+            <span class="result-value" id="new-change">—</span>
+          </div>
+        </div>
+        <div class="result-grid" style="margin-top: 1rem;">
+          <div class="result-item">
+            <span class="result-label">Optimal Speed</span>
+            <span class="result-value" id="optimal-speed">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Optimal Increase</span>
+            <span class="result-value" id="optimal-increase">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Optimal PPLH</span>
+            <span class="result-value" id="optimal-pplh">—</span>
+          </div>
+        </div>
       </div>
 
-      <!-- How PPLH is calculated -->
+      <!-- Chart -->
       <div class="content-card reveal" data-delay="240">
-        <h2>How PPLH Is Calculated</h2>
-        <p>Packs Per Labour Hour (PPLH) is the key metric for sales-constrained profitability:</p>
-        <div class="formula">
-          PPLH = (Speed × Shift Length × Availability × Quality) ÷ (Operators × Shift Length)
-        </div>
-        <div class="formula">
-          PPLH = Speed × Availability × Quality ÷ Operators
-        </div>
-        <p>
-          The optimal speed is where the product of (Speed × Availability × Quality) is maximised — the point where PPLH peaks before degradation outweighs speed gains.
-        </p>
-
-        <h3 style="margin-top: 1.5rem;">Finding the Optimal Speed</h3>
-        <p>
-          As speed increases, PPLH initially rises. But as availability and quality degrade, PPLH plateaus and then falls. The optimal operating speed sits at the peak of the PPLH curve.
-        </p>
-        <p>
-          For default parameters (85% availability, 98% quality, 5% availability loss and 2% quality loss per 10% speed increase), the optimal speed is at the baseline — meaning any speed increase degrades more than it gains.
-        </p>
-      </div>
-
-      <!-- Results example -->
-      <div class="content-card reveal" data-delay="320">
-        <h2>Results: Key Outputs</h2>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr><th>Output</th><th>Description</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Baseline PPLH</strong></td>
-                <td>PPLH at current speed — your reference point</td>
-              </tr>
-              <tr>
-                <td><strong>Scenario PPLH</strong></td>
-                <td>PPLH at the proposed speed increase</td>
-              </tr>
-              <tr>
-                <td><strong>Optimal Speed</strong></td>
-                <td>Speed at which PPLH is maximised</td>
-              </tr>
-              <tr>
-                <td><strong>PPLH vs Speed Curve</strong></td>
-                <td>Visual showing the full trade-off relationship</td>
-              </tr>
-            </tbody>
-          </table>
+        <h2>PPLH vs Speed Curve</h2>
+        <div style="width: 100%; overflow-x: auto;">
+          <canvas id="pplh-chart"></canvas>
         </div>
       </div>
 
@@ -269,5 +261,6 @@
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>
   <script src="js/main.js"></script>
+  <script src="js/speed-downtime.js"></script>
 </body>
 </html>
