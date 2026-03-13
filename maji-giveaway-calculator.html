@@ -280,19 +280,37 @@
       // Derived
       const tne = tneManual !== '' ? parseFloat(tneManual) || 0 : getTNE(nominal);
       const z   = CONFIDENCE[confIdx].z;
-      const legalMin = nominal - tne;
+      const t1  = nominal - tne;       // T1: Tolerable deficiency threshold
+      const t2  = nominal - 2 * tne;   // T2: Absolute minimum threshold
+      const legalMin = t1;              // Keep alias for chart compatibility
 
-      const requiredMeanCurrent = legalMin + z * currentSD;
-      const requiredMeanTarget  = legalMin + z * targetSD;
+      // Three Packer Rules — required mean for current SD
+      const rule1Mean = nominal;                        // Rule 1: Average ≥ Nominal
+      const rule2MeanCur = t1 + 1.96 * currentSD;      // Rule 2: ≤2.5% below T1 (z=1.96 fixed)
+      const rule3MeanCur = t2 + z * currentSD;          // Rule 3: ~0% below T2 (user z)
+      const requiredMeanCurrent = Math.max(rule1Mean, rule2MeanCur, rule3MeanCur);
+
+      // Three Packer Rules — required mean for target SD
+      const rule2MeanTgt = t1 + 1.96 * targetSD;
+      const rule3MeanTgt = t2 + z * targetSD;
+      const requiredMeanTarget = Math.max(rule1Mean, rule2MeanTgt, rule3MeanTgt);
+
+      // Binding rule labels
+      const bindingCur = requiredMeanCurrent === rule1Mean ? 1 : requiredMeanCurrent === rule2MeanCur ? 2 : 3;
+      const bindingTgt = requiredMeanTarget === rule1Mean ? 1 : requiredMeanTarget === rule2MeanTgt ? 2 : 3;
+      const ruleLabel = r => r === 1 ? 'Average Rule' : r === 2 ? 'TNE Rule' : '2×TNE Rule';
 
       const actualGiveaway  = Math.max(0, currentMean - nominal);
-      const targetGiveaway  = Math.max(0, z * targetSD - tne);
+      const targetGiveaway  = Math.max(0, requiredMeanTarget - nominal);
       const giveawayReduction = actualGiveaway - targetGiveaway;
       const annualKgSaved   = Math.max(0, (giveawayReduction / 1000) * annualVol);
       const annualSaving    = annualKgSaved * costPerKg;
 
-      const currentCompliance = complianceRate(currentMean, currentSD, legalMin);
-      const targetCompliance  = complianceRate(requiredMeanTarget, targetSD, legalMin);
+      // Compliance rates against T1 and T2
+      const currentCompT1 = complianceRate(currentMean, currentSD, t1);
+      const targetCompT1  = complianceRate(requiredMeanTarget, targetSD, t1);
+      const currentCompT2 = complianceRate(currentMean, currentSD, t2);
+      const targetCompT2  = complianceRate(requiredMeanTarget, targetSD, t2);
 
       const warnNonCompliant = currentMean < requiredMeanCurrent;
       const warnTargetHigher = targetSD >= currentSD;
@@ -304,7 +322,7 @@
 
       const distData = useMemo(() => {
         const maxSD = Math.max(currentSD, targetSD, 1);
-        const lo = Math.min(requiredMeanTarget, legalMin, nominal) - 4 * maxSD;
+        const lo = Math.min(requiredMeanTarget, t2, nominal) - 4 * maxSD;
         const hi = Math.max(currentMean, nominal) + 4 * maxSD;
         const pts = [];
         const N = 250;
@@ -319,11 +337,12 @@
             target: tPDF,
             currentGA: (x >= nominal && x <= currentMean) ? cPDF : null,
             targetGA: (x >= nominal && x <= requiredMeanTarget && requiredMeanTarget > nominal) ? tPDF : null,
-            nonComply: (x <= legalMin) ? cPDF : null,
+            nonComplyT1: (x <= t1) ? cPDF : null,
+            nonComplyT2: (x <= t2) ? cPDF : null,
           });
         }
         return pts;
-      }, [currentMean, currentSD, requiredMeanTarget, targetSD, nominal, legalMin]);
+      }, [currentMean, currentSD, requiredMeanTarget, targetSD, nominal, t1, t2]);
 
       /* ── Sensitivity chart data ───────────────── */
 
@@ -331,12 +350,15 @@
         const pts = [];
         const maxS = currentSD * 2;
         for (let s = 0.1; s <= maxS; s += maxS / 80) {
-          const ga = Math.max(0, z * s - tne);
+          const r2 = t1 + 1.96 * s;
+          const r3 = t2 + z * s;
+          const reqMean = Math.max(nominal, r2, r3);
+          const ga = Math.max(0, reqMean - nominal);
           const saving = Math.max(0, ((actualGiveaway - ga) / 1000) * annualVol * costPerKg);
           pts.push({ sd: Math.round(s * 100) / 100, saving: Math.round(saving) });
         }
         return pts;
-      }, [currentSD, z, tne, actualGiveaway, annualVol, costPerKg]);
+      }, [currentSD, z, tne, t1, t2, nominal, actualGiveaway, annualVol, costPerKg]);
 
       /* ── Custom chart tooltip ─────────────────── */
 
@@ -369,7 +391,7 @@
         <div>
           {/* Warnings */}
           {warnNonCompliant && (
-            <div className="gc-warn">Current mean fill ({fmt(currentMean)} g) is below the required mean ({fmt(requiredMeanCurrent)} g) for {CONFIDENCE[confIdx].label} compliance. Packs may be non-compliant.</div>
+            <div className="gc-warn">Current mean fill ({fmt(currentMean)} g) is below the required mean ({fmt(requiredMeanCurrent)} g) set by the {ruleLabel(bindingCur)}. Packs may be non-compliant.</div>
           )}
           {warnTargetHigher && (
             <div className="gc-warn">Target SD ({fmt(targetSD)} g) is not lower than current SD ({fmt(currentSD)} g). Reduce the target to see savings.</div>
@@ -408,7 +430,7 @@
                 <label>Current Mean Fill (g)</label>
                 <input type="number" value={currentMean} min={0} step={0.1}
                   onChange={e => setCurrentMean(+e.target.value)} />
-                <div className="gc-hint">Actual measured mean. Required minimum for compliance: {fmt(requiredMeanCurrent)} g</div>
+                <div className="gc-hint">Actual measured mean. Required minimum: {fmt(requiredMeanCurrent)} g (binding: {ruleLabel(bindingCur)})</div>
               </div>
 
               <div className="gc-group">
@@ -429,7 +451,7 @@
               </div>
 
               <div className="gc-group">
-                <label>Compliance Confidence Level</label>
+                <label>Confidence Level (Rule 3 — absolute minimum)</label>
                 <select value={confIdx} onChange={e => setConfIdx(+e.target.value)}>
                   {CONFIDENCE.map((c,i) => <option key={i} value={i}>{c.label}</option>)}
                 </select>
@@ -475,24 +497,45 @@
               </div>
               <div className="gc-output">
                 <span className="gc-olabel">Target mean fill</span>
-                <span className="gc-ovalue">{fmt(Math.max(nominal, requiredMeanTarget))} g</span>
+                <span className="gc-ovalue">{fmt(requiredMeanTarget)} g</span>
+              </div>
+              <div className="gc-output">
+                <span className="gc-olabel">Binding rule</span>
+                <span className="gc-ovalue" style={{fontSize:'0.9rem'}}>{ruleLabel(bindingTgt)}</span>
+              </div>
+
+              <h3 style={{marginTop:'1.25rem'}}>Three Packer Rules</h3>
+              <div style={{fontSize:'0.8rem',lineHeight:1.6,marginBottom:'0.5rem',color:'#555'}}>
+                <div><strong>T1</strong> (Nom − TNE) = {fmt(t1)} g &nbsp;|&nbsp; <strong>T2</strong> (Nom − 2×TNE) = {fmt(t2)} g</div>
+              </div>
+              <div style={{fontSize:'0.78rem',lineHeight:1.7,color:'#444'}}>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                  <span>Rule 1: Mean ≥ Nominal</span>
+                  <span style={{fontWeight:600,color: bindingTgt===1 ? '#006458' : '#888'}}>{fmt(rule1Mean)} g {bindingTgt===1 ? '← binding' : ''}</span>
+                </div>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                  <span>Rule 2: ≤2.5% below T1</span>
+                  <span style={{fontWeight:600,color: bindingTgt===2 ? '#006458' : '#888'}}>{fmt(rule2MeanTgt)} g {bindingTgt===2 ? '← binding' : ''}</span>
+                </div>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                  <span>Rule 3: ~0% below T2</span>
+                  <span style={{fontWeight:600,color: bindingTgt===3 ? '#006458' : '#888'}}>{fmt(rule3MeanTgt)} g {bindingTgt===3 ? '← binding' : ''}</span>
+                </div>
               </div>
 
               <h3 style={{marginTop:'1.25rem'}}>Compliance</h3>
-              <div className="gc-compliance-row">
-                <div className="gc-output" style={{flexDirection:'column',alignItems:'center',gap:2}}>
-                  <span className="gc-olabel">Current</span>
-                  <span className="gc-ovalue" style={{color: currentCompliance >= CONFIDENCE[confIdx].pct ? '#006458' : '#dc3545'}}>
-                    {fmt(currentCompliance,2)}%
-                  </span>
+              <div style={{fontSize:'0.78rem',lineHeight:1.8,color:'#444'}}>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                  <span>% above T1 (need ≥97.5%)</span>
+                  <span style={{fontWeight:600,color: currentCompT1 >= 97.5 ? '#006458' : '#dc3545'}}>{fmt(currentCompT1,2)}%</span>
                 </div>
-                <div className="gc-output" style={{flexDirection:'column',alignItems:'center',gap:2}}>
-                  <span className="gc-olabel">Target</span>
-                  <span className="gc-ovalue">{fmt(targetCompliance,2)}%</span>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                  <span>% above T2 (need ~100%)</span>
+                  <span style={{fontWeight:600,color: currentCompT2 >= CONFIDENCE[confIdx].pct ? '#006458' : '#dc3545'}}>{fmt(currentCompT2,2)}%</span>
                 </div>
               </div>
-              <div className="gc-hint" style={{textAlign:'center',marginTop:'0.25rem'}}>
-                Legal minimum: {fmt(legalMin)} g &nbsp;|&nbsp; TNE: {fmt(tne,2)} g
+              <div className="gc-hint" style={{textAlign:'center',marginTop:'0.5rem'}}>
+                TNE: {fmt(tne,2)} g &nbsp;|&nbsp; T1: {fmt(t1)} g &nbsp;|&nbsp; T2: {fmt(t2)} g
               </div>
             </div>
           </div>
@@ -500,7 +543,7 @@
           {/* ── Distribution Chart ────────────── */}
           <div className="gc-chart-card">
             <h3>Fill Weight Distribution</h3>
-            <p>Blue = current distribution at measured mean. Green = target distribution at minimum compliant mean for target SD. Shaded areas show giveaway bands.</p>
+            <p>Blue = current distribution. Green = target at minimum compliant mean. Red shading = non-compliance zones (T1 lighter, T2 darker). Blue/green shading = giveaway bands.</p>
             <ResponsiveContainer width="100%" height={360}>
               <ComposedChart data={distData} margin={{top:10,right:30,left:10,bottom:20}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -511,7 +554,8 @@
                 <Tooltip content={<DistTooltip />} />
 
                 {/* Shaded regions */}
-                <Area type="monotone" dataKey="nonComply" stroke="none" fill="#ef4444" fillOpacity={0.25} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="nonComplyT2" stroke="none" fill="#dc2626" fillOpacity={0.35} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="nonComplyT1" stroke="none" fill="#ef4444" fillOpacity={0.18} isAnimationActive={false} dot={false} connectNulls={false} />
                 <Area type="monotone" dataKey="currentGA" stroke="none" fill="#3b82f6" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
                 <Area type="monotone" dataKey="targetGA" stroke="none" fill="#22c55e" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
 
@@ -521,7 +565,8 @@
 
                 {/* Reference lines */}
                 <ReferenceLine x={nominal} stroke="#888" strokeWidth={2} label={{value:'Nominal',position:'top',fill:'#888',fontSize:11}} />
-                <ReferenceLine x={legalMin} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Legal Min',position:'top',fill:'#ef4444',fontSize:11}} />
+                <ReferenceLine x={t1} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'T1 (Nom−TNE)',position:'top',fill:'#ef4444',fontSize:10}} />
+                <ReferenceLine x={t2} stroke="#dc2626" strokeDasharray="3 3" strokeWidth={1.5} label={{value:'T2 (Nom−2×TNE)',position:'insideTopLeft',fill:'#dc2626',fontSize:10}} />
                 <ReferenceLine x={currentMean} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current Mean',position:'top',fill:'#3b82f6',fontSize:11}} />
                 {requiredMeanTarget > nominal - 4 * Math.max(currentSD, targetSD) && (
                   <ReferenceLine x={requiredMeanTarget} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target Mean',position:'top',fill:'#22c55e',fontSize:11}} />
@@ -554,13 +599,17 @@
 
           {/* ── Methodology ───────────────────── */}
           <div className="gc-chart-card" style={{background:'#f8f9fa'}}>
-            <h3>Methodology</h3>
+            <h3>Methodology — Three Packer Rules</h3>
             <p style={{color:'#333',fontSize:'0.85rem',lineHeight:1.7}}>
-              <strong>Legal minimum fill</strong> = Nominal Weight − TNE<br/>
-              <strong>Required mean</strong> = Legal minimum + (z &times; SD)<br/>
-              <strong>Giveaway per pack</strong> = Mean fill − Nominal Weight<br/>
-              <strong>Annual saving</strong> = Giveaway reduction (g) &times; Annual volume &divide; 1000 &times; Product cost (£/kg)<br/><br/>
-              TNE values follow UK/EU Average Quantity (Weights &amp; Measures) regulations. The z-score corresponds to the chosen compliance confidence level — the proportion of packs that must exceed the legal minimum fill weight.
+              Under UK/EU Average Quantity (Weights &amp; Measures) regulations, packers must satisfy <strong>three rules simultaneously</strong>:<br/><br/>
+              <strong>Rule 1 (Average Rule):</strong> The mean fill weight must be ≥ Nominal Weight.<br/>
+              <strong>Rule 2 (TNE Rule):</strong> No more than 2.5% of packs may fall below T1 (Nominal − TNE). This requires: Mean ≥ T1 + 1.96 × SD.<br/>
+              <strong>Rule 3 (2×TNE Rule):</strong> No packs may fall below T2 (Nominal − 2×TNE). This requires: Mean ≥ T2 + z × SD, where z is the chosen confidence level.<br/><br/>
+              <strong>T1</strong> = Nominal − TNE &nbsp;|&nbsp; <strong>T2</strong> = Nominal − 2×TNE<br/>
+              <strong>Required mean</strong> = max(Rule 1, Rule 2, Rule 3) — the binding constraint.<br/>
+              <strong>Giveaway per pack</strong> = Required mean − Nominal Weight<br/>
+              <strong>Annual saving</strong> = Giveaway reduction (g) × Volume ÷ 1000 × Cost (£/kg)<br/><br/>
+              TNE values follow the UK/EU Average Quantity regulations. The confidence level applies to Rule 3 (ensuring zero packs below the absolute minimum T2).
             </p>
           </div>
         </div>
