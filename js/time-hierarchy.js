@@ -212,15 +212,30 @@
    *       child-loss-box  child-loss-box ...  child-productive-box
    *                                            └── recursive
    */
-  function buildNode(node, parentNode) {
+  function buildNode(node, parentNode, depth) {
+    depth = depth || 0;
     var el = document.createElement('div');
     el.className = 'nth-box nth-box--' + node.type;
     el.dataset.id = node.id;
+    el.dataset.depth = depth;
 
-    // Width proportion
+    // Layout strategy: loss blocks get fixed width at depth >= 2,
+    // productive/outcome blocks use flex:1 to fill remaining space
     if (parentNode) {
-      var pct = (node.hours / parentNode.hours) * 100;
-      el.style.width = pct.toFixed(2) + '%';
+      var isLoss = (node.type === 'loss' || node.type === 'amber-loss');
+      if (depth >= 2 && isLoss) {
+        // Fixed narrow width for loss blocks at deeper levels
+        el.style.flex = '0 0 auto';
+        el.style.width = depth >= 4 ? '60px' : depth >= 3 ? '80px' : '110px';
+      } else if (depth >= 2 && !isLoss) {
+        // Productive blocks fill remaining space
+        el.style.flex = '1 1 auto';
+        el.style.minWidth = '0';
+      } else {
+        // Top levels use proportional widths
+        var pct = (node.hours / parentNode.hours) * 100;
+        el.style.width = pct.toFixed(2) + '%';
+      }
     }
 
     // Metric dimming / highlighting
@@ -308,7 +323,7 @@
       el.appendChild(connector);
 
       for (var i = 0; i < node.children.length; i++) {
-        childRow.appendChild(buildNode(node.children[i], node));
+        childRow.appendChild(buildNode(node.children[i], node, depth + 1));
       }
       el.appendChild(childRow);
     }
