@@ -255,9 +255,9 @@
     ];
 
     const CONFIDENCE = [
-      { label: '99.73% (3σ)',  z: 3.0,   pct: 99.73 },
-      { label: '99.5% (2.81σ)', z: 2.81, pct: 99.5 },
-      { label: '99% (2.58σ)',  z: 2.576, pct: 99.0 },
+      { label: '0.1% below T2 (3.09σ)',  z: 3.09,  pct: 99.9, t2pct: 0.1 },
+      { label: '0.5% below T2 (2.58σ)',  z: 2.576, pct: 99.5, t2pct: 0.5 },
+      { label: '1% below T2 (2.33σ)',    z: 2.326, pct: 99.0, t2pct: 1.0 },
     ];
 
     const fmt  = (v,d=1) => v.toFixed(d);
@@ -272,7 +272,7 @@
       const [currentMean, setCurrentMean] = useState(206);
       const [currentSD, setCurrentSD]   = useState(5);
       const [targetSD, setTargetSD]     = useState(3.5);
-      const [confIdx, setConfIdx]       = useState(0);
+      const [confIdx, setConfIdx]       = useState(1);
       const [costPerKg, setCostPerKg]   = useState(3);
       const [annualVol, setAnnualVol]   = useState(2000000);
       const [showTNE, setShowTNE]       = useState(false);
@@ -287,7 +287,7 @@
       // Three Packer Rules — required mean for current SD
       const rule1Mean = nominal;                        // Rule 1: Average ≥ Nominal
       const rule2MeanCur = t1 + 1.96 * currentSD;      // Rule 2: ≤2.5% below T1 (z=1.96 fixed)
-      const rule3MeanCur = t2 + z * currentSD;          // Rule 3: ~0% below T2 (user z)
+      const rule3MeanCur = t2 + z * currentSD;          // Rule 3: ≤X% below T2 (user z)
       const requiredMeanCurrent = Math.max(rule1Mean, rule2MeanCur, rule3MeanCur);
 
       // Three Packer Rules — required mean for target SD
@@ -518,7 +518,7 @@
                   <span style={{fontWeight:600,color: bindingTgt===2 ? '#006458' : '#888'}}>{fmt(rule2MeanTgt)} g {bindingTgt===2 ? '← binding' : ''}</span>
                 </div>
                 <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>Rule 3: ~0% below T2</span>
+                  <span>Rule 3: ≤{CONFIDENCE[confIdx].t2pct}% below T2</span>
                   <span style={{fontWeight:600,color: bindingTgt===3 ? '#006458' : '#888'}}>{fmt(rule3MeanTgt)} g {bindingTgt===3 ? '← binding' : ''}</span>
                 </div>
               </div>
@@ -530,7 +530,7 @@
                   <span style={{fontWeight:600,color: currentCompT1 >= 97.5 ? '#006458' : '#dc3545'}}>{fmt(currentCompT1,2)}%</span>
                 </div>
                 <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>% above T2 (need ~100%)</span>
+                  <span>% above T2 (need ≥{fmt(100 - CONFIDENCE[confIdx].t2pct,1)}%)</span>
                   <span style={{fontWeight:600,color: currentCompT2 >= CONFIDENCE[confIdx].pct ? '#006458' : '#dc3545'}}>{fmt(currentCompT2,2)}%</span>
                 </div>
               </div>
@@ -604,12 +604,12 @@
               Under UK/EU Average Quantity (Weights &amp; Measures) regulations, packers must satisfy <strong>three rules simultaneously</strong>:<br/><br/>
               <strong>Rule 1 (Average Rule):</strong> The mean fill weight must be ≥ Nominal Weight.<br/>
               <strong>Rule 2 (TNE Rule):</strong> No more than 2.5% of packs may fall below T1 (Nominal − TNE). This requires: Mean ≥ T1 + 1.96 × SD.<br/>
-              <strong>Rule 3 (2×TNE Rule):</strong> No packs may fall below T2 (Nominal − 2×TNE). This requires: Mean ≥ T2 + z × SD, where z is the chosen confidence level.<br/><br/>
+              <strong>Rule 3 (2×TNE Rule):</strong> Practically no packs should fall below T2 (Nominal − 2×TNE). Typical targets are 0.5–1% below T2. This requires: Mean ≥ T2 + z × SD, where z is the chosen confidence level.<br/><br/>
               <strong>T1</strong> = Nominal − TNE &nbsp;|&nbsp; <strong>T2</strong> = Nominal − 2×TNE<br/>
               <strong>Required mean</strong> = max(Rule 1, Rule 2, Rule 3) — the binding constraint.<br/>
               <strong>Giveaway per pack</strong> = Required mean − Nominal Weight<br/>
               <strong>Annual saving</strong> = Giveaway reduction (g) × Volume ÷ 1000 × Cost (£/kg)<br/><br/>
-              TNE values follow the UK/EU Average Quantity regulations. The confidence level applies to Rule 3 (ensuring zero packs below the absolute minimum T2).
+              TNE values follow the UK/EU Average Quantity regulations. The confidence level controls the target % of packs allowed below T2 — typically 0.5–1% depending on the SKU.
             </p>
           </div>
         </div>
