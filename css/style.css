@@ -1146,6 +1146,17 @@ textarea.form-control {
   margin-bottom: var(--space-xl);
 }
 
+.content-card--wide {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  padding-inline: var(--container-padding);
+}
+
 .content-card h2 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
@@ -2415,6 +2426,7 @@ tbody tr:hover {
 /* ---- Cascade scroll wrapper ---- */
 .cascade-scroll {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 40px 20px;
   background: #f5f5f5;
   border-radius: var(--radius-lg);
