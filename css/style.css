@@ -1146,15 +1146,12 @@ textarea.form-control {
   margin-bottom: var(--space-xl);
 }
 
-.content-card--wide {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
-  padding-inline: var(--container-padding);
+.container--wide {
+  max-width: 1800px;
+}
+
+.content-card--wide .cascade-scroll {
+  overflow-x: visible;
 }
 
 .content-card h2 {
