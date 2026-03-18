@@ -728,7 +728,7 @@
                 <div className="gc-group" style={{marginTop:'0.5rem',marginBottom:0}}>
                   <label>Cost per rework (£/pack)</label>
                   <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
-                  <div className="gc-hint">Materials cost only if done during planned downtime. If rework stops the line, costs spiral — include lost throughput in this figure.</div>
+                  <div className="gc-hint">Materials cost only if done during planned downtime. If rework stops the line, amortise any downtime with line crewing cost into this figure.</div>
                 </div>
               </div>
             </div>
@@ -1004,53 +1004,78 @@
 
           {/* ── Three Packer Rules ── */}
           <Expandable title="Three Packer Rules — Detail">
-            <div style={{fontSize:'0.8rem',lineHeight:1.6,marginBottom:'0.75rem',color:'#555'}}>
-              <div><strong>T1</strong> = {fmt(t1)} g &nbsp;|&nbsp; <strong>T2</strong> = {fmt(t2)} g &nbsp;|&nbsp; <strong>TNE</strong> = {fmt(tne,2)} g</div>
+            {/* Plain English summary */}
+            <div style={{fontSize:'0.85rem',lineHeight:1.7,color:'#333',marginBottom:'1.25rem'}}>
+              Every pack has a <strong>nominal weight</strong> printed on it ({fmtK(nominal)} g). The law allows a small tolerance —
+              but sets three limits on how many packs can be underweight in a finished batch:
             </div>
 
-            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>W&M Legal Rules (batch must pass)</div>
-            <div className="gc-legal-box" style={{marginBottom:'1rem'}}>
-              <div><strong>Rule 1:</strong> Batch average ≥ {fmtK(nominal)} g (nominal)</div>
-              <div><strong>Rule 2:</strong> ≤2.5% of packs between T1 ({fmt(t1)} g) and T2 ({fmt(t2)} g) &mdash; packs below T2 already breach Rule 3</div>
-              <div><strong>Rule 3:</strong> Zero packs below T2 ({fmt(t2)} g) &mdash; automatic non-conformance</div>
+            {/* Weight zones diagram */}
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:0,marginBottom:'1.25rem',fontSize:'0.75rem',textAlign:'center',borderRadius:10,overflow:'hidden',border:'1px solid #e0e0e0'}}>
+              <div style={{background:'#fef2f2',padding:'0.75rem 0.5rem',borderRight:'1px solid #e0e0e0'}}>
+                <div style={{fontWeight:700,color:'#dc2626',marginBottom:4}}>Below T2</div>
+                <div style={{fontSize:'1.1rem',fontWeight:700}}>&lt; {fmt(t2)} g</div>
+                <div style={{color:'#991b1b',marginTop:4}}>Automatic fail</div>
+                <div style={{color:'#999',marginTop:2}}>Rework or reject every pack</div>
+              </div>
+              <div style={{background:'#fefce8',padding:'0.75rem 0.5rem',borderRight:'1px solid #e0e0e0'}}>
+                <div style={{fontWeight:700,color:'#a16207',marginBottom:4}}>Between T1 and T2</div>
+                <div style={{fontSize:'1.1rem',fontWeight:700}}>{fmt(t2)} – {fmt(t1)} g</div>
+                <div style={{color:'#a16207',marginTop:4}}>≤2.5% allowed</div>
+                <div style={{color:'#999',marginTop:2}}>Rework excess above 1 in 40</div>
+              </div>
+              <div style={{background:'#f0fdf4',padding:'0.75rem 0.5rem'}}>
+                <div style={{fontWeight:700,color:'#006458',marginBottom:4}}>Above T1</div>
+                <div style={{fontSize:'1.1rem',fontWeight:700}}>&gt; {fmt(t1)} g</div>
+                <div style={{color:'#006458',marginTop:4}}>Compliant</div>
+                <div style={{color:'#999',marginTop:2}}>No action needed</div>
+              </div>
             </div>
 
-            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>Your internal targets (at current SD: {fmt(currentSD,1)} g)</div>
-            <div style={{fontSize:'0.78rem',lineHeight:1.7,color:'#444',marginBottom:'1rem'}}>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>Rule 1: Mean ≥ Nominal + {fmt(sm)} g safety margin</span>
-                <span style={{fontWeight:600,color: bindingCurRule===1 ? '#006458' : '#888'}}>{fmt(rule1Mean)} g {bindingCurRule===1 ? '← binding' : ''}</span>
-              </div>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>Rule 2: ≤1 in {fmtK(rule2OneIn)} below T1 ({fmt(rule2Pct,2)}%)</span>
-                <span style={{fontWeight:600,color: bindingCurRule===2 ? '#006458' : '#888'}}>{fmt(rule2MeanCur)} g {bindingCurRule===2 ? '← binding' : ''}</span>
-              </div>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>Rule 3: ≤1 in {fmtK(rule3OneIn)} below T2</span>
-                <span style={{fontWeight:600,color: bindingCurRule===3 ? '#006458' : '#888'}}>{fmt(rule3MeanCur)} g {bindingCurRule===3 ? '← binding' : ''}</span>
-              </div>
+            <div style={{fontSize:'0.78rem',color:'#888',marginBottom:'1.25rem'}}>
+              TNE (Tolerable Negative Error) = {fmt(tne,2)} g for {fmtK(nominal)} g nominal.
+              T1 = Nominal − TNE = {fmt(t1)} g. T2 = Nominal − 2×TNE = {fmt(t2)} g.
             </div>
 
-            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>Current process compliance</div>
-            <div style={{fontSize:'0.78rem',lineHeight:1.8,color:'#444'}}>
-              <div style={{fontWeight:600,fontSize:'0.72rem',color:'#7A7A7A',textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:'0.2rem'}}>W&M Legal</div>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>Rule 3: % below T2 (must be 0%)</span>
-                <span style={{fontWeight:600,color: currentPctBelowT2 <= 0.01 ? '#006458' : '#dc2626'}}>{fmt(currentPctBelowT2,2)}% {currentPctBelowT2 > 0.01 ? '✘ FAIL' : '✔ PASS'}</span>
-              </div>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>Rule 2: % between T1–T2 (must be ≤2.5%)</span>
-                <span style={{fontWeight:600,color: currentPctBetweenT1T2 <= 2.5 ? '#006458' : '#dc2626'}}>{fmt(currentPctBetweenT1T2,2)}% {currentPctBetweenT1T2 > 2.5 ? '✘ FAIL' : '✔ PASS'}</span>
-              </div>
-              <div style={{fontWeight:600,fontSize:'0.72rem',color:'#7A7A7A',textTransform:'uppercase',letterSpacing:'0.04em',marginTop:'0.5rem',marginBottom:'0.2rem'}}>Internal targets</div>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>% below T2 (target ≤1 in {fmtK(rule3OneIn)})</span>
-                <span style={{fontWeight:600,color: currentPctBelowT2 <= rule3Pct ? '#006458' : '#dc2626'}}>{fmt(currentPctBelowT2,3)}%</span>
-              </div>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
-                <span>% between T1–T2 (target ≤1 in {fmtK(rule2OneIn)})</span>
-                <span style={{fontWeight:600,color: currentPctBetweenT1T2 <= rule2Pct ? '#006458' : '#dc2626'}}>{fmt(currentPctBetweenT1T2,2)}%</span>
-              </div>
+            {/* What each rule requires of your mean fill */}
+            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>What this means for your target fill weight</div>
+            <div style={{fontSize:'0.8rem',lineHeight:1.7,color:'#444',marginBottom:'1rem'}}>
+              Each rule sets a <strong>minimum mean fill</strong> to keep enough packs out of the danger zones at your current SD ({fmt(currentSD,1)} g):
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr auto',gap:'0.25rem 1rem',fontSize:'0.78rem',color:'#444',marginBottom:'1.25rem'}}>
+              <div>Average must be above nominal + {fmt(sm)} g safety buffer</div>
+              <div style={{fontWeight:600,textAlign:'right',color: bindingCurRule===1 ? '#006458' : '#888'}}>{fmt(rule1Mean)} g {bindingCurRule===1 && <span style={{background:'#006458',color:'#fff',padding:'1px 6px',borderRadius:4,fontSize:'0.68rem',marginLeft:4}}>binding</span>}</div>
+              <div>Keep ≤1 in {fmtK(rule2OneIn)} packs between T1–T2</div>
+              <div style={{fontWeight:600,textAlign:'right',color: bindingCurRule===2 ? '#006458' : '#888'}}>{fmt(rule2MeanCur)} g {bindingCurRule===2 && <span style={{background:'#006458',color:'#fff',padding:'1px 6px',borderRadius:4,fontSize:'0.68rem',marginLeft:4}}>binding</span>}</div>
+              <div>Keep ≤1 in {fmtK(rule3OneIn)} packs below T2</div>
+              <div style={{fontWeight:600,textAlign:'right',color: bindingCurRule===3 ? '#006458' : '#888'}}>{fmt(rule3MeanCur)} g {bindingCurRule===3 && <span style={{background:'#006458',color:'#fff',padding:'1px 6px',borderRadius:4,fontSize:'0.68rem',marginLeft:4}}>binding</span>}</div>
+            </div>
+            <div style={{fontSize:'0.8rem',color:'#555',lineHeight:1.5,background:'#f8f9fa',borderRadius:8,padding:'0.6rem 0.85rem',marginBottom:'1.25rem'}}>
+              The <strong style={{color:'#006458'}}>binding rule</strong> is whichever demands the highest mean — it's the constraint that gets broken first if you try to lower giveaway. Currently that's the <strong>{ruleLabel(bindingCurRule)}</strong>, requiring a mean of at least <strong>{fmt(requiredMeanCurrent,1)} g</strong>. Everything above nominal ({fmtK(nominal)} g) is giveaway.
+            </div>
+
+            {/* Current compliance */}
+            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>How your current process stacks up</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:'0.25rem 1rem',fontSize:'0.78rem',color:'#444',alignItems:'center'}}>
+              <div style={{fontWeight:600,color:'#7A7A7A',fontSize:'0.7rem'}}>CHECK</div>
+              <div style={{fontWeight:600,color:'#7A7A7A',fontSize:'0.7rem',textAlign:'right'}}>ACTUAL</div>
+              <div style={{fontWeight:600,color:'#7A7A7A',fontSize:'0.7rem',textAlign:'right'}}>RESULT</div>
+
+              <div>Packs below T2 (W&M: must be 0%)</div>
+              <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBelowT2,2)}%</div>
+              <div style={{textAlign:'right',fontWeight:600,color: currentPctBelowT2 <= 0.01 ? '#006458' : '#dc2626'}}>{currentPctBelowT2 > 0.01 ? '✘ FAIL' : '✔ PASS'}</div>
+
+              <div>Packs between T1–T2 (W&M: must be ≤2.5%)</div>
+              <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBetweenT1T2,2)}%</div>
+              <div style={{textAlign:'right',fontWeight:600,color: currentPctBetweenT1T2 <= 2.5 ? '#006458' : '#dc2626'}}>{currentPctBetweenT1T2 > 2.5 ? '✘ FAIL' : '✔ PASS'}</div>
+
+              <div>Packs below T2 (internal: ≤1 in {fmtK(rule3OneIn)})</div>
+              <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBelowT2,3)}%</div>
+              <div style={{textAlign:'right',fontWeight:600,color: currentPctBelowT2 <= rule3Pct ? '#006458' : '#dc2626'}}>{currentPctBelowT2 <= rule3Pct ? '✔' : '✘'}</div>
+
+              <div>Packs between T1–T2 (internal: ≤1 in {fmtK(rule2OneIn)})</div>
+              <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBetweenT1T2,2)}%</div>
+              <div style={{textAlign:'right',fontWeight:600,color: currentPctBetweenT1T2 <= rule2Pct ? '#006458' : '#dc2626'}}>{currentPctBetweenT1T2 <= rule2Pct ? '✔' : '✘'}</div>
             </div>
           </Expandable>
 
