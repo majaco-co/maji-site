@@ -728,7 +728,7 @@
                 <div className="gc-group" style={{marginTop:'0.5rem',marginBottom:0}}>
                   <label>Cost per rework (£/pack)</label>
                   <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
-                  <div className="gc-hint">Materials cost only if done during planned downtime. If rework stops the line, amortise any downtime with line crewing cost into this figure.</div>
+                  <div className="gc-hint">Materials cost only if done during planned downtime. If rework stops the line, amortise any downtime where value of lost time = #crew × £/hr.</div>
                 </div>
               </div>
             </div>
