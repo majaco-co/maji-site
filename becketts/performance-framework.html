@@ -2098,7 +2098,10 @@
     if (!isAll) {
       const sourceIds = Array.from(neededSources).filter(id => document.getElementById(id));
       const kpiIds = visibleKpis.map(c => c.id);
-      drawLines(sourceIds, kpiIds, []);
+      // Wait for layout to settle after show/hide before measuring positions
+      requestAnimationFrame(() => {
+        drawLines(sourceIds, kpiIds, []);
+      });
     }
 
     // Filter capture chips if tray open
