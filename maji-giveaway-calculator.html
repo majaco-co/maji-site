@@ -889,14 +889,14 @@
 
           {/* ── Distribution Chart ── */}
           <div className="gc-chart-card">
-            <h3>Fill Weight Distribution</h3>
-            <p>Blue = current process. Green = target at required SD. Red shading = non-compliance zones.</p>
+            <h3>Fill Weight Distribution (pre-checkweigher)</h3>
+            <p>What the filler produces before the checkweigher rejects underweight packs. Blue = current process. Green = target at required SD. Red shading = packs that would need rework.</p>
             {(currentPctBelowT2 > 0.01 || currentPctBetweenT1T2 > 2.5) && (
               <div style={{background:'#fef2f2',border:'1px solid #fecaca',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.8rem',color:'#991b1b',marginBottom:'1rem',lineHeight:1.5}}>
                 <strong>Current process is likely breaching W&M rules.</strong>
                 {currentPctBelowT2 > 0.01 && <span> <strong>Rule 3 breach:</strong> {fmt(currentPctBelowT2,2)}% of packs ({fmtK(Math.round(annualVol * currentPctBelowT2 / 100))}/yr) fall below T2 ({fmt(t2)} g) &mdash; must be zero.</span>}
                 {currentPctBetweenT1T2 > 2.5 && <span> <strong>Rule 2 breach:</strong> {fmt(currentPctBetweenT1T2,1)}% of packs between T1 and T2 &mdash; max 2.5% allowed.</span>}
-                {' '}This batch would fail a W&M inspection without rework.
+                {' '}This is the pre-checkweigher distribution — these packs need to be caught and reworked before the batch is submitted.
               </div>
             )}
             <ResponsiveContainer width="100%" height={300}>
