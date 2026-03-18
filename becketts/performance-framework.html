@@ -129,6 +129,8 @@
 
   .card.active { background: var(--card-bg-hover); border-color: var(--pine); }
   .card.dimmed { opacity: 0.25; }
+  .card.locked { box-shadow: 0 0 0 2px var(--pine); }
+  .capture-chip.locked { box-shadow: 0 0 0 2px var(--pine); }
   .conn-line { transition: all 0.25s ease; }
 
   /* Capture Methods Tray */
@@ -1061,7 +1063,7 @@
 </div>
 
 <div class="framework-footer">
-  <span class="label">Hover over KPIs and data sources to explore connections</span>
+  <span class="label">Hover or click to explore connections — click to lock, click again to unlock</span>
   <span>•</span><span>All losses in hours — directly £-linkable</span>
   <span>•</span><span style="font-style:italic;">Hover any card to trace its data flow</span>
 </div>
@@ -1180,7 +1182,10 @@
     return Array.from(document.querySelectorAll('.capture-chip')).filter(c => sourceIds.includes(c.dataset.source));
   }
 
-  function highlightSource(el) {
+  // Click-to-lock state
+  let lockedEl = null;
+
+  function applySourceHighlight(el) {
     const feeds = el.dataset.feeds.split(',');
     document.querySelectorAll('.source-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
     const activeKpis = [];
@@ -1188,49 +1193,76 @@
       const kpiKey = c.id.replace('kpi-', '');
       if (feeds.includes(kpiKey)) { c.classList.add('active'); activeKpis.push(c.id); } else { c.classList.add('dimmed'); }
     });
-    // Highlight matching capture chips
     dimCaptures([el.id]);
     const chips = getChipsForSources([el.id]);
     drawLines([el.id], activeKpis, chips);
   }
 
-  function highlightKPI(el) {
+  function applyKPIHighlight(el) {
     const fedBy = el.dataset.fedBy.split(',');
     document.querySelectorAll('.kpi-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
     document.querySelectorAll('.source-card').forEach(c => {
       if (fedBy.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    // Highlight capture chips for connected sources
     dimCaptures(fedBy);
     const chips = getChipsForSources(fedBy);
     drawLines(fedBy, [el.id], chips);
   }
 
-  function highlightCapture(chip) {
+  function applyCaptureHighlight(chip) {
     const srcId = chip.dataset.source;
-    // Dim all other capture chips
     document.querySelectorAll('.capture-chip').forEach(c => {
       if (c !== chip) c.classList.add('dimmed');
     });
     chip.classList.add('active');
-    // Highlight parent source, dim others
     document.querySelectorAll('.source-card').forEach(c => {
       if (c.id === srcId) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    // Trace through: source → KPIs it feeds
     const kpiIds = getKpisForSource(srcId);
     document.querySelectorAll('.kpi-card').forEach(c => {
       if (kpiIds.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    // Draw full chain: chip → source → DB → KPIs
     drawLines([srcId], kpiIds, [chip]);
   }
 
-  function clearHighlight() {
-    document.querySelectorAll('.source-card, .kpi-card').forEach(c => { c.classList.remove('dimmed', 'active'); });
-    document.querySelectorAll('.capture-chip').forEach(c => { c.classList.remove('dimmed', 'active'); });
+  function resetHighlight() {
+    document.querySelectorAll('.source-card, .kpi-card').forEach(c => { c.classList.remove('dimmed', 'active', 'locked'); });
+    document.querySelectorAll('.capture-chip').forEach(c => { c.classList.remove('dimmed', 'active', 'locked'); });
     connSvg.innerHTML = '';
   }
+
+  // Hover handlers — skip if locked
+  function highlightSource(el) { if (lockedEl) return; applySourceHighlight(el); }
+  function highlightKPI(el) { if (lockedEl) return; applyKPIHighlight(el); }
+  function highlightCapture(chip) { if (lockedEl) return; applyCaptureHighlight(chip); }
+  function clearHighlight() { if (lockedEl) return; resetHighlight(); }
+
+  // Click-to-lock handler
+  function toggleLock(el, type) {
+    if (lockedEl === el) {
+      // Unlock
+      lockedEl = null;
+      resetHighlight();
+      return;
+    }
+    // Lock new element
+    lockedEl = el;
+    resetHighlight();
+    el.classList.add('locked');
+    if (type === 'source') applySourceHighlight(el);
+    else if (type === 'kpi') applyKPIHighlight(el);
+    else if (type === 'capture') applyCaptureHighlight(el);
+  }
+
+  // Background click clears lock
+  document.getElementById('framework').addEventListener('click', function(e) {
+    if (!lockedEl) return;
+    const card = e.target.closest('.source-card, .kpi-card, .capture-chip, .capture-toggle');
+    if (!card) {
+      lockedEl = null;
+      resetHighlight();
+    }
+  });
 
   // Capture tray toggle
   function toggleCaptureTray() {
@@ -1248,8 +1280,20 @@
       btn.classList.add('open');
     }
     // Lines need to recalculate after layout shift
-    connSvg.innerHTML = '';
+    lockedEl = null;
+    resetHighlight();
   }
+
+  // Attach click-to-lock handlers to all interactive cards
+  document.querySelectorAll('.source-card').forEach(el => {
+    el.addEventListener('click', () => toggleLock(el, 'source'));
+  });
+  document.querySelectorAll('.kpi-card').forEach(el => {
+    el.addEventListener('click', () => toggleLock(el, 'kpi'));
+  });
+  document.querySelectorAll('.capture-chip').forEach(el => {
+    el.addEventListener('click', () => toggleLock(el, 'capture'));
+  });
 </script>
 
   <!-- Footer -->
