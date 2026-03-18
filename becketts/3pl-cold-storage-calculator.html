@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3PL Cold Storage Duty Calculator — Becketts</title>
+<script src="../js/auth-gate.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
+<style>
+  :root {
+    --pine: #006458;
+    --pine-dark: #004a40;
+    --lime: #DAF11B;
+    --dark: #001412;
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --border: #e2e5ea;
+    --muted: #6b7280;
+    --red: #dc2626;
+    --green: #16a34a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    line-height: 1.5;
+    padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header {
+    background: var(--pine);
+    color: white;
+    padding: 28px 32px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  header h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; }
+  header p { opacity: 0.85; font-size: 0.9rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .card h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--pine);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--lime);
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: var(--dark);
+    background: #fafbfc;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--pine);
+    background: white;
+  }
+  .field .unit {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .row { display: flex; gap: 12px; }
+  .row .field { flex: 1; }
+  .results-card {
+    grid-column: 1 / -1;
+    background: var(--dark);
+    color: white;
+    border: none;
+  }
+  .results-card h2 {
+    color: var(--lime);
+    border-bottom-color: rgba(218,241,27,0.3);
+  }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .result-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .result-box .label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .result-box .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .result-box .sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+  .savings { color: var(--lime); }
+  .cost-increase { color: #f87171; }
+  .breakdown {
+    grid-column: 1 / -1;
+  }
+  .breakdown table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .breakdown th {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--pine);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .breakdown td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f1f3;
+  }
+  .breakdown tr:last-child td { border-bottom: none; }
+  .breakdown .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .breakdown .total-row { font-weight: 700; background: #f7f8fa; }
+  .breakdown .delta-row { font-weight: 700; background: #f0fdf4; color: var(--green); }
+  .breakdown .delta-row.negative { background: #fef2f2; color: var(--red); }
+  .note {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(218,241,27,0.08);
+    border-left: 3px solid var(--lime);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .note strong { color: var(--lime); }
+  .assumptions {
+    grid-column: 1 / -1;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .assumptions h2 { color: var(--pine); border-bottom-color: var(--border); }
+  .assumptions ul { padding-left: 20px; margin-top: 8px; }
+  .assumptions li { margin-bottom: 4px; }
+  footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>3PL Cold Storage Duty Calculator</h1>
+    <p>Estimate the change in refrigeration duty &amp; annual cost when switching from +3°C to -3°C storage</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- OPERATIONAL PARAMETERS -->
+    <div class="card">
+      <h2>Operational Parameters</h2>
+      <div class="row">
+        <div class="field">
+          <label>Daily Volume</label>
+          <input type="number" id="volDaily" value="100" step="1">
+          <div class="unit">tonnes / day</div>
+        </div>
+        <div class="field">
+          <label>Average Dwell Time</label>
+          <input type="number" id="dwellDays" value="4" step="0.5">
+          <div class="unit">days</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Pallet Weight</label>
+          <input type="number" id="palletKg" value="400" step="10">
+          <div class="unit">kg per pallet</div>
+        </div>
+        <div class="field">
+          <label>Days per Year</label>
+          <input type="number" id="opDays" value="365" step="1">
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPERATURE PARAMETERS -->
+    <div class="card">
+      <h2>Temperature Parameters</h2>
+      <div class="field">
+        <label>Product Arrival Temperature</label>
+        <input type="number" id="tArrival" value="-8" step="0.5">
+        <div class="unit">°C (temperature bacon is dispatched at)</div>
+      </div>
+      <div class="field">
+        <label>Current 3PL Storage Temperature</label>
+        <input type="number" id="tCurrent" value="3" step="0.5">
+        <div class="unit">°C (chilled — product thaws)</div>
+      </div>
+      <div class="field">
+        <label>Proposed 3PL Storage Temperature</label>
+        <input type="number" id="tProposed" value="-3" step="0.5">
+        <div class="unit">°C (frozen — product stays below 0°C)</div>
+      </div>
+      <div class="field">
+        <label>External Ambient Temperature</label>
+        <input type="number" id="tAmbient" value="18" step="1">
+        <div class="unit">°C (annual average around warehouse)</div>
+      </div>
+    </div>
+
+    <!-- PRODUCT PROPERTIES -->
+    <div class="card">
+      <h2>Product Properties (Bacon)</h2>
+      <div class="row">
+        <div class="field">
+          <label>Specific Heat (frozen)</label>
+          <input type="number" id="cpFrozen" value="1.8" step="0.1">
+          <div class="unit">kJ/kg·K (below 0°C)</div>
+        </div>
+        <div class="field">
+          <label>Specific Heat (thawed)</label>
+          <input type="number" id="cpThawed" value="3.1" step="0.1">
+          <div class="unit">kJ/kg·K (above 0°C)</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Moisture Content</label>
+          <input type="number" id="moisture" value="55" step="1">
+          <div class="unit">% (determines latent heat)</div>
+        </div>
+        <div class="field">
+          <label>Latent Heat of Fusion (water)</label>
+          <input type="number" id="latentHeat" value="334" step="1">
+          <div class="unit">kJ/kg</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFRIGERATION & COST -->
+    <div class="card">
+      <h2>Refrigeration &amp; Cost</h2>
+      <div class="row">
+        <div class="field">
+          <label>COP at Current Temp (+3°C)</label>
+          <input type="number" id="copCurrent" value="3.2" step="0.1">
+          <div class="unit">Coefficient of Performance</div>
+        </div>
+        <div class="field">
+          <label>COP at Proposed Temp (-3°C)</label>
+          <input type="number" id="copProposed" value="2.8" step="0.1">
+          <div class="unit">Coefficient of Performance</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Electricity Cost</label>
+        <input type="number" id="elecCost" value="0.28" step="0.01">
+        <div class="unit">£ per kWh</div>
+      </div>
+      <div style="background:#f7f8fa; border-radius:6px; padding:14px; margin-bottom:14px;">
+        <div style="font-size:0.78rem; font-weight:600; color:var(--pine); margin-bottom:10px;">Fabric Loss Factor (calculated from store properties)</div>
+        <div class="row">
+          <div class="field">
+            <label>Store Length</label>
+            <input type="number" id="storeL" value="50" step="1">
+            <div class="unit">metres</div>
+          </div>
+          <div class="field">
+            <label>Store Width</label>
+            <input type="number" id="storeW" value="40" step="1">
+            <div class="unit">metres</div>
+          </div>
+          <div class="field">
+            <label>Store Height</label>
+            <input type="number" id="storeH" value="10" step="0.5">
+            <div class="unit">metres</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Panel U-value</label>
+            <input type="number" id="uValue" value="0.25" step="0.01">
+            <div class="unit">W/m²·K (typical insulated panel: 0.2–0.3)</div>
+          </div>
+          <div class="field">
+            <label>Pallet Capacity</label>
+            <input type="number" id="palletCapacity" value="1000" step="50">
+            <div class="unit">total pallet slots in store</div>
+          </div>
+          <div class="field">
+            <label>Infiltration Factor</label>
+            <input type="number" id="infiltration" value="2.0" step="0.1">
+            <div class="unit">multiplier for door openings, air changes (1.5–3.0)</div>
+          </div>
+        </div>
+        <div id="fabricResult" style="font-size:0.8rem; color:var(--pine); margin-top:6px; font-weight:500;">Surface area: 5,800 m² → Fabric loss factor: <strong>0.0029 kW/pallet/°C</strong></div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Current 3PL Rate</label>
+          <input type="number" id="rateCurrent" value="0" step="0.01">
+          <div class="unit">£ per pallet per day (0 = use energy cost only)</div>
+        </div>
+        <div class="field">
+          <label>Proposed 3PL Rate</label>
+          <input type="number" id="rateProposed" value="0" step="0.01">
+          <div class="unit">£ per pallet per day (0 = use energy cost only)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOWNSTREAM / THAW COSTS -->
+    <div class="card">
+      <h2>Downstream Costs of Thawing (Current Scenario)</h2>
+      <p style="font-size:0.82rem; color:var(--muted); margin-bottom:14px;">Costs incurred because the product thaws at +3°C. These are <strong>avoided entirely</strong> at -3°C (no phase change, no thawing).</p>
+      <div class="row">
+        <div class="field">
+          <label>Product Waste / Quality Loss</label>
+          <input type="number" id="wastePct" value="2" step="0.1">
+          <div class="unit">% of throughput lost or downgraded due to thawing</div>
+        </div>
+        <div class="field">
+          <label>Product Value</label>
+          <input type="number" id="productValue" value="3500" step="100">
+          <div class="unit">£ per tonne (bacon value)</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Refreezing / Reconditioning Cost</label>
+          <input type="number" id="refreezeCost" value="0" step="0.01">
+          <div class="unit">£ per pallet (if product must be refrozen after thawing, 0 if N/A)</div>
+        </div>
+        <div class="field">
+          <label>Other Downstream Costs</label>
+          <input type="number" id="otherDownstream" value="0" step="100">
+          <div class="unit">£ per year (claims, short shelf life, customer penalties, etc.)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="card results-card" id="resultsCard">
+      <h2>Annual Cost Comparison — Total Cost to Becketts</h2>
+      <div class="results-grid" id="resultsGrid">
+      <div class="result-box">
+        <div class="label">Avg Pallets in Store</div>
+        <div class="value">1000</div>
+        <div class="sub">250 pallets/day × 4d dwell</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Annual Throughput</div>
+        <div class="value">36.5k t</div>
+        <div class="sub">365,000 pallet-days · 365 days/yr</div>
+      </div>
+      <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3); grid-column: 1 / -1;">
+        <div class="label" style="color:var(--lime);">Marginal Daily Cost of Switching (+3°C → -3°C)</div>
+        <div class="value" style="font-size:1.8rem;">£131.16<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (£0.13/pallet/day × 1000 pallets in store)</span></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(218,241,27,0.2);">
+          <div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Higher fabric losses</div>
+            <div style="font-size:1.1rem; font-weight:600;">£9.24<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">ΔT to ambient: 15°C → 21°C<br>+0.418 kWh thermal/pallet/day</div>
+          </div>
+          <div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Lost "free cooling"</div>
+            <div style="font-size:1.1rem; font-weight:600;">£121.92<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Product offset: 5.66 → 0.15 kWh/p/d<br>Latent heat of fusion no longer absorbed</div>
+          </div>
+          <div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">COP efficiency</div>
+            <div style="font-size:1.1rem; font-weight:600;">3.2 → 2.8</div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Lower COP at -3°C means more<br>electricity per kWh of cooling<br>@ £0.28/kWh</div>
+          </div>
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="label">3PL Storage Cost Δ (Annual)</div>
+        <div class="value cost-increase">▲ £21.9k</div>
+        <div class="sub">Based on 3PL rates: £193.4k → £215.3k/yr</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Downstream Costs Avoided (Annual)</div>
+        <div class="value savings">▼ £638.8k</div>
+        <div class="sub">Waste, refreezing, penalties: £638.8k → £0.00/yr</div>
+      </div>
+      <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3);">
+        <div class="label" style="color:var(--lime);">Net Annual Saving / (Cost)</div>
+        <div class="value savings" style="font-size:1.8rem;">▼ £616.9k</div>
+        <div class="sub" style="color:rgba(255,255,255,0.6);">-74.1% · Total: £832.2k → £215.3k/yr</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Latent Heat Avoided</div>
+        <div class="value savings">✓ Yes</div>
+        <div class="sub">Current: 82 MJ/pallet (incl. latent heat at 0°C)<br>
+        Proposed: 2.2 MJ/pallet (sensible only, no phase change)</div>
+      </div>
+    </div>
+      <div class="note" id="negotiationNote"><strong>Key argument — latent heat avoided:</strong> At 3°C the bacon crosses 0°C and thaws. Each pallet absorbs <strong>20.4 kWh of latent heat</strong> as the ice melts — this is the single largest thermal energy component (90% of total product load). At -3°C the product <strong>never crosses 0°C</strong>, so this latent heat exchange is eliminated entirely. The product stays frozen, avoiding <strong>£638.8k/year</strong> in waste, quality loss, and downstream costs. Even if the 3PL rate changes from £0.53 to £0.59/pallet/day, the net saving is <strong>£616.9k/year</strong>.</div>
+      <div class="note" id="freeCoolingNote" style="margin-top: 10px; border-left-color: rgb(248, 113, 113); display: block;"><strong>⚠ Key finding — "Free Cooling" Effect:</strong> The frozen bacon arriving at -6°C provides <strong>5.66 kWh/pallet/day</strong> of cooling to the 3°C store — that's <strong>542%</strong> of the store's fabric losses (1.04 kWh). The product <em>more than offsets</em> all heat ingress, meaning the 3PL's <strong>net refrigeration duty for this product is effectively zero</strong>. The bacon cools the store, not the other way round. This is a powerful argument: the 3PL should not be charging standard chilled storage rates for a product that subsidises their refrigeration.</div>
+    </div>
+
+    <!-- BREAKDOWN TABLE -->
+    <div class="card breakdown">
+      <h2>Detailed Duty Breakdown (per pallet per day)</h2>
+      <table id="breakdownTable">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th class="num" id="thCurrent">Current (+3°C)</th>
+            <th class="num" id="thProposed">Proposed (-3°C)</th>
+            <th class="num">Δ Change</th>
+          </tr>
+        </thead>
+        <tbody id="breakdownBody">
+      <tr>
+        <td>Fabric / transmission losses (kWh thermal)</td>
+        <td class="num">1.044</td>
+        <td class="num">1.462</td>
+        <td class="num" style="color:#dc2626">▲ 0.418</td>
+      </tr>
+      <tr>
+        <td>Product thermal offset (kWh thermal) <em style="color:#16a34a">— reduces duty</em></td>
+        <td class="num" style="color:#16a34a">-5.661</td>
+        <td class="num" style="color:#16a34a">-0.150</td>
+        <td class="num">5.511</td>
+      </tr>
+      <tr class="total-row">
+        <td>Net thermal load (kWh thermal / pallet / day)</td>
+        <td class="num">0.000</td>
+        <td class="num">1.312</td>
+        <td class="num" style="color:#dc2626">▲ 1.312</td>
+      </tr>
+      <tr>
+        <td>COP (efficiency)</td>
+        <td class="num">3.2</td>
+        <td class="num">2.8</td>
+        <td class="num" style="color:#dc2626">▼ 0.4</td>
+      </tr>
+      <tr>
+        <td>Electrical energy (kWh / pallet / day)</td>
+        <td class="num">0.000</td>
+        <td class="num">0.468</td>
+        <td class="num" style="color:#dc2626">▲ 0.468</td>
+      </tr>
+      <tr class="total-row">
+        <td>Energy cost (£ / pallet / day)</td>
+        <td class="num">£0.00</td>
+        <td class="num">£0.13</td>
+        <td class="num" style="color:#dc2626">▲ 0.131</td>
+      </tr>
+      
+      <tr style="border-top: 2px solid #e2e5ea">
+        <td>Actual 3PL rate (£ / pallet / day)</td>
+        <td class="num">£0.53</td>
+        <td class="num">£0.59</td>
+        <td class="num" style="color:#dc2626">▲ 0.060</td>
+      </tr>
+      
+      <tr style="border-top: 3px solid #e2e5ea">
+        <td colspan="4" style="font-weight:600; color:var(--pine); padding-top:14px;">Annual Cost Summary</td>
+      </tr>
+      <tr>
+        <td>3PL storage (annual)</td>
+        <td class="num">£193.4k</td>
+        <td class="num">£215.3k</td>
+        <td class="num" style="color:#dc2626">▲ £21.9k</td>
+      </tr>
+      <tr>
+        <td>Waste / quality loss <em style="color:var(--muted)">(0.5% × 36500t × £3500/t)</em></td>
+        <td class="num">£638.8k</td>
+        <td class="num">£0.00</td>
+        <td class="num" style="color:#16a34a">▼ £638.8k</td>
+      </tr>
+      
+      
+      <tr class="delta-row">
+        <td>NET TOTAL ANNUAL COST</td>
+        <td class="num">£832.2k</td>
+        <td class="num">£215.3k</td>
+        <td class="num">▼ £616.9k</td>
+      </tr>
+    </tbody>
+      </table>
+    </div>
+
+    <!-- ASSUMPTIONS -->
+    <div class="card assumptions">
+      <h2>Model Assumptions &amp; Notes</h2>
+      <ul>
+        <li><strong>"Free cooling" (current +3°C scenario):</strong> When bacon at -8°C enters a +3°C store, it absorbs heat as it warms through 11°C (including crossing 0°C). This <em>reduces</em> the 3PL's refrigeration duty. The latent heat of fusion as ice melts at 0°C is the dominant component — it can offset the store's entire fabric loss, meaning the 3PL's net duty is near-zero.</li>
+        <li><strong>Latent heat is critical:</strong> As bacon crosses 0°C (current scenario only), the ice melts and absorbs ~73 kJ/kg of moisture. At 55% moisture × 400 kg/pallet, that's ~73,500 kJ per pallet — dwarfing the sensible heat components. This "free cooling" disappears at -3°C.</li>
+        <li><strong>Proposed scenario (-3°C):</strong> Product arrives at -8°C and warms to -3°C — a 5°C rise entirely in the frozen range. No latent heat (no phase change). The product still provides some cooling offset, but far less than at +3°C. The 3PL handles fabric losses minus this smaller offset.</li>
+        <li><strong>Fabric losses:</strong> Heat ingress through insulated panels, doors, and infiltration. Proportional to (T_ambient − T_store). A -3°C store has ~40% higher fabric losses than +3°C (assuming 18°C ambient), but the per-pallet cost is modest in a well-insulated facility.</li>
+        <li><strong>COP:</strong> Refrigeration efficiency decreases at lower temperatures. Typical COP for +3°C ≈ 3.0–3.5; for -3°C ≈ 2.6–3.0. The difference is small.</li>
+        <li><strong>Fabric loss factor:</strong> Calculated from store dimensions, panel U-value, pallet capacity, and an infiltration multiplier. Formula: (surface area × U-value × infiltration) ÷ pallet capacity. The infiltration factor accounts for door openings, air changes, equipment heat, and other non-fabric loads (typically 1.5–3.0×).</li>
+        <li><strong>Commercial rates:</strong> If actual 3PL rates are entered, the model calculates both the energy-based "fair" rate and the commercial comparison. The energy duty ratio shows what proportion of the +3°C rate should apply at -3°C.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>
+    Prepared by majaco for Becketts Foods · For negotiation estimation purposes only · Not a binding quotation
+  </footer>
+</div>
+
+<script>
+(function() {
+  const $ = id => document.getElementById(id);
+  const val = id => parseFloat($(id).value) || 0;
+
+  // Attach listeners to all inputs
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calculate);
+  });
+
+  function calculate() {
+    // --- Read inputs ---
+    const volAvg = val('volDaily');          // tonnes/day
+    const dwellDays = val('dwellDays');
+    const palletKg = val('palletKg');
+    const opDays = val('opDays');
+
+    const tArrival = val('tArrival');
+    const tCurrent = val('tCurrent');
+    const tProposed = val('tProposed');
+    const tAmbient = val('tAmbient');
+
+    const cpFrozen = val('cpFrozen');
+    const cpThawed = val('cpThawed');
+    const moisture = val('moisture') / 100;
+    const latentHeat = val('latentHeat');
+
+    const copCurrent = val('copCurrent');
+    const copProposed = val('copProposed');
+    const elecCost = val('elecCost');
+
+    // Fabric factor from store properties
+    const storeL = val('storeL');
+    const storeW = val('storeW');
+    const storeH = val('storeH');
+    const uValue = val('uValue');
+    const palletCapacity = val('palletCapacity');
+    const infiltration = val('infiltration');
+    const surfaceArea = 2*(storeL*storeW) + 2*(storeL*storeH) + 2*(storeW*storeH);
+    const fabricFactor = palletCapacity > 0 ? (surfaceArea * uValue * infiltration) / (palletCapacity * 1000) : 0;
+
+    // Show calculated factor
+    $('fabricResult').innerHTML = `Surface area: ${surfaceArea.toLocaleString()} m² → Fabric loss factor: <strong>${fabricFactor.toFixed(4)} kW/pallet/°C</strong>`;
+
+    const rateCurrent = val('rateCurrent');
+    const rateProposed = val('rateProposed');
+
+    const wastePct = val('wastePct') / 100;
+    const productValue = val('productValue');
+    const refreezeCost = val('refreezeCost');
+    const otherDownstream = val('otherDownstream');
+
+    const useRates = (rateCurrent > 0 && rateProposed > 0);
+
+    // --- Derived ---
+    const palletsPerDay = (volAvg * 1000) / palletKg;
+    const avgPalletsInStore = palletsPerDay * dwellDays;
+    const annualPalletDays = palletsPerDay * dwellDays * opDays;
+
+    // --- PRODUCT THERMAL LOAD (per pallet, over entire dwell) ---
+    // Current scenario: product warms from tArrival to tCurrent
+    // Energy absorbed BY product = heat REMOVED from the cold store (reduces duty)
+    let productLoadCurrent_kJ = 0; // kJ per pallet (positive = product absorbs heat = reduces refrigeration duty)
+    if (tArrival < tCurrent) {
+      // Sensible heat below 0°C: tArrival to min(0, tCurrent)
+      const tMid = Math.min(0, tCurrent);
+      if (tArrival < 0 && tMid > tArrival) {
+        productLoadCurrent_kJ += palletKg * cpFrozen * (tMid - tArrival);
+      }
+      // Latent heat at 0°C (only if crossing 0°C)
+      if (tArrival < 0 && tCurrent > 0) {
+        productLoadCurrent_kJ += palletKg * moisture * latentHeat;
+      }
+      // Sensible heat above 0°C: max(0, tArrival) to tCurrent
+      const tStart = Math.max(0, tArrival);
+      if (tCurrent > tStart && tCurrent > 0) {
+        productLoadCurrent_kJ += palletKg * cpThawed * (tCurrent - tStart);
+      }
+    }
+
+    // Proposed scenario: product at tArrival into store at tProposed
+    let productLoadProposed_kJ = 0;
+    if (tArrival < tProposed) {
+      const tMid = Math.min(0, tProposed);
+      if (tArrival < 0 && tMid > tArrival) {
+        productLoadProposed_kJ += palletKg * cpFrozen * (tMid - tArrival);
+      }
+      if (tArrival < 0 && tProposed > 0) {
+        productLoadProposed_kJ += palletKg * moisture * latentHeat;
+      }
+      const tStart = Math.max(0, tArrival);
+      if (tProposed > tStart && tProposed > 0) {
+        productLoadProposed_kJ += palletKg * cpThawed * (tProposed - tStart);
+      }
+    } else if (tArrival > tProposed) {
+      // Product needs cooling — this ADDS to refrigeration duty
+      // Sensible above 0°C down to max(0, tProposed)
+      const tMidUpper = Math.max(0, tProposed);
+      if (tArrival > 0 && tArrival > tMidUpper) {
+        productLoadProposed_kJ -= palletKg * cpThawed * (tArrival - tMidUpper);
+      }
+      if (tArrival > 0 && tProposed < 0) {
+        productLoadProposed_kJ -= palletKg * moisture * latentHeat;
+      }
+      const tEnd = Math.min(0, tArrival);
+      if (tProposed < tEnd && tProposed < 0) {
+        productLoadProposed_kJ -= palletKg * cpFrozen * (tEnd - tProposed);
+      }
+    }
+    // else tArrival === tProposed → 0 load
+
+    // Convert product load to kWh per pallet (over dwell)
+    const productLoadCurrent_kWh = productLoadCurrent_kJ / 3600;
+    const productLoadProposed_kWh = productLoadProposed_kJ / 3600;
+
+    // --- FABRIC / TRANSMISSION LOSSES (per pallet-slot per day) ---
+    const fabricDeltaCurrent = Math.max(0, tAmbient - tCurrent);
+    const fabricDeltaProposed = Math.max(0, tAmbient - tProposed);
+
+    const fabricKW_current = fabricFactor * fabricDeltaCurrent;    // kW per pallet-slot
+    const fabricKW_proposed = fabricFactor * fabricDeltaProposed;
+
+    const fabricKWh_perDay_current = fabricKW_current * 24;
+    const fabricKWh_perDay_proposed = fabricKW_proposed * 24;
+
+    // --- NET REFRIGERATION DUTY PER PALLET PER DAY ---
+    // Product load offset: spread over dwell days (it happens once per pallet, over the dwell)
+    const productOffset_perDay_current = productLoadCurrent_kWh / dwellDays;  // positive = reduces duty
+    const productOffset_perDay_proposed = productLoadProposed_kWh / dwellDays;
+
+    // Net thermal load on refrigeration system (kWh_thermal per pallet per day)
+    const netThermal_current = fabricKWh_perDay_current - productOffset_perDay_current;
+    const netThermal_proposed = fabricKWh_perDay_proposed - productOffset_perDay_proposed;
+
+    // Electrical energy = thermal / COP
+    const elecPerPalletDay_current = Math.max(0, netThermal_current) / copCurrent;
+    const elecPerPalletDay_proposed = Math.max(0, netThermal_proposed) / copProposed;
+
+    // Cost per pallet per day (energy-based)
+    const energyCostPerPD_current = elecPerPalletDay_current * elecCost;
+    const energyCostPerPD_proposed = elecPerPalletDay_proposed * elecCost;
+
+    // --- ANNUAL COSTS ---
+    let annualCurrent, annualProposed, costPerPD_current, costPerPD_proposed;
+
+    if (useRates) {
+      costPerPD_current = rateCurrent;
+      costPerPD_proposed = rateProposed;
+      annualCurrent = rateCurrent * annualPalletDays;
+      annualProposed = rateProposed * annualPalletDays;
+    } else {
+      costPerPD_current = energyCostPerPD_current;
+      costPerPD_proposed = energyCostPerPD_proposed;
+      annualCurrent = energyCostPerPD_current * annualPalletDays;
+      annualProposed = energyCostPerPD_proposed * annualPalletDays;
+    }
+
+    const storageDelta = annualProposed - annualCurrent;
+
+    // --- DOWNSTREAM COSTS (current scenario only — avoided at proposed temp if no thawing) ---
+    const annualTonnes = volAvg * opDays;
+    const annualPallets = palletsPerDay * opDays;
+    const crossesZeroCurrent = (tArrival < 0 && tCurrent > 0);
+    const crossesZeroProposed = (tArrival < 0 && tProposed > 0);
+
+    // Waste: only if product crosses 0°C (thaws)
+    const wasteCurrentAnnual = crossesZeroCurrent ? (annualTonnes * wastePct * productValue) : 0;
+    const wasteProposedAnnual = crossesZeroProposed ? (annualTonnes * wastePct * productValue) : 0;
+
+    // Refreezing: only if product crosses 0°C
+    const refreezeCurrentAnnual = crossesZeroCurrent ? (annualPallets * refreezeCost) : 0;
+    const refreezeProposedAnnual = crossesZeroProposed ? (annualPallets * refreezeCost) : 0;
+
+    // Other downstream
+    const otherCurrentAnnual = crossesZeroCurrent ? otherDownstream : 0;
+    const otherProposedAnnual = crossesZeroProposed ? otherDownstream : 0;
+
+    const downstreamCurrent = wasteCurrentAnnual + refreezeCurrentAnnual + otherCurrentAnnual;
+    const downstreamProposed = wasteProposedAnnual + refreezeProposedAnnual + otherProposedAnnual;
+    const downstreamDelta = downstreamProposed - downstreamCurrent;
+
+    // TOTAL
+    const totalCurrent = annualCurrent + downstreamCurrent;
+    const totalProposed = annualProposed + downstreamProposed;
+    const totalDelta = totalProposed - totalCurrent;
+    const totalDeltaPct = totalCurrent !== 0 ? (totalDelta / totalCurrent) * 100 : 0;
+
+    // Fair rate: what the proposed rate SHOULD be based on energy duty comparison
+    const fairRateRatio = energyCostPerPD_proposed / Math.max(0.001, energyCostPerPD_current);
+
+    // Daily marginal cost of switching (energy-based, for all pallets in store)
+    const dailyMarginalEnergy = (energyCostPerPD_proposed - energyCostPerPD_current) * avgPalletsInStore;
+    // Daily marginal including downstream savings (spread per day)
+    const dailyMarginalTotal = (totalDelta) / opDays;
+
+    // --- MARGINAL COST DECOMPOSITION (per pallet per day) ---
+    // 1. Fabric loss increase (more heat ingress at lower temp)
+    const fabricIncrease_perPD = fabricKWh_perDay_proposed - fabricKWh_perDay_current;
+    // 2. Lost product cooling (less free cooling at proposed temp)
+    const lostCooling_perPD = productOffset_perDay_current - productOffset_perDay_proposed;
+    // 3. Combined thermal increase
+    const thermalIncrease_perPD = fabricIncrease_perPD + lostCooling_perPD;
+    // 4. Convert to electrical at proposed COP & elec cost
+    //    (We show the drivers as proportions of the total marginal cost)
+    const marginalPerPD = energyCostPerPD_proposed - energyCostPerPD_current;
+    // Attribute proportionally: fabric increase share vs lost cooling share
+    const totalThermalDrivers = Math.abs(fabricIncrease_perPD) + Math.abs(lostCooling_perPD);
+    const fabricShare = totalThermalDrivers > 0 ? Math.abs(fabricIncrease_perPD) / totalThermalDrivers : 0;
+    const coolingShare = totalThermalDrivers > 0 ? Math.abs(lostCooling_perPD) / totalThermalDrivers : 0;
+    const fabricCostContrib = dailyMarginalEnergy * fabricShare;
+    const coolingCostContrib = dailyMarginalEnergy * coolingShare;
+
+    // --- RENDER RESULTS ---
+    const fmt = (n) => {
+      if (Math.abs(n) >= 1000000) return '£' + (n/1000000).toFixed(2) + 'M';
+      if (Math.abs(n) >= 1000) return '£' + (n/1000).toFixed(1) + 'k';
+      return '£' + n.toFixed(2);
+    };
+
+    // Update dynamic table headers
+    $('thCurrent').textContent = `Current (${tCurrent >= 0 ? '+' : ''}${tCurrent}°C)`;
+    $('thProposed').textContent = `Proposed (${tProposed >= 0 ? '+' : ''}${tProposed}°C)`;
+
+    const resultsGrid = $('resultsGrid');
+    resultsGrid.innerHTML = `
+      <div class="result-box">
+        <div class="label">Avg Pallets in Store</div>
+        <div class="value">${avgPalletsInStore.toFixed(0)}</div>
+        <div class="sub">${palletsPerDay.toFixed(0)} pallets/day × ${dwellDays}d dwell</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Annual Throughput</div>
+        <div class="value">${(annualTonnes/1000).toFixed(1)}k t</div>
+        <div class="sub">${annualPalletDays.toLocaleString()} pallet-days · ${opDays} days/yr</div>
+      </div>
+      <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3); grid-column: 1 / -1;">
+        <div class="label" style="color:var(--lime);">Marginal Daily Cost of Switching (${tCurrent >= 0 ? '+' : ''}${tCurrent}°C → ${tProposed >= 0 ? '+' : ''}${tProposed}°C)</div>
+        <div class="value" style="font-size:1.8rem;">${fmt(Math.abs(dailyMarginalEnergy))}<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (${fmt(Math.abs(marginalPerPD))}/pallet/day × ${avgPalletsInStore.toFixed(0)} pallets in store)</span></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(218,241,27,0.2);">
+          <div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Higher fabric losses</div>
+            <div style="font-size:1.1rem; font-weight:600;">${fmt(Math.abs(fabricCostContrib))}<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">ΔT to ambient: ${(tAmbient - tCurrent).toFixed(0)}°C → ${(tAmbient - tProposed).toFixed(0)}°C<br>+${fabricIncrease_perPD.toFixed(3)} kWh thermal/pallet/day</div>
+          </div>
+          <div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Lost "free cooling"</div>
+            <div style="font-size:1.1rem; font-weight:600;">${fmt(Math.abs(coolingCostContrib))}<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Product offset: ${productOffset_perDay_current.toFixed(2)} → ${productOffset_perDay_proposed.toFixed(2)} kWh/p/d<br>${crossesZeroCurrent && !crossesZeroProposed ? 'Latent heat of fusion no longer absorbed' : 'Less sensible heat absorbed'}</div>
+          </div>
+          <div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">COP efficiency</div>
+            <div style="font-size:1.1rem; font-weight:600;">${copCurrent.toFixed(1)} → ${copProposed.toFixed(1)}</div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Lower COP at ${tProposed}°C means more<br>electricity per kWh of cooling<br>@ ${fmt(elecCost)}/kWh</div>
+          </div>
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="label">3PL Storage Cost Δ (Annual)</div>
+        <div class="value ${storageDelta <= 0 ? 'savings' : 'cost-increase'}">${storageDelta <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(storageDelta))}</div>
+        <div class="sub">${useRates ? 'Based on 3PL rates' : 'Energy cost estimate'}: ${fmt(annualCurrent)} → ${fmt(annualProposed)}/yr</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Downstream Costs Avoided (Annual)</div>
+        <div class="value ${downstreamDelta <= 0 ? 'savings' : 'cost-increase'}">${downstreamDelta < 0 ? '▼ ' : ''}${fmt(Math.abs(downstreamDelta))}</div>
+        <div class="sub">Waste, refreezing, penalties: ${fmt(downstreamCurrent)} → ${fmt(downstreamProposed)}/yr</div>
+      </div>
+      <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3);">
+        <div class="label" style="color:var(--lime);">Net Annual Saving / (Cost)</div>
+        <div class="value ${totalDelta <= 0 ? 'savings' : 'cost-increase'}" style="font-size:1.8rem;">${totalDelta <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(totalDelta))}</div>
+        <div class="sub" style="color:rgba(255,255,255,0.6);">${totalDeltaPct >= 0 ? '+' : ''}${totalDeltaPct.toFixed(1)}% · Total: ${fmt(totalCurrent)} → ${fmt(totalProposed)}/yr</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Latent Heat Avoided</div>
+        <div class="value savings">${crossesZeroCurrent && !crossesZeroProposed ? '✓ Yes' : crossesZeroProposed ? '✗ No' : 'N/A'}</div>
+        <div class="sub">${crossesZeroCurrent ? `Current: ${(productLoadCurrent_kJ/1000).toFixed(0)} MJ/pallet (incl. latent heat at 0°C)` : 'No phase change in either scenario'}<br>
+        ${!crossesZeroProposed ? `Proposed: ${(productLoadProposed_kJ/1000).toFixed(1)} MJ/pallet (sensible only, no phase change)` : `Proposed: still crosses 0°C`}</div>
+      </div>
+    `;
+
+    // Negotiation note
+    const noteEl = $('negotiationNote');
+    const fcNote = $('freeCoolingNote');
+    const freeCoolingExceeds = productOffset_perDay_current > fabricKWh_perDay_current;
+    const freeCoolingPct = fabricKWh_perDay_current > 0 ? (productOffset_perDay_current / fabricKWh_perDay_current * 100) : 0;
+
+    const latentAvoided = crossesZeroCurrent && !crossesZeroProposed;
+    const latentKWhPerPallet = latentAvoided ? ((palletKg * moisture * latentHeat) / 3600) : 0;
+
+    if (latentAvoided) {
+      noteEl.innerHTML = `<strong>Key argument — latent heat avoided:</strong> At ${tCurrent}°C the bacon crosses 0°C and thaws. Each pallet absorbs <strong>${latentKWhPerPallet.toFixed(1)} kWh of latent heat</strong> as the ice melts — this is the single largest thermal energy component (${((palletKg * moisture * latentHeat)/productLoadCurrent_kJ * 100).toFixed(0)}% of total product load). At ${tProposed}°C the product <strong>never crosses 0°C</strong>, so this latent heat exchange is eliminated entirely. The product stays frozen, avoiding <strong>${fmt(downstreamCurrent)}/year</strong> in waste, quality loss, and downstream costs. ${useRates ? `Even if the 3PL rate changes from ${fmt(rateCurrent)} to ${fmt(rateProposed)}/pallet/day, the net saving is <strong>${fmt(Math.abs(totalDelta))}/year</strong>.` : '<strong>Enter actual 3PL rates above to see the full commercial picture.</strong>'}`;
+    } else {
+      noteEl.innerHTML = `<strong>Negotiation insight:</strong> ${crossesZeroProposed ? 'Both scenarios cross 0°C — product thaws in both cases.' : `Neither scenario crosses 0°C — no latent heat in either case. The duty difference is driven by fabric losses and sensible heat only.`} <strong>Enter actual 3PL rates above to calculate the commercial impact.</strong>`;
+    }
+
+    // Free cooling insight — the key negotiation argument
+    if (freeCoolingExceeds) {
+      fcNote.style.display = 'block';
+      fcNote.innerHTML = `<strong>⚠ Key finding — "Free Cooling" Effect:</strong> The frozen bacon arriving at ${tArrival}°C provides <strong>${productOffset_perDay_current.toFixed(2)} kWh/pallet/day</strong> of cooling to the ${tCurrent}°C store — that's <strong>${freeCoolingPct.toFixed(0)}%</strong> of the store's fabric losses (${fabricKWh_perDay_current.toFixed(2)} kWh). The product <em>more than offsets</em> all heat ingress, meaning the 3PL's <strong>net refrigeration duty for this product is effectively zero</strong>. The bacon cools the store, not the other way round. This is a powerful argument: the 3PL should not be charging standard chilled storage rates for a product that subsidises their refrigeration.`;
+    } else if (productOffset_perDay_current > 0) {
+      fcNote.style.display = 'block';
+      fcNote.innerHTML = `<strong>ℹ "Free Cooling" Effect:</strong> The frozen bacon arriving at ${tArrival}°C offsets <strong>${freeCoolingPct.toFixed(0)}%</strong> of the store's fabric losses at ${tCurrent}°C (${productOffset_perDay_current.toFixed(2)} of ${fabricKWh_perDay_current.toFixed(2)} kWh/pallet/day). The 3PL receives a material cooling benefit from the product.`;
+    } else {
+      fcNote.style.display = 'none';
+    }
+
+    // --- BREAKDOWN TABLE ---
+    const tbody = $('breakdownBody');
+    const r = (v) => v.toFixed(3);
+    const deltaClass = (c, p) => p - c <= 0 ? '' : ' style="color:#dc2626"';
+    const deltaSign = (c, p) => {
+      const d = p - c;
+      return (d <= 0 ? '▼ ' : '▲ ') + r(Math.abs(d));
+    };
+
+    tbody.innerHTML = `
+      <tr>
+        <td>Fabric / transmission losses (kWh thermal)</td>
+        <td class="num">${r(fabricKWh_perDay_current)}</td>
+        <td class="num">${r(fabricKWh_perDay_proposed)}</td>
+        <td class="num"${deltaClass(fabricKWh_perDay_current, fabricKWh_perDay_proposed)}>${deltaSign(fabricKWh_perDay_current, fabricKWh_perDay_proposed)}</td>
+      </tr>
+      <tr>
+        <td>Product thermal offset (kWh thermal) <em style="color:${productOffset_perDay_current > 0 ? '#16a34a' : '#6b7280'}">— reduces duty</em></td>
+        <td class="num" style="color:#16a34a">${productOffset_perDay_current > 0 ? '-' : ''}${r(productOffset_perDay_current)}</td>
+        <td class="num" style="color:${productOffset_perDay_proposed > 0 ? '#16a34a' : '#6b7280'}">${productOffset_perDay_proposed > 0 ? '-' : ''}${r(Math.abs(productOffset_perDay_proposed))}</td>
+        <td class="num">${r(Math.abs(productOffset_perDay_current - productOffset_perDay_proposed))}</td>
+      </tr>
+      <tr class="total-row">
+        <td>Net thermal load (kWh thermal / pallet / day)</td>
+        <td class="num">${r(Math.max(0, netThermal_current))}</td>
+        <td class="num">${r(Math.max(0, netThermal_proposed))}</td>
+        <td class="num"${deltaClass(netThermal_current, netThermal_proposed)}>${deltaSign(Math.max(0, netThermal_current), Math.max(0, netThermal_proposed))}</td>
+      </tr>
+      <tr>
+        <td>COP (efficiency)</td>
+        <td class="num">${copCurrent.toFixed(1)}</td>
+        <td class="num">${copProposed.toFixed(1)}</td>
+        <td class="num" style="color:${copProposed < copCurrent ? '#dc2626' : '#16a34a'}">${copProposed < copCurrent ? '▼ ' : '▲ '}${Math.abs(copProposed - copCurrent).toFixed(1)}</td>
+      </tr>
+      <tr>
+        <td>Electrical energy (kWh / pallet / day)</td>
+        <td class="num">${r(elecPerPalletDay_current)}</td>
+        <td class="num">${r(elecPerPalletDay_proposed)}</td>
+        <td class="num"${deltaClass(elecPerPalletDay_current, elecPerPalletDay_proposed)}>${deltaSign(elecPerPalletDay_current, elecPerPalletDay_proposed)}</td>
+      </tr>
+      <tr class="total-row">
+        <td>Energy cost (£ / pallet / day)</td>
+        <td class="num">${fmt(energyCostPerPD_current)}</td>
+        <td class="num">${fmt(energyCostPerPD_proposed)}</td>
+        <td class="num"${deltaClass(energyCostPerPD_current, energyCostPerPD_proposed)}>${deltaSign(energyCostPerPD_current, energyCostPerPD_proposed)}</td>
+      </tr>
+      ${useRates ? `
+      <tr style="border-top: 2px solid #e2e5ea">
+        <td>Actual 3PL rate (£ / pallet / day)</td>
+        <td class="num">${fmt(rateCurrent)}</td>
+        <td class="num">${fmt(rateProposed)}</td>
+        <td class="num"${deltaClass(rateCurrent, rateProposed)}>${deltaSign(rateCurrent, rateProposed)}</td>
+      </tr>
+      ` : ''}
+      <tr style="border-top: 3px solid #e2e5ea">
+        <td colspan="4" style="font-weight:600; color:var(--pine); padding-top:14px;">Annual Cost Summary</td>
+      </tr>
+      <tr>
+        <td>3PL storage (annual)</td>
+        <td class="num">${fmt(annualCurrent)}</td>
+        <td class="num">${fmt(annualProposed)}</td>
+        <td class="num"${deltaClass(annualCurrent, annualProposed)}>${(annualProposed - annualCurrent) <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(annualProposed - annualCurrent))}</td>
+      </tr>
+      <tr>
+        <td>Waste / quality loss <em style="color:var(--muted)">(${(wastePct*100).toFixed(1)}% × ${annualTonnes.toFixed(0)}t × £${productValue}/t)</em></td>
+        <td class="num">${fmt(wasteCurrentAnnual)}</td>
+        <td class="num">${fmt(wasteProposedAnnual)}</td>
+        <td class="num" style="color:#16a34a">${wasteCurrentAnnual > 0 && wasteProposedAnnual === 0 ? '▼ ' + fmt(wasteCurrentAnnual) : fmt(wasteProposedAnnual - wasteCurrentAnnual)}</td>
+      </tr>
+      ${refreezeCost > 0 ? `
+      <tr>
+        <td>Refreezing / reconditioning</td>
+        <td class="num">${fmt(refreezeCurrentAnnual)}</td>
+        <td class="num">${fmt(refreezeProposedAnnual)}</td>
+        <td class="num" style="color:#16a34a">${refreezeCurrentAnnual > 0 && refreezeProposedAnnual === 0 ? '▼ ' + fmt(refreezeCurrentAnnual) : fmt(refreezeProposedAnnual - refreezeCurrentAnnual)}</td>
+      </tr>
+      ` : ''}
+      ${otherDownstream > 0 ? `
+      <tr>
+        <td>Other downstream costs</td>
+        <td class="num">${fmt(otherCurrentAnnual)}</td>
+        <td class="num">${fmt(otherProposedAnnual)}</td>
+        <td class="num" style="color:#16a34a">${otherCurrentAnnual > 0 && otherProposedAnnual === 0 ? '▼ ' + fmt(otherCurrentAnnual) : fmt(otherProposedAnnual - otherCurrentAnnual)}</td>
+      </tr>
+      ` : ''}
+      <tr class="${totalDelta <= 0 ? 'delta-row' : 'delta-row negative'}">
+        <td>NET TOTAL ANNUAL COST</td>
+        <td class="num">${fmt(totalCurrent)}</td>
+        <td class="num">${fmt(totalProposed)}</td>
+        <td class="num">${totalDelta <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(totalDelta))}</td>
+      </tr>
+    `;
+  }
+
+  // Initial calculation
+  calculate();
+})();
+</script>
+
+
+</body></html>
