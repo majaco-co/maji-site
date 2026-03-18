@@ -1,187 +1,221 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3PL Cold Storage Duty Calculator — Becketts</title>
-<script src="../js/auth-gate.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
-<style>
-  @font-face { font-family: 'TT Hoves Pro'; src: url('../assets/fonts/TT_Hoves_Pro_Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
-  @font-face { font-family: 'TT Hoves Pro'; src: url('../assets/fonts/TT_Hoves_Pro_Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-  @font-face { font-family: 'TT Hoves Pro'; src: url('../assets/fonts/TT_Hoves_Pro_Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-  :root {
-    --pine: #006458;
-    --pine-dark: #004a40;
-    --lime: #DAF11B;
-    --dark: #001412;
-    --bg: #f7f8fa;
-    --card: #ffffff;
-    --border: #e2e5ea;
-    --muted: #6b7280;
-    --red: #dc2626;
-    --green: #16a34a;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'TT Hoves Pro', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--dark);
-    line-height: 1.5;
-    padding: 24px;
-  }
-  .container { max-width: 1100px; margin: 0 auto; }
-  header {
-    background: var(--pine);
-    color: white;
-    padding: 28px 32px;
-    border-radius: 12px;
-    margin-bottom: 24px;
-  }
-  header h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; }
-  header p { opacity: 0.85; font-size: 0.9rem; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-  }
-  .card h2 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--pine);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--lime);
-  }
-  .field { margin-bottom: 14px; }
-  .field label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-  .field input, .field select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.95rem;
-    color: var(--dark);
-    background: #fafbfc;
-    transition: border-color 0.15s;
-  }
-  .field input:focus, .field select:focus {
-    outline: none;
-    border-color: var(--pine);
-    background: white;
-  }
-  .field .unit {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-  .row { display: flex; gap: 12px; }
-  .row .field { flex: 1; }
-  .results-card {
-    grid-column: 1 / -1;
-    background: var(--dark);
-    color: white;
-    border: none;
-  }
-  .results-card h2 {
-    color: var(--lime);
-    border-bottom-color: rgba(218,241,27,0.3);
-  }
-  .results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  .result-box {
-    background: rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 16px;
-  }
-  .result-box .label {
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .result-box .value {
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-  .result-box .sub {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.5);
-    margin-top: 2px;
-  }
-  .savings { color: var(--lime); }
-  .cost-increase { color: #f87171; }
-  .breakdown {
-    grid-column: 1 / -1;
-  }
-  .breakdown table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-  }
-  .breakdown th {
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    color: var(--pine);
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .breakdown td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #f0f1f3;
-  }
-  .breakdown tr:last-child td { border-bottom: none; }
-  .breakdown .num { text-align: right; font-variant-numeric: tabular-nums; }
-  .breakdown .total-row { font-weight: 700; background: #f7f8fa; }
-  .breakdown .delta-row { font-weight: 700; background: #f0fdf4; color: var(--green); }
-  .breakdown .delta-row.negative { background: #fef2f2; color: var(--red); }
-  .note {
-    margin-top: 16px;
-    padding: 14px 16px;
-    background: rgba(218,241,27,0.08);
-    border-left: 3px solid var(--lime);
-    border-radius: 0 6px 6px 0;
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.7);
-  }
-  .note strong { color: var(--lime); }
-  .assumptions {
-    grid-column: 1 / -1;
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-  .assumptions h2 { color: var(--pine); border-bottom-color: var(--border); }
-  .assumptions ul { padding-left: 20px; margin-top: 8px; }
-  .assumptions li { margin-bottom: 4px; }
-  footer {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
-</style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3PL Cold Storage Duty Calculator — Becketts</title>
+  <script src="../js/auth-gate.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <style>
+    :root {
+      --pine: var(--color-primary);
+      --pine-dark: var(--color-primary-dark);
+      --lime: var(--color-accent);
+      --dark: var(--color-bg-dark);
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --border: #e0e0e0;
+      --muted: #7A7A7A;
+      --red: #dc2626;
+      --green: #16a34a;
+    }
+    body {
+      font-family: 'TT Hoves Pro', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.5;
+      padding: 0;
+    }
+    .calc-container { max-width: 1100px; margin: 0 auto; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+    }
+    .card h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--pine);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--lime);
+    }
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--dark);
+      background: #f5f5f5;
+      transition: border-color 0.15s;
+    }
+    .field input:focus, .field select:focus {
+      outline: none;
+      border-color: var(--pine);
+      background: white;
+    }
+    .field .unit {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .row { display: flex; gap: 12px; }
+    .row .field { flex: 1; }
+    .results-card {
+      grid-column: 1 / -1;
+      background: #ffffff;
+      color: var(--dark);
+      border: 2px solid var(--pine);
+    }
+    .results-card h2 {
+      color: var(--pine);
+      border-bottom-color: var(--pine);
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .result-box {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .result-box .label {
+      font-size: 0.78rem;
+      color: #7A7A7A;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .result-box .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .result-box .sub {
+      font-size: 0.8rem;
+      color: #7A7A7A;
+      margin-top: 2px;
+    }
+    .savings { color: var(--pine); }
+    .cost-increase { color: #EF4444; }
+    .breakdown {
+      grid-column: 1 / -1;
+    }
+    .breakdown table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .breakdown th {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--pine);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .breakdown td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .breakdown tr:last-child td { border-bottom: none; }
+    .breakdown .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .breakdown .total-row { font-weight: 700; background: #f5f5f5; }
+    .breakdown .delta-row { font-weight: 700; background: #f0fdf4; color: var(--green); }
+    .breakdown .delta-row.negative { background: #fef2f2; color: var(--red); }
+    .note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: rgba(218,241,27,0.08);
+      border-left: 3px solid var(--lime);
+      border-radius: 0 6px 6px 0;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+    }
+    .note strong { color: var(--lime); }
+    .assumptions {
+      grid-column: 1 / -1;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .assumptions h2 { color: var(--pine); border-bottom-color: var(--border); }
+    .assumptions ul { padding-left: 20px; margin-top: 8px; }
+    .assumptions li { margin-bottom: 4px; }
+  </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>3PL Cold Storage Duty Calculator</h1>
-    <p>Estimate the change in refrigeration duty &amp; annual cost when switching from +3°C to -3°C storage</p>
-  </header>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html">Becketts</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">3PL Cold Storage Calculator</span>
+      </nav>
+      <p class="page-hero__eyebrow">Client Portal</p>
+      <h1 class="page-hero__title">
+        3PL Cold Storage <span class="text-green">Calculator</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        Energy duty model for third-party cold storage — compare current vs proposed configurations.
+      </p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="calc-container">
 
   <div class="grid">
 
@@ -287,7 +321,7 @@
         <input type="number" id="elecCost" value="0.28" step="0.01">
         <div class="unit">£ per kWh</div>
       </div>
-      <div style="background:#f7f8fa; border-radius:6px; padding:14px; margin-bottom:14px;">
+      <div style="background:#f5f5f5; border-radius:6px; padding:14px; margin-bottom:14px;">
         <div style="font-size:0.78rem; font-weight:600; color:var(--pine); margin-bottom:10px;">Fabric Loss Factor (calculated from store properties)</div>
         <div class="row">
           <div class="field">
@@ -427,7 +461,7 @@
       </div>
     </div>
       <div class="note" id="negotiationNote"><strong>Key argument — latent heat avoided:</strong> At 3°C the bacon crosses 0°C and thaws. Each pallet absorbs <strong>20.4 kWh of latent heat</strong> as the ice melts — this is the single largest thermal energy component (90% of total product load). At -3°C the product <strong>never crosses 0°C</strong>, so this latent heat exchange is eliminated entirely. The product stays frozen, avoiding <strong>£638.8k/year</strong> in waste, quality loss, and downstream costs. Even if the 3PL rate changes from £0.53 to £0.59/pallet/day, the net saving is <strong>£616.9k/year</strong>.</div>
-      <div class="note" id="freeCoolingNote" style="margin-top: 10px; border-left-color: rgb(248, 113, 113); display: block;"><strong>⚠ Key finding — "Free Cooling" Effect:</strong> The frozen bacon arriving at -6°C provides <strong>5.66 kWh/pallet/day</strong> of cooling to the 3°C store — that's <strong>542%</strong> of the store's fabric losses (1.04 kWh). The product <em>more than offsets</em> all heat ingress, meaning the 3PL's <strong>net refrigeration duty for this product is effectively zero</strong>. The bacon cools the store, not the other way round. This is a powerful argument: the 3PL should not be charging standard chilled storage rates for a product that subsidises their refrigeration.</div>
+      <div class="note" id="freeCoolingNote" style="margin-top: 10px; border-left-color: #EF4444; display: block;"><strong>⚠ Key finding — "Free Cooling" Effect:</strong> The frozen bacon arriving at -6°C provides <strong>5.66 kWh/pallet/day</strong> of cooling to the 3°C store — that's <strong>542%</strong> of the store's fabric losses (1.04 kWh). The product <em>more than offsets</em> all heat ingress, meaning the 3PL's <strong>net refrigeration duty for this product is effectively zero</strong>. The bacon cools the store, not the other way round. This is a powerful argument: the 3PL should not be charging standard chilled storage rates for a product that subsidises their refrigeration.</div>
     </div>
 
     <!-- BREAKDOWN TABLE -->
@@ -479,15 +513,15 @@
         <td class="num">£0.13</td>
         <td class="num" style="color:#dc2626">▲ 0.131</td>
       </tr>
-      
-      <tr style="border-top: 2px solid #e2e5ea">
+
+      <tr style="border-top: 2px solid #e0e0e0">
         <td>Actual 3PL rate (£ / pallet / day)</td>
         <td class="num">£0.53</td>
         <td class="num">£0.59</td>
         <td class="num" style="color:#dc2626">▲ 0.060</td>
       </tr>
-      
-      <tr style="border-top: 3px solid #e2e5ea">
+
+      <tr style="border-top: 3px solid #e0e0e0">
         <td colspan="4" style="font-weight:600; color:var(--pine); padding-top:14px;">Annual Cost Summary</td>
       </tr>
       <tr>
@@ -502,8 +536,8 @@
         <td class="num">£0.00</td>
         <td class="num" style="color:#16a34a">▼ £638.8k</td>
       </tr>
-      
-      
+
+
       <tr class="delta-row">
         <td>NET TOTAL ANNUAL COST</td>
         <td class="num">£832.2k</td>
@@ -530,10 +564,22 @@
 
   </div>
 
-  <footer>
-    Prepared by majaco for Becketts Foods · For negotiation estimation purposes only · Not a binding quotation
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
   </footer>
-</div>
 
 <script>
 (function() {
@@ -857,9 +903,9 @@
         <td class="num"${deltaClass(fabricKWh_perDay_current, fabricKWh_perDay_proposed)}>${deltaSign(fabricKWh_perDay_current, fabricKWh_perDay_proposed)}</td>
       </tr>
       <tr>
-        <td>Product thermal offset (kWh thermal) <em style="color:${productOffset_perDay_current > 0 ? '#16a34a' : '#6b7280'}">— reduces duty</em></td>
+        <td>Product thermal offset (kWh thermal) <em style="color:${productOffset_perDay_current > 0 ? '#16a34a' : '#7A7A7A'}">— reduces duty</em></td>
         <td class="num" style="color:#16a34a">${productOffset_perDay_current > 0 ? '-' : ''}${r(productOffset_perDay_current)}</td>
-        <td class="num" style="color:${productOffset_perDay_proposed > 0 ? '#16a34a' : '#6b7280'}">${productOffset_perDay_proposed > 0 ? '-' : ''}${r(Math.abs(productOffset_perDay_proposed))}</td>
+        <td class="num" style="color:${productOffset_perDay_proposed > 0 ? '#16a34a' : '#7A7A7A'}">${productOffset_perDay_proposed > 0 ? '-' : ''}${r(Math.abs(productOffset_perDay_proposed))}</td>
         <td class="num">${r(Math.abs(productOffset_perDay_current - productOffset_perDay_proposed))}</td>
       </tr>
       <tr class="total-row">
@@ -887,14 +933,14 @@
         <td class="num"${deltaClass(energyCostPerPD_current, energyCostPerPD_proposed)}>${deltaSign(energyCostPerPD_current, energyCostPerPD_proposed)}</td>
       </tr>
       ${useRates ? `
-      <tr style="border-top: 2px solid #e2e5ea">
+      <tr style="border-top: 2px solid #e0e0e0">
         <td>Actual 3PL rate (£ / pallet / day)</td>
         <td class="num">${fmt(rateCurrent)}</td>
         <td class="num">${fmt(rateProposed)}</td>
         <td class="num"${deltaClass(rateCurrent, rateProposed)}>${deltaSign(rateCurrent, rateProposed)}</td>
       </tr>
       ` : ''}
-      <tr style="border-top: 3px solid #e2e5ea">
+      <tr style="border-top: 3px solid #e0e0e0">
         <td colspan="4" style="font-weight:600; color:var(--pine); padding-top:14px;">Annual Cost Summary</td>
       </tr>
       <tr>
@@ -939,5 +985,6 @@
 })();
 </script>
 
-
-</body></html>
+  <script src="../js/main.js"></script>
+</body>
+</html>

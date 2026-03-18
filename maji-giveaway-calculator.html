@@ -19,7 +19,7 @@
     /* Giveaway Calculator — scoped styles */
     .gc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
     .gc-panel{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem}
-    .gc-panel h3{font-size:1.1rem;font-weight:800;margin-bottom:1rem;color:#001412;border-bottom:2px solid #006458;padding-bottom:0.5rem}
+    .gc-panel h3{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#001412;border-bottom:2px solid #006458;padding-bottom:0.5rem}
     .gc-group{margin-bottom:1rem}
     .gc-group label{display:block;font-size:0.82rem;font-weight:600;margin-bottom:0.3rem;color:#333}
     .gc-group .gc-hint{font-size:0.72rem;color:#888;margin-top:0.2rem}
@@ -32,15 +32,15 @@
     .gc-slider-val{min-width:60px;text-align:right;font-weight:700;color:#006458;font-size:0.9rem}
     .gc-output{background:#f8f9fa;border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.6rem;display:flex;justify-content:space-between;align-items:center}
     .gc-output .gc-olabel{font-size:0.82rem;color:#555}
-    .gc-output .gc-ovalue{font-size:1.1rem;font-weight:800;color:#006458}
+    .gc-output .gc-ovalue{font-size:1.1rem;font-weight:700;color:#006458}
     .gc-hero{background:linear-gradient(135deg,#001412,#006458);border-radius:16px;padding:1.5rem;text-align:center;margin-bottom:1rem}
     .gc-hero .gc-olabel{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:0.25rem}
-    .gc-hero .gc-ovalue{color:#DAF11B;font-size:2.4rem;font-weight:900;line-height:1.1}
+    .gc-hero .gc-ovalue{color:#DAF11B;font-size:2.4rem;font-weight:700;line-height:1.1}
     .gc-hero .gc-osub{color:rgba(255,255,255,0.5);font-size:0.75rem;margin-top:0.25rem}
     .gc-warn{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.8rem;color:#856404;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
     .gc-warn::before{content:'⚠';font-size:1rem}
     .gc-chart-card{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
-    .gc-chart-card h3{font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;color:#001412}
+    .gc-chart-card h3{font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;color:#001412}
     .gc-chart-card p{font-size:0.8rem;color:#888;margin-bottom:1rem}
     .gc-tne-table{font-size:0.75rem;width:100%;border-collapse:collapse;margin-top:0.5rem}
     .gc-tne-table th{background:#006458;color:#fff;padding:4px 8px;text-align:left;font-weight:600}
@@ -111,7 +111,7 @@
 
     <!-- CTA -->
     <section class="section" style="text-align:center;padding:3rem 0;">
-      <h2 style="font-size:1.875rem;font-weight:900;margin-bottom:1rem;">Reduce giveaway in your facility</h2>
+      <h2 style="font-size:2.4375rem;font-weight:400;margin-bottom:1rem;">Reduce giveaway in your facility</h2>
       <p style="color:var(--color-text-muted);margin-bottom:2rem;max-width:500px;margin-inline:auto;">
         majaco can implement statistical process control and giveaway reduction programmes — from measurement system design through to real-time dashboards and operator feedback loops.
       </p>
@@ -583,12 +583,12 @@
           <div className="gc-chart-card">
             <h3>Fill Weight Distribution</h3>
             <p>Blue = current distribution. Green = target at minimum compliant mean. Red shading = non-compliance zones (T1 lighter, T2 darker). Blue/green shading = giveaway bands.</p>
-            <ResponsiveContainer width="100%" height={360}>
-              <ComposedChart data={distData} margin={{top:10,right:30,left:10,bottom:20}}>
+            <ResponsiveContainer width="100%" height={380}>
+              <ComposedChart data={distData} margin={{top:30,right:30,left:10,bottom:30}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
                 <XAxis dataKey="x" type="number" domain={['auto','auto']}
                   tickFormatter={v => fmt(v,0) + 'g'}
-                  label={{value:'Fill Weight (g)',position:'insideBottom',offset:-10,style:{fill:'#888',fontSize:12}}} />
+                  label={{value:'Fill Weight (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:12}}} />
                 <YAxis hide />
                 <Tooltip content={<DistTooltip />} />
 
@@ -620,18 +620,18 @@
           <div className="gc-chart-card">
             <h3>Sensitivity: Annual Saving vs Standard Deviation</h3>
             <p>Shows how savings change as SD is reduced. Vertical markers show current and target positions.</p>
-            <ResponsiveContainer width="100%" height={300}>
-              <ComposedChart data={sensData} margin={{top:10,right:30,left:10,bottom:20}}>
+            <ResponsiveContainer width="100%" height={340}>
+              <ComposedChart data={sensData} margin={{top:30,right:30,left:20,bottom:30}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
                 <XAxis dataKey="sd" type="number" domain={['auto','auto']}
                   tickFormatter={v => v + 'g'}
-                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-10,style:{fill:'#888',fontSize:12}}} />
-                <YAxis tickFormatter={v => '£' + fmtK(v)}
-                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:10,style:{fill:'#888',fontSize:12}}} />
+                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:12}}} />
+                <YAxis width={70} tickFormatter={v => '£' + fmtK(v)}
+                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:-5,style:{fill:'#7A7A7A',fontSize:12}}} />
                 <Tooltip content={<SensTooltip />} />
                 <Area type="monotone" dataKey="saving" stroke="#006458" fill="#006458" fillOpacity={0.1} strokeWidth={2.5} dot={false} />
-                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current SD',position:'top',fill:'#3b82f6',fontSize:11}} />
-                <ReferenceLine x={targetSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target SD',position:'top',fill:'#22c55e',fontSize:11}} />
+                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current SD',position:'insideTopRight',fill:'#3b82f6',fontSize:11,fontWeight:600}} />
+                <ReferenceLine x={targetSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target SD',position:'insideTopRight',fill:'#22c55e',fontSize:11,fontWeight:600}} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>

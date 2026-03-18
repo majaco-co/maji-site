@@ -4,59 +4,58 @@
    ============================================= */
 
 :root {
-  /* ---- Colors (majaco brand palette) ---- */
-  --color-primary:       #006458;   /* majaco pine */
-  --color-primary-dark:  #004a40;   /* deep majaco pine */
-  --color-primary-light: #d0f0ea;   /* light majaco teal */
+  /* ---- Colors (majaco brand palette — per Brand Guidelines v1) ---- */
+  --color-primary:       #006458;   /* majaco pine (500) */
+  --color-primary-dark:  #004a40;   /* majaco pine dark */
+  --color-primary-light: #d0f0ea;   /* majaco pine light */
   --color-primary-rgb:   0, 100, 88;
 
-  --color-accent:        #DAF11B;   /* majaco lime green */
-  --color-sage:          #4a8a80;   /* muted teal */
-  --color-sage-light:    #6aab9f;   /* soft teal */
-  --color-amber:         #D4A017;   /* golden amber accent */
-  --color-amber-dark:    #B8860B;   /* dark gold */
+  --color-accent:        #DAF11B;   /* majaco lime */
+  --color-grey:          #7A7A7A;   /* majaco grey */
 
-  --color-bg:            #FFFFFF;
-  --color-bg-alt:        #f0f7f5;   /* barely teal white */
-  --color-bg-dark:       #001412;   /* majaco dark */
+  --color-bg:            #FFFFFF;   /* majaco white */
+  --color-bg-alt:        #f5f5f5;   /* light neutral */
+  --color-bg-dark:       #001412;   /* majaco dark green (pine 900) */
   --color-bg-dark-2:     #001e19;
 
   --color-text:          #1A1A1A;
-  --color-text-muted:    #4a8a80;   /* teal muted */
+  --color-text-muted:    #7A7A7A;   /* majaco grey */
   --color-text-light:    #FFFFFF;
-  --color-text-subtle:   #6aab9f;   /* soft teal */
+  --color-text-subtle:   #999999;   /* lighter grey */
 
-  --color-border:        #a0ddd0;
+  --color-border:        #e0e0e0;
   --color-border-dark:   #2E2E2E;
 
   --color-success:       #22C55E;
   --color-error:         #EF4444;
   --color-warning:       #F59E0B;
 
-  /* ---- Typography ---- */
-  --font-sans:   'TT Hoves Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ---- Typography (per Brand Guidelines v1 §3) ---- */
+  --font-sans:   'TT Hoves Pro', 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono:   'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 
-  --font-size-xs:   0.75rem;     /* 12px */
-  --font-size-sm:   0.875rem;    /* 14px */
-  --font-size-base: 1rem;        /* 16px */
-  --font-size-lg:   1.125rem;    /* 18px */
-  --font-size-xl:   1.25rem;     /* 20px */
-  --font-size-2xl:  1.5rem;      /* 24px */
-  --font-size-3xl:  1.875rem;    /* 30px */
-  --font-size-4xl:  2.25rem;     /* 36px */
-  --font-size-5xl:  3rem;        /* 48px */
-  --font-size-6xl:  3.75rem;     /* 60px */
+  /* Brand type scale */
+  --font-size-xs:   0.625rem;    /* 10px — Extra Small */
+  --font-size-sm:   0.8125rem;   /* 13px — Small / Overline */
+  --font-size-base: 1rem;        /* 16px — Body / Heavy Body */
+  --font-size-lg:   1.25rem;     /* 20px — Subtitle */
+  --font-size-xl:   1.5625rem;   /* 25px — Title */
+  --font-size-2xl:  1.9375rem;   /* 31px — H4 */
+  --font-size-3xl:  2.4375rem;   /* 39px — H3 */
+  --font-size-4xl:  3.0625rem;   /* 49px — H2 */
+  --font-size-5xl:  3.8125rem;   /* 61px — H1 */
 
+  /* Brand font weights — TT Hoves Pro: Light 300, Regular 400, Bold 700 */
+  --font-weight-light:    300;
   --font-weight-normal:   400;
   --font-weight-medium:   500;
   --font-weight-semibold: 600;
   --font-weight-bold:     700;
-  --font-weight-black:    800;
 
-  --line-height-tight:  1.2;
-  --line-height-snug:   1.4;
-  --line-height-normal: 1.6;
+  /* Brand line heights */
+  --line-height-tight:  1.2;     /* 120% — H1–H4, Title */
+  --line-height-snug:   1.4;     /* 140% — Subtitle, Small, Overline, Extra Small */
+  --line-height-normal: 1.6;     /* 160% — Body, Heavy Body */
   --line-height-relaxed:1.8;
 
   /* ---- Spacing Scale ---- */
