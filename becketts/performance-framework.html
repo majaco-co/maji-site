@@ -51,7 +51,7 @@
   .card h3 { font-size: 12px; font-weight: 500; line-height: 1.3; color: var(--text-primary); }
   .card .subtitle { font-size: 10px; margin-top: 3px; line-height: 1.5; color: var(--text-secondary); font-weight: 300; }
   .card .details { margin-top: 8px; font-size: 10px; color: var(--text-muted); line-height: 1.6; display: none; font-weight: 300; }
-  .card:hover .details, .card.active .details { display: block; }
+  .card.focused .details { display: block; }
   .card .detail-row { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 2px; }
   .card .detail-row .arrow { color: var(--pine-light); margin-top: 1px; flex-shrink: 0; }
 
@@ -129,6 +129,7 @@
   .decomp strong { color: var(--text-secondary); font-weight: 500; }
 
   .card.active { background: var(--card-bg-hover); border-color: var(--pine); }
+  .filtered-out { display: none !important; }
   .card.dimmed { opacity: 0.25; }
   .card.locked { box-shadow: 0 0 0 2px var(--pine); }
   .capture-chip.locked { box-shadow: 0 0 0 2px var(--pine); }
@@ -851,8 +852,8 @@
     </div>
 
     <div class="kpi-filters">
-      <button class="kpi-filter-btn active" data-filter="all">All</button>
-      <button class="kpi-filter-btn" data-filter="financial">P&amp;L</button>
+      <button class="kpi-filter-btn" data-filter="all">All</button>
+      <button class="kpi-filter-btn active" data-filter="financial">P&amp;L</button>
       <button class="kpi-filter-btn" data-filter="volume">Volume</button>
       <button class="kpi-filter-btn" data-filter="labour">Labour</button>
       <button class="kpi-filter-btn" data-filter="material">Material</button>
@@ -1731,21 +1732,23 @@
     resetHighlight();
   }
 
-  // Attach hover and click-to-lock handlers to all interactive cards
+  // Only enable hover highlighting in 'All' mode
+  function isFiltered() { return document.querySelector('.kpi-filter-btn.active').dataset.filter !== 'all'; }
+
   document.querySelectorAll('.source-card').forEach(el => {
-    el.addEventListener('mouseenter', () => highlightSource(el));
-    el.addEventListener('mouseleave', () => clearHighlight());
-    el.addEventListener('click', () => toggleLock(el, 'source'));
+    el.addEventListener('mouseenter', () => { if (!isFiltered()) highlightSource(el); });
+    el.addEventListener('mouseleave', () => { if (!isFiltered()) clearHighlight(); });
+    el.addEventListener('click', () => { if (!isFiltered()) toggleLock(el, 'source'); });
   });
   document.querySelectorAll('.kpi-card').forEach(el => {
-    el.addEventListener('mouseenter', () => highlightKPI(el));
-    el.addEventListener('mouseleave', () => clearHighlight());
-    el.addEventListener('click', () => toggleLock(el, 'kpi'));
+    el.addEventListener('mouseenter', () => { if (!isFiltered()) highlightKPI(el); });
+    el.addEventListener('mouseleave', () => { if (!isFiltered()) clearHighlight(); });
+    el.addEventListener('click', () => { if (!isFiltered()) toggleLock(el, 'kpi'); });
   });
   document.querySelectorAll('.capture-chip').forEach(el => {
-    el.addEventListener('mouseenter', () => highlightCapture(el));
-    el.addEventListener('mouseleave', () => clearHighlight());
-    el.addEventListener('click', () => toggleLock(el, 'capture'));
+    el.addEventListener('mouseenter', () => { if (!isFiltered()) highlightCapture(el); });
+    el.addEventListener('mouseleave', () => { if (!isFiltered()) clearHighlight(); });
+    el.addEventListener('click', () => { if (!isFiltered()) toggleLock(el, 'capture'); });
   });
 
   // --- Integration Specs ---
@@ -2050,40 +2053,88 @@
     });
   });
 
-  // KPI section filter
-  document.querySelectorAll('.kpi-filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-      // Update active button
-      document.querySelectorAll('.kpi-filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // Clear any lock/highlight
-      lockedEl = null;
-      resetHighlight();
-      // Show/hide sections
-      const dividers = document.querySelectorAll('.kpi-divider[data-section]');
-      if (filter === 'all') {
-        dividers.forEach(d => {
-          d.classList.remove('kpi-section-hidden');
-          let el = d.nextElementSibling;
-          while (el && !el.classList.contains('kpi-divider')) {
-            el.classList.remove('kpi-section-hidden');
-            el = el.nextElementSibling;
-          }
-        });
-      } else {
-        dividers.forEach(d => {
-          const match = d.dataset.section === filter;
-          d.classList.toggle('kpi-section-hidden', !match);
-          let el = d.nextElementSibling;
-          while (el && !el.classList.contains('kpi-divider')) {
-            el.classList.toggle('kpi-section-hidden', !match);
-            el = el.nextElementSibling;
-          }
-        });
+  // KPI section filter + source filtering + connection lines
+  function updateFrameworkView() {
+    const filter = document.querySelector('.kpi-filter-btn.active').dataset.filter;
+    const isAll = filter === 'all';
+
+    // Show/hide KPI sections
+    const dividers = document.querySelectorAll('.kpi-divider[data-section]');
+    dividers.forEach(d => {
+      const match = isAll || d.dataset.section === filter;
+      d.classList.toggle('kpi-section-hidden', !match);
+      let el = d.nextElementSibling;
+      while (el && !el.classList.contains('kpi-divider')) {
+        el.classList.toggle('kpi-section-hidden', !match);
+        el = el.nextElementSibling;
       }
     });
+
+    // Collect visible KPIs
+    const visibleKpis = Array.from(document.querySelectorAll('.kpi-card')).filter(c =>
+      !c.classList.contains('kpi-section-hidden')
+    );
+
+    // Focused class: show details on visible KPIs when filtered
+    document.querySelectorAll('.kpi-card').forEach(c => c.classList.remove('focused'));
+    if (!isAll) visibleKpis.forEach(c => c.classList.add('focused'));
+
+    // Collect needed source IDs
+    const neededSources = new Set();
+    visibleKpis.forEach(kpi => {
+      if (kpi.dataset.fedBy) kpi.dataset.fedBy.split(',').forEach(s => neededSources.add(s));
+    });
+
+    // Filter source cards
+    document.querySelectorAll('.source-card').forEach(c => {
+      c.classList.toggle('filtered-out', !isAll && !neededSources.has(c.id));
+    });
+    document.querySelectorAll('.source-divider').forEach(d => {
+      d.classList.toggle('filtered-out', !isAll);
+    });
+
+    // Draw static connection lines (only when filtered)
+    connSvg.innerHTML = '';
+    if (!isAll) {
+      const sourceIds = Array.from(neededSources).filter(id => document.getElementById(id));
+      const kpiIds = visibleKpis.map(c => c.id);
+      drawLines(sourceIds, kpiIds, []);
+    }
+
+    // Filter capture chips if tray open
+    if (isTrayOpen()) {
+      const visibleKpiKeys = visibleKpis.map(k => k.id.replace('kpi-', ''));
+      document.querySelectorAll('.capture-chip').forEach(chip => {
+        if (isAll) { chip.classList.remove('filtered-out'); return; }
+        const chipKpis = chip.dataset.kpis ? chip.dataset.kpis.split(',') : [];
+        const relevant = neededSources.has(chip.dataset.source) && chipKpis.some(k => visibleKpiKeys.includes(k));
+        chip.classList.toggle('filtered-out', !relevant);
+      });
+      document.querySelectorAll('.capture-group-label').forEach(gl => {
+        if (isAll) { gl.classList.remove('filtered-out'); return; }
+        let next = gl.nextElementSibling;
+        let hasVisible = false;
+        while (next && !next.classList.contains('capture-group-label') && !next.classList.contains('capture-legend')) {
+          if (next.classList.contains('capture-chip') && !next.classList.contains('filtered-out')) hasVisible = true;
+          next = next.nextElementSibling;
+        }
+        gl.classList.toggle('filtered-out', !hasVisible);
+      });
+    }
+  }
+
+  document.querySelectorAll('.kpi-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.kpi-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      lockedEl = null;
+      resetHighlight();
+      updateFrameworkView();
+    });
   });
+
+  // Initialize with selected section on load
+  updateFrameworkView();
 </script>
 
   <!-- Footer -->
