@@ -262,6 +262,7 @@
         <!-- Constraint state -->
         <div class="content-card reveal" data-delay="360">
           <h2>Constraint State Determines Framework Selection</h2>
+          <p>The financial value of a lost hour depends on whether demand exceeds capacity.</p>
           <div class="table-wrapper">
             <table>
               <thead>
@@ -284,31 +285,19 @@
                 </tr>
                 <tr>
                   <td><strong>Strategic Leadership</strong></td>
-                  <td>Labour Efficiency</td>
-                  <td>TEEP</td>
-                  <td><code>PT / CT</code></td>
+                  <td>Output per Labour Hour</td>
+                  <td>TEEP (or OOE if weekend working not possible)</td>
+                  <td><code>PT / CT</code> or <code>Good Output / Labour Hours</code></td>
                   <td>All operational losses + crewing/shift pattern strategy</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p style="margin-top:1rem"><strong>Note:</strong> Machine Efficiency and OOE are mathematically identical; terminology reflects strategic context. Labour Efficiency formula: Machine Efficiency &times; (Potential Crew / Actual Crew). TEEP formula abbreviations: PT=Potential Time, OT=Operating Time (Actual), ST=Shift Time, CT=Calendar Time, PDT=Planned Downtime.</p>
-        </div>
-
-        <!-- Constraint state -->
-        <div class="content-card reveal" data-delay="320">
-          <h2>Constraint State Determines Framework Selection</h2>
-          <p>
-            The financial value of a lost hour depends on whether the line is the system constraint and whether demand exceeds capacity.
-          </p>
-          <ul>
-            <li>
-              <strong>Production-constrained</strong> (demand &gt; capacity): Every lost hour of potential time = lost throughput at full margin. Use TEEP.
-            </li>
-            <li>
-              <strong>Sales-constrained</strong> (capacity &gt; demand): Lost hours reduce labour efficiency but do not directly reduce sales. Use Labour Efficiency (PPLH).
-            </li>
+          <ul style="margin-top:1rem">
+            <li><strong>Production-constrained</strong> (demand &gt; capacity): Every lost hour = lost throughput at full margin. Use TEEP to measure total asset utilisation. If weekend working is not possible, use OOE (same formula but against Shift Time, not Calendar Time).</li>
+            <li><strong>Sales-constrained</strong> (capacity &gt; demand): Lost hours reduce labour efficiency but do not directly reduce sales. Use Output per Labour Hour to measure how productively labour is deployed.</li>
           </ul>
+          <p style="margin-top:1rem;font-size:0.85rem;color:#7A7A7A"><strong>Note:</strong> Machine Efficiency and OOE are mathematically identical (<code>PT / ST</code>); terminology reflects strategic context. Output per Labour Hour = Good Output / Total Labour Hours Worked. PT=Potential Time, OT=Operating Time (Actual), ST=Shift Time, CT=Calendar Time.</p>
         </div>
 
         <!-- CTA -->
