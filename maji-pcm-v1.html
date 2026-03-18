@@ -774,32 +774,42 @@
       setFlowDim(flowD, false);
 
       switch (phase) {
-        case 0: // Normal — buffers settle to targets
-          // Upstream runs fast while buffer below target, then speed-matches
-          if (t < 0.7) {
+        case 0: // Normal — all running at rated speeds, buffers settling
+          // Upstream at 100 fills upstream buffer (+20 u/hr net vs constraint)
+          // Downstream at 90 drains downstream buffer (-10 u/hr net vs constraint)
+          if (t < 0.5) {
             setMachineState(machUp, 'running');
             statUp.textContent = '100 u/hr';
-          } else {
-            setMachineState(machUp, 'matched');
-            statUp.textContent = '80 u/hr';
-          }
-          setMachineState(machCon, 'running');
-          // Downstream drains buffer then speed-matches
-          if (t < 0.5) {
             setMachineState(machDn, 'running');
             statDn.textContent = '90 u/hr';
+          } else if (t < 0.7) {
+            // Downstream buffer empty → downstream capped at constraint output
+            setMachineState(machUp, 'running');
+            statUp.textContent = '100 u/hr';
+            setMachineState(machDn, 'matched');
+            statDn.textContent = '80 u/hr';
           } else {
+            // Upstream buffer full → upstream throttles to constraint speed
+            setMachineState(machUp, 'matched');
+            statUp.textContent = '80 u/hr';
             setMachineState(machDn, 'matched');
             statDn.textContent = '80 u/hr';
           }
+          setMachineState(machCon, 'running');
           statCon.textContent = '80 u/hr';
           upBuf = 20 + t * (UP_BUF_TARGET - 20); // ramp 20→40
           dnBuf = 20 - t * (20 - DN_BUF_TARGET);  // drain 20→10
           highlightPhase(0);
-          hideAnnotation();
+          if (t < 0.5) {
+            showAnnotation('All running at rated speed \u2014 upstream buffer fills (+20/hr), downstream drains (\u221210/hr)');
+          } else if (t < 0.7) {
+            showAnnotation('Downstream buffer empty \u2192 packing capped at 80 (limited by constraint output)');
+          } else {
+            showAnnotation('Upstream buffer full \u2192 mixing throttles to 80 (speed-matched to constraint)');
+          }
           break;
 
-        case 1: // Upstream stops — upstream buffer depletes
+        case 1: // Upstream stops — buffer protects constraint from starvation
           setMachineState(machUp, 'stopped');
           statUp.textContent = 'STOPPED';
           setFlowDim(flowA, true);
@@ -810,10 +820,10 @@
           upBuf = UP_BUF_TARGET * (1 - t); // 40→0
           dnBuf = DN_BUF_TARGET;
           highlightPhase(1);
-          showAnnotation('Upstream stops \u2014 buffer feeds the constraint \u2192 no lost throughput');
+          showAnnotation('Upstream stops \u2014 constraint consumes buffer at 80 u/hr. Downstream still capped at 80 (buffer empty)');
           break;
 
-        case 2: // Recovery 1 — upstream restarts at full speed, buffer refills
+        case 2: // Recovery 1 — upstream overspeeds to refill buffer
           setMachineState(machUp, 'running');
           statUp.textContent = '100 u/hr';
           setMachineState(machCon, 'running');
@@ -823,10 +833,10 @@
           upBuf = t * UP_BUF_TARGET; // 0→40
           dnBuf = DN_BUF_TARGET;
           highlightPhase(2);
-          hideAnnotation();
+          showAnnotation('Upstream restarts at 100 u/hr \u2014 overspeed refills buffer (+20/hr net). Downstream still 80 (buffer empty)');
           break;
 
-        case 3: // Downstream stops — downstream buffer fills, upstream speed-matches
+        case 3: // Downstream stops — buffer absorbs constraint output
           setMachineState(machUp, 'matched');
           statUp.textContent = '80 u/hr';
           setMachineState(machCon, 'running');
@@ -837,10 +847,10 @@
           upBuf = UP_BUF_TARGET;
           dnBuf = DN_BUF_TARGET + t * (DN_BUF_MAX - DN_BUF_TARGET - 5); // 10→45
           highlightPhase(3);
-          showAnnotation('Downstream stops \u2014 buffer absorbs output \u2192 constraint keeps running');
+          showAnnotation('Downstream stops \u2014 constraint output fills buffer. Upstream at 80 (buffer full, speed-matched)');
           break;
 
-        case 4: // Recovery 2 — downstream restarts at full speed, buffer empties
+        case 4: // Recovery 2 — downstream overspeeds to drain buffer
           setMachineState(machUp, 'matched');
           statUp.textContent = '80 u/hr';
           setMachineState(machCon, 'running');
@@ -850,10 +860,10 @@
           upBuf = UP_BUF_TARGET;
           dnBuf = 45 - t * (45 - DN_BUF_TARGET); // 45→10
           highlightPhase(4);
-          hideAnnotation();
+          showAnnotation('Downstream restarts at 90 u/hr \u2014 overspeed drains buffer (\u221210/hr net). Upstream still 80 (buffer full)');
           break;
 
-        default: // Pause — hold at targets, all speed-matched
+        default: // Pause — steady state, all speed-matched to constraint
           setMachineState(machUp, 'matched');
           statUp.textContent = '80 u/hr';
           setMachineState(machCon, 'running');
@@ -861,7 +871,7 @@
           setMachineState(machDn, 'matched');
           statDn.textContent = '80 u/hr';
           highlightPhase(-1);
-          hideAnnotation();
+          showAnnotation('Steady state \u2014 all stages speed-matched to constraint at 80 u/hr');
       }
 
       setBarLevel(fillUp, readUp, upBuf, UP_BUF_MAX, 10);

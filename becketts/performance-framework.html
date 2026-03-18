@@ -867,43 +867,53 @@
             <div style="width:100%;">
               <h3>Production P&amp;L Bridge</h3>
               <div class="subtitle">Variance waterfall from budgeted margin to actual margin — connects all operational metrics to financial outcome</div>
-              <div class="formula">Actual Margin = Budget ± Volume ± Mix ± MUV ± PPV ± Lab Eff ± Lab Rate ± Yield ± Commercial ± Overhead</div>
+              <div class="formula">Actual Margin = Budget ± Volume ± Mix ± Sales Price ± Labour ± Material ± Overhead</div>
+
+              <!-- Revenue variances -->
+              <div style="font-size:7px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-top:10px; margin-bottom:3px;">Revenue</div>
               <div class="loss-bar">
-                <div class="loss-segment" style="flex:2.0; background:#006458;">Budget</div>
-                <div class="loss-segment" style="flex:0.7; background:#3B82F6;">Vol</div>
-                <div class="loss-segment" style="flex:0.5; background:#7C3AED;">Mix</div>
-                <div class="loss-segment" style="flex:0.7; background:#06B6D4;">MUV</div>
-                <div class="loss-segment" style="flex:0.5; background:#0E7490;">PPV</div>
-                <div class="loss-segment" style="flex:0.6; background:#8B5CF6;">Lab Eff</div>
-                <div class="loss-segment" style="flex:0.5; background:#A78BFA;">Lab Rate</div>
-                <div class="loss-segment" style="flex:0.5; background:#EC4899;">Yield</div>
-                <div class="loss-segment" style="flex:0.5; background:#EAB308;">Comm</div>
-                <div class="loss-segment" style="flex:0.4; background:#64748B;">O/H</div>
-                <div class="loss-segment" style="flex:2.0; background:#006458;">Actual</div>
+                <div class="loss-segment" style="flex:2.5; background:#006458;">Budget</div>
+                <div class="loss-segment" style="flex:1.2; background:#3B82F6;">Volume</div>
+                <div class="loss-segment" style="flex:0.8; background:#7C3AED;">Mix</div>
+                <div class="loss-segment" style="flex:1.0; background:#EAB308;">Sales Price</div>
               </div>
               <div class="loss-label-row">
-                <div class="loss-label" style="flex:2.0;">Budget<br>Margin</div>
-                <div class="loss-label" style="flex:0.7;">Volume<br>Var</div>
-                <div class="loss-label" style="flex:0.5;">Mix<br>Var</div>
-                <div class="loss-label" style="flex:0.7;">Material<br>Usage</div>
-                <div class="loss-label" style="flex:0.5;">Purchase<br>Price</div>
-                <div class="loss-label" style="flex:0.6;">Labour<br>Efficiency</div>
-                <div class="loss-label" style="flex:0.5;">Labour<br>Rate</div>
-                <div class="loss-label" style="flex:0.5;">Yield<br>Loss</div>
-                <div class="loss-label" style="flex:0.5;">Commercial<br>Recovery</div>
-                <div class="loss-label" style="flex:0.4;">Overhead<br>Absorp</div>
-                <div class="loss-label" style="flex:2.0;">Actual<br>Margin</div>
+                <div class="loss-label" style="flex:2.5;">Budget<br>Margin</div>
+                <div class="loss-label" style="flex:1.2;">Volume<br>Variance</div>
+                <div class="loss-label" style="flex:0.8;">Mix<br>Variance</div>
+                <div class="loss-label" style="flex:1.0;">Sales Price<br>Variance</div>
               </div>
+
+              <!-- Cost variances -->
+              <div style="font-size:7px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-top:8px; margin-bottom:3px;">Cost</div>
+              <div class="loss-bar">
+                <div class="loss-segment" style="flex:0.8; background:#8B5CF6;">Lab Eff</div>
+                <div class="loss-segment" style="flex:0.7; background:#A78BFA;">Lab Rate</div>
+                <div class="loss-segment" style="flex:0.8; background:#06B6D4;">MUV</div>
+                <div class="loss-segment" style="flex:0.7; background:#0E7490;">PPV</div>
+                <div class="loss-segment" style="flex:0.6; background:#64748B;">O/H</div>
+                <div class="loss-segment" style="flex:2.5; background:#006458;">Actual</div>
+              </div>
+              <div class="loss-label-row">
+                <div class="loss-label" style="flex:0.8;">Labour<br>Efficiency</div>
+                <div class="loss-label" style="flex:0.7;">Labour<br>Rate</div>
+                <div class="loss-label" style="flex:0.8;">Material<br>Usage</div>
+                <div class="loss-label" style="flex:0.7;">Purchase<br>Price</div>
+                <div class="loss-label" style="flex:0.6;">Overhead<br>Absorp</div>
+                <div class="loss-label" style="flex:2.5;">Actual<br>Margin</div>
+              </div>
+
               <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span>Volume variance: (actual vol − budget vol) × std margin per unit</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Mix variance: shift in SKU mix vs plan, valued at standard margins</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>MUV: material usage variance — kg used vs standard kg for actual output (operational)</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>PPV: purchase price variance — actual £/kg paid vs standard £/kg (procurement)</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Labour efficiency: hours worked vs standard hours for actual output (productivity)</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Labour rate: actual £/hr paid vs standard £/hr (mix of agency, overtime, base rates)</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Yield loss: material lost through giveaway, gripper end, waste — links to Yield KPI</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Commercial recovery: £/kg selling price shortfall from downgrades, misshapes sold at lower price — commercial variance, not operational</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption: machine efficiency impact on fixed cost recovery</span></div>
+                <strong style="font-size:9px; color:var(--text-primary);">Revenue variances</strong>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Volume:</strong> (actual units − budget units) × standard sales price per unit</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Mix:</strong> shift in SKU mix at total actual volume — (actual mix − budget mix) × actual total volume × std margin per unit</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Sales Price:</strong> (actual £/unit − standard £/unit) × actual units — captures pricing changes, downgrades, promotional discounts</span></div>
+                <strong style="font-size:9px; color:var(--text-primary); display:block; margin-top:4px;">Cost variances</strong>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Labour Efficiency:</strong> (actual hrs − std hrs for actual output) × std rate — productivity variance</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Labour Rate:</strong> (actual £/hr − std £/hr) × actual hrs — agency, overtime, base rate changes</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>MUV:</strong> (actual kg − std kg for actual output) × std £/kg — material usage efficiency (operational)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>PPV:</strong> (actual £/kg − std £/kg) × actual kg purchased — purchase price variance (procurement)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Overhead:</strong> under/over-absorption of fixed costs driven by machine efficiency and volume</span></div>
               </div>
             </div>
           </div>
