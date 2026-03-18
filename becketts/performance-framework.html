@@ -39,7 +39,7 @@
   .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; color: #fff; }
   .header p { font-size: 13px; color: var(--text-secondary); max-width: 700px; line-height: 1.7; font-weight: 300; }
 
-  .framework { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 340px auto 1fr; gap: 16px; align-items: start; }
+  .framework { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 340px auto 1fr; gap: 16px; align-items: start; position: relative; }
 
   .column-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 0 4px; }
   .column-header .icon { width: 24px; height: 24px; border-radius: 6px; background: var(--pine-muted); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--lime); }
@@ -118,7 +118,7 @@
   .loss-label-row { display: flex; gap: 2px; margin-top: 3px; }
   .loss-label { font-size: 7px; font-weight: 500; text-align: center; color: var(--text-muted); letter-spacing: 0.2px; line-height: 1.2; }
 
-  .center { display: flex; flex-direction: row; align-items: center; justify-content: center; padding-top: 48px; gap: 0; }
+  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 48px; }
   .center-db {
     position: relative; width: 100%; min-width: 220px;
     border-radius: 16px; border: 2px solid var(--pine);
@@ -147,10 +147,8 @@
     border: 1px solid rgba(0,100,88,0.5); letter-spacing: 0.3px;
   }
 
-  .arrows-in, .arrows-out { display: flex; align-items: center; padding: 0; flex-shrink: 0; }
-  .arrows-in svg, .arrows-out svg { display: none; }
-  .arrows-in::after { content: ''; display: block; width: 32px; height: 2px; background: linear-gradient(to right, transparent, var(--pine-light)); }
-  .arrows-out::after { content: ''; display: block; width: 32px; height: 2px; background: linear-gradient(to right, var(--pine-light), transparent); }
+  .arrows-in, .arrows-out { display: none; }
+  #conn-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 
   .decomp { margin-top: 6px; font-size: 9px; color: var(--text-muted); font-weight: 300; }
   .decomp strong { color: var(--text-secondary); font-weight: 500; }
@@ -179,6 +177,7 @@
 </div>
 
 <div class="framework">
+  <svg id="conn-svg"></svg>
   <!-- LEFT: Data Sources -->
   <div class="sources-col">
     <div class="column-header">
@@ -656,26 +655,75 @@
   // Init: hide all but first
   updateCarousel();
 
-  // Highlight logic
-  const sourceLineMap = {
-    'src-redzone': 0, 'src-works-orders': 1, 'src-hours': 2,
-    'src-giveaway': 3, 'src-planning': 4, 'src-commercial': 5
+  // Connection line drawing
+  const connSvg = document.getElementById('conn-svg');
+  const framework = document.querySelector('.framework');
+  const centerDb = document.querySelector('.center-db');
+
+  const sourceColors = {
+    'src-redzone': '#F97316', 'src-works-orders': '#3B82F6', 'src-hours': '#8B5CF6',
+    'src-giveaway': '#EC4899', 'src-planning': '#DAF11B', 'src-commercial': '#EAB308'
   };
+
+  function getCenter(el) {
+    const fr = framework.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2 - fr.left, y: r.top + r.height / 2 - fr.top };
+  }
+
+  function getEdge(el, side) {
+    const fr = framework.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    if (side === 'left') return { x: r.left - fr.left, y: r.top + r.height / 2 - fr.top };
+    return { x: r.right - fr.left, y: r.top + r.height / 2 - fr.top };
+  }
+
+  function drawLines(sourceIds, kpiIds) {
+    connSvg.innerHTML = '';
+    const dbLeft = getEdge(centerDb, 'left');
+    const dbRight = getEdge(centerDb, 'right');
+
+    sourceIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const from = getEdge(el, 'right');
+      const to = dbLeft;
+      const color = sourceColors[id] || '#DAF11B';
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const mx = from.x + (to.x - from.x) * 0.5;
+      path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-opacity', '0.7');
+      path.setAttribute('fill', 'none');
+      connSvg.appendChild(path);
+    });
+
+    kpiIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || el.offsetParent === null) return;
+      const from = dbRight;
+      const to = getEdge(el, 'left');
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const mx = from.x + (to.x - from.x) * 0.5;
+      path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+      path.setAttribute('stroke', '#DAF11B');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-opacity', '0.7');
+      path.setAttribute('fill', 'none');
+      connSvg.appendChild(path);
+    });
+  }
 
   function highlightSource(el) {
     const feeds = el.dataset.feeds.split(',');
     document.querySelectorAll('.source-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
+    const activeKpis = [];
     document.querySelectorAll('.kpi-card').forEach(c => {
       const kpiKey = c.id.replace('kpi-', '');
-      if (feeds.includes(kpiKey)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
+      if (feeds.includes(kpiKey)) { c.classList.add('active'); activeKpis.push(c.id); } else { c.classList.add('dimmed'); }
     });
-    const lineIdx = sourceLineMap[el.id];
-    if (lineIdx !== undefined) {
-      const line = document.getElementById('line-in-' + lineIdx);
-      if (line) { line.setAttribute('stroke-width', '2.5'); line.setAttribute('stroke-opacity', '0.9'); line.removeAttribute('stroke-dasharray'); }
-    }
-    const outLine = document.getElementById('line-out-active');
-    if (outLine) { outLine.setAttribute('stroke-width', '2.5'); outLine.setAttribute('stroke-opacity', '0.9'); outLine.removeAttribute('stroke-dasharray'); }
+    drawLines([el.id], activeKpis);
   }
 
   function highlightKPI(el) {
@@ -684,22 +732,12 @@
     document.querySelectorAll('.source-card').forEach(c => {
       if (fedBy.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    fedBy.forEach(srcId => {
-      const lineIdx = sourceLineMap[srcId];
-      if (lineIdx !== undefined) {
-        const line = document.getElementById('line-in-' + lineIdx);
-        if (line) { line.setAttribute('stroke-width', '2.5'); line.setAttribute('stroke-opacity', '0.9'); line.removeAttribute('stroke-dasharray'); }
-      }
-    });
-    const outLine = document.getElementById('line-out-active');
-    if (outLine) { outLine.setAttribute('stroke-width', '2.5'); outLine.setAttribute('stroke-opacity', '0.9'); outLine.removeAttribute('stroke-dasharray'); }
+    drawLines(fedBy, [el.id]);
   }
 
   function clearHighlight() {
     document.querySelectorAll('.source-card, .kpi-card').forEach(c => { c.classList.remove('dimmed', 'active'); });
-    document.querySelectorAll('.conn-line').forEach(l => {
-      l.setAttribute('stroke-width', '1'); l.setAttribute('stroke-opacity', '0.3'); l.setAttribute('stroke-dasharray', '4 4');
-    });
+    connSvg.innerHTML = '';
   }
 </script>
 </body>
