@@ -277,235 +277,235 @@
       <span>How It's Captured</span>
     </div>
 
-    <!-- Unit Conversions -->
-    <div class="capture-group-label" style="color:#78716C;">Unit Conversions</div>
-    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <!-- ERP Master Data -->
+    <div class="capture-group-label" style="color:#78716C;">ERP Master Data</div>
+    <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield,muv,pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Pack spec per SKU</span><br><span class="chip-desc">ERP / product master</span></span>
+      <span><span class="chip-label">Pack spec per SKU</span><br><span class="chip-desc">ERP product master</span></span>
     </div>
-    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-unit-conv" data-kpis="plan-attain,pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Case &amp; pallet config</span><br><span class="chip-desc">ERP packaging master</span></span>
     </div>
-    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Portions per pack</span><br><span class="chip-desc">Product spec (slicing config)</span></span>
+      <span><span class="chip-label">Portions per pack</span><br><span class="chip-desc">ERP product spec (slicing config)</span></span>
     </div>
-    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield,muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Back/block weight</span><br><span class="chip-desc">Product spec / supplier data</span></span>
+      <span><span class="chip-label">Back/block weight</span><br><span class="chip-desc">ERP product spec / supplier data</span></span>
     </div>
-    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-weigh">⚖</span>
-      <span><span class="chip-label">Empty pack / tare weight</span><br><span class="chip-desc">Packaging spec / verified tare study</span></span>
+      <span><span class="chip-label">Empty pack / tare weight</span><br><span class="chip-desc">ERP packaging spec / verified tare study</span></span>
     </div>
 
     <!-- OEE System -->
     <div class="capture-group-label" style="color:#F97316;">OEE System</div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-sensor">◉</span>
       <span><span class="chip-label">Downtime at bottleneck</span><br><span class="chip-desc">Line pulse sensor</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-sensor">◉</span>
       <span><span class="chip-label">Line speed at bottleneck</span><br><span class="chip-desc">Sensor (with downtime)</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Downtime reason code</span><br><span class="chip-desc">Operator touch screen</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-attain,plan-rate,yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-sensor">◉</span>
       <span><span class="chip-label">Good output count</span><br><span class="chip-desc">End-of-line counter</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-sensor">◉</span>
       <span><span class="chip-label">Waste output count</span><br><span class="chip-desc">End-of-line counter</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,co-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Changeover detection</span><br><span class="chip-desc">Auto-detected from run gap</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">BNS per SKU/line</span><br><span class="chip-desc">System config per SKU</span></span>
+      <span><span class="chip-label">BNS per SKU/line</span><br><span class="chip-desc">ERP system config per SKU</span></span>
     </div>
-    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Downtime threshold</span><br><span class="chip-desc">System config (micro-stop cutoff)</span></span>
+      <span><span class="chip-label">Downtime threshold</span><br><span class="chip-desc">ERP system config (micro-stop cutoff)</span></span>
     </div>
 
     <!-- Works Orders -->
     <div class="capture-group-label" style="color:#3B82F6;">Works Orders</div>
-    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="plan-attain" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">W.O. quantity confirmed</span><br><span class="chip-desc">Pallet barcode scan</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,plan-attain,kg-lh-plan" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">SKU-to-line assignment</span><br><span class="chip-desc">ERP system export</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="plan-attain,kg-lh-plan" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Daily production schedule</span><br><span class="chip-desc">Planner manual entry</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Shift pattern / shift time</span><br><span class="chip-desc">System config</span></span>
+      <span><span class="chip-label">Shift pattern / shift time</span><br><span class="chip-desc">ERP system config</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,co-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Planned C/O sequence</span><br><span class="chip-desc">Planner entry</span></span>
     </div>
 
     <!-- Hours -->
     <div class="capture-group-label" style="color:#8B5CF6;">Hours</div>
-    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,kg-lh-fin,labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">Clock in / clock out</span><br><span class="chip-desc">Badge swipe</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,kg-lh-fin,labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Area allocation</span><br><span class="chip-desc">Supervisor entry</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,kg-lh-fin,labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Direct / indirect split</span><br><span class="chip-desc">Coded at clock-in</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Crewing on line</span><br><span class="chip-desc">Manually entered</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-hours" data-kpis="labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Overtime flag</span><br><span class="chip-desc">T&amp;A system, auto from shift pattern</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-hours" data-kpis="labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Agency / permanent code</span><br><span class="chip-desc">T&amp;A or payroll system code</span></span>
     </div>
 
     <!-- Absence / Headcount -->
     <div class="capture-group-label" style="color:#10B981;">Absence / Headcount</div>
-    <div class="capture-chip" data-source="src-absence" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-absence" data-kpis="kg-lh-plan,labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Planned headcount (roster)</span><br><span class="chip-desc">Scheduling system export</span></span>
     </div>
-    <div class="capture-chip" data-source="src-absence" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-absence" data-kpis="labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Absence type classification</span><br><span class="chip-desc">HR / payroll system</span></span>
     </div>
-    <div class="capture-chip" data-source="src-absence" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-absence" data-kpis="labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">Agency vs permanent flag</span><br><span class="chip-desc">T&amp;A system code at clock-in</span></span>
     </div>
 
     <!-- Yield -->
     <div class="capture-group-label" style="color:#EC4899;">Yield</div>
-    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-giveaway" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-weigh">⚖</span>
       <span><span class="chip-label">Pack weight</span><br><span class="chip-desc">Inline checkweigher</span></span>
     </div>
-    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-giveaway" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-sensor">◉</span>
       <span><span class="chip-label">Portion weight</span><br><span class="chip-desc">Slicer output data</span></span>
     </div>
-    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-giveaway" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-sensor">◉</span>
       <span><span class="chip-label">Gripper end / trim</span><br><span class="chip-desc">Slicer trim measurement</span></span>
     </div>
-    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-giveaway" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Misshapes count</span><br><span class="chip-desc">QA visual inspection</span></span>
     </div>
-    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-giveaway" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Non-standard / downgrade</span><br><span class="chip-desc">QA classification</span></span>
     </div>
-    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-giveaway" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Target weight per SKU</span><br><span class="chip-desc">System config</span></span>
+      <span><span class="chip-label">Target weight per SKU</span><br><span class="chip-desc">ERP system config</span></span>
     </div>
 
     <!-- Raw Material Intake -->
     <div class="capture-group-label" style="color:#DC2626;">Raw Material Intake</div>
-    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-intake" data-kpis="yield,muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-weigh">⚖</span>
       <span><span class="chip-label">Intake batch weight</span><br><span class="chip-desc">Goods-in scales / weighbridge</span></span>
     </div>
-    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-intake" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">Lot / batch tracking</span><br><span class="chip-desc">Barcode scan at intake</span></span>
     </div>
-    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-intake" data-kpis="muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Supplier &amp; spec reference</span><br><span class="chip-desc">ERP / system config</span></span>
     </div>
-    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-intake" data-kpis="muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">Material issued to production</span><br><span class="chip-desc">Stock system / ERP back-flush</span></span>
     </div>
 
     <!-- BOM / Recipe -->
     <div class="capture-group-label" style="color:#06B6D4;">BOM / Recipe</div>
-    <div class="capture-chip" data-source="src-bom" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-bom" data-kpis="muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Recipe master (BOM)</span><br><span class="chip-desc">ERP recipe configuration</span></span>
     </div>
-    <div class="capture-chip" data-source="src-bom" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-bom" data-kpis="muv,pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Standard cost roll-up</span><br><span class="chip-desc">Finance costing model</span></span>
     </div>
-    <div class="capture-chip" data-source="src-bom" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-bom" data-kpis="muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Material grade classification</span><br><span class="chip-desc">ERP material master</span></span>
     </div>
 
     <!-- Budget / Forecast -->
     <div class="capture-group-label" style="color:#7C3AED;">Budget / Forecast</div>
-    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Budget volumes by SKU</span><br><span class="chip-desc">Finance budget model</span></span>
     </div>
-    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Standard margin per SKU</span><br><span class="chip-desc">Finance costing model</span></span>
     </div>
-    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Period forecast</span><br><span class="chip-desc">Commercial planning (manual/system)</span></span>
     </div>
-    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Overhead absorption rate</span><br><span class="chip-desc">Finance cost allocation model</span></span>
     </div>
 
     <!-- Planning Standards -->
     <div class="capture-group-label" style="color:var(--lime);">Planning Standards</div>
-    <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh-plan,plan-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-manual">⏱</span>
       <span><span class="chip-label">Standard rate per SKU</span><br><span class="chip-desc">Engineering time study</span></span>
     </div>
-    <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh-plan" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Manning allowance</span><br><span class="chip-desc">Historical analysis</span></span>
     </div>
-    <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-planning" data-kpis="co-rate" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-manual">⏱</span>
       <span><span class="chip-label">C/O time allowance</span><br><span class="chip-desc">Observed changeover studies</span></span>
     </div>
 
     <!-- Commercial Standards -->
     <div class="capture-group-label" style="color:#EAB308;">Commercial Standards</div>
-    <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-commercial" data-kpis="kg-lh-fin,labour-cost" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Direct hour cost</span><br><span class="chip-desc">Finance costing model</span></span>
     </div>
-    <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-commercial" data-kpis="yield" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">£/kg selling price target</span><br><span class="chip-desc">Commercial pricing model</span></span>
     </div>
-    <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+    <div class="capture-chip" data-source="src-commercial" data-kpis="yield,muv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Raw material £/kg cost</span><br><span class="chip-desc">Finance costing model</span></span>
     </div>
@@ -532,8 +532,8 @@
       <div class="card-head">
         <div class="dot"></div>
         <div>
-          <h3>Unit Conversion Master</h3>
-          <div class="subtitle">SKU-level conversions: packs, cases, pallets, kg — canonical units for every metric</div>
+          <h3>ERP Master Data</h3>
+          <div class="subtitle">SKU-level master data from ERP: conversions, weights, tare — canonical units for every metric</div>
           <div class="details">
             <div class="detail-row"><span class="arrow">›</span><span>Pack weight (g nominal) and portions per pack by SKU</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Packs per case, cases per pallet by SKU</span></div>
@@ -1210,20 +1210,34 @@
     }
   }
 
-  function dimCaptures(exceptSourceIds) {
+  function dimCaptures(exceptSourceIds, kpiKey) {
     if (!isTrayOpen()) return;
     document.querySelectorAll('.capture-chip').forEach(chip => {
-      if (exceptSourceIds.includes(chip.dataset.source)) {
-        chip.classList.add('active');
-      } else {
+      if (!exceptSourceIds.includes(chip.dataset.source)) {
         chip.classList.add('dimmed');
+      } else if (kpiKey && chip.dataset.kpis) {
+        // Granular: only highlight chips whose data-kpis includes this KPI
+        const chipKpis = chip.dataset.kpis.split(',');
+        if (chipKpis.includes(kpiKey)) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.add('dimmed');
+        }
+      } else {
+        chip.classList.add('active');
       }
     });
   }
 
-  function getChipsForSources(sourceIds) {
+  function getChipsForSources(sourceIds, kpiKey) {
     if (!isTrayOpen()) return [];
-    return Array.from(document.querySelectorAll('.capture-chip')).filter(c => sourceIds.includes(c.dataset.source));
+    return Array.from(document.querySelectorAll('.capture-chip')).filter(c => {
+      if (!sourceIds.includes(c.dataset.source)) return false;
+      if (kpiKey && c.dataset.kpis) {
+        return c.dataset.kpis.split(',').includes(kpiKey);
+      }
+      return true;
+    });
   }
 
   // Click-to-lock state
@@ -1244,12 +1258,13 @@
 
   function applyKPIHighlight(el) {
     const fedBy = el.dataset.fedBy.split(',');
+    const kpiKey = el.id.replace('kpi-', '');
     document.querySelectorAll('.kpi-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
     document.querySelectorAll('.source-card').forEach(c => {
       if (fedBy.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    dimCaptures(fedBy);
-    const chips = getChipsForSources(fedBy);
+    dimCaptures(fedBy, kpiKey);
+    const chips = getChipsForSources(fedBy, kpiKey);
     drawLines(fedBy, [el.id], chips);
   }
 
@@ -1262,7 +1277,14 @@
     document.querySelectorAll('.source-card').forEach(c => {
       if (c.id === srcId) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    const kpiIds = getKpisForSource(srcId);
+    // Use chip's data-kpis for granular KPI highlighting
+    const chipKpis = chip.dataset.kpis ? chip.dataset.kpis.split(',') : [];
+    let kpiIds;
+    if (chipKpis.length > 0) {
+      kpiIds = chipKpis.map(k => 'kpi-' + k);
+    } else {
+      kpiIds = getKpisForSource(srcId);
+    }
     document.querySelectorAll('.kpi-card').forEach(c => {
       if (kpiIds.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
