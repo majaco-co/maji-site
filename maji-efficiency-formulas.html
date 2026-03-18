@@ -71,37 +71,37 @@
           <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0">
 
             <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-              <strong>Calendar Time</strong> <span style="color:#7A7A7A">&mdash; all time in the period (24 &times; 7 &times; weeks)</span>
+              <strong>Calendar Time</strong> <span style="color:#7A7A7A">: all time in the period (24 &times; 7 &times; weeks)</span>
             </div>
 
             <div style="padding-left:1.5rem">
               <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Non-working Time &rarr;</div>
               <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                <strong>Shift Time</strong> <span style="color:#7A7A7A">&mdash; CT &minus; NWT &mdash; factory open, shifts rostered</span>
+                <strong>Shift Time</strong> <span style="color:#7A7A7A">: factory open, shifts rostered</span>
               </div>
 
               <div style="padding-left:1.5rem">
                 <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Schedule Loss &rarr;</div>
                 <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                  <strong>Planned Production Time</strong> <span style="color:#7A7A7A">&mdash; ST &minus; ScL &mdash; scheduled to produce</span>
+                  <strong><strong>P</strong>lanned <strong>P</strong>roduction <strong>T</strong>ime</strong> <span style="color:#7A7A7A">: scheduled to produce</span>
                 </div>
 
                 <div style="padding-left:1.5rem">
-                  <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Planned Downtime &rarr;</div>
+                  <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; <strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime &rarr;</div>
                   <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                    <strong>Operating Time</strong> <span style="color:#7A7A7A">&mdash; PPT &minus; PDT &mdash; expected to run</span>
+                    <strong>Operating Time</strong> <span style="color:#7A7A7A">: expected to run</span>
                   </div>
 
                   <div style="padding-left:1.5rem">
-                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Unplanned Downtime &rarr;</div>
+                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &rarr;</div>
                     <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                      <strong>Up Time</strong> <span style="color:#7A7A7A">&mdash; Operating Time &minus; Unplanned Downtime &mdash; actually running</span>
+                      <strong>Up Time</strong> <span style="color:#7A7A7A">: line is running</span>
                     </div>
 
                     <div style="padding-left:1.5rem">
-                      <div style="color:#d97706;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Lost Time Slow Running, Lost Time Making Waste &rarr;</div>
+                      <div style="color:#d97706;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning, <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste &rarr;</div>
                       <div style="background:#f0fdf4;border-left:4px solid #DAF11B;padding:0.75rem 1rem;border-radius:6px">
-                        <strong style="color:var(--color-primary)">Potential Time</strong> <span style="color:#7A7A7A">&mdash; Good Output / Bottleneck Speed &mdash; theoretical minimum</span>
+                        <strong style="color:var(--color-primary)">Potential Time</strong> <span style="color:#7A7A7A">: Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</span>
                       </div>
                     </div>
 
@@ -116,13 +116,13 @@
         <!-- 2. Core Formulas -->
         <div class="content-card reveal" data-delay="80">
           <h2>Core Formulas</h2>
-          <div class="formula"><strong>Potential Time</strong> = Good Output / Bottleneck Speed</div>
+          <div class="formula"><strong>Potential Time</strong> = Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</div>
           <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
-          <div class="formula"><strong>Lost Time Slow Running</strong> = Good Output / Run Speed &minus; Good Output / Bottleneck Speed</div>
+          <div class="formula"><strong>Lost Time Slow Running</strong> = Good Output / Run Speed &minus; Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</div>
           <div class="formula"><strong>Lost Time Making Waste</strong> = Waste Output / Run Speed</div>
           <div class="formula"><strong>Unplanned Downtime</strong> = Actual Operating Time &minus; Up Time</div>
-          <div class="formula"><strong>Planning Rate</strong> = Bottleneck Speed &times; Operating Efficiency (planned)</div>
-          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + Lost Time Slow Running + Lost Time Making Waste + Unplanned Downtime &nbsp;(must balance)</div>
+          <div class="formula"><strong>Planning Rate</strong> = <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &times; Operating Efficiency (planned)</div>
+          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning + <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste + <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &nbsp;(must balance)</div>
         </div>
 
         <!-- 3. Efficiency Metrics -->
@@ -168,13 +168,13 @@
             </table>
           </div>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">
-            <strong>Why this works:</strong> Operating Efficiency = Potential Time / Actual Operating Time. Since Potential Time = Good Output / Bottleneck Speed, this simplifies to Good Output / (Bottleneck Speed &times; Actual Operating Time) &mdash; i.e. good output as a proportion of what the line <em>could</em> have produced in the actual operating time. The same logic applies to every metric in the table: the numerator is always the time your good output <em>needed</em>; the denominator is the time window you are measuring against.
+            <strong>Why this works:</strong> Operating Efficiency = Potential Time / Actual Operating Time. Since Potential Time = Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed, this simplifies to Good Output / (<strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &times; Actual Operating Time) &mdash; i.e. good output as a proportion of what the line <em>could</em> have produced in the actual operating time. The same logic applies to every metric in the table: the numerator is always the time your good output <em>needed</em>; the denominator is the time window you are measuring against.
           </p>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong>Machine Efficiency vs Overall Operations Effectiveness:</strong> same formula (Potential Time / Shift Time), different name. &ldquo;Machine Efficiency&rdquo; is used in a sales context; &ldquo;Overall Operations Effectiveness&rdquo; in a production context. The name signals strategic intent, not a different calculation.
+            <strong>Machine Efficiency vs <strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness:</strong> same formula (Potential Time / Shift Time), different name. &ldquo;Machine Efficiency&rdquo; is used in a sales context; &ldquo;<strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness&rdquo; in a production context. The name signals strategic intent, not a different calculation.
           </p>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong>Overall Equipment Effectiveness translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (Potential Time / Operating Time) provides the same insight without double-counting speed losses on waste units.
+            <strong><strong>O</strong>verall <strong>E</strong>quipment <strong>E</strong>ffectiveness translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (Potential Time / Operating Time) provides the same insight without double-counting speed losses on waste units.
           </p>
         </div>
 
@@ -217,8 +217,8 @@
 
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:1rem"><strong>Lost time scope:</strong></p>
           <ul style="font-size:0.85rem;color:#7A7A7A;line-height:1.6;margin:0.25rem 0 0 0;padding-left:1.25rem;list-style:disc">
-            <li style="display:list-item"><strong>Operational</strong> &mdash; losses within Operating Time (Unplanned Downtime, Lost Time Slow Running, Lost Time Making Waste)</li>
-            <li style="display:list-item"><strong>Tactical</strong> &mdash; losses within Shift Time (adds Schedule Loss and Planned Downtime)</li>
+            <li style="display:list-item"><strong>Operational</strong> &mdash; losses within Operating Time (<strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime, <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning, <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste)</li>
+            <li style="display:list-item"><strong>Tactical</strong> &mdash; losses within Shift Time (adds Schedule Loss and <strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime)</li>
             <li style="display:list-item"><strong>Strategic</strong> &mdash; losses within Calendar Time (adds Non-working Time)</li>
           </ul>
         </div>
@@ -229,9 +229,9 @@
 
           <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">Lost Time Slow Running Elevated?</h3>
           <p>Two possible causes &mdash; the fix is different for each:</p>
-          <ol style="font-size:0.9rem;color:#555;line-height:1.6;margin:0.5rem 0 1.25rem 0;padding-left:1.25rem;list-style:decimal">
-            <li style="display:list-item"><strong>True slow running</strong> &mdash; the line deliberately operates below bottleneck speed (e.g. operator reduces speed for quality reasons).</li>
-            <li style="display:list-item"><strong>Micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as Unplanned Downtime but reduce the average Run Speed.</li>
+          <ol style="font-size:0.9rem;color:#555;line-height:1.6;margin:0.5rem 0 1.25rem 0;padding-left:1.25rem">
+            <li><strong>True slow running</strong> &mdash; the line deliberately operates below bottleneck speed (e.g. operator reduces speed for quality reasons).</li>
+            <li><strong>Micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime but reduce the average Run Speed.</li>
           </ol>
           <p style="font-size:0.85rem;color:#7A7A7A">Diagnose with a lineside time study: observe whether the line speed setting matches bottleneck speed, or whether frequent micro-stops are dragging the average down.</p>
 
@@ -258,10 +258,32 @@
           </div>
 
           <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">MECE Verification</h3>
-          <p>Actual Operating Time must equal Potential Time + Lost Time Slow Running + Lost Time Making Waste + Unplanned Downtime. If it does not balance, a loss category has been mis-allocated. Check Run Speed and Bottleneck Speed inputs first.</p>
+          <p>Actual Operating Time must equal Potential Time + <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning + <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste + <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime. If it does not balance, a loss category has been mis-allocated. Check Run Speed and <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed inputs first.</p>
         </div>
 
-        <!-- 6. CTA -->
+        <!-- 6. Glossary -->
+        <div class="content-card reveal" data-delay="400">
+          <h2>Glossary</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Abbreviation</th><th>Full Name</th></tr></thead>
+              <tbody>
+                <tr><td><strong>BNS</strong></td><td><strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &mdash; maximum demonstrated speed of the constraining process step</td></tr>
+                <tr><td><strong>LTMW</strong></td><td><strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste &mdash; time equivalent of producing defective output</td></tr>
+                <tr><td><strong>LTSR</strong></td><td><strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning &mdash; time equivalent of running below bottleneck speed</td></tr>
+                <tr><td><strong>OEE</strong></td><td><strong>O</strong>verall <strong>E</strong>quipment <strong>E</strong>ffectiveness &mdash; Availability &times; Performance &times; Quality (industry-standard multiplicative form)</td></tr>
+                <tr><td><strong>OOE</strong></td><td><strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness &mdash; Potential Time / Shift Time (production context)</td></tr>
+                <tr><td><strong>PDT</strong></td><td><strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime &mdash; scheduled maintenance, changeovers, planned cleaning</td></tr>
+                <tr><td><strong>PPT</strong></td><td><strong>P</strong>lanned <strong>P</strong>roduction <strong>T</strong>ime &mdash; Shift Time minus Schedule Loss</td></tr>
+                <tr><td><strong>TEEP</strong></td><td><strong>T</strong>otal <strong>E</strong>ffective <strong>E</strong>quipment <strong>P</strong>erformance &mdash; Potential Time / Calendar Time</td></tr>
+                <tr><td><strong>UMP</strong></td><td><strong>U</strong>nit <strong>M</strong>arginal <strong>P</strong>rofit &mdash; revenue minus truly variable costs per unit</td></tr>
+                <tr><td><strong>UPDT</strong></td><td><strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &mdash; breakdowns, stoppages, material/labour waiting</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 7. CTA -->
         <div style="text-align: center; padding: 3rem 0;">
           <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">See what your lost time is costing you</h2>
           <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
