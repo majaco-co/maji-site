@@ -118,7 +118,7 @@
   .loss-label-row { display: flex; gap: 2px; margin-top: 3px; }
   .loss-label { font-size: 7px; font-weight: 500; text-align: center; color: var(--text-muted); letter-spacing: 0.2px; line-height: 1.2; }
 
-  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 48px; gap: 0; }
+  .center { display: flex; flex-direction: row; align-items: center; justify-content: center; padding-top: 48px; gap: 0; }
   .center-db {
     position: relative; width: 100%; min-width: 220px;
     border-radius: 16px; border: 2px solid var(--pine);
@@ -147,12 +147,10 @@
     border: 1px solid rgba(0,100,88,0.5); letter-spacing: 0.3px;
   }
 
-  .arrows-in, .arrows-out { display: flex; justify-content: center; padding: 0; }
+  .arrows-in, .arrows-out { display: flex; align-items: center; padding: 0; flex-shrink: 0; }
   .arrows-in svg, .arrows-out svg { display: none; }
-  .arrows-in { height: 24px; position: relative; }
-  .arrows-in::after { content: ''; display: block; width: 2px; height: 100%; background: linear-gradient(to bottom, transparent, var(--pine)); margin: 0 auto; }
-  .arrows-out { height: 24px; position: relative; }
-  .arrows-out::after { content: ''; display: block; width: 2px; height: 100%; background: linear-gradient(to bottom, var(--pine), transparent); margin: 0 auto; }
+  .arrows-in::after { content: ''; display: block; width: 32px; height: 2px; background: linear-gradient(to right, transparent, var(--pine-light)); }
+  .arrows-out::after { content: ''; display: block; width: 32px; height: 2px; background: linear-gradient(to right, var(--pine-light), transparent); }
 
   .decomp { margin-top: 6px; font-size: 9px; color: var(--text-muted); font-weight: 300; }
   .decomp strong { color: var(--text-secondary); font-weight: 500; }
