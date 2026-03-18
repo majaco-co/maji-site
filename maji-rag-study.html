@@ -38,41 +38,48 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
+    font-family: 'TT Hoves Pro', system-ui, -apple-system, sans-serif;
     background: var(--color-bg, #f5f5f5);
     color: var(--ink);
     min-height: 100dvh;
     padding-bottom: 60px;
   }
 
-  .page { max-width: 720px; margin: 0 auto; padding: 36px 16px 72px; }
+  .page { max-width: 960px; margin: 0 auto; padding: 36px 16px 72px; }
   @media(min-width:600px) { .page { padding: 56px 24px 80px; } }
 
   .study-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-family: 'TT Hoves Pro', system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 10px;
   }
   .intro {
-    font-size: 14px;
+    font-size: 1rem;
+    font-weight: 300;
     color: var(--ink2);
-    line-height: 1.7;
+    line-height: 1.6;
     margin-bottom: 36px;
   }
 
   .card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
+    transition: box-shadow 0.3s ease;
   }
+  .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06); }
   @media(min-width:520px) { .card { padding: 24px; } }
 
   .card-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    font-weight: 500;
+    font-family: 'TT Hoves Pro', system-ui, -apple-system, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -113,9 +120,10 @@
     width: 100%;
     padding: 16px;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'TT Hoves Pro', system-ui, sans-serif;
     cursor: pointer;
     transition: opacity 0.15s;
     margin-top: 12px;
@@ -134,8 +142,8 @@
   }
   .input-row:last-child { margin-bottom: 0; }
   .input-row label {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 0.82rem;
+    font-weight: 600;
     min-width: 72px;
     color: var(--ink2);
   }
@@ -165,9 +173,9 @@
   /* Asset config */
   .asset-config { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
   .asset-config-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    font-weight: 500;
+    font-family: 'TT Hoves Pro', system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -291,14 +299,14 @@
   .stop-list { list-style: none; }
   .stop-item {
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 14px;
     margin-bottom: 8px;
     cursor: pointer;
     background: #fafafa;
-    transition: border-color 0.15s;
+    transition: box-shadow 0.3s ease, border-color 0.15s;
   }
-  .stop-item:hover { border-color: var(--ink2); }
+  .stop-item:hover { border-color: var(--ink2); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
   .stop-item .stop-num {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
@@ -326,9 +334,10 @@
     margin-top: 4px;
   }
   .stop-item .stop-detail {
-    font-size: 13px;
+    font-size: 0.85rem;
     margin-top: 6px;
     color: var(--ink2);
+    font-weight: 300;
   }
   .stop-item .stop-detail strong { color: var(--ink); }
   .stop-item .edit-hint {
