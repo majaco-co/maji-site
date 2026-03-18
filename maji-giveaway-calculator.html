@@ -18,7 +18,8 @@
   <style>
     /* Giveaway Calculator — scoped styles */
     .gc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
-    .gc-panel{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem}
+    .gc-panel{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem;transition:box-shadow 0.3s ease}
+    .gc-panel:hover,.gc-chart-card:hover,.gc-result-card:hover,.gc-compare-card:hover,.gc-expand-body:hover{box-shadow:0 8px 24px rgba(0,0,0,0.10),0 4px 8px rgba(0,0,0,0.06)}
     .gc-panel h3{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#001412;border-bottom:2px solid #006458;padding-bottom:0.5rem}
     .gc-group{margin-bottom:1rem}
     .gc-group label{display:block;font-size:0.82rem;font-weight:600;margin-bottom:0.3rem;color:#333}
@@ -42,7 +43,7 @@
     .gc-hero-stat strong{color:#fff;font-weight:700}
     .gc-warn{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.8rem;color:#856404;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
     .gc-warn::before{content:'⚠';font-size:1rem}
-    .gc-chart-card{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
+    .gc-chart-card{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;transition:box-shadow 0.3s ease}
     .gc-chart-card h3{font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;color:#001412}
     .gc-chart-card p{font-size:0.8rem;color:#888;margin-bottom:1rem}
     .gc-tne-table{font-size:0.75rem;width:100%;border-collapse:collapse;margin-top:0.5rem}
@@ -53,7 +54,7 @@
     .gc-cv{font-size:0.78rem;color:#006458;font-weight:600;margin-top:0.25rem;padding:0.3rem 0.5rem;background:rgba(0,100,88,0.06);border-radius:6px;display:inline-block}
     .gc-cv-explain{font-size:0.68rem;color:#888;margin-top:0.15rem;line-height:1.4}
     .gc-results-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
-    .gc-result-card{background:#fff;border:1px solid var(--color-border);border-radius:12px;padding:1rem;text-align:center}
+    .gc-result-card{background:#fff;border:1px solid var(--color-border);border-radius:12px;padding:1rem;text-align:center;transition:box-shadow 0.3s ease}
     .gc-result-card .gc-rc-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:#7A7A7A;margin-bottom:0.35rem}
     .gc-result-card .gc-rc-value{font-size:1.3rem;font-weight:700;color:#006458;line-height:1.2}
     .gc-result-card .gc-rc-sub{font-size:0.72rem;color:#888;margin-top:0.2rem}
@@ -79,7 +80,7 @@
       .gc-results-row{grid-template-columns:1fr}
     }
     .gc-compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
-    .gc-compare-card{border-radius:12px;padding:1rem 1.25rem;border:1px solid var(--color-border);background:#fff}
+    .gc-compare-card{border-radius:12px;padding:1rem 1.25rem;border:1px solid var(--color-border);background:#fff;transition:box-shadow 0.3s ease}
     .gc-compare-card h4{font-size:0.85rem;font-weight:700;margin-bottom:0.5rem;color:#001412}
     .gc-compare-stat{font-size:0.78rem;line-height:1.7;color:#444}
     .gc-compare-total{font-size:1.1rem;font-weight:700;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid #eee}
