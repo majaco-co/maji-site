@@ -381,14 +381,14 @@
       <p style="font-size:0.82rem; color:var(--muted); margin-bottom:14px;">Costs incurred because the product thaws at +3°C. These are <strong>avoided entirely</strong> at -3°C (no phase change, no thawing).</p>
       <div class="row">
         <div class="field">
-          <label>Product Waste / Quality Loss</label>
-          <input type="number" id="wastePct" value="2" step="0.1">
-          <div class="unit">% of throughput lost or downgraded due to thawing</div>
+          <label>Product Waste / Dropped Recovery</label>
+          <input type="number" id="wastePct" value="0.5" step="0.1">
+          <div class="unit">% of throughput wasted or sold below target £/kg due to thawing (e.g. downgraded, short shelf-life, customer claims)</div>
         </div>
         <div class="field">
-          <label>Product Value</label>
-          <input type="number" id="productValue" value="3500" step="100">
-          <div class="unit">£ per tonne (bacon value)</div>
+          <label>Product Value (£/tonne)</label>
+          <input type="number" id="productValue" value="1000" step="100">
+          <div class="unit">Cost of waste or dropped recovery per tonne — the margin lost when product is written off or sold below target price</div>
         </div>
       </div>
       <div class="row">
@@ -533,7 +533,7 @@
         <td class="num" style="color:#dc2626">▲ £21.9k</td>
       </tr>
       <tr>
-        <td>Waste / quality loss <em style="color:var(--muted)">(0.5% × 36500t × £3500/t)</em></td>
+        <td>Waste / dropped recovery <em style="color:var(--muted)">(0.5% × 36500t × £1000/t)</em></td>
         <td class="num">£638.8k</td>
         <td class="num">£0.00</td>
         <td class="num" style="color:#16a34a">▼ £638.8k</td>
@@ -952,7 +952,7 @@
         <td class="num"${deltaClass(annualCurrent, annualProposed)}>${(annualProposed - annualCurrent) <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(annualProposed - annualCurrent))}</td>
       </tr>
       <tr>
-        <td>Waste / quality loss <em style="color:var(--muted)">(${(wastePct*100).toFixed(1)}% × ${annualTonnes.toFixed(0)}t × £${productValue}/t)</em></td>
+        <td>Waste / dropped recovery <em style="color:var(--muted)">(${(wastePct*100).toFixed(1)}% × ${annualTonnes.toFixed(0)}t × £${productValue}/t)</em></td>
         <td class="num">${fmt(wasteCurrentAnnual)}</td>
         <td class="num">${fmt(wasteProposedAnnual)}</td>
         <td class="num" style="color:#16a34a">${wasteCurrentAnnual > 0 && wasteProposedAnnual === 0 ? '▼ ' + fmt(wasteCurrentAnnual) : fmt(wasteProposedAnnual - wasteCurrentAnnual)}</td>
