@@ -935,49 +935,45 @@
           {/* ── Compliance baseline ── */}
           <div className="gc-chart-card" style={{background: warnNonCompliant ? '#fff' : '#f8f9fa', opacity: warnNonCompliant ? 1 : 0.55}}>
             <h3 style={{color: warnNonCompliant ? '#dc2626' : '#7A7A7A'}}>
-              {warnNonCompliant ? 'Pre-checkweigher process is non-compliant' : 'Current process is compliant'}
+              {warnNonCompliant ? 'Without rework, current distribution is non-compliant' : 'Current process is compliant'}
             </h3>
-            <p style={{color: warnNonCompliant ? '#555' : '#999'}}>
-              {warnNonCompliant
-                ? 'At your current SD (' + fmt(currentSD,1) + ' g), the pre-checkweigher distribution does not satisfy all three W&M packer rules. The true saving opportunity is measured against this compliant baseline — not your current giveaway.'
-                : 'Your current giveaway already satisfies W&M rules at the current SD. The section below shows the compliant baseline for reference.'}
-            </p>
-            {warnNonCompliant && (
-              <div style={{background:'#fefce8',border:'1px solid #fde68a',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.78rem',color:'#92400e',marginBottom:'0.75rem',lineHeight:1.5}}>
-                <strong>Important:</strong> If the checkweigher is already catching and reworking underweight packs, the finished batch may still be W&M compliant. Check your checkweigh reject data carefully — if the rework loop is working, you are already bearing the rework cost shown in the comparison above.
-              </div>
+            {warnNonCompliant ? (
+              <p style={{color:'#555'}}>
+                Without a checkweigher removing underweight packs, you would need to increase giveaway to {fmt(compliantGAPct,2)}% to pass W&M at this SD.
+                The checkweigher rework loop is <strong>already avoiding this on-cost</strong> — by catching underweight packs instead of overfilling.
+              </p>
+            ) : (
+              <p style={{color:'#999'}}>Your current giveaway already satisfies W&M rules at the current SD. The section below shows the compliant baseline for reference.</p>
             )}
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'1rem',marginTop:'0.75rem'}}>
+            <div style={{display:'grid',gridTemplateColumns: warnNonCompliant ? '1fr 1fr 1fr 1fr' : '1fr 1fr 1fr',gap:'1rem',marginTop:'0.75rem'}}>
               <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Compliant giveaway</div>
+                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Giveaway without rework</div>
                 <div style={{fontSize:'1.3rem',fontWeight:700,color: warnNonCompliant ? '#dc2626' : '#006458'}}>{fmt(compliantGAPct,2)}%</div>
                 <div style={{fontSize:'0.75rem',color:'#888'}}>{fmt(compliantGA_g,1)} g/pack — mean {fmt(requiredMeanCurrent,1)} g</div>
               </div>
               <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Annual cost of compliance</div>
+                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Cost at that giveaway</div>
                 <div style={{fontSize:'1.3rem',fontWeight:700,color: warnNonCompliant ? '#dc2626' : '#006458'}}>{fmtGBP(Math.round(complianceGACost))}/yr</div>
-                <div style={{fontSize:'0.75rem',color:'#888'}}>Giveaway at compliant mean × volume × cost</div>
+                <div style={{fontSize:'0.75rem',color:'#888'}}>What you'd pay without checkweigher</div>
               </div>
+              {warnNonCompliant && (
+                <div style={{background:'#f0fdf4',borderRadius:10,padding:'0.75rem',textAlign:'center',border:'1px solid #bbf7d0'}}>
+                  <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#006458',marginBottom:'0.25rem'}}>Rework is saving you</div>
+                  <div style={{fontSize:'1.3rem',fontWeight:700,color:'#006458'}}>{fmtGBP(Math.round(complianceOnCost))}/yr</div>
+                  <div style={{fontSize:'0.75rem',color:'#888'}}>On-cost avoided by catching underweights</div>
+                </div>
+              )}
               <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>
-                  {warnNonCompliant ? 'On-cost vs current' : 'Current giveaway cost'}
-                </div>
-                <div style={{fontSize:'1.3rem',fontWeight:700,color: complianceOnCost > 0 ? '#dc2626' : '#006458'}}>
-                  {warnNonCompliant ? (complianceOnCost > 0 ? '+' : '') + fmtGBP(Math.round(complianceOnCost)) + '/yr' : fmtGBP(Math.round(currentGACost)) + '/yr'}
-                </div>
-                <div style={{fontSize:'0.75rem',color:'#888'}}>
-                  {warnNonCompliant
-                    ? 'Additional ' + fmt(compliantGAPct - currentGAPct,2) + 'pp giveaway needed to comply'
-                    : 'At ' + fmt(currentGAPct,1) + '% giveaway'}
-                </div>
+                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Your actual giveaway</div>
+                <div style={{fontSize:'1.3rem',fontWeight:700,color:'#006458'}}>{fmt(currentGAPct,1)}%</div>
+                <div style={{fontSize:'0.75rem',color:'#888'}}>{fmt(currentGA_g,1)} g/pack — mean {fmt(currentMean,1)} g</div>
               </div>
             </div>
             {warnNonCompliant && (
               <div style={{marginTop:'0.75rem',fontSize:'0.82rem',color:'#555',lineHeight:1.5}}>
-                <strong>Binding rule:</strong> {ruleLabel(bindingCurRule)} — requires mean ≥ {fmt(requiredMeanCurrent,1)} g at SD {fmt(currentSD,1)} g.
-                Your current mean of {fmt(currentMean,1)} g is {fmt(requiredMeanCurrent - currentMean,1)} g short.
-                To comply without reducing SD, giveaway must increase from {fmt(currentGAPct,1)}% to {fmt(compliantGAPct,2)}%, costing an additional <strong>{fmtGBP(Math.round(complianceOnCost))}/yr</strong>.
-                The saving from reducing giveaway to your target ({fmt(targetGAPct,1)}%) should be measured against this compliant baseline.
+                <strong>In other words:</strong> Without the checkweigher, you'd need {fmt(compliantGAPct,2)}% giveaway (mean {fmt(requiredMeanCurrent,1)} g) to pass W&M at SD {fmt(currentSD,1)} g.
+                Instead, you run at {fmt(currentGAPct,1)}% giveaway and rework the underweights — saving <strong>{fmtGBP(Math.round(complianceOnCost))}/yr</strong> in avoided overfill vs the rework cost of <strong>{fmtGBP(Math.round(annualReworkCost))}/yr</strong>.
+                {complianceOnCost > annualReworkCost ? ' The rework loop is a net win — it costs less than the giveaway it avoids.' : ''}
               </div>
             )}
           </div>
