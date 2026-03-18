@@ -1222,9 +1222,8 @@ textarea.form-control {
 
 .content-card ul li,
 .content-card ol li {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
+  position: relative;
+  padding-left: 1.5rem;
   color: var(--color-text-muted);
   line-height: var(--line-height-relaxed);
 }
@@ -1233,8 +1232,9 @@ textarea.form-control {
   content: '▸';
   color: var(--color-primary);
   font-size: var(--font-size-xs);
-  margin-top: 4px;
-  flex-shrink: 0;
+  position: absolute;
+  left: 0;
+  top: 4px;
 }
 
 .content-card ol {
@@ -1250,8 +1250,9 @@ textarea.form-control {
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-sm);
-  flex-shrink: 0;
-  min-width: 1.5rem;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 /* =============================================
