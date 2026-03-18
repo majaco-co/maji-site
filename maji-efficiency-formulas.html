@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Efficiency Formulas Quick Reference | maji by majaco</title>
-  <meta name="description" content="Core majaco methodologies for measuring manufacturing efficiency, labour productivity, and lost time analysis. UK English terminology and time-based measurement principles.">
+  <meta name="description" content="Formula reference for majaco's time-based measurement framework. Corrected lost time equations, efficiency metrics by constraint state, and financial valuation of opportunities.">
   <meta property="og:title" content="Efficiency Formulas Quick Reference | maji by majaco">
-  <meta property="og:description" content="Core formulas for OEE, PPLH, TEEP, Labour Efficiency, and time-based lost time analysis.">
+  <meta property="og:description" content="Core formulas for operating efficiency, machine efficiency, TEEP, lost time categories, and financial valuation of manufacturing opportunities.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://majiai.co/maji-efficiency-formulas">
   <meta property="og:image" content="https://majiai.co/assets/og-image.png">
@@ -54,7 +54,7 @@
       <p class="page-hero__eyebrow">maji Reference</p>
       <h1 class="page-hero__title">Efficiency Formulas <span class="text-green">Quick Reference</span></h1>
       <p class="page-hero__subtitle">
-        Core majaco methodologies for measuring manufacturing efficiency, labour productivity, and lost time analysis. All formulas use UK English terminology and time-based measurement principles.
+        The equations behind majaco's time-based measurement framework. For the full methodology, see the <a href="maji-time-hierarchy.html" style="color:#DAF11B;text-decoration:underline">Time Hierarchy</a> page.
       </p>
     </div>
   </section>
@@ -63,116 +63,206 @@
     <section class="section">
       <div class="container">
 
-        <div class="tool-disclaimer">
-          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
-        </div>
-
-        <!-- Core Time Definitions -->
+        <!-- 1. Time Hierarchy — Visual Cascade -->
         <div class="content-card reveal">
-          <h2>Core Time Definitions</h2>
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>Term</th><th>Abbreviation</th><th>Definition</th></tr></thead>
-              <tbody>
-                <tr><td>Calendar Time</td><td>CT</td><td>Total time in period (24 × 7 × weeks). Fixed.</td></tr>
-                <tr><td>Non-working Time</td><td>NWT</td><td>Weekends, bank holidays, planned shutdowns not counted as shift time</td></tr>
-                <tr><td>Shift Time (Available Time)</td><td>ST</td><td>CT − NWT. Rostered hours.</td></tr>
-                <tr><td>Schedule Loss</td><td>ScL</td><td>Shifts rostered but not run due to demand</td></tr>
-                <tr><td>Planned Production Time</td><td>PPT</td><td>ST − ScL. Time the line was expected to produce.</td></tr>
-                <tr><td>Planned Downtime</td><td>PDT</td><td>Scheduled maintenance, changeovers, planned cleaning</td></tr>
-                <tr><td>Operating Time</td><td>OT</td><td>PPT − PDT. Time the line should have been running.</td></tr>
-                <tr><td>Unplanned Downtime</td><td>UPDT</td><td>Breakdowns, stoppages, material/labour waiting</td></tr>
-                <tr><td>Up Time</td><td>UT</td><td>OT − UPDT. Time the line was actually running.</td></tr>
-                <tr><td>Lost Time Slow Running</td><td>LTSR</td><td>Time equivalent of running below target speed</td></tr>
-                <tr><td>Lost Time Making Waste</td><td>LTMW</td><td>Time equivalent of producing off-spec product</td></tr>
-                <tr><td>Potential Time</td><td>PT</td><td>UT − LTSR − LTMW. Effective productive time.</td></tr>
-              </tbody>
-            </table>
+          <h2>Time Hierarchy</h2>
+          <p>Every level is formed by subtracting a loss category from the level above. The result is <strong>Potential Time</strong> &mdash; the theoretical minimum time to produce your actual good output at bottleneck speed.</p>
+
+          <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0">
+
+            <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
+              <strong>Calendar Time</strong> <span style="color:#7A7A7A">&mdash; all time in the period (24 &times; 7 &times; weeks)</span>
+            </div>
+
+            <div style="padding-left:1.5rem">
+              <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Non-working Time &rarr;</div>
+              <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
+                <strong>Shift Time</strong> <span style="color:#7A7A7A">&mdash; CT &minus; NWT &mdash; factory open, shifts rostered</span>
+              </div>
+
+              <div style="padding-left:1.5rem">
+                <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Schedule Loss &rarr;</div>
+                <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
+                  <strong>Planned Production Time</strong> <span style="color:#7A7A7A">&mdash; ST &minus; ScL &mdash; scheduled to produce</span>
+                </div>
+
+                <div style="padding-left:1.5rem">
+                  <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Planned Downtime &rarr;</div>
+                  <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
+                    <strong>Operating Time</strong> <span style="color:#7A7A7A">&mdash; PPT &minus; PDT &mdash; expected to run</span>
+                  </div>
+
+                  <div style="padding-left:1.5rem">
+                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Unplanned Downtime (UPDT) &rarr;</div>
+                    <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
+                      <strong>Up Time</strong> <span style="color:#7A7A7A">&mdash; OT &minus; UPDT &mdash; actually running</span>
+                    </div>
+
+                    <div style="padding-left:1.5rem">
+                      <div style="color:#d97706;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; LTSR, LTMW &rarr;</div>
+                      <div style="background:#f0fdf4;border-left:4px solid #DAF11B;padding:0.75rem 1rem;border-radius:6px">
+                        <strong style="color:var(--color-primary)">Potential Time</strong> <span style="color:#7A7A7A">&mdash; Good Output / BNS &mdash; theoretical minimum</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- Lost Time Formulas -->
+        <!-- 2. Core Formulas -->
         <div class="content-card reveal" data-delay="80">
-          <h2>Lost Time Category Formulas</h2>
-          <div class="formula">LTSR = (Target Rate − Actual Rate) / Target Rate × Up Time</div>
-          <div class="formula">LTMW = (1 − Yield) × Potential Time (if waste is made at potential rate)</div>
-          <div class="formula">Total Losses = UPDT + LTSR + LTMW + PDT + ScL</div>
-          <div class="formula">Verification: PPT = PT + UPDT + LTSR + LTMW + PDT</div>
+          <h2>Core Formulas</h2>
+          <div class="formula"><strong>Potential Time</strong> = Good Output / Bottleneck Speed (BNS)</div>
+          <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
+          <div class="formula"><strong>LTSR</strong> = Good Output / Run Speed &minus; Good Output / BNS</div>
+          <div class="formula"><strong>LTMW</strong> = Waste Output / Run Speed</div>
+          <div class="formula"><strong>UPDT</strong> = Actual Operating Time &minus; Up Time</div>
+          <div class="formula"><strong>Planning Rate</strong> = BNS &times; Operating Efficiency (planned)</div>
+          <div class="formula"><strong>Verification:</strong> Actual OT = PT + LTSR + LTMW + UPDT &nbsp;(must balance)</div>
         </div>
 
-        <!-- Efficiency Metrics -->
+        <!-- 3. Efficiency Metrics -->
         <div class="content-card reveal" data-delay="160">
           <h2>Efficiency Metrics</h2>
           <div class="table-wrapper">
             <table>
-              <thead><tr><th>Metric</th><th>Formula</th><th>Denominator includes</th></tr></thead>
+              <thead>
+                <tr><th>Metric</th><th>Formula</th><th>Audience</th><th>Constraint</th></tr>
+              </thead>
               <tbody>
                 <tr>
                   <td><strong>Operating Efficiency</strong></td>
-                  <td>PT / OT</td>
-                  <td>UPDT + LTSR + LTMW only</td>
+                  <td>PT / Actual OT</td>
+                  <td>Shop floor</td>
+                  <td>Both</td>
                 </tr>
                 <tr>
-                  <td><strong>Machine Efficiency (OOE)</strong></td>
-                  <td>PT / ST</td>
-                  <td>All losses including PDT and ScL</td>
-                </tr>
-                <tr>
-                  <td><strong>OEE (standard)</strong></td>
-                  <td>Availability × Performance × Quality</td>
-                  <td>UPDT + LTSR + LTMW (same as Operating Efficiency)</td>
+                  <td><strong>Machine Efficiency / OOE</strong></td>
+                  <td>PT / Shift Time</td>
+                  <td>Management</td>
+                  <td>Both</td>
                 </tr>
                 <tr>
                   <td><strong>TEEP</strong></td>
-                  <td>PT / CT</td>
-                  <td>All time including non-working time</td>
+                  <td>PT / Calendar Time</td>
+                  <td>Strategic</td>
+                  <td>Production-constrained</td>
+                </tr>
+                <tr>
+                  <td><strong>Output per Labour Hour</strong></td>
+                  <td>Good Output / Labour Hours</td>
+                  <td>Strategic</td>
+                  <td>Sales-constrained</td>
+                </tr>
+                <tr>
+                  <td><strong>Labour Efficiency</strong></td>
+                  <td>Machine Eff &times; (Potential Crew / Actual Crew)</td>
+                  <td>&mdash;</td>
+                  <td>Sales-constrained</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="formula" style="margin-top: 1.5rem;">OEE Availability = UT / OT</div>
-          <div class="formula">OEE Performance = (Actual Output × Ideal Cycle Time) / UT</div>
-          <div class="formula">OEE Quality = Good Output / Total Output</div>
-          <div class="formula">OEE = Availability × Performance × Quality</div>
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">
+            <strong>Machine Efficiency vs OOE:</strong> same formula (PT / ST), different name. "Machine Efficiency" is used in a sales context; "OOE" in a production context. The name signals strategic intent, not a different calculation.
+          </p>
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
+            <strong>OEE translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (PT / OT) provides the same insight without double-counting speed losses on waste units.
+          </p>
         </div>
 
-        <!-- Labour Efficiency -->
+        <!-- 4. Financial Valuation -->
         <div class="content-card reveal" data-delay="240">
-          <h2>Labour Efficiency Framework</h2>
-          <p>Used in sales-constrained environments where labour cost drives profitability:</p>
-          <div class="formula">PPLH = (Good Output) / (Total Labour Hours Worked)</div>
-          <div class="formula">PPLH = Machine Efficiency × (Potential Crew / Actual Crew) × Target Rate</div>
-          <div class="formula">Labour Efficiency = PPLH Actual / PPLH Target</div>
-          <p style="margin-top: 1rem;">Where <strong>Potential Crew</strong> is the minimum number of people needed to run the line at target rate.</p>
+          <h2>Financial Valuation of Lost Time</h2>
+          <p>Every lost hour has a pound value &mdash; but the value depends entirely on your constraint state.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.25rem 0">
+            <div style="background:#f0fdf4;border-radius:10px;padding:1.25rem;border:1px solid #bbf7d0">
+              <div style="font-size:0.8125rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-primary);font-weight:400;margin-bottom:0.75rem">Production-Constrained</div>
+              <p style="font-size:0.9rem;color:#333;line-height:1.6;margin:0">
+                <strong>Lost Output &times; Unit Marginal Profit (UMP)</strong>
+              </p>
+              <p style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.5rem 0 0 0">
+                Two UMP variants:
+              </p>
+              <ul style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.25rem 0 0 0;padding-left:1.25rem;list-style:disc">
+                <li style="display:list-item"><strong>With existing labour</strong> &mdash; higher margin, labour cost excluded (already paid)</li>
+                <li style="display:list-item"><strong>With new labour</strong> &mdash; lower margin, labour cost included (overtime or new hires needed)</li>
+              </ul>
+              <p style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.5rem 0 0 0">
+                Recovery calculated at current Machine Efficiency, not 100%.
+              </p>
+            </div>
+            <div style="background:#f8f9fa;border-radius:10px;padding:1.25rem;border:1px solid #e0e0e0">
+              <div style="font-size:0.8125rem;text-transform:uppercase;letter-spacing:0.12em;color:#7A7A7A;font-weight:400;margin-bottom:0.75rem">Sales-Constrained</div>
+              <p style="font-size:0.9rem;color:#333;line-height:1.6;margin:0">
+                <strong>Labour Hours Saved &times; Fully Loaded Labour Cost</strong>
+              </p>
+              <p style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.5rem 0 0 0">
+                Additional output has no value &mdash; you cannot sell more than the market will buy. The only saving is fewer people or fewer hours for the same output.
+              </p>
+            </div>
+          </div>
+
+          <p style="font-size:0.9rem;color:#555;line-height:1.6">
+            <strong>The difference matters enormously.</strong> The same 2.5 hours of unplanned downtime per day can be worth &pound;5.4M/yr (production-constrained, valued at throughput margin) or &pound;82k/yr (sales-constrained, valued at labour cost saved) &mdash; a <strong>66&times; difference</strong>. Getting the constraint diagnosis right is not optional.
+          </p>
+
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:1rem"><strong>Lost time scope:</strong></p>
+          <ul style="font-size:0.85rem;color:#7A7A7A;line-height:1.6;margin:0.25rem 0 0 0;padding-left:1.25rem;list-style:disc">
+            <li style="display:list-item"><strong>Operational</strong> &mdash; losses within Operating Time (UPDT, LTSR, LTMW)</li>
+            <li style="display:list-item"><strong>Tactical</strong> &mdash; losses within Shift Time (adds Schedule Loss and Planned Downtime)</li>
+            <li style="display:list-item"><strong>Strategic</strong> &mdash; losses within Calendar Time (adds Non-working Time)</li>
+          </ul>
         </div>
 
-        <!-- Valuation -->
+        <!-- 5. Diagnostic Quick Reference -->
         <div class="content-card reveal" data-delay="320">
-          <h2>Financial Valuation of Lost Time</h2>
-          <div class="table-wrapper">
+          <h2>Diagnostic Quick Reference</h2>
+
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">LTSR Elevated?</h3>
+          <p>Two possible causes &mdash; the fix is different for each:</p>
+          <ol style="font-size:0.9rem;color:#555;line-height:1.6;margin:0.5rem 0 1.25rem 0;padding-left:1.25rem;list-style:decimal">
+            <li style="display:list-item"><strong>True slow running</strong> &mdash; the line deliberately operates below BNS (e.g. operator reduces speed for quality reasons).</li>
+            <li style="display:list-item"><strong>LTSS micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as UPDT but reduce the average Run Speed.</li>
+          </ol>
+          <p style="font-size:0.85rem;color:#7A7A7A">Diagnose with a lineside time study: observe whether the line speed setting matches BNS, or whether frequent micro-stops are dragging the average down.</p>
+
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">UPDT Prioritisation</h3>
+          <p>Use a frequency&ndash;duration matrix to prioritise downtime events:</p>
+          <div class="table-wrapper" style="margin-top:0.75rem">
             <table>
-              <thead><tr><th>Constraint State</th><th>Value of lost potential time</th></tr></thead>
+              <thead>
+                <tr><th></th><th>Low Duration</th><th>High Duration</th></tr>
+              </thead>
               <tbody>
                 <tr>
-                  <td>Production-constrained (demand &gt; capacity)</td>
-                  <td>Lost PT × Throughput Rate (revenue − truly variable costs)</td>
+                  <td><strong>High Frequency</strong></td>
+                  <td style="background:#f0fdf4"><strong>Highest value</strong> &mdash; often missed, frequent short stops that aggregate to large losses</td>
+                  <td>Major chronic issue &mdash; visible and usually already being addressed</td>
                 </tr>
                 <tr>
-                  <td>Sales-constrained (capacity &gt; demand)</td>
-                  <td>Lost PT × Labour Cost Rate (savings from fewer people/hours)</td>
+                  <td><strong>Low Frequency</strong></td>
+                  <td>Noise &mdash; low total impact</td>
+                  <td>Rare catastrophic events &mdash; address through preventive maintenance</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="formula" style="margin-top: 1.5rem;">Throughput = Revenue − Truly Variable Costs (materials, packaging, energy)</div>
-          <div class="formula">Value of 1 hour constrained downtime = Throughput Rate × 1 hour</div>
+
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">MECE Verification</h3>
+          <p>Actual OT must equal PT + LTSR + LTMW + UPDT. If it does not balance, a loss category has been mis-allocated. Check Run Speed and BNS inputs first.</p>
         </div>
 
-        <!-- CTA -->
+        <!-- 6. CTA -->
         <div style="text-align: center; padding: 3rem 0;">
-          <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">Implement these metrics in your facility</h2>
+          <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">See what your lost time is costing you</h2>
           <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
-            majaco can design and implement a complete measurement system based on these frameworks — from data capture through to executive reporting.
+            majaco can implement this framework in your facility &mdash; from data collection design through to live dashboards and financial valuation.
           </p>
           <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
             Talk to majaco
