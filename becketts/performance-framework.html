@@ -169,26 +169,41 @@
   .capture-col.visible { display: block; animation: slideIn 0.3s ease; }
   @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
 
-  .framework.tray-open { grid-template-columns: 260px 340px auto 1fr; }
+  .framework.tray-open { grid-template-columns: 230px 340px auto 1fr; }
 
-  .capture-card {
-    border-radius: 10px; padding: 10px 12px; border: 1px solid var(--card-border);
-    background: var(--card-bg); margin-bottom: 6px; font-size: 10px;
+  .capture-group-label {
+    font-size: 8px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--text-muted); margin: 8px 0 4px; padding-left: 2px;
   }
-  .capture-card .cap-title {
-    font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 6px;
+  .capture-group-label:first-of-type { margin-top: 0; }
+
+  .capture-chip {
+    display: flex; align-items: center; gap: 6px;
+    border-radius: 7px; padding: 5px 8px; border: 1px solid var(--card-border);
+    background: var(--card-bg); margin-bottom: 3px; font-size: 9px;
+    cursor: default; transition: all 0.25s ease;
+    border-left: 3px solid var(--card-border);
   }
-  .capture-item {
-    display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px;
-    font-size: 10px; color: var(--text-secondary); line-height: 1.5; font-weight: 300;
-  }
-  .capture-item .cap-icon {
+  .capture-chip:hover { background: var(--card-bg-hover); }
+  .capture-chip.active { background: var(--card-bg-hover); border-color: var(--pine); }
+  .capture-chip.dimmed { opacity: 0.18; }
+
+  .capture-chip .chip-icon {
     flex-shrink: 0; width: 16px; height: 16px; border-radius: 4px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 8px; margin-top: 1px;
+    font-size: 7px;
   }
-  .capture-item strong { color: var(--text-primary); font-weight: 500; }
+  .capture-chip .chip-label { font-weight: 500; color: var(--text-primary); white-space: nowrap; }
+  .capture-chip .chip-desc { color: var(--text-muted); font-weight: 300; font-size: 8px; }
+
+  /* Chip source border colours */
+  .capture-chip[data-source*="src-redzone"]     { border-left-color: #F97316; }
+  .capture-chip[data-source*="src-works-orders"] { border-left-color: #3B82F6; }
+  .capture-chip[data-source*="src-hours"]        { border-left-color: #8B5CF6; }
+  .capture-chip[data-source*="src-giveaway"]     { border-left-color: #EC4899; }
+  .capture-chip[data-source*="src-planning"]     { border-left-color: #DAF11B; }
+  .capture-chip[data-source*="src-commercial"]   { border-left-color: #EAB308; }
+
   .cap-sensor { background: rgba(249,115,22,0.15); color: #F97316; }
   .cap-human { background: rgba(139,92,246,0.15); color: #8B5CF6; }
   .cap-scan { background: rgba(59,130,246,0.15); color: #3B82F6; }
@@ -277,60 +292,131 @@
     </div>
 
     <!-- OEE System -->
-    <div class="capture-card" data-for="src-redzone">
-      <div class="cap-title" style="color:#F97316;">OEE System</div>
-      <div class="capture-item"><span class="cap-icon cap-sensor">◉</span><span><strong>Downtime:</strong> line pulse at bottleneck machine</span></div>
-      <div class="capture-item"><span class="cap-icon cap-sensor">◉</span><span><strong>Speed:</strong> measured at bottleneck (along with downtime)</span></div>
-      <div class="capture-item"><span class="cap-icon cap-human">✎</span><span><strong>DT reason:</strong> operator touch screen entry</span></div>
-      <div class="capture-item"><span class="cap-icon cap-sensor">◉</span><span><strong>Good/waste output:</strong> end-of-line counter</span></div>
-      <div class="capture-item"><span class="cap-icon cap-system">⟳</span><span><strong>Changeover:</strong> auto-detected from run events</span></div>
+    <div class="capture-group-label" style="color:#F97316;">OEE System</div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-sensor">◉</span>
+      <span><span class="chip-label">Downtime at bottleneck</span><br><span class="chip-desc">Line pulse sensor</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-sensor">◉</span>
+      <span><span class="chip-label">Line speed at bottleneck</span><br><span class="chip-desc">Sensor (with downtime)</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Downtime reason code</span><br><span class="chip-desc">Operator touch screen</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-sensor">◉</span>
+      <span><span class="chip-label">Good output count</span><br><span class="chip-desc">End-of-line counter</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-sensor">◉</span>
+      <span><span class="chip-label">Waste output count</span><br><span class="chip-desc">End-of-line counter</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Changeover detection</span><br><span class="chip-desc">Auto-detected from run gap</span></span>
     </div>
 
     <!-- Works Orders -->
-    <div class="capture-card" data-for="src-works-orders">
-      <div class="cap-title" style="color:#3B82F6;">Works Orders</div>
-      <div class="capture-item"><span class="cap-icon cap-scan">▦</span><span><strong>W.O. qty:</strong> pallet barcode scans</span></div>
-      <div class="capture-item"><span class="cap-icon cap-system">⟳</span><span><strong>SKU/line:</strong> ERP system export</span></div>
-      <div class="capture-item"><span class="cap-icon cap-human">✎</span><span><strong>Schedule:</strong> planning team manual entry</span></div>
-      <div class="capture-item"><span class="cap-icon cap-system">⟳</span><span><strong>Shift time:</strong> shift pattern config</span></div>
+    <div class="capture-group-label" style="color:#3B82F6;">Works Orders</div>
+    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-scan">▦</span>
+      <span><span class="chip-label">W.O. quantity confirmed</span><br><span class="chip-desc">Pallet barcode scan</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">SKU-to-line assignment</span><br><span class="chip-desc">ERP system export</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Daily production schedule</span><br><span class="chip-desc">Planner manual entry</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Shift pattern / shift time</span><br><span class="chip-desc">System config</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-works-orders" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Planned C/O sequence</span><br><span class="chip-desc">Planner entry</span></span>
     </div>
 
     <!-- Hours -->
-    <div class="capture-card" data-for="src-hours">
-      <div class="cap-title" style="color:#8B5CF6;">Hours</div>
-      <div class="capture-item"><span class="cap-icon cap-scan">▦</span><span><strong>Clock in/out:</strong> badge swipe / time &amp; attendance</span></div>
-      <div class="capture-item"><span class="cap-icon cap-human">✎</span><span><strong>Area:</strong> supervisor allocation</span></div>
-      <div class="capture-item"><span class="cap-icon cap-human">✎</span><span><strong>Direct/indirect:</strong> coded at clock-in</span></div>
+    <div class="capture-group-label" style="color:#8B5CF6;">Hours</div>
+    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-scan">▦</span>
+      <span><span class="chip-label">Clock in / clock out</span><br><span class="chip-desc">Badge swipe</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Area allocation</span><br><span class="chip-desc">Supervisor entry</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Direct / indirect split</span><br><span class="chip-desc">Coded at clock-in</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Crewing on line</span><br><span class="chip-desc">Manually entered</span></span>
     </div>
 
     <!-- Yield -->
-    <div class="capture-card" data-for="src-giveaway">
-      <div class="cap-title" style="color:#EC4899;">Yield</div>
-      <div class="capture-item"><span class="cap-icon cap-weigh">⚖</span><span><strong>Pack weights:</strong> inline checkweigher</span></div>
-      <div class="capture-item"><span class="cap-icon cap-sensor">◉</span><span><strong>Portion weights:</strong> slicer output data</span></div>
-      <div class="capture-item"><span class="cap-icon cap-sensor">◉</span><span><strong>Gripper end:</strong> slicer trim measurement</span></div>
-      <div class="capture-item"><span class="cap-icon cap-human">✎</span><span><strong>Misshapes:</strong> QA visual inspection tally</span></div>
+    <div class="capture-group-label" style="color:#EC4899;">Yield</div>
+    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-weigh">⚖</span>
+      <span><span class="chip-label">Pack weight</span><br><span class="chip-desc">Inline checkweigher</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-sensor">◉</span>
+      <span><span class="chip-label">Portion weight</span><br><span class="chip-desc">Slicer output data</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-sensor">◉</span>
+      <span><span class="chip-label">Gripper end / trim</span><br><span class="chip-desc">Slicer trim measurement</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Misshapes count</span><br><span class="chip-desc">QA visual inspection</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Non-standard / downgrade</span><br><span class="chip-desc">QA classification</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-giveaway" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Target weight per SKU</span><br><span class="chip-desc">System config</span></span>
     </div>
 
     <!-- Planning Standards -->
-    <div class="capture-card" data-for="src-planning">
-      <div class="cap-title" style="color:var(--lime);">Planning Stds</div>
-      <div class="capture-item"><span class="cap-icon cap-manual">⏱</span><span><strong>Rates:</strong> engineering time studies</span></div>
-      <div class="capture-item"><span class="cap-icon cap-system">⟳</span><span><strong>Allowances:</strong> historical analysis</span></div>
-      <div class="capture-item"><span class="cap-icon cap-manual">⏱</span><span><strong>C/O stds:</strong> observed changeover times</span></div>
+    <div class="capture-group-label" style="color:var(--lime);">Planning Standards</div>
+    <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-manual">⏱</span>
+      <span><span class="chip-label">Standard rate per SKU</span><br><span class="chip-desc">Engineering time study</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Manning allowance</span><br><span class="chip-desc">Historical analysis</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-manual">⏱</span>
+      <span><span class="chip-label">C/O time allowance</span><br><span class="chip-desc">Observed changeover studies</span></span>
     </div>
 
     <!-- Commercial Standards -->
-    <div class="capture-card" data-for="src-commercial">
-      <div class="cap-title" style="color:#EAB308;">Commercial Stds</div>
-      <div class="capture-item"><span class="cap-icon cap-system">⟳</span><span><strong>Direct hrs:</strong> finance costing model</span></div>
-      <div class="capture-item"><span class="cap-icon cap-system">⟳</span><span><strong>£/kg targets:</strong> commercial pricing model</span></div>
+    <div class="capture-group-label" style="color:#EAB308;">Commercial Standards</div>
+    <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Direct hour cost</span><br><span class="chip-desc">Finance costing model</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">£/kg selling price target</span><br><span class="chip-desc">Commercial pricing model</span></span>
     </div>
 
     <!-- Legend -->
-    <div style="margin-top:10px; padding:8px 10px; border-radius:8px; background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); font-size:9px; color:var(--text-muted); line-height:1.8;">
-      <span style="color:#F97316;">◉</span> Sensor / machine pulse &nbsp;
-      <span style="color:#8B5CF6;">✎</span> Human entry &nbsp;
+    <div style="margin-top:8px; padding:6px 8px; border-radius:7px; background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); font-size:8px; color:var(--text-muted); line-height:1.8;">
+      <span style="color:#F97316;">◉</span> Sensor &nbsp;
+      <span style="color:#8B5CF6;">✎</span> Human &nbsp;
       <span style="color:#3B82F6;">▦</span> Scan &nbsp;
       <span style="color:var(--lime);">⟳</span> System &nbsp;
       <span style="color:#EC4899;">⚖</span> Weigher &nbsp;
@@ -840,7 +926,11 @@
     return { x: r.right - fr.left, y: r.top + r.height / 2 - fr.top };
   }
 
-  function drawLines(sourceIds, kpiIds) {
+  function isTrayOpen() {
+    return document.getElementById('captureCol').classList.contains('visible');
+  }
+
+  function drawLines(sourceIds, kpiIds, captureEls) {
     connSvg.innerHTML = '';
     const dbLeft = getEdge(centerDb, 'left');
     const dbRight = getEdge(centerDb, 'right');
@@ -875,6 +965,42 @@
       path.setAttribute('fill', 'none');
       connSvg.appendChild(path);
     });
+
+    // Draw capture chip → source card lines (only when tray is open)
+    if (captureEls && captureEls.length && isTrayOpen()) {
+      captureEls.forEach(chip => {
+        const srcId = chip.dataset.source;
+        const srcEl = document.getElementById(srcId);
+        if (!srcEl) return;
+        const from = getEdge(chip, 'right');
+        const to = getEdge(srcEl, 'left');
+        const color = sourceColors[srcId] || '#DAF11B';
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const mx = from.x + (to.x - from.x) * 0.5;
+        path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '1.5');
+        path.setAttribute('stroke-opacity', '0.5');
+        path.setAttribute('fill', 'none');
+        connSvg.appendChild(path);
+      });
+    }
+  }
+
+  function dimCaptures(exceptSourceIds) {
+    if (!isTrayOpen()) return;
+    document.querySelectorAll('.capture-chip').forEach(chip => {
+      if (exceptSourceIds.includes(chip.dataset.source)) {
+        chip.classList.add('active');
+      } else {
+        chip.classList.add('dimmed');
+      }
+    });
+  }
+
+  function getChipsForSources(sourceIds) {
+    if (!isTrayOpen()) return [];
+    return Array.from(document.querySelectorAll('.capture-chip')).filter(c => sourceIds.includes(c.dataset.source));
   }
 
   function highlightSource(el) {
@@ -885,7 +1011,10 @@
       const kpiKey = c.id.replace('kpi-', '');
       if (feeds.includes(kpiKey)) { c.classList.add('active'); activeKpis.push(c.id); } else { c.classList.add('dimmed'); }
     });
-    drawLines([el.id], activeKpis);
+    // Highlight matching capture chips
+    dimCaptures([el.id]);
+    const chips = getChipsForSources([el.id]);
+    drawLines([el.id], activeKpis, chips);
   }
 
   function highlightKPI(el) {
@@ -894,11 +1023,32 @@
     document.querySelectorAll('.source-card').forEach(c => {
       if (fedBy.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
-    drawLines(fedBy, [el.id]);
+    // Highlight capture chips for connected sources
+    dimCaptures(fedBy);
+    const chips = getChipsForSources(fedBy);
+    drawLines(fedBy, [el.id], chips);
+  }
+
+  function highlightCapture(chip) {
+    const srcId = chip.dataset.source;
+    // Dim all other capture chips
+    document.querySelectorAll('.capture-chip').forEach(c => {
+      if (c !== chip) c.classList.add('dimmed');
+    });
+    chip.classList.add('active');
+    // Highlight parent source, dim others
+    document.querySelectorAll('.source-card').forEach(c => {
+      if (c.id === srcId) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
+    });
+    // Dim all KPIs
+    document.querySelectorAll('.kpi-card').forEach(c => { c.classList.add('dimmed'); });
+    // Draw line from chip → source → DB
+    drawLines([srcId], [], [chip]);
   }
 
   function clearHighlight() {
     document.querySelectorAll('.source-card, .kpi-card').forEach(c => { c.classList.remove('dimmed', 'active'); });
+    document.querySelectorAll('.capture-chip').forEach(c => { c.classList.remove('dimmed', 'active'); });
     connSvg.innerHTML = '';
   }
 
