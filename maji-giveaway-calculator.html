@@ -279,6 +279,23 @@
       return normalCDF(z) * 100;
     }
 
+    /* Cornish-Fisher adjusted compliance rate — accounts for skewness & kurtosis */
+    function complianceRateCF(mean, sd, legalMin, skew, kurt) {
+      if (sd <= 0) return mean >= legalMin ? 100 : 0;
+      if (skew === 0 && kurt === 0) return complianceRate(mean, sd, legalMin);
+      // z for the threshold
+      const z = (legalMin - mean) / sd;
+      // Cornish-Fisher: adjust z to account for non-normal tails
+      // z_cf = z + (z²-1)*γ₁/6 + (z³-3z)*γ₂/24 - (2z³-5z)*γ₁²/36
+      const z2 = z * z;
+      const z3 = z2 * z;
+      const zCF = z + (z2 - 1) * skew / 6
+                    + (z3 - 3 * z) * kurt / 24
+                    - (2 * z3 - 5 * z) * skew * skew / 36;
+      // % ABOVE the threshold (compliant)
+      return (1 - normalCDF(zCF)) * 100;
+    }
+
     /* ── TNE lookup (UK Average Quantity Rules) ── */
 
     function getTNE(nominalG) {
@@ -306,14 +323,16 @@
     const BECKETTS_PRESET = {
       nominal: 2250,
       currentGAPct: 2.7,
-      currentSD: 78,
+      currentSD: 41,
       targetGAPct: 1.0,
       costPerKg: 2.5,
-      annualVol: 6000000,
+      annualVol: 22222222,  // ~50,000t at 2.25kg/pack
       safetyMargin: 1,
       rule2OneIn: 40,
       rule3OneIn: 10000,
-      reworkCostPerPack: 0.50,
+      reworkCostPerPack: 0.05,
+      skewness: 0.38,
+      kurtosis: 1.3,
     };
 
     const fmt  = (v,d=1) => v.toFixed(d);
@@ -388,8 +407,11 @@
       const [rule3OneIn, setRule3OneIn]     = useState(10000);
       const [showTNE, setShowTNE]           = useState(false);
       const [presetActive, setPresetActive] = useState(false);
-      const [reworkCostPerPack, setReworkCostPerPack] = useState(0.50);
+      const [reworkCostPerPack, setReworkCostPerPack] = useState(0.05);
       const [volMode, setVolMode] = useState('packs'); // 'packs' or 'kg'
+      const [skewness, setSkewness] = useState(0);
+      const [kurtosis, setKurtosis] = useState(0);
+      const [bindingMode, setBindingMode] = useState('all'); // 'all' | 'avgOnly'
 
       /* ── Derived values ──────────────────────── */
 
@@ -413,11 +435,12 @@
       // CV %
       const currentCV = nominal > 0 ? (currentSD / nominal) * 100 : 0;
 
-      // Required SD for target giveaway (from three packer rules)
+      // Required SD for target giveaway (from internal rules)
       const sdFromRule2 = z2 > 0 ? (targetGA_g + tne) / z2 : Infinity;
       const sdFromRule3 = z3 > 0 ? (targetGA_g + 2 * tne) / z3 : Infinity;
-      const requiredSD  = Math.min(sdFromRule2, sdFromRule3);
-      const bindingRule = sdFromRule2 <= sdFromRule3 ? 2 : 3;
+      // In 'avgOnly' mode, user reworks all underweight packs — SD is unconstrained by Rules 2/3
+      const requiredSD  = bindingMode === 'avgOnly' ? currentSD : Math.min(sdFromRule2, sdFromRule3);
+      const bindingRule = bindingMode === 'avgOnly' ? 1 : (sdFromRule2 <= sdFromRule3 ? 2 : 3);
       const requiredCV  = nominal > 0 ? (requiredSD / nominal) * 100 : 0;
 
       // SD reduction
@@ -439,8 +462,8 @@
       const annualSaving  = annualKgSaved * costPerKg;
 
       // Compliance rates
-      const currentCompT1 = complianceRate(currentMean, currentSD, t1);
-      const currentCompT2 = complianceRate(currentMean, currentSD, t2);
+      const currentCompT1 = complianceRateCF(currentMean, currentSD, t1, skewness, kurtosis);
+      const currentCompT2 = complianceRateCF(currentMean, currentSD, t2, skewness, kurtosis);
       const currentPctBelowT2 = 100 - currentCompT2;
       const currentPctBelowT1 = 100 - currentCompT1;
       const currentPctBetweenT1T2 = Math.max(0, currentPctBelowT1 - currentPctBelowT2);
@@ -466,8 +489,8 @@
       function setVolFromKg(kg) { setAnnualVol(nominal > 0 ? Math.round(kg * 1000 / nominal) : 0); }
 
       // Rework analysis: at target mean and CURRENT SD
-      const pctBelowT2 = 100 - complianceRate(targetMean, currentSD, t2);
-      const pctBelowT1 = 100 - complianceRate(targetMean, currentSD, t1);
+      const pctBelowT2 = 100 - complianceRateCF(targetMean, currentSD, t2, skewness, kurtosis);
+      const pctBelowT1 = 100 - complianceRateCF(targetMean, currentSD, t1, skewness, kurtosis);
       const pctBetweenT1T2 = pctBelowT1 - pctBelowT2;
       // W&M Rule 3: zero packs below T2 → must rework all
       const reworkT2Packs = Math.round(annualVol * pctBelowT2 / 100);
@@ -492,6 +515,8 @@
         setRule2OneIn(BECKETTS_PRESET.rule2OneIn);
         setRule3OneIn(BECKETTS_PRESET.rule3OneIn);
         setReworkCostPerPack(BECKETTS_PRESET.reworkCostPerPack);
+        setSkewness(BECKETTS_PRESET.skewness);
+        setKurtosis(BECKETTS_PRESET.kurtosis);
         setTneManual(null);
         setPresetActive(true);
       }
@@ -676,7 +701,13 @@
                 <div className="gc-hint" style={{marginBottom:'0.5rem'}}>
                   Your checkweigher rejects packs that breach these thresholds. Targets can be <strong>looser</strong> than W&amp;M if rework is cheap and raw materials are expensive (accept more rework to reduce giveaway), or <strong>stricter</strong> if non-conformance costs are high and rework is disruptive.
                 </div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.75rem'}}>
+                <div style={{marginBottom:'0.75rem'}}>
+                  <label style={{display:'flex',alignItems:'center',gap:'0.5rem',fontSize:'0.82rem',color:'#555',cursor:'pointer'}}>
+                    <input type="checkbox" checked={bindingMode === 'avgOnly'} onChange={e => { setBindingMode(e.target.checked ? 'avgOnly' : 'all'); setPresetActive(false); }} style={{width:'auto',margin:0}} />
+                    <span><strong>Average only</strong> — we rework all underweight packs, so only Rule 1 (mean ≥ nominal) determines our target fill. No SD constraint from Rules 2/3.</span>
+                  </label>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.75rem',opacity: bindingMode === 'avgOnly' ? 0.4 : 1,pointerEvents: bindingMode === 'avgOnly' ? 'none' : 'auto'}}>
                   <div>
                     <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T1</div>
                     <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
@@ -697,7 +728,7 @@
                 <div className="gc-group" style={{marginTop:'0.5rem',marginBottom:0}}>
                   <label>Cost per rework (£/pack)</label>
                   <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
-                  <div className="gc-hint">Labour + materials to identify, re-open, top-up, and re-seal a non-conforming pack</div>
+                  <div className="gc-hint">Materials cost only (re-open, top-up, re-seal). Typically low — rework is done by existing labour during downtime, not additional operating time.</div>
                 </div>
               </div>
             </div>
@@ -730,6 +761,39 @@
                   <div className="gc-hint">A safety buffer above nominal weight to absorb natural process drift and measurement uncertainty. Without this, any slight downward drift puts your batch average below nominal (Rule 1 breach). Typically 0.5–2 g depending on process stability.</div>
                 </div>
               </div>
+            </div>
+
+            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid #eee'}}>
+              <label style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem',display:'block'}}>Distribution Shape (non-normality adjustment)</label>
+              <div className="gc-hint" style={{marginBottom:'0.75rem'}}>
+                Real fill-weight distributions are rarely perfectly normal. Skewness and excess kurtosis from your checkweigh data adjust the compliance predictions using the Cornish-Fisher expansion. Set both to 0 for a standard normal model.
+              </div>
+              <div className="gc-grid" style={{marginBottom:0}}>
+                <div>
+                  <div className="gc-group">
+                    <label>Skewness</label>
+                    <NumInput value={skewness} onChange={unset(setSkewness)} decimals={2} />
+                    <div className="gc-hint">0 = symmetric. Negative = heavier left tail (more underweight outliers). From checkweigh data: typically −0.5 to −1.5 for food packing.</div>
+                  </div>
+                </div>
+                <div>
+                  <div className="gc-group">
+                    <label>Excess Kurtosis</label>
+                    <NumInput value={kurtosis} onChange={unset(setKurtosis)} decimals={1} />
+                    <div className="gc-hint">0 = normal tails. Positive = heavier tails than normal (more extreme values). From checkweigh data: typically 2–30 for food packing lines.</div>
+                  </div>
+                </div>
+              </div>
+              {(skewness !== 0 || kurtosis !== 0) && (
+                <div style={{background: Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2 ? '#fef2f2' : 'rgba(0,100,88,0.06)',border: Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2 ? '1px solid #fecaca' : 'none',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.78rem',color: Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2 ? '#991b1b' : '#006458',marginTop:'0.5rem'}}>
+                  {Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2
+                    ? <span><strong>Warning:</strong> Cornish-Fisher expansion is unreliable with extreme values (kurtosis &gt;7 or |skewness| &gt;2). Results may be inaccurate. Filter outliers from your checkweigh data (metal detects, double items, machine errors) before computing skewness/kurtosis.</span>
+                    : <span><strong>Cornish-Fisher adjustment active.</strong> Compliance predictions account for skewness ({fmt(skewness,2)}) and kurtosis ({fmt(kurtosis,1)}).
+                      {skewness < 0 && kurtosis > 0 && ' Negative skew + positive kurtosis means more underweight packs than a normal model predicts — rework estimates will be higher.'}
+                    </span>
+                  }
+                </div>
+              )}
             </div>
           </Expandable>
 
