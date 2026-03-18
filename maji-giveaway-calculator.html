@@ -835,7 +835,7 @@
             <p>Two strategies to reduce giveaway: rework underweight packs at current SD, or invest in process improvement to reduce SD.</p>
             <div className="gc-compare">
               {/* Strategy A: Rework */}
-              <div className="gc-compare-card" style={{borderColor: netSavingWithRework > 0 ? '#006458' : '#ddd'}}>
+              <div className="gc-compare-card">
                 <h4>A: Rework at Current SD ({fmt(currentSD,1)} g)</h4>
                 <div className="gc-compare-stat">
                   <div>Set mean to {fmt(targetMean,1)} g and rework non-conforming packs</div>
@@ -853,7 +853,7 @@
               </div>
 
               {/* Strategy B: Reduce SD */}
-              <div className="gc-compare-card" style={{borderColor: needsReduction ? '#ddd' : '#006458'}}>
+              <div className="gc-compare-card">
                 <h4>B: Reduce SD to {fmt(requiredSD,1)} g</h4>
                 <div className="gc-compare-stat">
                   <div>Meet internal targets without rework</div>
