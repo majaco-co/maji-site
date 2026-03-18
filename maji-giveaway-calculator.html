@@ -127,7 +127,7 @@
       <p class="page-hero__eyebrow">maji Tool</p>
       <h1 class="page-hero__title">Giveaway Reduction <span class="text-green">Calculator</span></h1>
       <p class="page-hero__subtitle">
-        Visualise how reducing the standard deviation of pack fill weight reduces giveaway, and quantify the annual financial saving.
+        Model the cost of overfilling and quantify the annual saving from tighter process control.
       </p>
     </div>
   </section>
@@ -591,9 +591,6 @@
       return (
         <div>
           {/* Warnings */}
-          {warnNonCompliant && (
-            <div className="gc-warn">Current mean ({fmt(currentMean)} g) is below the required mean ({fmt(requiredMeanCurrent)} g) for your current SD. {ruleLabel(bindingCurRule)} is binding — your current process may be non-compliant.</div>
-          )}
           {warnNoImprovement && (
             <div className="gc-warn">Target giveaway ({fmt(targetGAPct,1)}%) is not lower than current ({fmt(currentGAPct,1)}%). Reduce the target to see savings.</div>
           )}
@@ -601,42 +598,38 @@
             <div className="gc-warn">Target giveaway ({fmt(nominal * targetGAPct / 100,1)} g) is below the safety margin ({fmt(sm)} g). Effective target capped at {fmt(sm)} g.</div>
           )}
 
-          {/* ── HERO ── */}
+          {/* ── 1. HERO ── */}
           <div className="gc-hero">
             <div className="gc-olabel">Annual Saving</div>
             <div className="gc-ovalue">{fmtGBP(Math.max(0, annualSaving))}</div>
             <div className="gc-hero-row">
-              <span className="gc-hero-stat"><strong>{fmtK(Math.max(0, Math.round(annualKgSaved)))} kg</strong> saved per year</span>
               <span className="gc-hero-stat"><strong>{fmt(giveawayReduction_g)} g</strong> less per pack</span>
+              <span className="gc-hero-stat"><strong>{fmtK(Math.max(0, Math.round(annualKgSaved)))} kg</strong> saved per year</span>
             </div>
           </div>
 
-          {/* ── Preset ── */}
+          {/* ── 2. PRESET ── */}
           <div className="gc-preset-bar">
             <span className="gc-preset-label">Load example:</span>
             <button className={'gc-preset-chip' + (presetActive ? ' active' : '')}
               onClick={presetActive ? () => setPresetActive(false) : loadBecketts}>
-              {presetActive ? 'Bacon ✓' : 'Bacon'}
+              {presetActive ? 'Bacon (2.25 kg, 50k t/yr) ✓' : 'Bacon (2.25 kg, 50k t/yr)'}
             </button>
           </div>
 
-          {/* ── Two-column inputs ── */}
+          {/* ── 3. INPUTS ── */}
           <div className="gc-grid">
-            {/* LEFT: Your Product */}
             <div className="gc-panel">
               <h3>Your Product</h3>
-
               <div className="gc-group">
                 <label>Nominal Weight (g)</label>
                 <NumInput value={nominal} onChange={v => { setNominal(v); setTneManual(null); setPresetActive(false); }} min={1} />
               </div>
-
               <div className="gc-group">
                 <label>Product Cost (£/kg)</label>
                 <NumInput value={costPerKg} onChange={unset(setCostPerKg)} decimals={2} min={0} />
-                <div className="gc-hint">Raw material + direct labour cost per kg of finished product</div>
+                <div className="gc-hint">Raw material + direct labour cost per kg</div>
               </div>
-
               <div className="gc-group">
                 <label style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
                   Annual Volume
@@ -645,11 +638,9 @@
                     <button onClick={() => setVolMode('kg')} style={{padding:'0.2rem 0.5rem',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'0.72rem',background: volMode==='kg' ? '#006458' : '#fff',color: volMode==='kg' ? '#fff' : '#555'}}>kg/yr</button>
                   </span>
                 </label>
-                {volMode === 'packs' ? (
-                  <NumInput value={annualVol} onChange={unset(setAnnualVol)} min={0} />
-                ) : (
-                  <NumInput value={Math.round(annualKg)} onChange={v => { setVolFromKg(v); setPresetActive(false); }} min={0} />
-                )}
+                {volMode === 'packs'
+                  ? <NumInput value={annualVol} onChange={unset(setAnnualVol)} min={0} />
+                  : <NumInput value={Math.round(annualKg)} onChange={v => { setVolFromKg(v); setPresetActive(false); }} min={0} />}
                 <div className="gc-hint">
                   {volMode === 'packs'
                     ? fmtK(Math.round(annualKg)) + ' kg/yr at ' + fmtK(nominal) + ' g nominal'
@@ -658,23 +649,18 @@
               </div>
             </div>
 
-            {/* RIGHT: Your Process */}
             <div className="gc-panel">
               <h3>Your Process</h3>
-
               <div className="gc-group">
                 <label>Current Giveaway (%)</label>
                 <NumInput value={currentGAPct} onChange={unset(setCurrentGAPct)} decimals={1} min={0} />
-                <div className="gc-hint">{fmt(currentGA_g,1)} g/pack &mdash; mean fill: {fmt(currentMean,1)} g</div>
+                <div className="gc-hint">{fmt(currentGA_g,1)} g/pack — mean fill: {fmt(currentMean,1)} g</div>
               </div>
-
               <div className="gc-group">
                 <label>Current SD (g)</label>
                 <NumInput value={currentSD} onChange={unset(setCurrentSD)} decimals={1} min={0.01} />
                 <div className="gc-cv">CV = {fmt(currentCV,2)}%</div>
-                <div className="gc-cv-explain">CV % = SD ÷ Nominal × 100</div>
               </div>
-
               <div className="gc-group">
                 <label>Target Giveaway (%) — <strong style={{color:'#006458'}}>{fmt(targetGAPct,1)}%</strong></label>
                 <div className="gc-slider-wrap">
@@ -683,340 +669,23 @@
                     onChange={e => { setTargetGAPct(+e.target.value); setPresetActive(false); }} />
                   <NumInput value={targetGAPct} onChange={unset(setTargetGAPct)} decimals={1} min={0} style={{width:70}} />
                 </div>
-                <div className="gc-hint">{fmt(targetGA_g,1)} g/pack &mdash; target mean: {fmt(targetMean,1)} g</div>
-              </div>
-
-              {/* W&M Legal Rules */}
-              <div style={{marginTop:'0.75rem',paddingTop:'0.75rem',borderTop:'1px solid #eee'}}>
-                <label style={{fontSize:'0.78rem',fontWeight:600,color:'#001412',marginBottom:'0.4rem',display:'block'}}>W&M Batch Rules (legal compliance)</label>
-                <div className="gc-legal-box">
-                  <div><strong>Rule 1 (Average):</strong> Batch average ≥ Nominal Weight ({fmtK(nominal)} g)</div>
-                  <div><strong>Rule 2 (T1):</strong> ≤2.5% of packs between T1 ({fmt(t1)} g) and T2 ({fmt(t2)} g)</div>
-                  <div><strong>Rule 3 (T2):</strong> Zero packs below T2 ({fmt(t2)} g) — any pack below T2 is an automatic non-conformance</div>
-                </div>
-                <div className="gc-hint" style={{marginBottom:'0.75rem'}}>Fixed by UK W&M regulations. Every completed batch must pass all three.</div>
-
-                {/* Internal Targets */}
-                <label style={{fontSize:'0.78rem',fontWeight:600,color:'#001412',marginBottom:'0.3rem',display:'block'}}>Internal Production Targets</label>
-                <div className="gc-hint" style={{marginBottom:'0.5rem'}}>
-                  Your checkweigher rejects packs that breach these thresholds. Targets can be <strong>looser</strong> than W&amp;M if rework is cheap and raw materials are expensive (accept more rework to reduce giveaway), or <strong>stricter</strong> if non-conformance costs are high and rework is disruptive.
-                </div>
-                <div style={{marginBottom:'0.75rem'}}>
-                  <label style={{display:'flex',alignItems:'center',gap:'0.5rem',fontSize:'0.82rem',color:'#555',cursor:'pointer'}}>
-                    <input type="checkbox" checked={bindingMode === 'avgOnly'} onChange={e => { setBindingMode(e.target.checked ? 'avgOnly' : 'all'); setPresetActive(false); }} style={{width:'auto',margin:0}} />
-                    <span><strong>Average only</strong> — we rework all underweight packs, so only Rule 1 (mean ≥ nominal) determines our target fill. No SD constraint from Rules 2/3.</span>
-                  </label>
-                </div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.75rem',opacity: bindingMode === 'avgOnly' ? 0.4 : 1,pointerEvents: bindingMode === 'avgOnly' ? 'none' : 'auto'}}>
-                  <div>
-                    <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T1</div>
-                    <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
-                      <span>1 in</span>
-                      <NumInput value={rule2OneIn} onChange={v => { setRule2OneIn(Math.round(v)); setPresetActive(false); }} min={2} style={{width:60,textAlign:'center'}} />
-                    </div>
-                    <div className="gc-hint">{fmt(rule2Pct,2)}% &middot; z = {fmt(z2,2)}</div>
-                  </div>
-                  <div>
-                    <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T2</div>
-                    <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
-                      <span>1 in</span>
-                      <NumInput value={rule3OneIn} onChange={v => { setRule3OneIn(Math.round(v)); setPresetActive(false); }} min={2} style={{width:80,textAlign:'center'}} />
-                    </div>
-                    <div className="gc-hint">{rule3Pct < 0.01 ? rule3Pct.toExponential(1) : fmt(rule3Pct,4)}% &middot; z = {fmt(z3,2)}</div>
-                  </div>
-                </div>
-                <div className="gc-group" style={{marginTop:'0.5rem',marginBottom:0}}>
-                  <label>Cost per rework (£/pack)</label>
-                  <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
-                  <div className="gc-hint">Materials cost only if done during planned downtime. If rework stops the line, amortise any downtime where value of lost time = #crew × £/hr.</div>
-                </div>
+                <div className="gc-hint">{fmt(targetGA_g,1)} g/pack — target mean: {fmt(targetMean,1)} g</div>
               </div>
             </div>
           </div>
 
-          {/* ── Advanced Settings ── */}
-          <Expandable title="Advanced Settings">
-            <div className="gc-grid" style={{marginBottom:0}}>
-              <div>
-                <div className="gc-group">
-                  <label>TNE — Tolerable Negative Error (g)</label>
-                  <NumInput value={tneManual !== null ? tneManual : tne} onChange={v => setTneManual(v)} decimals={2} min={0}
-                    placeholder={fmt(tne,2) + ' (auto)'} />
-                  <div className="gc-hint">
-                    Auto: <strong>{fmt(tne,2)} g</strong> for {fmtK(nominal)} g nominal.{' '}
-                    <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}>{showTNE ? 'Hide' : 'Show'} TNE table</span>
-                  </div>
-                  {showTNE && (
-                    <table className="gc-tne-table">
-                      <thead><tr><th>Nominal Weight</th><th>TNE</th></tr></thead>
-                      <tbody>{TNE_TABLE.map((r,i) => <tr key={i}><td>{r.range}</td><td>{r.rule}</td></tr>)}</tbody>
-                    </table>
-                  )}
-                </div>
-              </div>
-              <div>
-                <div className="gc-group">
-                  <label>Safety Margin (g)</label>
-                  <NumInput value={safetyMargin} onChange={setSafetyMargin} decimals={1} min={0} />
-                  <div className="gc-hint">A safety buffer above nominal weight to absorb natural process drift and measurement uncertainty. Without this, any slight downward drift puts your batch average below nominal (Rule 1 breach). Typically 0.5–2 g depending on process stability.</div>
-                </div>
-              </div>
+          {/* ── 4. COMPLIANCE & REWORK SETTINGS ── */}
+          <Expandable title="Compliance and Rework Settings" defaultOpen={true}>
+            {/* Weight zones — the single canonical explanation of the three rules */}
+            <div style={{fontSize:'0.82rem',lineHeight:1.6,color:'#444',marginBottom:'1rem'}}>
+              UK W&M regulations set three limits on underweight packs in a finished batch. TNE = {fmt(tne,2)} g for {fmtK(nominal)} g nominal.
             </div>
-
-            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid #eee'}}>
-              <label style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem',display:'block'}}>Distribution Shape (non-normality adjustment)</label>
-              <div className="gc-hint" style={{marginBottom:'0.75rem'}}>
-                Real fill-weight distributions are rarely perfectly normal. Skewness and excess kurtosis from your checkweigh data adjust the compliance predictions using the Cornish-Fisher expansion. Set both to 0 for a standard normal model.
-              </div>
-              <div className="gc-grid" style={{marginBottom:0}}>
-                <div>
-                  <div className="gc-group">
-                    <label>Skewness</label>
-                    <NumInput value={skewness} onChange={unset(setSkewness)} decimals={2} />
-                    <div className="gc-hint">0 = symmetric. Negative = heavier left tail (more underweight outliers). From checkweigh data: typically −0.5 to −1.5 for food packing.</div>
-                  </div>
-                </div>
-                <div>
-                  <div className="gc-group">
-                    <label>Excess Kurtosis</label>
-                    <NumInput value={kurtosis} onChange={unset(setKurtosis)} decimals={1} />
-                    <div className="gc-hint">0 = normal tails. Positive = heavier tails than normal (more extreme values). From checkweigh data: typically 2–30 for food packing lines.</div>
-                  </div>
-                </div>
-              </div>
-              {(skewness !== 0 || kurtosis !== 0) && (
-                <div style={{background: Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2 ? '#fef2f2' : 'rgba(0,100,88,0.06)',border: Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2 ? '1px solid #fecaca' : 'none',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.78rem',color: Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2 ? '#991b1b' : '#006458',marginTop:'0.5rem'}}>
-                  {Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2
-                    ? <span><strong>Warning:</strong> Cornish-Fisher expansion is unreliable with extreme values (kurtosis &gt;7 or |skewness| &gt;2). Results may be inaccurate. Filter outliers from your checkweigh data (metal detects, double items, machine errors) before computing skewness/kurtosis.</span>
-                    : <span><strong>Cornish-Fisher adjustment active.</strong> Compliance predictions account for skewness ({fmt(skewness,2)}) and kurtosis ({fmt(kurtosis,1)}).
-                      {skewness < 0 && kurtosis > 0 && ' Negative skew + positive kurtosis means more underweight packs than a normal model predicts — rework estimates will be higher.'}
-                    </span>
-                  }
-                </div>
-              )}
-            </div>
-          </Expandable>
-
-          {/* ── Results row ── */}
-          <div className="gc-results-row">
-            <div className="gc-result-card">
-              <div className="gc-rc-label">Required Target SD</div>
-              <div className="gc-rc-value">{fmt(requiredSD,1)} g</div>
-              <div className="gc-rc-sub">CV = {fmt(requiredCV,2)}%</div>
-            </div>
-            <div className="gc-result-card">
-              <div className="gc-rc-label">SD Reduction Needed</div>
-              <div className="gc-rc-value" style={{color: needsReduction ? '#006458' : '#7A7A7A'}}>
-                {needsReduction ? '−' + fmt(sdReduction,1) + ' g' : 'None'}
-              </div>
-              <div className="gc-rc-sub">
-                {needsReduction
-                  ? 'CV: ' + fmt(currentCV,1) + '% → ' + fmt(requiredCV,1) + '% (−' + fmt(cvReduction,1) + 'pp)'
-                  : 'Current SD already sufficient'}
-              </div>
-            </div>
-            <div className="gc-result-card">
-              <div className="gc-rc-label">Giveaway Reduction</div>
-              <div className="gc-rc-value" style={{color: giveawayReduction_g > 0 ? '#006458' : '#7A7A7A'}}>
-                {giveawayReduction_g > 0 ? '−' + fmt(giveawayReduction_g) + ' g' : '0 g'}
-              </div>
-              <div className="gc-rc-sub">{fmt(currentGAPct,1)}% → {fmt(targetGAPct,1)}%</div>
-            </div>
-            <div className="gc-result-card">
-              <div className="gc-rc-label">Binding Rule</div>
-              <div className="gc-rc-value" style={{fontSize:'1rem'}}>{ruleLabel(bindingRule)}</div>
-              <div className="gc-rc-sub">Fails first if giveaway reduced further without tightening SD</div>
-            </div>
-          </div>
-
-          {/* ── Rework vs SD Reduction ── */}
-          <div className="gc-chart-card" style={{background:'#f0faf8'}}>
-            <h3>Rework vs SD Reduction</h3>
-            <p>Two strategies to reduce giveaway: rework underweight packs at current SD, or invest in process improvement to reduce SD.</p>
-            <div className="gc-compare">
-              {/* Strategy A: Rework */}
-              <div className="gc-compare-card">
-                <h4>A: Rework at Current SD ({fmt(currentSD,1)} g)</h4>
-                <div className="gc-compare-stat">
-                  <div>Set mean to {fmt(targetMean,1)} g and rework non-conforming packs</div>
-                  <div style={{marginTop:'0.4rem'}}>
-                    <div>Below T2: <strong>{fmt(pctBelowT2,3)}%</strong> ({fmtK(reworkT2Packs)} packs/yr) &mdash; must rework (Rule 3: zero allowed)</div>
-                    <div>Between T1–T2: <strong>{fmt(pctBetweenT1T2,2)}%</strong> &mdash; Rule 2 allows ≤2.5%</div>
-                    {excessT1Pct > 0 && <div>Excess to rework: <strong>{fmt(excessT1Pct,2)}%</strong> ({fmtK(reworkT1Packs)} packs/yr) &mdash; above 2.5% allowance</div>}
-                    <div>Total rework: <strong>{fmtK(totalReworkPacks)} packs/yr</strong></div>
-                    <div>Rework cost: <strong style={{color:'#dc2626'}}>{fmtGBP(annualReworkCost)}/yr</strong></div>
-                  </div>
-                </div>
-                <div className="gc-compare-total" style={{color: netSavingWithRework > 0 ? '#006458' : '#dc2626'}}>
-                  Net saving: {fmtGBP(netSavingWithRework)}/yr
-                </div>
-              </div>
-
-              {/* Strategy B: Reduce SD */}
-              <div className="gc-compare-card">
-                <h4>B: Reduce SD to {fmt(requiredSD,1)} g</h4>
-                <div className="gc-compare-stat">
-                  <div>Meet internal targets without rework</div>
-                  <div style={{marginTop:'0.4rem'}}>
-                    {needsReduction ? (
-                      <div>
-                        <div>SD reduction: <strong>{fmt(currentSD,1)} g → {fmt(requiredSD,1)} g (−{fmt(sdReduction,1)} g)</strong></div>
-                        <div>CV reduction: <strong>{fmt(currentCV,1)}% → {fmt(requiredCV,1)}%</strong></div>
-                        <div>No rework needed</div>
-                        <div style={{marginTop:'0.3rem',fontSize:'0.72rem',color:'#888'}}>Requires process improvement investment (equipment, controls, training)</div>
-                      </div>
-                    ) : (
-                      <div>
-                        <div>Current SD ({fmt(currentSD,1)} g) already meets internal targets</div>
-                        <div>No SD reduction or rework needed</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="gc-compare-total" style={{color:'#006458'}}>
-                  Full saving: {fmtGBP(Math.max(0, annualSaving))}/yr
-                </div>
-              </div>
-            </div>
-            {netSavingWithRework > 0 && needsReduction && annualReworkCost > 0 && (
-              <div style={{marginTop:'1rem',fontSize:'0.82rem',color:'#555',lineHeight:1.6}}>
-                <strong>Short-term:</strong> Reworking {fmtK(totalReworkPacks)} packs/yr costs {fmtGBP(annualReworkCost)} but still saves {fmtGBP(netSavingWithRework)} net.
-                {' '}<strong>Long-term:</strong> Reducing SD to {fmt(requiredSD,1)} g eliminates rework entirely and unlocks the full {fmtGBP(Math.max(0, annualSaving))} saving &mdash;
-                an additional {fmtGBP(annualReworkCost)}/yr over the rework approach.
-              </div>
-            )}
-          </div>
-
-          {/* ── Distribution Chart ── */}
-          <div className="gc-chart-card">
-            <h3>Fill Weight Distribution (pre-checkweigher)</h3>
-            <p>What the filler produces before the checkweigher rejects underweight packs. Blue = current process. Green = target at required SD. Red shading = packs that would need rework.</p>
-            {(currentPctBelowT2 > 0 || currentPctBetweenT1T2 > 2.5) && (
-              <div style={{background:'#fefce8',border:'1px solid #fde68a',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.8rem',color:'#92400e',marginBottom:'1rem',lineHeight:1.5}}>
-                <strong>Pre-checkweigher: rework required to achieve W&M compliance.</strong>
-                {currentPctBelowT2 > 0 && <span> {fmt(currentPctBelowT2,3)}% of packs ({fmtK(Math.round(annualVol * currentPctBelowT2 / 100))}/yr) fall below T2 ({fmt(t2)} g) &mdash; W&M requires zero, checkweigher must reject all.</span>}
-                {currentPctBetweenT1T2 > 2.5 && <span> {fmt(currentPctBetweenT1T2,1)}% between T1–T2 &mdash; W&M allows max 2.5%, checkweigher must reject excess.</span>}
-              </div>
-            )}
-            <ResponsiveContainer width="100%" height={300}>
-              <ComposedChart data={distData} margin={{top:20,right:20,left:10,bottom:30}}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-                <XAxis dataKey="x" type="number" domain={['auto','auto']}
-                  tickFormatter={v => fmt(v,0) + 'g'}
-                  label={{value:'Fill Weight (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:12}}} />
-                <YAxis hide />
-                <Tooltip content={<DistTooltip />} />
-                <Area type="monotone" dataKey="nonComplyT2" stroke="none" fill="#dc2626" fillOpacity={0.35} isAnimationActive={false} dot={false} connectNulls={false} />
-                <Area type="monotone" dataKey="nonComplyT1" stroke="none" fill="#ef4444" fillOpacity={0.18} isAnimationActive={false} dot={false} connectNulls={false} />
-                <Area type="monotone" dataKey="currentGA" stroke="none" fill="#3b82f6" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
-                <Area type="monotone" dataKey="targetGA" stroke="none" fill="#22c55e" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
-                <Line type="monotone" dataKey="current" stroke="#3b82f6" strokeWidth={2.5} dot={false} name="Current process" />
-                <Line type="monotone" dataKey="target" stroke="#22c55e" strokeWidth={2.5} dot={false} name="Target process" />
-                <ReferenceLine x={nominal} stroke="#001412" strokeWidth={2} />
-                <ReferenceLine x={t1} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} />
-                <ReferenceLine x={t2} stroke="#dc2626" strokeDasharray="3 3" strokeWidth={1.5} />
-                <ReferenceLine x={currentMean} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} />
-                {targetMean > nominal - 4 * Math.max(currentSD, requiredSD) && (
-                  <ReferenceLine x={targetMean} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} />
-                )}
-              </ComposedChart>
-            </ResponsiveContainer>
-            <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem 1.25rem',fontSize:'0.72rem',color:'#555',marginTop:'0.5rem',justifyContent:'center'}}>
-              <span><span style={{display:'inline-block',width:16,height:3,background:'#001412',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Nominal ({fmtK(nominal)} g)</span>
-              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #ef4444',verticalAlign:'middle',marginRight:4}}></span> T1 ({fmt(t1)} g)</span>
-              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dotted #dc2626',verticalAlign:'middle',marginRight:4}}></span> T2 ({fmt(t2)} g)</span>
-              <span><span style={{display:'inline-block',width:16,height:3,background:'#3b82f6',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Current process (mean {fmt(currentMean,1)} g)</span>
-              <span><span style={{display:'inline-block',width:16,height:3,background:'#22c55e',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Target process (mean {fmt(targetMean,1)} g)</span>
-              <span><span style={{display:'inline-block',width:10,height:10,background:'rgba(220,38,38,0.25)',verticalAlign:'middle',marginRight:4,borderRadius:2}}></span> Non-compliance zone</span>
-            </div>
-          </div>
-
-          {/* ── Compliance baseline ── */}
-          <div className="gc-chart-card" style={{background: warnNonCompliant ? '#fff' : '#f8f9fa', opacity: warnNonCompliant ? 1 : 0.55}}>
-            <h3 style={{color: warnNonCompliant ? '#dc2626' : '#7A7A7A'}}>
-              {warnNonCompliant ? 'Without rework, current distribution is non-compliant' : 'Current process is compliant'}
-            </h3>
-            {warnNonCompliant ? (
-              <p style={{color:'#555'}}>
-                Without a checkweigher removing underweight packs, you would need to increase giveaway to {fmt(compliantGAPct,2)}% to pass W&M at this SD.
-                The checkweigher rework loop is <strong>already avoiding this on-cost</strong> — by catching underweight packs instead of overfilling.
-              </p>
-            ) : (
-              <p style={{color:'#999'}}>Your current giveaway already satisfies W&M rules at the current SD. The section below shows the compliant baseline for reference.</p>
-            )}
-            <div style={{display:'grid',gridTemplateColumns: warnNonCompliant ? '1fr 1fr 1fr 1fr' : '1fr 1fr 1fr',gap:'1rem',marginTop:'0.75rem'}}>
-              <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Giveaway without rework</div>
-                <div style={{fontSize:'1.3rem',fontWeight:700,color: warnNonCompliant ? '#dc2626' : '#006458'}}>{fmt(compliantGAPct,2)}%</div>
-                <div style={{fontSize:'0.75rem',color:'#888'}}>{fmt(compliantGA_g,1)} g/pack — mean {fmt(requiredMeanCurrent,1)} g</div>
-              </div>
-              <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Cost at that giveaway</div>
-                <div style={{fontSize:'1.3rem',fontWeight:700,color: warnNonCompliant ? '#dc2626' : '#006458'}}>{fmtGBP(Math.round(complianceGACost))}/yr</div>
-                <div style={{fontSize:'0.75rem',color:'#888'}}>What you'd pay without checkweigher</div>
-              </div>
-              {warnNonCompliant && (
-                <div style={{background:'#f0fdf4',borderRadius:10,padding:'0.75rem',textAlign:'center',border:'1px solid #bbf7d0'}}>
-                  <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#006458',marginBottom:'0.25rem'}}>Rework is saving you</div>
-                  <div style={{fontSize:'1.3rem',fontWeight:700,color:'#006458'}}>{fmtGBP(Math.round(complianceOnCost))}/yr</div>
-                  <div style={{fontSize:'0.75rem',color:'#888'}}>On-cost avoided by catching underweights</div>
-                </div>
-              )}
-              <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Your actual giveaway</div>
-                <div style={{fontSize:'1.3rem',fontWeight:700,color:'#006458'}}>{fmt(currentGAPct,1)}%</div>
-                <div style={{fontSize:'0.75rem',color:'#888'}}>{fmt(currentGA_g,1)} g/pack — mean {fmt(currentMean,1)} g</div>
-              </div>
-            </div>
-            {warnNonCompliant && (
-              <div style={{marginTop:'0.75rem',fontSize:'0.82rem',color:'#555',lineHeight:1.5}}>
-                <strong>In other words:</strong> Without the checkweigher, you'd need {fmt(compliantGAPct,2)}% giveaway (mean {fmt(requiredMeanCurrent,1)} g) to pass W&M at SD {fmt(currentSD,1)} g.
-                Instead, you run at {fmt(currentGAPct,1)}% giveaway and rework the underweights — saving <strong>{fmtGBP(Math.round(complianceOnCost))}/yr</strong> in avoided overfill vs the rework cost of <strong>{fmtGBP(Math.round(annualReworkCost))}/yr</strong>.
-                {complianceOnCost > annualReworkCost ? ' The rework loop is a net win — it costs less than the giveaway it avoids.' : ''}
-              </div>
-            )}
-          </div>
-
-          {/* ── Sensitivity Chart ── */}
-          <div className="gc-chart-card">
-            <h3>Sensitivity: Annual Saving vs Standard Deviation</h3>
-            <p>Shows how savings change as SD is reduced. Markers show current and required target SD.</p>
-            <ResponsiveContainer width="100%" height={300}>
-              <ComposedChart data={sensData} margin={{top:20,right:120,left:10,bottom:30}}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-                <XAxis dataKey="sd" type="number" domain={['auto','auto']}
-                  tick={{fontSize:10}} tickFormatter={v => v + 'g'}
-                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:11}}} />
-                <YAxis width={70} tick={{fontSize:10}} tickFormatter={v => '£' + fmtK(v)}
-                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:5,style:{fill:'#7A7A7A',fontSize:11}}} />
-                <Tooltip content={<SensTooltip />} />
-                <Area type="monotone" dataKey="saving" stroke="#006458" fill="#006458" fillOpacity={0.1} strokeWidth={2.5} dot={false} name="Saving" />
-                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} name="Current SD" />
-                <ReferenceLine x={requiredSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} name="Required SD" />
-              </ComposedChart>
-            </ResponsiveContainer>
-            <div style={{display:'flex',flexWrap:'wrap',gap:'0.4rem 1.25rem',fontSize:'0.72rem',color:'#555',marginTop:'0.5rem',justifyContent:'center'}}>
-              <span><span style={{display:'inline-block',width:16,height:3,background:'#006458',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Annual saving</span>
-              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #3b82f6',verticalAlign:'middle',marginRight:4}}></span> Current SD ({fmt(currentSD,1)} g)</span>
-              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #22c55e',verticalAlign:'middle',marginRight:4}}></span> Required SD ({fmt(requiredSD,1)} g)</span>
-            </div>
-          </div>
-
-          {/* ── Three Packer Rules ── */}
-          <Expandable title="Three Packer Rules — Detail">
-            {/* Plain English summary */}
-            <div style={{fontSize:'0.85rem',lineHeight:1.7,color:'#333',marginBottom:'1.25rem'}}>
-              Every pack has a <strong>nominal weight</strong> printed on it ({fmtK(nominal)} g). The law allows a small tolerance —
-              but sets three limits on how many packs can be underweight in a finished batch:
-            </div>
-
-            {/* Weight zones diagram */}
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:0,marginBottom:'1.25rem',fontSize:'0.75rem',textAlign:'center',borderRadius:10,overflow:'hidden',border:'1px solid #e0e0e0'}}>
               <div style={{background:'#fef2f2',padding:'0.75rem 0.5rem',borderRight:'1px solid #e0e0e0'}}>
                 <div style={{fontWeight:700,color:'#dc2626',marginBottom:4}}>Below T2</div>
                 <div style={{fontSize:'1.1rem',fontWeight:700}}>&lt; {fmt(t2)} g</div>
-                <div style={{color:'#991b1b',marginTop:4}}>Automatic fail</div>
-                <div style={{color:'#999',marginTop:2}}>Rework or reject every pack</div>
+                <div style={{color:'#991b1b',marginTop:4}}>Zero allowed</div>
+                <div style={{color:'#999',marginTop:2}}>Rework every pack</div>
               </div>
               <div style={{background:'#fefce8',padding:'0.75rem 0.5rem',borderRight:'1px solid #e0e0e0'}}>
                 <div style={{fontWeight:700,color:'#a16207',marginBottom:4}}>Between T1 and T2</div>
@@ -1032,40 +701,257 @@
               </div>
             </div>
 
-            <div style={{fontSize:'0.78rem',color:'#888',marginBottom:'1.25rem'}}>
-              TNE (Tolerable Negative Error) = {fmt(tne,2)} g for {fmtK(nominal)} g nominal.
-              T1 = Nominal − TNE = {fmt(t1)} g. T2 = Nominal − 2×TNE = {fmt(t2)} g.
+            {/* Internal targets */}
+            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.3rem'}}>Your internal targets</div>
+            <div className="gc-hint" style={{marginBottom:'0.5rem'}}>
+              Can be looser than W&M (accept more rework to reduce giveaway) or stricter (avoid rework disruption).
+            </div>
+            <div style={{marginBottom:'0.75rem'}}>
+              <label style={{display:'flex',alignItems:'center',gap:'0.5rem',fontSize:'0.82rem',color:'#555',cursor:'pointer'}}>
+                <input type="checkbox" checked={bindingMode === 'avgOnly'} onChange={e => { setBindingMode(e.target.checked ? 'avgOnly' : 'all'); setPresetActive(false); }} style={{width:'auto',margin:0}} />
+                <span><strong>Average only</strong> — we rework all underweight packs, so only mean ≥ nominal matters.</span>
+              </label>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.75rem',opacity: bindingMode === 'avgOnly' ? 0.4 : 1,pointerEvents: bindingMode === 'avgOnly' ? 'none' : 'auto'}}>
+              <div>
+                <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T1</div>
+                <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
+                  <span>1 in</span>
+                  <NumInput value={rule2OneIn} onChange={v => { setRule2OneIn(Math.round(v)); setPresetActive(false); }} min={2} style={{width:60,textAlign:'center'}} />
+                </div>
+                <div className="gc-hint">{fmt(rule2Pct,2)}%</div>
+              </div>
+              <div>
+                <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T2</div>
+                <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
+                  <span>1 in</span>
+                  <NumInput value={rule3OneIn} onChange={v => { setRule3OneIn(Math.round(v)); setPresetActive(false); }} min={2} style={{width:80,textAlign:'center'}} />
+                </div>
+                <div className="gc-hint">{rule3Pct < 0.01 ? rule3Pct.toExponential(1) : fmt(rule3Pct,4)}%</div>
+              </div>
             </div>
 
-            {/* What each rule requires of your mean fill */}
-            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>What this means for your target fill weight</div>
-            <div style={{fontSize:'0.8rem',lineHeight:1.7,color:'#444',marginBottom:'1rem'}}>
-              Each rule sets a <strong>minimum mean fill</strong> to keep enough packs out of the danger zones at your current SD ({fmt(currentSD,1)} g):
+            {/* Rework cost + safety margin in a row */}
+            <div className="gc-grid" style={{marginTop:'0.75rem',marginBottom:0}}>
+              <div className="gc-group" style={{marginBottom:0}}>
+                <label>Cost per rework (£/pack)</label>
+                <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
+                <div className="gc-hint">Materials only if done in downtime. If line stops, amortise: #crew × £/hr.</div>
+              </div>
+              <div className="gc-group" style={{marginBottom:0}}>
+                <label>Safety Margin (g)</label>
+                <NumInput value={safetyMargin} onChange={setSafetyMargin} decimals={1} min={0} />
+                <div className="gc-hint">Buffer above nominal to absorb process drift. Typically 0.5–2 g.</div>
+              </div>
             </div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr auto',gap:'0.25rem 1rem',fontSize:'0.78rem',color:'#444',marginBottom:'1.25rem'}}>
-              <div>Average must be above nominal + {fmt(sm)} g safety buffer</div>
-              <div style={{fontWeight:600,textAlign:'right',color: bindingCurRule===1 ? '#006458' : '#888'}}>{fmt(rule1Mean)} g {bindingCurRule===1 && <span style={{background:'#006458',color:'#fff',padding:'1px 6px',borderRadius:4,fontSize:'0.68rem',marginLeft:4}}>binding</span>}</div>
-              <div>Keep ≤1 in {fmtK(rule2OneIn)} packs between T1–T2</div>
-              <div style={{fontWeight:600,textAlign:'right',color: bindingCurRule===2 ? '#006458' : '#888'}}>{fmt(rule2MeanCur)} g {bindingCurRule===2 && <span style={{background:'#006458',color:'#fff',padding:'1px 6px',borderRadius:4,fontSize:'0.68rem',marginLeft:4}}>binding</span>}</div>
-              <div>Keep ≤1 in {fmtK(rule3OneIn)} packs below T2</div>
-              <div style={{fontWeight:600,textAlign:'right',color: bindingCurRule===3 ? '#006458' : '#888'}}>{fmt(rule3MeanCur)} g {bindingCurRule===3 && <span style={{background:'#006458',color:'#fff',padding:'1px 6px',borderRadius:4,fontSize:'0.68rem',marginLeft:4}}>binding</span>}</div>
-            </div>
-            <div style={{fontSize:'0.8rem',color:'#555',lineHeight:1.5,background:'#f8f9fa',borderRadius:8,padding:'0.6rem 0.85rem',marginBottom:'1.25rem'}}>
-              The <strong style={{color:'#006458'}}>binding rule</strong> is whichever demands the highest mean — it's the constraint that gets broken first if you try to lower giveaway. Currently that's the <strong>{ruleLabel(bindingCurRule)}</strong>, requiring a mean of at least <strong>{fmt(requiredMeanCurrent,1)} g</strong>. Everything above nominal ({fmtK(nominal)} g) is giveaway.
+          </Expandable>
+
+          {/* ── 5. ADVANCED ── */}
+          <Expandable title="Advanced Settings">
+            <div className="gc-group">
+              <label>TNE — Tolerable Negative Error (g)</label>
+              <NumInput value={tneManual !== null ? tneManual : tne} onChange={v => setTneManual(v)} decimals={2} min={0}
+                placeholder={fmt(tne,2) + ' (auto)'} />
+              <div className="gc-hint">
+                Auto: <strong>{fmt(tne,2)} g</strong> for {fmtK(nominal)} g nominal.{' '}
+                <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}>{showTNE ? 'Hide' : 'Show'} TNE table</span>
+              </div>
+              {showTNE && (
+                <table className="gc-tne-table">
+                  <thead><tr><th>Nominal Weight</th><th>TNE</th></tr></thead>
+                  <tbody>{TNE_TABLE.map((r,i) => <tr key={i}><td>{r.range}</td><td>{r.rule}</td></tr>)}</tbody>
+                </table>
+              )}
             </div>
 
-            {/* Current compliance */}
-            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>How your current process stacks up</div>
+            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid #eee'}}>
+              <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>Non-normality adjustment</div>
+              <div className="gc-hint" style={{marginBottom:'0.75rem'}}>
+                Adjusts predictions for distributions that are not perfectly bell-shaped. Set from your checkweigh data, or leave at 0 for a standard normal model.
+              </div>
+              <div className="gc-grid" style={{marginBottom:0}}>
+                <div className="gc-group">
+                  <label>Skewness</label>
+                  <NumInput value={skewness} onChange={unset(setSkewness)} decimals={2} />
+                  <div className="gc-hint">0 = symmetric. Negative = more underweight outliers.</div>
+                </div>
+                <div className="gc-group">
+                  <label>Excess Kurtosis</label>
+                  <NumInput value={kurtosis} onChange={unset(setKurtosis)} decimals={1} />
+                  <div className="gc-hint">0 = normal. Positive = heavier tails.</div>
+                </div>
+              </div>
+              {(skewness !== 0 || kurtosis !== 0) && (Math.abs(kurtosis) > 7 || Math.abs(skewness) > 2) && (
+                <div style={{background:'#fef2f2',border:'1px solid #fecaca',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.78rem',color:'#991b1b',marginTop:'0.5rem'}}>
+                  <strong>Warning:</strong> Values this extreme may produce unreliable results. Filter outliers (metal detects, doubles, machine errors) from your data first.
+                </div>
+              )}
+            </div>
+          </Expandable>
+
+          {/* ── 6. RESULTS ROW ── */}
+          <div className="gc-results-row">
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Target Variability (SD)</div>
+              <div className="gc-rc-value">{fmt(requiredSD,1)} g</div>
+              <div className="gc-rc-sub">How consistent your filler needs to be</div>
+            </div>
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Variability Improvement</div>
+              <div className="gc-rc-value" style={{color: needsReduction ? '#006458' : '#7A7A7A'}}>
+                {needsReduction ? '−' + fmt(sdReduction,1) + ' g' : 'None needed'}
+              </div>
+              <div className="gc-rc-sub">
+                {needsReduction
+                  ? 'CV: ' + fmt(currentCV,1) + '% → ' + fmt(requiredCV,1) + '%'
+                  : 'Current SD is sufficient'}
+              </div>
+            </div>
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Giveaway Reduction</div>
+              <div className="gc-rc-value" style={{color: giveawayReduction_g > 0 ? '#006458' : '#7A7A7A'}}>
+                {giveawayReduction_g > 0 ? '−' + fmt(giveawayReduction_g) + ' g' : '0 g'}
+              </div>
+              <div className="gc-rc-sub">{fmt(currentGAPct,1)}% → {fmt(targetGAPct,1)}%</div>
+            </div>
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Limiting Constraint</div>
+              <div className="gc-rc-value" style={{fontSize:'1rem'}}>{ruleLabel(bindingRule)}</div>
+              <div className="gc-rc-sub">The W&M rule that caps how far you can cut giveaway at this variability</div>
+            </div>
+          </div>
+
+          {/* ── 7. REWORK vs PROCESS IMPROVEMENT ── */}
+          <div className="gc-chart-card" style={{background:'#f0faf8'}}>
+            <h3>Your Options</h3>
+            <div className="gc-compare">
+              <div className="gc-compare-card">
+                <h4>A: Rework at current SD ({fmt(currentSD,1)} g)</h4>
+                <div className="gc-compare-stat">
+                  <div>Lower the target mean to {fmt(targetMean,1)} g and let the checkweigher catch underweights.</div>
+                  <div style={{marginTop:'0.4rem'}}>
+                    <div>Below T2: <strong>{fmt(pctBelowT2,3)}%</strong> ({fmtK(reworkT2Packs)}/yr)</div>
+                    <div>Between T1–T2: <strong>{fmt(pctBetweenT1T2,2)}%</strong> (≤2.5% allowed)</div>
+                    {excessT1Pct > 0 && <div>Excess to rework: <strong>{fmt(excessT1Pct,2)}%</strong> ({fmtK(reworkT1Packs)}/yr)</div>}
+                    <div>Total rework: <strong>{fmtK(totalReworkPacks)}/yr</strong> at {fmtGBP(reworkCostPerPack)}/pack = <strong style={{color:'#dc2626'}}>{fmtGBP(annualReworkCost)}/yr</strong></div>
+                  </div>
+                  {warnNonCompliant && complianceOnCost > 0 && (
+                    <div style={{marginTop:'0.5rem',background:'#f0fdf4',borderRadius:6,padding:'0.4rem 0.6rem',fontSize:'0.75rem',color:'#006458'}}>
+                      Without a checkweigher you'd need {fmt(compliantGAPct,2)}% giveaway — rework is already saving {fmtGBP(Math.round(complianceOnCost))}/yr in avoided overfill.
+                    </div>
+                  )}
+                </div>
+                <div className="gc-compare-total" style={{color: netSavingWithRework > 0 ? '#006458' : '#dc2626'}}>
+                  Net saving: {fmtGBP(netSavingWithRework)}/yr
+                </div>
+              </div>
+
+              <div className="gc-compare-card">
+                <h4>B: Reduce SD to {fmt(requiredSD,1)} g</h4>
+                <div className="gc-compare-stat">
+                  {needsReduction ? (
+                    <div>
+                      <div>Tighten variability so the filler meets targets without rework.</div>
+                      <div style={{marginTop:'0.4rem'}}>
+                        <div>SD: <strong>{fmt(currentSD,1)} g → {fmt(requiredSD,1)} g</strong> (−{fmt(sdReduction,1)} g)</div>
+                        <div>CV: <strong>{fmt(currentCV,1)}% → {fmt(requiredCV,1)}%</strong></div>
+                        <div>No rework needed</div>
+                      </div>
+                      <div style={{marginTop:'0.3rem',fontSize:'0.72rem',color:'#888'}}>Requires process improvement investment</div>
+                    </div>
+                  ) : (
+                    <div>Current SD already meets targets — no improvement or rework needed.</div>
+                  )}
+                </div>
+                <div className="gc-compare-total" style={{color:'#006458'}}>
+                  Full saving: {fmtGBP(Math.max(0, annualSaving))}/yr
+                </div>
+              </div>
+            </div>
+            {netSavingWithRework > 0 && needsReduction && annualReworkCost > 0 && (
+              <div style={{marginTop:'1rem',fontSize:'0.82rem',color:'#555',lineHeight:1.6}}>
+                <strong>Short-term:</strong> Rework costs {fmtGBP(annualReworkCost)}/yr but saves {fmtGBP(netSavingWithRework)} net.
+                {' '}<strong>Long-term:</strong> Reducing SD eliminates rework and unlocks the full {fmtGBP(Math.max(0, annualSaving))}/yr — an additional {fmtGBP(annualReworkCost)}/yr.
+              </div>
+            )}
+          </div>
+
+          {/* ── 8. DISTRIBUTION CHART ── */}
+          <div className="gc-chart-card">
+            <h3>Fill Weight Distribution (pre-checkweigher)</h3>
+            <p>Blue = current filler output. Green = target at required SD. Red = packs needing rework.</p>
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={distData} margin={{top:20,right:20,left:10,bottom:30}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                <XAxis dataKey="x" type="number" domain={['auto','auto']}
+                  tickFormatter={v => fmt(v,0) + 'g'}
+                  label={{value:'Fill Weight (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:12}}} />
+                <YAxis hide />
+                <Tooltip content={<DistTooltip />} />
+                <Area type="monotone" dataKey="nonComplyT2" stroke="none" fill="#dc2626" fillOpacity={0.35} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="nonComplyT1" stroke="none" fill="#ef4444" fillOpacity={0.18} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="currentGA" stroke="none" fill="#3b82f6" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Area type="monotone" dataKey="targetGA" stroke="none" fill="#22c55e" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
+                <Line type="monotone" dataKey="current" stroke="#3b82f6" strokeWidth={2.5} dot={false} name="Current" />
+                <Line type="monotone" dataKey="target" stroke="#22c55e" strokeWidth={2.5} dot={false} name="Target" />
+                <ReferenceLine x={nominal} stroke="#001412" strokeWidth={2} />
+                <ReferenceLine x={t1} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} />
+                <ReferenceLine x={t2} stroke="#dc2626" strokeDasharray="3 3" strokeWidth={1.5} />
+                <ReferenceLine x={currentMean} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} />
+                {targetMean > nominal - 4 * Math.max(currentSD, requiredSD) && (
+                  <ReferenceLine x={targetMean} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} />
+                )}
+              </ComposedChart>
+            </ResponsiveContainer>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem 1.25rem',fontSize:'0.72rem',color:'#555',marginTop:'0.5rem',justifyContent:'center'}}>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#001412',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Nominal ({fmtK(nominal)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #ef4444',verticalAlign:'middle',marginRight:4}}></span> T1 ({fmt(t1)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dotted #dc2626',verticalAlign:'middle',marginRight:4}}></span> T2 ({fmt(t2)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#3b82f6',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Current (mean {fmt(currentMean,1)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#22c55e',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Target (mean {fmt(targetMean,1)} g)</span>
+            </div>
+          </div>
+
+          {/* ── 9. SENSITIVITY CHART ── */}
+          <div className="gc-chart-card">
+            <h3>Sensitivity: Saving vs Variability</h3>
+            <p>Each gram of SD reduction translates to savings — this chart shows how much.</p>
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={sensData} margin={{top:20,right:120,left:10,bottom:30}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                <XAxis dataKey="sd" type="number" domain={['auto','auto']}
+                  tick={{fontSize:10}} tickFormatter={v => v + 'g'}
+                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:11}}} />
+                <YAxis width={70} tick={{fontSize:10}} tickFormatter={v => '£' + fmtK(v)}
+                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:5,style:{fill:'#7A7A7A',fontSize:11}}} />
+                <Tooltip content={<SensTooltip />} />
+                <Area type="monotone" dataKey="saving" stroke="#006458" fill="#006458" fillOpacity={0.1} strokeWidth={2.5} dot={false} />
+                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} />
+                <ReferenceLine x={requiredSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} />
+              </ComposedChart>
+            </ResponsiveContainer>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'0.4rem 1.25rem',fontSize:'0.72rem',color:'#555',marginTop:'0.5rem',justifyContent:'center'}}>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#006458',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Annual saving</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #3b82f6',verticalAlign:'middle',marginRight:4}}></span> Current SD ({fmt(currentSD,1)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #22c55e',verticalAlign:'middle',marginRight:4}}></span> Required SD ({fmt(requiredSD,1)} g)</span>
+            </div>
+          </div>
+
+          {/* ── 10. COMPLIANCE AUDIT ── */}
+          <Expandable title="Compliance Audit">
+            <div style={{fontSize:'0.82rem',color:'#444',marginBottom:'1rem'}}>
+              How your current process (pre-checkweigher) measures against W&M legal rules and your internal targets.
+            </div>
             <div style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:'0.25rem 1rem',fontSize:'0.78rem',color:'#444',alignItems:'center'}}>
               <div style={{fontWeight:600,color:'#7A7A7A',fontSize:'0.7rem'}}>CHECK</div>
               <div style={{fontWeight:600,color:'#7A7A7A',fontSize:'0.7rem',textAlign:'right'}}>ACTUAL</div>
               <div style={{fontWeight:600,color:'#7A7A7A',fontSize:'0.7rem',textAlign:'right'}}>RESULT</div>
 
               <div>Packs below T2 (W&M: must be 0%)</div>
-              <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBelowT2,2)}%</div>
+              <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBelowT2,3)}%</div>
               <div style={{textAlign:'right',fontWeight:600,color: currentPctBelowT2 <= 0 ? '#006458' : '#dc2626'}}>{currentPctBelowT2 > 0 ? '✘ FAIL' : '✔ PASS'}</div>
 
-              <div>Packs between T1–T2 (W&M: must be ≤2.5%)</div>
+              <div>Packs between T1–T2 (W&M: ≤2.5%)</div>
               <div style={{textAlign:'right',fontWeight:600}}>{fmt(currentPctBetweenT1T2,2)}%</div>
               <div style={{textAlign:'right',fontWeight:600,color: currentPctBetweenT1T2 <= 2.5 ? '#006458' : '#dc2626'}}>{currentPctBetweenT1T2 > 2.5 ? '✘ FAIL' : '✔ PASS'}</div>
 
@@ -1079,24 +965,17 @@
             </div>
           </Expandable>
 
-          {/* ── Methodology ── */}
-          <div className="gc-chart-card" style={{background:'#f8f9fa'}}>
-            <h3>Methodology</h3>
-            <p style={{color:'#333',fontSize:'0.85rem',lineHeight:1.7}}>
-              Under UK/EU Average Quantity (Weights &amp; Measures) regulations, packers must satisfy <strong>three rules simultaneously</strong> for each completed batch:<br/><br/>
-              <strong>Rule 1 (Average):</strong> Batch mean ≥ Nominal Weight.<br/>
-              <strong>Rule 2 (T1):</strong> No more than 2.5% of packs between T1 (Nominal − TNE) and T2 (Nominal − 2×TNE).<br/>
-              <strong>Rule 3 (T2):</strong> Zero packs below T2 — any pack below T2 is an automatic non-conformance.<br/><br/>
-              <strong>Legal vs internal targets:</strong> The W&M rules define what a finished batch must achieve. Internal production targets can be <strong>stricter</strong> (if non-conformance is costly and rework is disruptive) or <strong>looser</strong> (if rework is cheap and raw materials are expensive — accepting more rework to reduce giveaway). The checkweigher rejects packs breaching internal thresholds for rework before the batch is submitted.<br/><br/>
-              <strong>Two strategies to reduce giveaway:</strong><br/>
-              <strong>A) Rework:</strong> Keep current SD, lower the mean fill target, and rework any underweight packs. Immediate saving with no process investment, but ongoing rework costs.<br/>
-              <strong>B) Reduce SD:</strong> Invest in process improvement (equipment, controls, training) to tighten variability. Eliminates rework and unlocks the full giveaway saving long-term.<br/><br/>
+          {/* ── 11. METHODOLOGY ── */}
+          <Expandable title="Methodology">
+            <div style={{fontSize:'0.82rem',lineHeight:1.7,color:'#444'}}>
               <strong>Required SD</strong> = min((giveaway + TNE) / z₂, (giveaway + 2×TNE) / z₃)<br/>
-              Where z₂ = inverse normal CDF for your T1 tolerance (e.g. 1 in {fmtK(rule2OneIn)} = z of {fmt(z2,2)}), and z₃ = inverse normal CDF for your T2 tolerance (e.g. 1 in {fmtK(rule3OneIn)} = z of {fmt(z3,2)}). Higher z means stricter tolerance, requiring tighter SD.<br/><br/>
-              <strong>Annual saving</strong> = Giveaway reduction (g) × Volume ÷ 1,000 × Cost (£/kg)<br/>
-              <strong>Net saving (rework)</strong> = Annual saving − (rework packs × cost per rework)
-            </p>
-          </div>
+              <strong>Annual saving</strong> = giveaway reduction (g) × volume ÷ 1,000 × cost (£/kg)<br/>
+              <strong>Net saving (rework)</strong> = annual saving − (rework packs × cost per rework)<br/><br/>
+              z₂ and z₃ are the inverse normal CDF values for your T1 and T2 tolerances (currently {fmt(z2,2)} and {fmt(z3,2)}).
+              Higher z = stricter tolerance = tighter SD required.
+              {(skewness !== 0 || kurtosis !== 0) && ' Non-normality adjustment uses the Cornish-Fisher expansion to correct for skewness and kurtosis in real checkweigh data.'}
+            </div>
+          </Expandable>
         </div>
       );
     }
