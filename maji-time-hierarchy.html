@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Operational Performance Measurement Framework | maji by majaco</title>
-  <meta name="description" content="A comprehensive methodology for measuring manufacturing performance through time-based decomposition, hierarchical efficiency metrics, and constraint-state-dependent financial valuation.">
-  <meta property="og:title" content="Operational Performance Measurement Framework | maji by majaco">
-  <meta property="og:description" content="Time-based decomposition, hierarchical efficiency metrics, and constraint-state-dependent financial valuation for manufacturing.">
+  <title>The Time Hierarchy | maji by majaco</title>
+  <meta name="description" content="Every hour your factory loses has a cause and a cost. majaco's time hierarchy framework makes both visible — additive decomposition from Calendar Time to Potential Time.">
+  <meta property="og:title" content="The Time Hierarchy | maji by majaco">
+  <meta property="og:description" content="Time-based additive decomposition from Calendar Time to Potential Time. Every loss classified, valued, and actionable.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://majiai.co/maji-time-hierarchy">
   <meta property="og:image" content="https://majiai.co/assets/og-image.png">
@@ -226,75 +226,96 @@
         <!-- 4. Which metrics matter? -->
         <div class="content-card reveal" data-delay="160">
           <h2>Which Metrics Matter to You?</h2>
-          <p>Before choosing a metric, identify your constraint state: <strong>can you sell more if you made more?</strong></p>
+          <p>Before choosing a metric, identify your constraint state: <strong>can you sell more if you made more?</strong> Each metric widens the denominator one level up the hierarchy.</p>
           <div class="table-wrapper">
             <table>
               <thead>
-                <tr><th>Who</th><th>Sales-Constrained</th><th>Production-Constrained</th><th>Formula</th></tr>
+                <tr><th>Audience</th><th>Metric</th><th>Formula</th><th>Losses in scope</th></tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>Shop Floor</strong></td>
                   <td>Operating Efficiency</td>
-                  <td>Operating Efficiency</td>
-                  <td><code>Potential Time / Operating Time</code></td>
+                  <td><code>PT / Operating Time</code></td>
+                  <td>UPDT, LTSR, LTMW</td>
                 </tr>
                 <tr>
-                  <td><strong>Operations Manager</strong></td>
-                  <td>Machine Efficiency</td>
-                  <td><strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness</td>
-                  <td><code>Potential Time / Shift Time</code></td>
+                  <td><strong>Operations</strong></td>
+                  <td><strong>OEE</strong></td>
+                  <td><code>PT / PPT</code></td>
+                  <td>Adds PDT</td>
                 </tr>
                 <tr>
-                  <td><strong>Strategic Leadership</strong></td>
+                  <td><strong>Management</strong></td>
+                  <td><strong>OOE</strong> / Machine Efficiency</td>
+                  <td><code>PT / Shift Time</code></td>
+                  <td>Adds Schedule Loss</td>
+                </tr>
+                <tr>
+                  <td><strong>Strategic</strong></td>
+                  <td><strong>TEEP</strong></td>
+                  <td><code>PT / Calendar Time</code></td>
+                  <td>Adds Non-working Time</td>
+                </tr>
+                <tr>
+                  <td><strong>Strategic</strong></td>
                   <td>Output per Labour Hour</td>
-                  <td><strong>T</strong>otal <strong>E</strong>ffective <strong>E</strong>quipment <strong>P</strong>erformance</td>
-                  <td><code>Output / Labour Hrs</code><br><span style="font-size:0.8em;color:#7A7A7A">or</span> <code>Potential Time / Calendar Time</code></td>
+                  <td><code>Good Output / Labour Hrs</code></td>
+                  <td>Sales-constrained only</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">Machine Efficiency and <strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness are the same formula &mdash; the name changes with the strategic intent. If weekend working is not possible, use <strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness instead of <strong>T</strong>otal <strong>E</strong>ffective <strong>E</strong>quipment <strong>P</strong>erformance.</p>
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">Machine Efficiency and OOE are the same formula (PT / Shift Time) &mdash; the name changes with strategic intent. OEE in majaco&rsquo;s framework = PT / PPT (the additive equivalent of the traditional Availability &times; Performance &times; Quality). For full formula derivations and the acronym glossary, see the <a href="maji-efficiency-formulas.html" style="color:var(--color-primary);text-decoration:underline">Efficiency Formulas</a> reference.</p>
         </div>
 
         <!-- 5. The metrics explained -->
         <div class="content-card reveal" data-delay="200">
           <h2>The Metrics</h2>
+          <p style="font-size:0.85rem;color:#555;margin-bottom:1rem">Click &ldquo;Show Me&rdquo; to highlight the numerator (PT) and denominator in the cascade above.</p>
 
           <div style="margin-bottom:1.5rem">
             <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center">
-              <span><strong>Operating Efficiency</strong> = Potential Time / Operating Time (Actual)</span>
+              <span><strong>Operating Efficiency</strong> = PT / Operating Time</span>
               <button class="show-me-btn" onclick="highlightMetric(['potential'],['run'])">Show Me</button>
             </p>
-            <p style="font-size:0.85rem;color:#555">Shop floor metric. Measures execution within the operational window &mdash; <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime, <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning, and <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste are in scope. Schedule Loss and <strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime are not (planning decisions). World-class: &ge;85%.</p>
+            <p style="font-size:0.85rem;color:#555">Shop floor metric. UPDT, LTSR, and LTMW are in scope. Schedule Loss and PDT are not (planning decisions). World-class: &ge;85%.</p>
+          </div>
+
+          <div style="margin-bottom:1.5rem">
+            <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center">
+              <span><strong>OEE</strong> = PT / PPT</span>
+              <button class="show-me-btn" onclick="highlightMetric(['potential'],['ppt'])">Show Me</button>
+            </p>
+            <p style="font-size:0.85rem;color:#555">Operations metric. Adds PDT to scope &mdash; holds the team accountable for changeover time and planned maintenance efficiency. Since PT = Good Output / BNS, this equals Good Output / (PPT &times; BNS) = Good Output / Potential Output. This is the additive equivalent of the traditional A &times; P &times; Q, without double-counting speed losses on waste.</p>
           </div>
 
           <div style="margin-bottom:1.5rem">
             <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
-              <span><strong>Machine Efficiency / Overall Operations Effectiveness</strong> = Potential Time / Shift Time</span>
+              <span><strong>OOE</strong> (Machine Efficiency) = PT / Shift Time</span>
               <button class="show-me-btn" onclick="highlightMetric(['potential'],['shift'])">Show Me</button>
             </p>
-            <p style="font-size:0.85rem;color:#555">Management metric. Adds Schedule Loss and <strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime to the denominator &mdash; holds the operation accountable for how it uses all available shift hours, not just the time allocated to production.</p>
+            <p style="font-size:0.85rem;color:#555">Management metric. Adds Schedule Loss &mdash; how well the operation uses all available shift hours. Same formula, different name: &ldquo;Machine Efficiency&rdquo; in sales-constrained contexts, &ldquo;OOE&rdquo; in production-constrained.</p>
           </div>
 
           <div style="margin-bottom:1.5rem">
             <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center">
-              <span><strong>Total Effective Equipment Performance</strong> = Potential Time / Calendar Time</span>
+              <span><strong>TEEP</strong> = PT / Calendar Time</span>
               <button class="show-me-btn" onclick="highlightMetric(['potential'],['calendar'])">Show Me</button>
             </p>
-            <p style="font-size:0.85rem;color:#555">Strategic metric for production-constrained environments. Measures total asset utilisation including non-working time. Answers: "how much of the factory's theoretical capacity are we using?"</p>
+            <p style="font-size:0.85rem;color:#555">Strategic metric for production-constrained environments. Total asset utilisation including non-working time. Answers: &ldquo;how much of the factory&rsquo;s theoretical capacity are we using?&rdquo;</p>
           </div>
 
           <div style="margin-bottom:1.5rem">
             <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0">
               <span><strong>Output per Labour Hour</strong> = Good Output / Total Labour Hours</span>
             </p>
-            <p style="font-size:0.85rem;color:#555">Strategic metric for sales-constrained environments. Measures how productively labour is deployed. Improving machine efficiency or optimising crew size both increase this metric, reducing cost per unit.</p>
+            <p style="font-size:0.85rem;color:#555">Strategic metric for sales-constrained environments. Improving OOE or optimising crew size both increase this metric, reducing cost per unit.</p>
           </div>
 
           <div style="font-size:0.85rem;color:#555;margin-top:0.5rem">
             <div class="legend-box" style="margin-bottom:0.5rem">
-              <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator (in cascade)</span></div>
+              <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator &mdash; PT (in cascade)</span></div>
               <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator (in cascade)</span></div>
             </div>
           </div>
@@ -306,14 +327,14 @@
           <p>The framework&rsquo;s payoff: every lost hour has a pound value.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1rem 0">
             <div style="background:#f0fdf4;border-radius:10px;padding:1rem;border:1px solid #bbf7d0">
-              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#006458;font-weight:600;margin-bottom:0.5rem">Production-Constrained</div>
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#006458;font-weight:400;margin-bottom:0.5rem">Production-Constrained</div>
               <div style="font-size:0.85rem;color:#333;line-height:1.6">
-                Lost Time &times; Bottleneck Speed &times; Unit Marginal Profit = <strong>opportunity value</strong>.<br>
+                Lost Time &times; BNS &times; UMP = <strong>opportunity value</strong>.<br>
                 Every recovered hour produces additional saleable output.
               </div>
             </div>
             <div style="background:#f8f9fa;border-radius:10px;padding:1rem;border:1px solid #e0e0e0">
-              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#7A7A7A;font-weight:600;margin-bottom:0.5rem">Sales-Constrained</div>
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#7A7A7A;font-weight:400;margin-bottom:0.5rem">Sales-Constrained</div>
               <div style="font-size:0.85rem;color:#333;line-height:1.6">
                 Labour Hours Saved &times; Fully Loaded Labour Cost = <strong>opportunity value</strong>.<br>
                 Recovered time enables fewer people or fewer hours for the same output.
@@ -321,41 +342,17 @@
             </div>
           </div>
           <p style="font-size:0.85rem;color:#555;line-height:1.6">
-            <strong>The difference matters enormously.</strong> The same 2.5 hours of unplanned downtime per day can be worth &pound;5.4M/yr (production-constrained, valued at throughput margin) or &pound;82k/yr (sales-constrained, valued at labour cost saved) &mdash; a 66&times; difference. Getting the constraint diagnosis right is not optional.
+            <strong>The difference matters enormously.</strong> The same 2.5 hours of UPDT per day can be worth &pound;5.4M/yr (production-constrained, valued at throughput margin) or &pound;82k/yr (sales-constrained, valued at labour cost saved) &mdash; a 66&times; difference. Getting the constraint diagnosis right is not optional.
           </p>
         </div>
 
-        <!-- 7. Formulas reference -->
+        <!-- Formulas & Glossary reference -->
         <div class="content-card reveal" data-delay="280">
-          <h2>Key Formulas</h2>
-          <div class="formula"><strong>Potential Time</strong> = Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</div>
-          <div class="formula"><strong>Up Time</strong> = Potential Time + <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning + <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste</div>
-          <div class="formula"><strong>Operating Time (Actual)</strong> = Up Time + <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime</div>
-          <div class="formula"><strong>Lost Time Slow Running</strong> = Good Output / Run Speed &minus; Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</div>
-          <div class="formula"><strong>Lost Time Making Waste</strong> = Waste Output / Run Speed</div>
-          <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
-          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning + <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste + <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime (must balance)</div>
-        </div>
-
-        <!-- Glossary -->
-        <div class="content-card reveal" data-delay="320">
-          <h2>Glossary</h2>
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>Abbreviation</th><th>Full Name</th></tr></thead>
-              <tbody>
-                <tr><td><strong>BNS</strong></td><td><strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &mdash; maximum demonstrated speed of the constraining process step</td></tr>
-                <tr><td><strong>LTMW</strong></td><td><strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste &mdash; time equivalent of producing defective output</td></tr>
-                <tr><td><strong>LTSR</strong></td><td><strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning &mdash; time equivalent of running below bottleneck speed</td></tr>
-                <tr><td><strong>OEE</strong></td><td><strong>O</strong>verall <strong>E</strong>quipment <strong>E</strong>ffectiveness &mdash; Availability &times; Performance &times; Quality (industry-standard multiplicative form)</td></tr>
-                <tr><td><strong>OOE</strong></td><td><strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness &mdash; Potential Time / Shift Time (production context)</td></tr>
-                <tr><td><strong>PDT</strong></td><td><strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime &mdash; scheduled maintenance, changeovers, planned cleaning</td></tr>
-                <tr><td><strong>PPT</strong></td><td><strong>P</strong>lanned <strong>P</strong>roduction <strong>T</strong>ime &mdash; Shift Time minus Schedule Loss</td></tr>
-                <tr><td><strong>TEEP</strong></td><td><strong>T</strong>otal <strong>E</strong>ffective <strong>E</strong>quipment <strong>P</strong>erformance &mdash; Potential Time / Calendar Time</td></tr>
-                <tr><td><strong>UPDT</strong></td><td><strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &mdash; breakdowns, stoppages, material/labour waiting</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <h2>Formulas &amp; Glossary</h2>
+          <p>All formulas, acronym definitions, the OEE equivalence proof, and diagnostic quick-reference are on the dedicated reference page:</p>
+          <p style="margin-top:1rem">
+            <a href="maji-efficiency-formulas.html" class="btn btn-primary">Efficiency Formulas Quick Reference &rarr;</a>
+          </p>
         </div>
 
         <!-- CTA -->

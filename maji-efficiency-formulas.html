@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Efficiency Formulas Quick Reference | maji by majaco</title>
-  <meta name="description" content="Formula reference for majaco's time-based measurement framework. Corrected lost time equations, efficiency metrics by constraint state, and financial valuation of opportunities.">
+  <meta name="description" content="Formula reference for majaco's time-based measurement framework. Glossary of acronyms, time hierarchy visual, core formulas, efficiency metrics, and diagnostic quick reference.">
   <meta property="og:title" content="Efficiency Formulas Quick Reference | maji by majaco">
-  <meta property="og:description" content="Core formulas for operating efficiency, machine efficiency, Total Effective Equipment Performance, lost time categories, and financial valuation of manufacturing opportunities.">
+  <meta property="og:description" content="Core formulas for operating efficiency, OEE, OOE, TEEP, lost time categories, and the equivalence proof connecting PT/PPT to Good Output / Potential Output.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://majiai.co/maji-efficiency-formulas">
   <meta property="og:image" content="https://majiai.co/assets/og-image.png">
@@ -37,7 +37,7 @@
     <div class="nav__mobile" id="mobile-menu">
       <a href="about-maji.html">About maji</a>
       <a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a>
-      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started →</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started &rarr;</a>
     </div>
   </nav>
 
@@ -54,7 +54,7 @@
       <p class="page-hero__eyebrow">maji Reference</p>
       <h1 class="page-hero__title">Efficiency Formulas <span class="text-green">Quick Reference</span></h1>
       <p class="page-hero__subtitle">
-        The equations behind majaco's time-based measurement framework. For the full methodology, see the <a href="maji-time-hierarchy.html" style="color:#DAF11B;text-decoration:underline">Time Hierarchy</a> page.
+        The equations behind majaco's time-based measurement framework. For the full interactive methodology, see the <a href="maji-time-hierarchy.html" style="color:#DAF11B;text-decoration:underline">Time Hierarchy</a> page.
       </p>
     </div>
   </section>
@@ -63,45 +63,119 @@
     <section class="section">
       <div class="container">
 
-        <!-- 1. Time Hierarchy — Visual Cascade -->
+        <!-- 1. Glossary — single source of truth for acronyms -->
         <div class="content-card reveal">
+          <h2>Glossary</h2>
+          <p style="font-size:0.9rem;color:#7A7A7A;margin-bottom:1.25rem">This is the single source of truth for all acronyms used across the Time Hierarchy page and this reference. All terms are listed alphabetically.</p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Abbreviation</th>
+                  <th>Full Name</th>
+                  <th>Definition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>BNS</strong></td>
+                  <td>Bottleneck Speed</td>
+                  <td>Maximum demonstrated sustainable speed of the constraining process step</td>
+                </tr>
+                <tr>
+                  <td><strong>LTMW</strong></td>
+                  <td>Lost Time Making Waste</td>
+                  <td>Time equivalent of producing defective output. Formula: Waste Output / Run Speed</td>
+                </tr>
+                <tr>
+                  <td><strong>LTSR</strong></td>
+                  <td>Lost Time Slow Running</td>
+                  <td>Time equivalent of running below BNS. Formula: Good Output / Run Speed &minus; Good Output / BNS</td>
+                </tr>
+                <tr>
+                  <td><strong>OEE</strong></td>
+                  <td>Overall Equipment Effectiveness</td>
+                  <td>PT / PPT. Measures execution within planned production time. Equivalent to Good Output / (PPT &times; BNS). Note: industry-standard A &times; P &times; Q is the multiplicative form; majaco uses the additive equivalent</td>
+                </tr>
+                <tr>
+                  <td><strong>OOE</strong></td>
+                  <td>Overall Operations Effectiveness</td>
+                  <td>PT / Shift Time. Management metric covering all shift losses including schedule loss and PDT. Same formula as &ldquo;Machine Efficiency&rdquo; &mdash; name signals production context</td>
+                </tr>
+                <tr>
+                  <td><strong>PDT</strong></td>
+                  <td>Planned Downtime</td>
+                  <td>Scheduled stops: changeovers, planned maintenance, start-of-shift checks</td>
+                </tr>
+                <tr>
+                  <td><strong>PPT</strong></td>
+                  <td>Planned Production Time</td>
+                  <td>Shift Time &minus; Schedule Loss. Time explicitly scheduled for production</td>
+                </tr>
+                <tr>
+                  <td><strong>PT</strong></td>
+                  <td>Potential Time</td>
+                  <td>Good Output / BNS. Theoretical minimum time to produce actual good output at maximum bottleneck speed</td>
+                </tr>
+                <tr>
+                  <td><strong>TEEP</strong></td>
+                  <td>Total Effective Equipment Performance</td>
+                  <td>PT / Calendar Time. Strategic metric for production-constrained environments</td>
+                </tr>
+                <tr>
+                  <td><strong>UMP</strong></td>
+                  <td>Unit Marginal Profit</td>
+                  <td>Revenue minus truly variable costs per unit</td>
+                </tr>
+                <tr>
+                  <td><strong>UPDT</strong></td>
+                  <td>Unplanned Downtime</td>
+                  <td>Breakdowns, stoppages, material/labour waiting</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. Time Hierarchy — compact static visual -->
+        <div class="content-card reveal" data-delay="80">
           <h2>Time Hierarchy</h2>
-          <p>Every level is formed by subtracting a loss category from the level above. The result is <strong>Potential Time</strong> &mdash; the theoretical minimum time to produce your actual good output at bottleneck speed.</p>
+          <p>Every level is formed by subtracting a loss category from the level above. The result is <strong>PT</strong> &mdash; the theoretical minimum time to produce your actual good output at BNS.</p>
 
           <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0">
 
             <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-              <strong>Calendar Time</strong> <span style="color:#7A7A7A">: all time in the period (24 &times; 7 &times; weeks)</span>
+              <strong>Calendar Time</strong>
             </div>
 
             <div style="padding-left:1.5rem">
               <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Non-working Time &rarr;</div>
               <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                <strong>Shift Time</strong> <span style="color:#7A7A7A">: factory open, shifts rostered</span>
+                <strong>Shift Time</strong>
               </div>
 
               <div style="padding-left:1.5rem">
                 <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Schedule Loss &rarr;</div>
                 <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                  <strong><strong>P</strong>lanned <strong>P</strong>roduction <strong>T</strong>ime</strong> <span style="color:#7A7A7A">: scheduled to produce</span>
+                  <strong>PPT</strong> <span style="color:#7A7A7A">(Planned Production Time)</span>
                 </div>
 
                 <div style="padding-left:1.5rem">
-                  <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; <strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime &rarr;</div>
+                  <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; PDT (Planned Downtime) &rarr;</div>
                   <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                    <strong>Operating Time</strong> <span style="color:#7A7A7A">: expected to run</span>
+                    <strong>Operating Time</strong>
                   </div>
 
                   <div style="padding-left:1.5rem">
-                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &rarr;</div>
+                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; UPDT (Unplanned Downtime) &rarr;</div>
                     <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                      <strong>Up Time</strong> <span style="color:#7A7A7A">: line is running</span>
+                      <strong>Up Time</strong>
                     </div>
 
                     <div style="padding-left:1.5rem">
-                      <div style="color:#d97706;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning, <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste &rarr;</div>
+                      <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; LTSR, LTMW &rarr;</div>
                       <div style="background:#f0fdf4;border-left:4px solid #DAF11B;padding:0.75rem 1rem;border-radius:6px">
-                        <strong style="color:var(--color-primary)">Potential Time</strong> <span style="color:#7A7A7A">: Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</span>
+                        <strong style="color:var(--color-primary)">PT</strong> <span style="color:#7A7A7A">(Potential Time) = Good Output / BNS</span>
                       </div>
                     </div>
 
@@ -111,132 +185,115 @@
             </div>
 
           </div>
+
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:1.25rem">For the full interactive hierarchy with expandable levels, see the <a href="maji-time-hierarchy.html" style="color:var(--color-primary)">Time Hierarchy</a> page.</p>
         </div>
 
-        <!-- 2. Core Formulas -->
-        <div class="content-card reveal" data-delay="80">
-          <h2>Core Formulas</h2>
-          <div class="formula"><strong>Potential Time</strong> = Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</div>
-          <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
-          <div class="formula"><strong>Lost Time Slow Running</strong> = Good Output / Run Speed &minus; Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed</div>
-          <div class="formula"><strong>Lost Time Making Waste</strong> = Waste Output / Run Speed</div>
-          <div class="formula"><strong>Unplanned Downtime</strong> = Actual Operating Time &minus; Up Time</div>
-          <div class="formula"><strong>Planning Rate</strong> = <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &times; Operating Efficiency (planned)</div>
-          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning + <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste + <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &nbsp;(must balance)</div>
-        </div>
-
-        <!-- 3. Efficiency Metrics -->
+        <!-- 3. Core Formulas -->
         <div class="content-card reveal" data-delay="160">
+          <h2>Core Formulas</h2>
+          <div class="formula"><strong>PT</strong> = Good Output / BNS</div>
+          <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
+          <div class="formula"><strong>LTSR</strong> = Good Output / Run Speed &minus; Good Output / BNS</div>
+          <div class="formula"><strong>LTMW</strong> = Waste Output / Run Speed</div>
+          <div class="formula"><strong>UPDT</strong> = Operating Time (Actual) &minus; Up Time</div>
+          <div class="formula"><strong>Up Time</strong> = PT + LTSR + LTMW</div>
+          <div class="formula"><strong>Operating Time (Actual)</strong> = PT + LTSR + LTMW + UPDT &nbsp;<span style="color:#7A7A7A">(must balance &mdash; MECE verification)</span></div>
+          <div class="formula"><strong>Planning Rate</strong> = BNS &times; Operating Efficiency (planned)</div>
+        </div>
+
+        <!-- 4. Efficiency Metrics -->
+        <div class="content-card reveal" data-delay="240">
           <h2>Efficiency Metrics</h2>
           <div class="table-wrapper">
             <table>
               <thead>
-                <tr><th>Metric</th><th>Formula</th><th>Audience</th><th>Constraint</th></tr>
+                <tr>
+                  <th>Metric</th>
+                  <th>Formula</th>
+                  <th>Denominator scope</th>
+                  <th>Audience</th>
+                  <th>Constraint context</th>
+                </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>Operating Efficiency</strong></td>
-                  <td>Potential Time / Actual OT</td>
+                  <td>PT / Operating Time</td>
+                  <td>Losses within operating time (UPDT, LTSR, LTMW)</td>
                   <td>Shop floor</td>
                   <td>Both</td>
                 </tr>
                 <tr>
-                  <td><strong>Machine Efficiency / Overall Operations Effectiveness</strong></td>
-                  <td>Potential Time / Shift Time</td>
+                  <td><strong>OEE</strong></td>
+                  <td>PT / PPT</td>
+                  <td>Adds PDT</td>
+                  <td>Operations</td>
+                  <td>Both</td>
+                </tr>
+                <tr>
+                  <td><strong>OOE</strong> (Machine Efficiency)</td>
+                  <td>PT / Shift Time</td>
+                  <td>Adds Schedule Loss</td>
                   <td>Management</td>
                   <td>Both</td>
                 </tr>
                 <tr>
-                  <td><strong>Total Effective Equipment Performance</strong></td>
-                  <td>Potential Time / Calendar Time</td>
+                  <td><strong>TEEP</strong></td>
+                  <td>PT / Calendar Time</td>
+                  <td>Adds Non-working Time</td>
                   <td>Strategic</td>
                   <td>Production-constrained</td>
                 </tr>
                 <tr>
                   <td><strong>Output per Labour Hour</strong></td>
                   <td>Good Output / Labour Hours</td>
+                  <td>N/A</td>
                   <td>Strategic</td>
-                  <td>Sales-constrained</td>
-                </tr>
-                <tr>
-                  <td><strong>Labour Efficiency</strong></td>
-                  <td>Machine Eff &times; (Potential Crew / Actual Crew)</td>
-                  <td>&mdash;</td>
                   <td>Sales-constrained</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">
-            <strong>Why this works:</strong> Operating Efficiency = Potential Time / Actual Operating Time. Since Potential Time = Good Output / <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed, this simplifies to Good Output / (<strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &times; Actual Operating Time) &mdash; i.e. good output as a proportion of what the line <em>could</em> have produced in the actual operating time. The same logic applies to every metric in the table: the numerator is always the time your good output <em>needed</em>; the denominator is the time window you are measuring against.
-          </p>
-          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong>Machine Efficiency vs <strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness:</strong> same formula (Potential Time / Shift Time), different name. &ldquo;Machine Efficiency&rdquo; is used in a sales context; &ldquo;<strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness&rdquo; in a production context. The name signals strategic intent, not a different calculation.
-          </p>
-          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong><strong>O</strong>verall <strong>E</strong>quipment <strong>E</strong>ffectiveness translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (Potential Time / Operating Time) provides the same insight without double-counting speed losses on waste units.
-          </p>
-        </div>
 
-        <!-- 4. Financial Valuation -->
-        <div class="content-card reveal" data-delay="240">
-          <h2>Financial Valuation of Lost Time</h2>
-          <p>Every lost hour has a pound value &mdash; but the value depends entirely on your constraint state.</p>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.25rem 0">
-            <div style="background:#f0fdf4;border-radius:10px;padding:1.25rem;border:1px solid #bbf7d0">
-              <div style="font-size:0.8125rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-primary);font-weight:400;margin-bottom:0.75rem">Production-Constrained</div>
-              <p style="font-size:0.9rem;color:#333;line-height:1.6;margin:0">
-                <strong>Lost Output &times; Unit Marginal Profit (UMP)</strong>
-              </p>
-              <p style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.5rem 0 0 0">
-                Two UMP variants:
-              </p>
-              <ul style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.25rem 0 0 0;padding-left:1.25rem;list-style:disc">
-                <li style="display:list-item"><strong>With existing labour</strong> &mdash; higher margin, labour cost excluded (already paid)</li>
-                <li style="display:list-item"><strong>With new labour</strong> &mdash; lower margin, labour cost included (overtime or new hires needed)</li>
-              </ul>
-              <p style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.5rem 0 0 0">
-                Recovery calculated at current Machine Efficiency, not 100%.
-              </p>
-            </div>
-            <div style="background:#f8f9fa;border-radius:10px;padding:1.25rem;border:1px solid #e0e0e0">
-              <div style="font-size:0.8125rem;text-transform:uppercase;letter-spacing:0.12em;color:#7A7A7A;font-weight:400;margin-bottom:0.75rem">Sales-Constrained</div>
-              <p style="font-size:0.9rem;color:#333;line-height:1.6;margin:0">
-                <strong>Labour Hours Saved &times; Fully Loaded Labour Cost</strong>
-              </p>
-              <p style="font-size:0.85rem;color:#555;line-height:1.6;margin:0.5rem 0 0 0">
-                Additional output has no value &mdash; you cannot sell more than the market will buy. The only saving is fewer people or fewer hours for the same output.
-              </p>
-            </div>
+          <div style="background:#f0fdf4;border-left:4px solid #DAF11B;padding:1.25rem 1.25rem 1rem;border-radius:6px;margin-top:1.5rem">
+            <p style="font-size:0.9rem;color:#333;font-weight:400;margin:0 0 0.75rem 0"><strong>Equivalence proof</strong></p>
+            <p style="font-size:0.875rem;color:#555;line-height:1.7;margin:0 0 0.5rem 0">
+              Since PT = Good Output / BNS:
+            </p>
+            <div class="formula" style="margin:0.5rem 0">OEE = PT / PPT = (Good Output / BNS) / PPT = Good Output / (PPT &times; BNS) = Good Output / Potential Output</div>
+            <p style="font-size:0.875rem;color:#555;line-height:1.7;margin:0.75rem 0 0 0">
+              Every metric in the table follows this pattern: good output as a proportion of what <em>could</em> have been produced in the denominator time window at BNS.
+            </p>
           </div>
 
-          <p style="font-size:0.9rem;color:#555;line-height:1.6">
-            <strong>The difference matters enormously.</strong> The same 2.5 hours of unplanned downtime per day can be worth &pound;5.4M/yr (production-constrained, valued at throughput margin) or &pound;82k/yr (sales-constrained, valued at labour cost saved) &mdash; a <strong>66&times; difference</strong>. Getting the constraint diagnosis right is not optional.
+          <p style="font-size:0.875rem;color:#555;line-height:1.7;margin-top:1.25rem">
+            <strong>Widening denominator logic:</strong> each metric widens the denominator one level up the hierarchy. Operating Efficiency measures execution; OEE adds PDT accountability; OOE adds schedule loss; TEEP adds non-working time. Choose based on who is accountable for the losses in scope.
           </p>
 
-          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:1rem"><strong>Lost time scope:</strong></p>
-          <ul style="font-size:0.85rem;color:#7A7A7A;line-height:1.6;margin:0.25rem 0 0 0;padding-left:1.25rem;list-style:disc">
-            <li style="display:list-item"><strong>Operational</strong> &mdash; losses within Operating Time (<strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime, <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning, <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste)</li>
-            <li style="display:list-item"><strong>Tactical</strong> &mdash; losses within Shift Time (adds Schedule Loss and <strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime)</li>
-            <li style="display:list-item"><strong>Strategic</strong> &mdash; losses within Calendar Time (adds Non-working Time)</li>
-          </ul>
+          <p style="font-size:0.875rem;color:#7A7A7A;line-height:1.7;margin-top:1rem">
+            <strong>Machine Efficiency vs OOE:</strong> Machine Efficiency and OOE are the same formula (PT / Shift Time) &mdash; the name changes with strategic intent. Use &ldquo;Machine Efficiency&rdquo; in a sales-constrained context; &ldquo;OOE&rdquo; in a production-constrained context.
+          </p>
+
+          <p style="font-size:0.875rem;color:#7A7A7A;line-height:1.7;margin-top:0.75rem">
+            For financial valuation of lost time (production-constrained vs sales-constrained), see the <a href="maji-time-hierarchy.html" style="color:var(--color-primary)">Time Hierarchy</a> page.
+          </p>
         </div>
 
         <!-- 5. Diagnostic Quick Reference -->
         <div class="content-card reveal" data-delay="320">
           <h2>Diagnostic Quick Reference</h2>
 
-          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">Lost Time Slow Running Elevated?</h3>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">LTSR Elevated?</h3>
           <p>Two possible causes &mdash; the fix is different for each:</p>
           <ol style="font-size:0.9rem;color:#555;line-height:1.6;margin:0.5rem 0 1.25rem 0;padding-left:1.25rem">
-            <li><strong>True slow running</strong> &mdash; the line deliberately operates below bottleneck speed (e.g. operator reduces speed for quality reasons).</li>
-            <li><strong>Micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime but reduce the average Run Speed.</li>
+            <li><strong>True slow running</strong> &mdash; the line deliberately operates below BNS (e.g. operator reduces speed for quality reasons).</li>
+            <li><strong>Micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as UPDT but reduce the average Run Speed.</li>
           </ol>
-          <p style="font-size:0.85rem;color:#7A7A7A">Diagnose with a lineside time study: observe whether the line speed setting matches bottleneck speed, or whether frequent micro-stops are dragging the average down.</p>
+          <p style="font-size:0.85rem;color:#7A7A7A">Diagnose with a lineside time study: observe whether the line speed setting matches BNS, or whether frequent micro-stops are dragging the average down.</p>
 
-          <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">Unplanned Downtime Prioritisation</h3>
-          <p>Use a frequency&ndash;duration matrix to prioritise downtime events:</p>
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">UPDT Prioritisation</h3>
+          <p>Use a frequency&ndash;duration matrix to prioritise UPDT events:</p>
           <div class="table-wrapper" style="margin-top:0.75rem">
             <table>
               <thead>
@@ -245,7 +302,7 @@
               <tbody>
                 <tr>
                   <td><strong>High Frequency</strong></td>
-                  <td style="background:#f0fdf4"><strong>Highest value</strong> &mdash; often missed, frequent short stops that aggregate to large losses</td>
+                  <td style="background:#f0fdf4"><strong>Highest value</strong> &mdash; often missed; frequent short stops that aggregate to large losses</td>
                   <td>Major chronic issue &mdash; visible and usually already being addressed</td>
                 </tr>
                 <tr>
@@ -258,32 +315,10 @@
           </div>
 
           <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">MECE Verification</h3>
-          <p>Actual Operating Time must equal Potential Time + <strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning + <strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste + <strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime. If it does not balance, a loss category has been mis-allocated. Check Run Speed and <strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed inputs first.</p>
+          <p>Operating Time (Actual) must equal PT + LTSR + LTMW + UPDT. If it does not balance, a loss category has been mis-allocated. Check Run Speed and BNS inputs first.</p>
         </div>
 
-        <!-- 6. Glossary -->
-        <div class="content-card reveal" data-delay="400">
-          <h2>Glossary</h2>
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>Abbreviation</th><th>Full Name</th></tr></thead>
-              <tbody>
-                <tr><td><strong>BNS</strong></td><td><strong>B</strong>ottle<strong>n</strong>eck <strong>S</strong>peed &mdash; maximum demonstrated speed of the constraining process step</td></tr>
-                <tr><td><strong>LTMW</strong></td><td><strong>L</strong>ost <strong>T</strong>ime <strong>M</strong>aking <strong>W</strong>aste &mdash; time equivalent of producing defective output</td></tr>
-                <tr><td><strong>LTSR</strong></td><td><strong>L</strong>ost <strong>T</strong>ime <strong>S</strong>low <strong>R</strong>unning &mdash; time equivalent of running below bottleneck speed</td></tr>
-                <tr><td><strong>OEE</strong></td><td><strong>O</strong>verall <strong>E</strong>quipment <strong>E</strong>ffectiveness &mdash; Availability &times; Performance &times; Quality (industry-standard multiplicative form)</td></tr>
-                <tr><td><strong>OOE</strong></td><td><strong>O</strong>verall <strong>O</strong>perations <strong>E</strong>ffectiveness &mdash; Potential Time / Shift Time (production context)</td></tr>
-                <tr><td><strong>PDT</strong></td><td><strong>P</strong>lanned <strong>D</strong>own<strong>t</strong>ime &mdash; scheduled maintenance, changeovers, planned cleaning</td></tr>
-                <tr><td><strong>PPT</strong></td><td><strong>P</strong>lanned <strong>P</strong>roduction <strong>T</strong>ime &mdash; Shift Time minus Schedule Loss</td></tr>
-                <tr><td><strong>TEEP</strong></td><td><strong>T</strong>otal <strong>E</strong>ffective <strong>E</strong>quipment <strong>P</strong>erformance &mdash; Potential Time / Calendar Time</td></tr>
-                <tr><td><strong>UMP</strong></td><td><strong>U</strong>nit <strong>M</strong>arginal <strong>P</strong>rofit &mdash; revenue minus truly variable costs per unit</td></tr>
-                <tr><td><strong>UPDT</strong></td><td><strong>U</strong>n<strong>p</strong>lanned <strong>D</strong>own<strong>t</strong>ime &mdash; breakdowns, stoppages, material/labour waiting</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- 7. CTA -->
+        <!-- 6. CTA -->
         <div style="text-align: center; padding: 3rem 0;">
           <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">See what your lost time is costing you</h2>
           <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
@@ -348,7 +383,7 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <p class="footer__copyright">© 2025 majaco. All rights reserved.</p>
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
         <nav class="footer__legal">
           <a href="privacy-policy.html">Privacy Policy</a>
           <a href="#">Modern Slavery Statement</a>
@@ -358,7 +393,7 @@
     </div>
   </footer>
 
-  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <button class="scroll-top" aria-label="Scroll to top">&uarr;</button>
   <script src="js/main.js"></script>
 </body>
 </html>
