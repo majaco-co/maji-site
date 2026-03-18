@@ -206,6 +206,10 @@
   .framework-footer .label { font-weight: 500; color: var(--text-primary); }
 
   .kpi-card { margin-bottom: 0; }
+
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
 </style>
 </head>
 <body>
@@ -528,6 +532,7 @@
       <span>Data Sources</span>
     </div>
 
+    <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Reference &amp; Master Data</div>
     <div class="card source-card src-accent-stone" id="src-unit-conv" data-feeds="machine-eff,plan-attain,kg-lh-plan,kg-lh-fin,labour-cost,yield,muv,pnl-bridge" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
@@ -546,6 +551,7 @@
       </div>
     </div>
 
+    <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Transactional Data</div>
     <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield,muv" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
@@ -676,6 +682,7 @@
       </div>
     </div>
 
+    <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Standards &amp; Targets</div>
     <div class="card source-card src-accent-teal" id="src-planning" data-feeds="kg-lh-plan,plan-rate,co-rate" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
@@ -739,6 +746,9 @@
         <span class="tag">SKU</span>
         <span class="tag">Shift</span>
         <span class="tag">Area</span>
+        <span class="tag">Batch/Lot</span>
+        <span class="tag">Individual</span>
+        <span class="tag">Cost Centre</span>
       </div>
     </div>
 
@@ -757,6 +767,49 @@
     </div>
 
     <div class="kpi-list">
+        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Financial Summary</div>
+
+        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone,src-unit-conv" data-linked-kpis="kpi-muv,kpi-labour-cost,kpi-yield,kpi-machine-eff" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Production P&amp;L Bridge</h3>
+              <div class="subtitle">Variance waterfall from budgeted margin to actual margin — connects all operational metrics to financial outcome</div>
+              <div class="formula">Actual Margin = Budget Margin ± Volume ± Mix ± MUV ± Labour ± Yield Recovery ± Overhead</div>
+              <div class="loss-bar">
+                <div class="loss-segment" style="flex:2.0; background:#006458;">Budget</div>
+                <div class="loss-segment" style="flex:0.8; background:#3B82F6;">Vol</div>
+                <div class="loss-segment" style="flex:0.6; background:#7C3AED;">Mix</div>
+                <div class="loss-segment" style="flex:0.8; background:#06B6D4;">MUV</div>
+                <div class="loss-segment" style="flex:0.7; background:#8B5CF6;">Labour</div>
+                <div class="loss-segment" style="flex:0.6; background:#EC4899;">Yield</div>
+                <div class="loss-segment" style="flex:0.5; background:#64748B;">O/H</div>
+                <div class="loss-segment" style="flex:2.0; background:#006458;">Actual</div>
+              </div>
+              <div class="loss-label-row">
+                <div class="loss-label" style="flex:2.0;">Budget<br>Margin</div>
+                <div class="loss-label" style="flex:0.8;">Volume<br>Var</div>
+                <div class="loss-label" style="flex:0.6;">Mix<br>Var</div>
+                <div class="loss-label" style="flex:0.8;">Material<br>Usage</div>
+                <div class="loss-label" style="flex:0.7;">Labour<br>Var</div>
+                <div class="loss-label" style="flex:0.6;">Yield<br>Recovery</div>
+                <div class="loss-label" style="flex:0.5;">Overhead<br>Absorp</div>
+                <div class="loss-label" style="flex:2.0;">Actual<br>Margin</div>
+              </div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Volume variance: (actual vol − budget vol) × std margin per unit</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Mix variance: shift in SKU mix vs plan, valued at standard margins</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>MUV: material usage efficiency — links to MUV KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Labour variance: actual vs standard labour cost — links to £/kg Labour Cost KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Yield recovery: £/kg shortfall from downgrades — links to Yield KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption: machine efficiency impact on fixed cost recovery</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Machine Performance</div>
+
         <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
@@ -807,6 +860,8 @@
         </div>
 
 
+        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Labour Productivity</div>
+
         <div class="card kpi-card" id="kpi-kg-lh-plan" data-fed-by="src-works-orders,src-hours,src-planning,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
@@ -843,7 +898,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-labour-cost" data-fed-by="src-hours,src-absence,src-works-orders,src-commercial,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-labour-cost" data-fed-by="src-hours,src-absence,src-works-orders,src-commercial,src-unit-conv" data-linked-kpis="kpi-kg-lh-plan,kpi-kg-lh-fin" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -861,6 +916,8 @@
           </div>
         </div>
 
+
+        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Material &amp; Yield</div>
 
         <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial,src-intake,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
@@ -910,7 +967,7 @@
         </div>
 
 
-        <div class="card kpi-card" id="kpi-muv" data-fed-by="src-bom,src-intake,src-redzone,src-commercial,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-muv" data-fed-by="src-bom,src-intake,src-redzone,src-commercial,src-unit-conv" data-linked-kpis="kpi-yield" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -927,6 +984,8 @@
             </div>
           </div>
         </div>
+
+        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Standards Review</div>
 
         <div class="card kpi-card" id="kpi-plan-rate" data-fed-by="src-redzone,src-planning,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
@@ -989,45 +1048,6 @@
                 <div class="detail-row"><span class="arrow">›</span><span>Ranked by magnitude of deviation from standard</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Identifies transitions for SMED targeting</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Sequencing optimisation opportunity</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
-          <div class="card-head">
-            <div class="kpi-icon">◆</div>
-            <div style="width:100%;">
-              <h3>Production P&L Bridge</h3>
-              <div class="subtitle">Variance waterfall from budgeted margin to actual margin — connects all operational metrics to financial outcome</div>
-              <div class="formula">Actual Margin = Budget Margin ± Volume ± Mix ± MUV ± Labour ± Yield Recovery ± Overhead</div>
-              <div class="loss-bar">
-                <div class="loss-segment" style="flex:2.0; background:#006458;">Budget</div>
-                <div class="loss-segment" style="flex:0.8; background:#3B82F6;">Vol</div>
-                <div class="loss-segment" style="flex:0.6; background:#7C3AED;">Mix</div>
-                <div class="loss-segment" style="flex:0.8; background:#06B6D4;">MUV</div>
-                <div class="loss-segment" style="flex:0.7; background:#8B5CF6;">Labour</div>
-                <div class="loss-segment" style="flex:0.6; background:#EC4899;">Yield</div>
-                <div class="loss-segment" style="flex:0.5; background:#64748B;">O/H</div>
-                <div class="loss-segment" style="flex:2.0; background:#006458;">Actual</div>
-              </div>
-              <div class="loss-label-row">
-                <div class="loss-label" style="flex:2.0;">Budget<br>Margin</div>
-                <div class="loss-label" style="flex:0.8;">Volume<br>Var</div>
-                <div class="loss-label" style="flex:0.6;">Mix<br>Var</div>
-                <div class="loss-label" style="flex:0.8;">Material<br>Usage</div>
-                <div class="loss-label" style="flex:0.7;">Labour<br>Var</div>
-                <div class="loss-label" style="flex:0.6;">Yield<br>Recovery</div>
-                <div class="loss-label" style="flex:0.5;">Overhead<br>Absorp</div>
-                <div class="loss-label" style="flex:2.0;">Actual<br>Margin</div>
-              </div>
-              <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span>Volume variance: (actual vol − budget vol) × std margin per unit</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Mix variance: shift in SKU mix vs plan, valued at standard margins</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>MUV: material usage efficiency — links to MUV KPI</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Labour variance: actual vs standard labour cost — links to £/kg Labour Cost KPI</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Yield recovery: £/kg shortfall from downgrades — links to Yield KPI</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption: machine efficiency impact on fixed cost recovery</span></div>
               </div>
             </div>
           </div>
@@ -1101,6 +1121,143 @@
     <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
       Shift Time = Potential Time + LTSR + LTMW + UPDT + PDT + Schedule Loss<br>
       <span style="color:var(--text-muted);">Machine Efficiency = Potential Time ÷ Shift Time = Operating Efficiency × Planning Efficiency</span>
+    </div>
+  </div>
+</div>
+
+<!-- Labour Hierarchy Section -->
+<div style="max-width:1280px; margin:48px auto 0;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+    <div style="width:32px; height:4px; border-radius:2px; background:var(--pine);"></div>
+    <span style="color:var(--pine); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">Definitions</span>
+  </div>
+  <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Labour Hierarchy Decomposition</h2>
+  <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
+    Every paid hour is classified into exactly one category. The hierarchy below shows how paid hours narrow to productive hours, and where each labour loss sits.
+  </p>
+  <div style="margin-bottom:24px;">
+    <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="flex:2.0; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Productive Hours</div>
+      <div style="flex:0.6; background:#F97316; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Idle/Overman</div>
+      <div style="flex:1.2; background:#8B5CF6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Indirect</div>
+      <div style="flex:0.8; background:#10B981; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Absence</div>
+      <div style="flex:0.4; background:#EAB308; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Agency Prem</div>
+    </div>
+    <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
+      <div style="flex:2.0; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
+      <div style="flex:1.8; text-align:center; color:#8B5CF6;"><div style="border-top:1px solid rgba(139,92,246,0.3); margin:0 4px; padding-top:3px;">Attended but not productive</div></div>
+      <div style="flex:1.2; text-align:center; color:#10B981;"><div style="border-top:1px solid rgba(16,185,129,0.3); margin:0 4px; padding-top:3px;">Cost without attendance</div></div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Paid Hours → Attended Hours</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Absence</strong> = Paid hours not at work (holiday, sick, no-show, training)<br>
+        <strong style="color:var(--text-primary);">Agency Premium</strong> = Additional cost of agency hours vs permanent rate<br>
+        <span style="color:var(--text-muted); font-style:italic;">Attended Hours = Paid Hours − Absence</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Attended Hours → Direct Hours</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Indirect Time</strong> = Supervision, QA, cleaning, maintenance support, line setup<br>
+        <strong style="color:var(--text-primary);">Direct Hours</strong> = Attended Hours − Indirect Hours<br>
+        <span style="color:var(--text-muted); font-style:italic;">Direct hours are the denominator for Kg/DH financial metric</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Direct Hours → On-Line Hours</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Area Allocation</strong> = Direct hours assigned to specific lines vs unallocated<br>
+        <strong style="color:var(--text-primary);">On-Line Hours</strong> = Direct hours with a line assignment<br>
+        <span style="color:var(--text-muted); font-style:italic;">On-line hours enable line-level labour productivity analysis</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">On-Line Hours → Productive Hours</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Idle / Waiting</strong> = On-line but no product running (starved, blocked, waiting for materials)<br>
+        <strong style="color:var(--text-primary);">Overmanning</strong> = More crew than standard requires for the SKU running<br>
+        <span style="color:var(--text-muted); font-style:italic;">Productive Hours = standard crew × operating time</span>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
+    <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
+    <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
+      Paid Hours = Productive Hours + Idle/Overmanning + Indirect + Absence<br>
+      £/kg Labour = (Paid Hours × Blended Rate) ÷ Actual kg<br>
+      <span style="color:var(--text-muted);">Labour Variance = Actual £/kg Labour − Standard £/kg Labour</span>
+    </div>
+  </div>
+</div>
+
+<!-- Yield Hierarchy Section -->
+<div style="max-width:1280px; margin:48px auto 0;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+    <div style="width:32px; height:4px; border-radius:2px; background:var(--pine);"></div>
+    <span style="color:var(--pine); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">Definitions</span>
+  </div>
+  <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Yield Hierarchy Decomposition</h2>
+  <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
+    Every kilogram of raw material input is accounted for. The hierarchy below shows how input material narrows to saleable output, and where each yield loss sits.
+  </p>
+  <div style="margin-bottom:24px;">
+    <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="flex:2.0; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Saleable Output</div>
+      <div style="flex:0.6; background:#EC4899; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Giveaway</div>
+      <div style="flex:0.8; background:#DC2626; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Gripper End</div>
+      <div style="flex:0.5; background:#EAB308; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Downgrade</div>
+      <div style="flex:0.3; background:#64748B; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Waste</div>
+    </div>
+    <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
+      <div style="flex:2.0; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Sold at target £/kg</div></div>
+      <div style="flex:1.4; text-align:center; color:#DC2626;"><div style="border-top:1px solid rgba(220,38,38,0.3); margin:0 4px; padding-top:3px;">Material conversion losses</div></div>
+      <div style="flex:0.8; text-align:center; color:#EAB308;"><div style="border-top:1px solid rgba(234,179,8,0.3); margin:0 4px; padding-top:3px;">Quality losses</div></div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Raw Material Input → Sliced Output</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Gripper End / Trim</strong> = Material lost at the slicer — the end pieces that can't be portioned<br>
+        <strong style="color:var(--text-primary);">Sliced Output</strong> = Input kg − Gripper End (kg)<br>
+        <span style="color:var(--text-muted); font-style:italic;">Gripper end % varies by back/block size and slicer setup</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Sliced Output → Packed Output</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Giveaway</strong> = Actual pack weight − target pack weight (per pack, summed across production)<br>
+        <strong style="color:var(--text-primary);">Packed Output</strong> = Sliced Output − Giveaway (kg)<br>
+        <span style="color:var(--text-muted); font-style:italic;">Must comply with Three Packer's Rules</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Packed Output → Saleable Output</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Misshapes</strong> = Product not meeting visual specification — sold at reduced £/kg or disposed<br>
+        <strong style="color:var(--text-primary);">Non-standard / Downgrades</strong> = Product meeting food safety but not premium spec — sold at lower £/kg<br>
+        <span style="color:var(--text-muted); font-style:italic;">Saleable Output = Packed Output − Downgrades − Waste</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">£/kg Recovery</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Target £/kg</strong> = Weighted average selling price at standard mix<br>
+        <strong style="color:var(--text-primary);">Actual £/kg</strong> = Weighted average accounting for downgrades at lower prices<br>
+        <strong style="color:var(--text-primary);">Recovery Gap</strong> = Target £/kg − Actual £/kg<br>
+        <span style="color:var(--text-muted); font-style:italic;">Annual Impact = Recovery Gap × Total kg</span>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
+    <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
+    <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
+      Overall Yield % = Saleable Output (kg) ÷ Raw Material Input (kg)<br>
+      £ Yield Loss = (1 − Overall Yield %) × Input kg × Raw Material £/kg<br>
+      <span style="color:var(--text-muted);">MUV captures the £ impact; Yield % captures the operational efficiency</span>
     </div>
   </div>
 </div>
@@ -1259,13 +1416,36 @@
   function applyKPIHighlight(el) {
     const fedBy = el.dataset.fedBy.split(',');
     const kpiKey = el.id.replace('kpi-', '');
-    document.querySelectorAll('.kpi-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
+    const linkedKpis = el.dataset.linkedKpis ? el.dataset.linkedKpis.split(',') : [];
+    document.querySelectorAll('.kpi-card').forEach(c => {
+      if (c === el) return;
+      if (linkedKpis.includes(c.id)) { c.classList.add('active'); }
+      else { c.classList.add('dimmed'); }
+    });
     document.querySelectorAll('.source-card').forEach(c => {
       if (fedBy.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
     });
     dimCaptures(fedBy, kpiKey);
     const chips = getChipsForSources(fedBy, kpiKey);
     drawLines(fedBy, [el.id], chips);
+    // Draw dashed KPI-to-KPI links
+    if (linkedKpis.length) {
+      linkedKpis.forEach(lid => {
+        const linkedEl = document.getElementById(lid);
+        if (!linkedEl || linkedEl.offsetParent === null) return;
+        const from = getEdge(el, 'left');
+        const to = getEdge(linkedEl, 'left');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const cx = Math.min(from.x, to.x) - 30;
+        path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + cx + ',' + from.y + ' ' + cx + ',' + to.y + ' ' + to.x + ',' + to.y);
+        path.setAttribute('stroke', '#006458');
+        path.setAttribute('stroke-width', '1.5');
+        path.setAttribute('stroke-opacity', '0.5');
+        path.setAttribute('stroke-dasharray', '6 3');
+        path.setAttribute('fill', 'none');
+        connSvg.appendChild(path);
+      });
+    }
   }
 
   function applyCaptureHighlight(chip) {
