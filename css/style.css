@@ -1183,7 +1183,7 @@ textarea.form-control {
 }
 
 .content-card--wide .cascade-scroll {
-  overflow-x: visible;
+  overflow-x: auto;
 }
 
 .content-card h2 {
@@ -2467,21 +2467,21 @@ tbody tr:hover {
   display: grid;
   grid-template-columns: repeat(100, 1fr);
   grid-template-rows: repeat(7, auto);
-  gap: 15px;
-  min-width: 1600px;
-  padding: 20px;
+  gap: 8px;
+  min-width: 1100px;
+  padding: 12px;
 }
 
 /* ---- Block base ---- */
 .block {
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 100px;
+  min-height: 70px;
   position: relative;
   transition: all 0.3s ease;
 }
@@ -2539,29 +2539,29 @@ tbody tr:hover {
 
 /* ---- Block text elements ---- */
 .block-title {
-  font-size: 1em;
+  font-size: 0.82em;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .block-desc {
-  font-size: 0.75em;
+  font-size: 0.68em;
   opacity: 0.9;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .block-badge {
   display: inline-block;
-  padding: 3px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
-  font-size: 0.7em;
-  margin-top: 6px;
+  font-size: 0.62em;
+  margin-top: 4px;
   font-weight: 600;
 }
 
 .sub-list {
-  font-size: 0.7em;
-  margin-top: 8px;
+  font-size: 0.62em;
+  margin-top: 6px;
 }
 
 .sub-list div {
@@ -2680,17 +2680,9 @@ tbody tr:hover {
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1400px) {
-  .cascade-container {
-    transform: scale(0.8);
-    transform-origin: top left;
-  }
-}
-
 @media (max-width: 768px) {
   .cascade-container {
-    min-width: 100%;
-    transform: scale(0.6);
+    min-width: 900px;
   }
 }
 
