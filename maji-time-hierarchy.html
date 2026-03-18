@@ -67,15 +67,16 @@
         <div class="content-card reveal">
           <h2>The Problem with OEE</h2>
           <p>
-            Traditional OEE multiplies Availability &times; Performance &times; Quality into a single percentage. This has three problems:
+            Traditional OEE (Overall Equipment Effectiveness) multiplies Availability &times; Performance &times; Quality into a single percentage. This has three problems:
           </p>
           <ul>
             <li><strong>It obscures magnitude.</strong> A line at 65% OEE could have a 30% downtime problem and negligible quality losses, or moderate losses across all three. You cannot tell which from the number alone.</li>
             <li><strong>It double-counts.</strong> Speed losses on waste units are counted in both Performance and Quality. The multiplicative structure makes this unavoidable.</li>
             <li><strong>It cannot be valued in pounds.</strong> A percentage does not tell you what an improvement is worth. Time does &mdash; every lost hour has a financial value that depends on your constraint state.</li>
+            <li><strong>It cannot be summed across products.</strong> You cannot add OEE percentages from different SKU runs to get a meaningful total. Time-based measurement can: sum Potential Time and Actual Operating Time across any number of products (provided each has a SKU-specific bottleneck speed) and the ratio remains valid.</li>
           </ul>
           <p>
-            Time-based additive decomposition expresses every loss as a duration. Losses are directly comparable, mutually exclusive, and convertible to financial impact.
+            Time-based additive decomposition expresses every loss as a duration. Losses are directly comparable, mutually exclusive, summable across products, and convertible to financial impact.
           </p>
         </div>
 
@@ -124,7 +125,7 @@
               <div class="block subtracted row-hidden" style="grid-column:1/span 15;grid-row:2/span 6" data-row="2" data-component="non-working">
                 <div class="block-title">Non-working Time</div>
                 <div class="block-badge">SUBTRACTED</div>
-                <div class="block-desc">Subtracted from Calendar Time to define Shift Time, but remains a loss when measuring TEEP (in production-constrained environments only)</div>
+                <div class="block-desc">Subtracted from Calendar Time to define Shift Time, but remains a loss when measuring Total Effective Equipment Performance (in production-constrained environments only)</div>
                 <div class="sub-list">
                   <div>&bull; Weekends</div>
                   <div>&bull; Night shifts (if not operating)</div>
@@ -143,7 +144,7 @@
               <div class="block subtracted row-hidden" style="grid-column:16/span 15;grid-row:3/span 5" data-row="3" data-component="schedule-loss">
                 <div class="block-title">Schedule Loss</div>
                 <div class="block-badge">SUBTRACTED</div>
-                <div class="block-desc">Subtracted from Shift Time to define PPT, but remains a loss when measuring Machine Efficiency/OOE (equipment not producing)</div>
+                <div class="block-desc">Subtracted from Shift Time to define Planned Production Time, but remains a loss when measuring Machine Efficiency / Overall Operations Effectiveness (equipment not producing)</div>
                 <div class="sub-list">
                   <div>&bull; Paid breaks and meal periods</div>
                   <div>&bull; Scheduled maintenance windows during operational hours</div>
@@ -162,7 +163,7 @@
               <div class="block subtracted row-hidden" style="grid-column:31/span 14;grid-row:4/span 4" data-row="4" data-component="planned-dt">
                 <div class="block-title">Planned Downtime</div>
                 <div class="block-badge">SUBTRACTED</div>
-                <div class="block-desc">Subtracted from PPT to define Operating Time, but remains a loss when measuring OEE (equipment not producing)</div>
+                <div class="block-desc">Subtracted from Planned Production Time to define Operating Time, but remains a loss when measuring Overall Equipment Effectiveness (equipment not producing)</div>
                 <div class="sub-list">
                   <div>&bull; Changeovers</div>
                   <div>&bull; Planned maintenance</div>
@@ -186,9 +187,9 @@
 
               <!-- ROW 6-7: Unplanned Downtime (spans 2 rows) -->
               <div class="block subtracted row-hidden" style="grid-column:45/span 14;grid-row:6/span 2" data-row="6" data-component="updt">
-                <div class="block-title">Unplanned Downtime (UPDT)</div>
+                <div class="block-title">Unplanned Downtime</div>
                 <div class="block-badge">LOSS</div>
-                <div class="block-desc">Stops exceeding classification threshold, PDT overruns, Schedule Loss overruns</div>
+                <div class="block-desc">Stops exceeding classification threshold, Planned Downtime overruns, Schedule Loss overruns</div>
               </div>
 
               <!-- ROW 6: Up Time -->
@@ -200,14 +201,14 @@
 
               <!-- ROW 7: LTSR -->
               <div class="block loss row-hidden" style="grid-column:59/span 14;grid-row:7" data-row="7" data-component="ltsr">
-                <div class="block-title">Lost Time Slow Running (LTSR)</div>
+                <div class="block-title">Lost Time Slow Running</div>
                 <div class="block-badge">LOSS</div>
                 <div class="block-desc">Production below bottleneck speed &mdash; includes micro-stops and speed losses</div>
               </div>
 
               <!-- ROW 7: LTMW -->
               <div class="block loss row-hidden" style="grid-column:73/span 14;grid-row:7" data-row="7" data-component="ltmw">
-                <div class="block-title">Lost Time Making Waste (LTMW)</div>
+                <div class="block-title">Lost Time Making Waste</div>
                 <div class="block-badge">LOSS</div>
                 <div class="block-desc">Time spent producing defective output</div>
               </div>
@@ -241,19 +242,19 @@
                 <tr>
                   <td><strong>Operations Manager</strong></td>
                   <td>Machine Efficiency</td>
-                  <td>OOE</td>
+                  <td>Overall Operations Effectiveness</td>
                   <td><code>Potential Time / Shift Time</code></td>
                 </tr>
                 <tr>
                   <td><strong>Strategic Leadership</strong></td>
                   <td>Output per Labour Hour</td>
-                  <td>TEEP</td>
+                  <td>Total Effective Equipment Performance</td>
                   <td><code>Output / Labour Hrs</code> or <code>Potential Time / Calendar Time</code></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">Machine Efficiency and OOE are the same formula &mdash; the name changes with the strategic intent. If weekend working is not possible, use OOE instead of TEEP.</p>
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">Machine Efficiency and Overall Operations Effectiveness are the same formula &mdash; the name changes with the strategic intent. If weekend working is not possible, use Overall Operations Effectiveness instead of Total Effective Equipment Performance.</p>
         </div>
 
         <!-- 5. The metrics explained -->
@@ -265,20 +266,20 @@
               <span><strong>Operating Efficiency</strong> = Potential Time / Operating Time (Actual)</span>
               <button class="show-me-btn" onclick="highlightMetric(['potential'],['run'])">Show Me</button>
             </p>
-            <p style="font-size:0.85rem;color:#555">Shop floor metric. Measures execution within the operational window &mdash; UPDT, LTSR, and LTMW are in scope. Schedule Loss and PDT are not (planning decisions). World-class: &ge;85%.</p>
+            <p style="font-size:0.85rem;color:#555">Shop floor metric. Measures execution within the operational window &mdash; Unplanned Downtime, Lost Time Slow Running, and Lost Time Making Waste are in scope. Schedule Loss and Planned Downtime are not (planning decisions). World-class: &ge;85%.</p>
           </div>
 
           <div style="margin-bottom:1.5rem">
             <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
-              <span><strong>Machine Efficiency / OOE</strong> = Potential Time / Shift Time</span>
+              <span><strong>Machine Efficiency / Overall Operations Effectiveness</strong> = Potential Time / Shift Time</span>
               <button class="show-me-btn" onclick="highlightMetric(['potential'],['shift'])">Show Me</button>
             </p>
-            <p style="font-size:0.85rem;color:#555">Management metric. Adds Schedule Loss and PDT to the denominator &mdash; holds the operation accountable for how it uses all available shift hours, not just the time allocated to production.</p>
+            <p style="font-size:0.85rem;color:#555">Management metric. Adds Schedule Loss and Planned Downtime to the denominator &mdash; holds the operation accountable for how it uses all available shift hours, not just the time allocated to production.</p>
           </div>
 
           <div style="margin-bottom:1.5rem">
             <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center">
-              <span><strong>TEEP</strong> = Potential Time / Calendar Time</span>
+              <span><strong>Total Effective Equipment Performance</strong> = Potential Time / Calendar Time</span>
               <button class="show-me-btn" onclick="highlightMetric(['potential'],['calendar'])">Show Me</button>
             </p>
             <p style="font-size:0.85rem;color:#555">Strategic metric for production-constrained environments. Measures total asset utilisation including non-working time. Answers: "how much of the factory's theoretical capacity are we using?"</p>
@@ -328,12 +329,12 @@
         <div class="content-card reveal" data-delay="280">
           <h2>Key Formulas</h2>
           <div class="formula"><strong>Potential Time</strong> = Good Output / Bottleneck Speed</div>
-          <div class="formula"><strong>Up Time</strong> = Potential Time + LTSR + LTMW</div>
-          <div class="formula"><strong>Operating Time (Actual)</strong> = Up Time + UPDT</div>
-          <div class="formula"><strong>LTSR</strong> = Good Output / Run Speed &minus; Good Output / Bottleneck Speed</div>
-          <div class="formula"><strong>LTMW</strong> = Waste Output / Run Speed</div>
+          <div class="formula"><strong>Up Time</strong> = Potential Time + Lost Time Slow Running + Lost Time Making Waste</div>
+          <div class="formula"><strong>Operating Time (Actual)</strong> = Up Time + Unplanned Downtime</div>
+          <div class="formula"><strong>Lost Time Slow Running</strong> = Good Output / Run Speed &minus; Good Output / Bottleneck Speed</div>
+          <div class="formula"><strong>Lost Time Making Waste</strong> = Waste Output / Run Speed</div>
           <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
-          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + LTSR + LTMW + UPDT (must balance)</div>
+          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + Lost Time Slow Running + Lost Time Making Waste + Unplanned Downtime (must balance)</div>
         </div>
 
         <!-- CTA -->
