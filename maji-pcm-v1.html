@@ -211,10 +211,26 @@
       transform: translateY(0);
     }
 
+    /* Running pulse — green glow */
+    @keyframes ba-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,100,88,0.0); }
+      50% { box-shadow: 0 0 12px 3px rgba(0,100,88,0.35); }
+    }
+    .ba__machine--running {
+      animation: ba-pulse 1.5s ease-in-out infinite;
+    }
+
+    /* Speed-matched state — slightly dimmer to show throttled */
+    .ba__machine--matched {
+      animation: ba-pulse 2.2s ease-in-out infinite;
+      opacity: 0.85;
+    }
+
     /* Machine disruption states — toggled by JS */
     .ba__machine--stopped {
       background: #c0392b !important;
       box-shadow: 0 0 16px rgba(192,57,43,0.4);
+      animation: none;
     }
     .ba__machine--stopped .ba__machine-status {
       color: #c0392b;
@@ -357,7 +373,7 @@
               <div class="ba__machine ba__machine--up" id="baMachUp">
                 <span class="ba__machine-icon" aria-hidden="true">⚙</span>
                 <span class="ba__machine-label">Mixing</span>
-                <span class="ba__machine-status">100 u/hr</span>
+                <span class="ba__machine-status" id="baStatUp">100 u/hr</span>
               </div>
               <div class="ba__flow" id="baFlowA" aria-hidden="true">→</div>
 
@@ -376,7 +392,7 @@
               <div class="ba__machine ba__machine--constraint" id="baMachCon">
                 <span class="ba__machine-icon" aria-hidden="true">⚙</span>
                 <span class="ba__machine-label">Forming</span>
-                <span class="ba__machine-status">80 u/hr</span>
+                <span class="ba__machine-status" id="baStatCon">80 u/hr</span>
               </div>
               <div class="ba__flow" id="baFlowC" aria-hidden="true">→</div>
 
@@ -395,7 +411,7 @@
               <div class="ba__machine ba__machine--down" id="baMachDn">
                 <span class="ba__machine-icon" aria-hidden="true">⚙</span>
                 <span class="ba__machine-label">Packing</span>
-                <span class="ba__machine-status">90 u/hr</span>
+                <span class="ba__machine-status" id="baStatDn">90 u/hr</span>
               </div>
             </div>
 
@@ -636,10 +652,13 @@
     var root = document.getElementById('bufferAnim');
     if (!root) return;
 
-    // DOM refs — machines
+    // DOM refs — machines + status labels
     var machUp  = document.getElementById('baMachUp');
     var machCon = document.getElementById('baMachCon');
     var machDn  = document.getElementById('baMachDn');
+    var statUp  = document.getElementById('baStatUp');
+    var statCon = document.getElementById('baStatCon');
+    var statDn  = document.getElementById('baStatDn');
 
     // DOM refs — flows
     var flowA = document.getElementById('baFlowA');
@@ -709,8 +728,11 @@
       }
     }
 
-    function setMachineStopped(el, stopped) {
-      el.classList.toggle('ba__machine--stopped', stopped);
+    // Machine state helpers
+    function setMachineState(el, state) {
+      // state: 'running', 'matched', 'stopped'
+      el.classList.remove('ba__machine--running', 'ba__machine--matched', 'ba__machine--stopped');
+      if (state) el.classList.add('ba__machine--' + state);
     }
 
     function setFlowDim(el, dim) {
@@ -745,10 +767,7 @@
 
       var upBuf, dnBuf;
 
-      // Default: all machines running, all flows visible
-      setMachineStopped(machUp, false);
-      setMachineStopped(machCon, false);
-      setMachineStopped(machDn, false);
+      // Default: all flows visible
       setFlowDim(flowA, false);
       setFlowDim(flowB, false);
       setFlowDim(flowC, false);
@@ -756,6 +775,24 @@
 
       switch (phase) {
         case 0: // Normal — buffers settle to targets
+          // Upstream runs fast while buffer below target, then speed-matches
+          if (t < 0.7) {
+            setMachineState(machUp, 'running');
+            statUp.textContent = '100 u/hr';
+          } else {
+            setMachineState(machUp, 'matched');
+            statUp.textContent = '80 u/hr';
+          }
+          setMachineState(machCon, 'running');
+          // Downstream drains buffer then speed-matches
+          if (t < 0.5) {
+            setMachineState(machDn, 'running');
+            statDn.textContent = '90 u/hr';
+          } else {
+            setMachineState(machDn, 'matched');
+            statDn.textContent = '80 u/hr';
+          }
+          statCon.textContent = '80 u/hr';
           upBuf = 20 + t * (UP_BUF_TARGET - 20); // ramp 20→40
           dnBuf = 20 - t * (20 - DN_BUF_TARGET);  // drain 20→10
           highlightPhase(0);
@@ -763,23 +800,39 @@
           break;
 
         case 1: // Upstream stops — upstream buffer depletes
-          setMachineStopped(machUp, true);
+          setMachineState(machUp, 'stopped');
+          statUp.textContent = 'STOPPED';
           setFlowDim(flowA, true);
+          setMachineState(machCon, 'running');
+          statCon.textContent = '80 u/hr';
+          setMachineState(machDn, 'matched');
+          statDn.textContent = '80 u/hr';
           upBuf = UP_BUF_TARGET * (1 - t); // 40→0
           dnBuf = DN_BUF_TARGET;
           highlightPhase(1);
           showAnnotation('Upstream stops \u2014 buffer feeds the constraint \u2192 no lost throughput');
           break;
 
-        case 2: // Recovery 1 — upstream restarts, buffer refills
+        case 2: // Recovery 1 — upstream restarts at full speed, buffer refills
+          setMachineState(machUp, 'running');
+          statUp.textContent = '100 u/hr';
+          setMachineState(machCon, 'running');
+          statCon.textContent = '80 u/hr';
+          setMachineState(machDn, 'matched');
+          statDn.textContent = '80 u/hr';
           upBuf = t * UP_BUF_TARGET; // 0→40
           dnBuf = DN_BUF_TARGET;
           highlightPhase(2);
           hideAnnotation();
           break;
 
-        case 3: // Downstream stops — downstream buffer fills up
-          setMachineStopped(machDn, true);
+        case 3: // Downstream stops — downstream buffer fills, upstream speed-matches
+          setMachineState(machUp, 'matched');
+          statUp.textContent = '80 u/hr';
+          setMachineState(machCon, 'running');
+          statCon.textContent = '80 u/hr';
+          setMachineState(machDn, 'stopped');
+          statDn.textContent = 'STOPPED';
           setFlowDim(flowD, true);
           upBuf = UP_BUF_TARGET;
           dnBuf = DN_BUF_TARGET + t * (DN_BUF_MAX - DN_BUF_TARGET - 5); // 10→45
@@ -787,16 +840,26 @@
           showAnnotation('Downstream stops \u2014 buffer absorbs output \u2192 constraint keeps running');
           break;
 
-        case 4: // Recovery 2 — downstream restarts, buffer empties
+        case 4: // Recovery 2 — downstream restarts at full speed, buffer empties
+          setMachineState(machUp, 'matched');
+          statUp.textContent = '80 u/hr';
+          setMachineState(machCon, 'running');
+          statCon.textContent = '80 u/hr';
+          setMachineState(machDn, 'running');
+          statDn.textContent = '90 u/hr';
           upBuf = UP_BUF_TARGET;
           dnBuf = 45 - t * (45 - DN_BUF_TARGET); // 45→10
           highlightPhase(4);
           hideAnnotation();
           break;
 
-        default: // Pause — hold at targets
-          upBuf = UP_BUF_TARGET;
-          dnBuf = DN_BUF_TARGET;
+        default: // Pause — hold at targets, all speed-matched
+          setMachineState(machUp, 'matched');
+          statUp.textContent = '80 u/hr';
+          setMachineState(machCon, 'running');
+          statCon.textContent = '80 u/hr';
+          setMachineState(machDn, 'matched');
+          statDn.textContent = '80 u/hr';
           highlightPhase(-1);
           hideAnnotation();
       }
