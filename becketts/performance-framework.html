@@ -61,6 +61,7 @@
   .src-accent-pink .dot { background: #EC4899; }
   .src-accent-teal .dot { background: var(--lime); }
   .src-accent-yellow .dot { background: #EAB308; }
+  .src-accent-stone .dot { background: #78716C; }
   .src-accent-emerald .dot { background: #10B981; }
   .src-accent-red .dot { background: #DC2626; }
   .src-accent-cyan .dot { background: #06B6D4; }
@@ -182,6 +183,7 @@
   .capture-chip[data-source*="src-hours"]        { border-left-color: #8B5CF6; }
   .capture-chip[data-source*="src-giveaway"]     { border-left-color: #EC4899; }
   .capture-chip[data-source*="src-planning"]     { border-left-color: #DAF11B; }
+  .capture-chip[data-source*="src-unit-conv"]     { border-left-color: #78716C; }
   .capture-chip[data-source*="src-absence"]      { border-left-color: #10B981; }
   .capture-chip[data-source*="src-intake"]       { border-left-color: #DC2626; }
   .capture-chip[data-source*="src-bom"]          { border-left-color: #06B6D4; }
@@ -273,6 +275,29 @@
     <div class="column-header">
       <div class="icon" style="font-size:10px;">⚡</div>
       <span>How It's Captured</span>
+    </div>
+
+    <!-- Unit Conversions -->
+    <div class="capture-group-label" style="color:#78716C;">Unit Conversions</div>
+    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Pack spec per SKU</span><br><span class="chip-desc">ERP / product master</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Case &amp; pallet config</span><br><span class="chip-desc">ERP packaging master</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Portions per pack</span><br><span class="chip-desc">Product spec (slicing config)</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Back/block weight</span><br><span class="chip-desc">Product spec / supplier data</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-unit-conv" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-weigh">⚖</span>
+      <span><span class="chip-label">Empty pack / tare weight</span><br><span class="chip-desc">Packaging spec / verified tare study</span></span>
     </div>
 
     <!-- OEE System -->
@@ -503,6 +528,24 @@
       <span>Data Sources</span>
     </div>
 
+    <div class="card source-card src-accent-stone" id="src-unit-conv" data-feeds="machine-eff,plan-attain,kg-lh-plan,kg-lh-fin,labour-cost,yield,muv,pnl-bridge" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Unit Conversion Master</h3>
+          <div class="subtitle">SKU-level conversions: packs, cases, pallets, kg — canonical units for every metric</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Pack weight (g nominal) and portions per pack by SKU</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Packs per case, cases per pallet by SKU</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Kg per pack / case / pallet (derived)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Back/block weight where applicable (pre-slicing unit)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Empty pack weight (tare) by SKU/pack format — for net weight derivation from checkweigher</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Canonical unit declared per KPI — ensures cross-source consistency</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield,muv" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
@@ -714,7 +757,7 @@
     </div>
 
     <div class="kpi-list">
-        <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -747,7 +790,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-plan-attain" data-fed-by="src-works-orders,src-redzone" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-plan-attain" data-fed-by="src-works-orders,src-redzone,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -764,7 +807,7 @@
         </div>
 
 
-        <div class="card kpi-card" id="kpi-kg-lh-plan" data-fed-by="src-works-orders,src-hours,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-kg-lh-plan" data-fed-by="src-works-orders,src-hours,src-planning,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -782,7 +825,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-kg-lh-fin" data-fed-by="src-works-orders,src-hours,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-kg-lh-fin" data-fed-by="src-works-orders,src-hours,src-commercial,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -800,7 +843,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-labour-cost" data-fed-by="src-hours,src-absence,src-works-orders,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-labour-cost" data-fed-by="src-hours,src-absence,src-works-orders,src-commercial,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -819,7 +862,7 @@
         </div>
 
 
-        <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial,src-intake" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial,src-intake,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -867,7 +910,7 @@
         </div>
 
 
-        <div class="card kpi-card" id="kpi-muv" data-fed-by="src-bom,src-intake,src-redzone,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-muv" data-fed-by="src-bom,src-intake,src-redzone,src-commercial,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
@@ -885,7 +928,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-plan-rate" data-fed-by="src-redzone,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-plan-rate" data-fed-by="src-redzone,src-planning,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -916,7 +959,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-co-rate" data-fed-by="src-redzone,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-co-rate" data-fed-by="src-redzone,src-planning,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -951,7 +994,7 @@
           </div>
         </div>
 
-        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone,src-unit-conv" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -1086,6 +1129,7 @@
   const centerDb = document.querySelector('.center-db');
 
   const sourceColors = {
+    'src-unit-conv': '#78716C',
     'src-redzone': '#F97316', 'src-works-orders': '#3B82F6', 'src-hours': '#8B5CF6',
     'src-giveaway': '#EC4899', 'src-planning': '#DAF11B', 'src-commercial': '#EAB308',
     'src-absence': '#10B981', 'src-intake': '#DC2626',
