@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Becketts Foods — Performance Framework Data Architecture</title>
+<script src="../js/auth-gate.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pine: #006458;
+    --lime: #DAF11B;
+    --dark-green: #001412;
+    --pine-light: #00897B;
+    --pine-muted: #004D44;
+    --lime-muted: rgba(218,241,27,0.6);
+    --text-primary: #E0F2F1;
+    --text-secondary: #80CBC4;
+    --text-muted: #4DB6AC;
+    --card-border: rgba(0,100,88,0.4);
+    --card-bg: rgba(0,100,88,0.08);
+    --card-bg-hover: rgba(0,100,88,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--dark-green);
+    color: var(--text-primary);
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    padding: 32px;
+  }
+
+  .header { max-width: 1280px; margin: 0 auto 36px; }
+  .header-tag { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .header-tag .bar { width: 32px; height: 4px; border-radius: 2px; background: var(--lime); }
+  .header-tag span { color: var(--lime); font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; }
+  .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+  .header p { font-size: 13px; color: var(--text-secondary); max-width: 700px; line-height: 1.7; font-weight: 300; }
+
+  .framework { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 340px auto 1fr; gap: 16px; align-items: start; }
+
+  .column-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 0 4px; }
+  .column-header .icon { width: 24px; height: 24px; border-radius: 6px; background: var(--pine-muted); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--lime); }
+  .column-header span { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; }
+
+  .card {
+    border-radius: 12px; padding: 14px; border: 1px solid var(--card-border);
+    background: var(--card-bg); cursor: default; transition: all 0.25s ease; margin-bottom: 8px;
+  }
+  .card:hover { background: var(--card-bg-hover); }
+  .card .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .card .card-head { display: flex; align-items: flex-start; gap: 10px; }
+  .card h3 { font-size: 12px; font-weight: 500; line-height: 1.3; color: #fff; }
+  .card .subtitle { font-size: 10px; margin-top: 3px; line-height: 1.5; color: var(--text-secondary); font-weight: 300; }
+  .card .details { margin-top: 8px; font-size: 10px; color: var(--text-muted); line-height: 1.6; display: none; font-weight: 300; }
+  .card:hover .details, .card.active .details { display: block; }
+  .card .detail-row { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 2px; }
+  .card .detail-row .arrow { color: var(--pine-light); margin-top: 1px; flex-shrink: 0; }
+
+  .src-accent-orange .dot { background: #F97316; }
+  .src-accent-blue .dot { background: #3B82F6; }
+  .src-accent-purple .dot { background: #8B5CF6; }
+  .src-accent-pink .dot { background: #EC4899; }
+  .src-accent-teal .dot { background: var(--lime); }
+  .src-accent-yellow .dot { background: #EAB308; }
+
+  /* KPI Carousel */
+  .kpi-carousel-wrapper { position: relative; }
+  .kpi-carousel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 0 4px; }
+  .kpi-carousel-header .left { display: flex; align-items: center; gap: 8px; }
+  .kpi-nav { display: flex; gap: 6px; }
+  .kpi-nav button {
+    width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--card-border);
+    background: var(--card-bg); color: var(--lime); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+    transition: all 0.2s;
+  }
+  .kpi-nav button:hover { background: var(--card-bg-hover); border-color: var(--pine-light); }
+  .kpi-nav button:disabled { opacity: 0.3; cursor: default; }
+
+  .kpi-carousel {
+    display: flex; gap: 12px; overflow-x: hidden;
+    scroll-behavior: smooth; scroll-snap-type: x mandatory;
+  }
+  .kpi-slide {
+    min-width: 100%; scroll-snap-align: start;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .kpi-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+  .kpi-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--pine-muted); border: 1px solid var(--card-border);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .kpi-dot.active { background: var(--lime); border-color: var(--lime); }
+
+  .kpi-icon {
+    width: 24px; height: 24px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; flex-shrink: 0;
+    background: rgba(218,241,27,0.15); color: var(--lime);
+  }
+  .formula {
+    margin-top: 8px; padding: 6px 10px; border-radius: 6px;
+    font-size: 10px; font-family: 'Roboto Mono', 'SF Mono', monospace;
+    background: rgba(218,241,27,0.08); color: var(--lime-muted);
+    border: 1px solid rgba(218,241,27,0.12);
+  }
+
+  .loss-bar { display: flex; gap: 2px; margin-top: 8px; border-radius: 5px; overflow: hidden; height: 20px; }
+  .loss-segment {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; font-weight: 700; letter-spacing: 0.3px; color: #fff;
+  }
+  .loss-label-row { display: flex; gap: 2px; margin-top: 3px; }
+  .loss-label { font-size: 7px; font-weight: 500; text-align: center; color: var(--text-muted); letter-spacing: 0.2px; line-height: 1.2; }
+
+  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 48px; }
+  .center-db {
+    position: relative; width: 100%; min-width: 220px;
+    border-radius: 16px; border: 2px solid var(--pine);
+    background: rgba(0,100,88,0.12);
+    padding: 22px 16px; text-align: center;
+    box-shadow: 0 0 50px rgba(0,100,88,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .center-db .glow {
+    position: absolute; inset: 0; border-radius: 16px;
+    background: radial-gradient(ellipse at center, rgba(0,100,88,0.2), transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .db-icon {
+    width: 44px; height: 44px; margin: 0 auto 10px;
+    border-radius: 10px; background: var(--pine-muted);
+    border: 1px solid rgba(0,100,88,0.5);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .center-db h2 { font-size: 14px; font-weight: 700; margin-bottom: 4px; position: relative; color: #fff; }
+  .center-db .db-sub { font-size: 10px; color: var(--text-secondary); position: relative; font-weight: 300; }
+  .tags { margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; position: relative; }
+  .tag {
+    padding: 2px 8px; border-radius: 20px; font-size: 9px; font-weight: 500;
+    background: var(--pine-muted); color: var(--lime-muted);
+    border: 1px solid rgba(0,100,88,0.5); letter-spacing: 0.3px;
+  }
+
+  .arrows-in, .arrows-out { display: flex; justify-content: center; padding: 6px 0; }
+
+  .decomp { margin-top: 6px; font-size: 9px; color: var(--text-muted); font-weight: 300; }
+  .decomp strong { color: var(--text-secondary); font-weight: 500; }
+
+  .card.active { background: var(--card-bg-hover); border-color: var(--pine-light); }
+  .card.dimmed { opacity: 0.25; }
+  .conn-line { transition: all 0.25s ease; }
+
+  .footer {
+    max-width: 1280px; margin: 36px auto 0; padding-top: 20px;
+    border-top: 1px solid rgba(0,100,88,0.25);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+    font-size: 11px; color: var(--text-muted); font-weight: 300;
+  }
+  .footer .label { font-weight: 500; color: var(--text-secondary); }
+
+  .kpi-card { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag"><div class="bar"></div><span>Becketts Foods</span></div>
+  <h1>Performance Framework — Data Architecture</h1>
+  <p>How data sources are aggregated into one central database to analyse performance and create key metrics. Use the arrows to browse KPI pages.</p>
+</div>
+
+<div class="framework">
+  <!-- LEFT: Data Sources -->
+  <div class="sources-col">
+    <div class="column-header">
+      <div class="icon">⬡</div>
+      <span>Data Sources</span>
+    </div>
+
+    <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>OEE System Data</h3>
+          <div class="subtitle">Run events, downtime events, good/waste output, changeover events</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Run events → Up Time, Operating Time</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Downtime events with reasons → UPDT</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Good + waste output → Run Speed, LTSR, LTMW</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Changeover events → actual C/O durations</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-blue" id="src-works-orders" data-feeds="machine-eff,kg-lh-plan,kg-lh-fin,plan-attain" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Works Order Data</h3>
+          <div class="subtitle">Production schedule, SKU volumes, line assignments</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Daily plan by line and SKU</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Planned volumes (kg / units)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Changeover schedule → PDT</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Shift Time and Schedule Loss</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-purple" id="src-hours" data-feeds="kg-lh-plan,kg-lh-fin" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Hours Data</h3>
+          <div class="subtitle">Labour hours by day, individual, area, direct/indirect</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Total hours per day, tagged to individuals</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Classified by area (line, department)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Direct vs indirect split</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-pink" id="src-giveaway" data-feeds="yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Yield Data</h3>
+          <div class="subtitle">Pack weights, portion weights, gripper end, misshapes, non-standard</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Pack weights from checkweighers (giveaway)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Portion weights from slicers (1–3 portions/pack)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Gripper end data (trim waste at slicer)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Misshapes % — product not meeting visual spec</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Non-standard % — downgrades sold at lower £/kg</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-teal" id="src-planning" data-feeds="kg-lh-plan,plan-rate,co-rate" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Planning Standards</h3>
+          <div class="subtitle">Planned direct + indirect man hours for daily volume</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Hours per volume by SKU/line</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Direct + indirect allowances</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Standard planning rates + C/O allowances</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-fin,yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Commercial Standards</h3>
+          <div class="subtitle">Direct hours + target £/kg by commercial model</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>'Should cost' for direct labour</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Target selling price per kg by SKU</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Benchmark for actual vs allowed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Database -->
+  <div class="center">
+    <div class="arrows-in">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <line class="conn-line" id="line-in-0" x1="0" y1="5"  x2="70" y2="35" stroke="#F97316" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+        <line class="conn-line" id="line-in-1" x1="0" y1="15" x2="70" y2="35" stroke="#3B82F6" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+        <line class="conn-line" id="line-in-2" x1="0" y1="28" x2="70" y2="35" stroke="#8B5CF6" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+        <line class="conn-line" id="line-in-3" x1="0" y1="42" x2="70" y2="35" stroke="#EC4899" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+        <line class="conn-line" id="line-in-4" x1="0" y1="55" x2="70" y2="35" stroke="#DAF11B" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+        <line class="conn-line" id="line-in-5" x1="0" y1="65" x2="70" y2="35" stroke="#EAB308" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+      </svg>
+    </div>
+
+    <div class="center-db">
+      <div class="glow"></div>
+      <div class="db-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <ellipse cx="12" cy="6" rx="8" ry="3" stroke="#DAF11B" stroke-width="1.5"/>
+          <path d="M4 6v6c0 1.657 3.582 3 8 3s8-1.343 8-3V6" stroke="#DAF11B" stroke-width="1.5"/>
+          <path d="M4 12v6c0 1.657 3.582 3 8 3s8-1.343 8-3v-6" stroke="#DAF11B" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h2>Central Performance Database</h2>
+      <div class="db-sub">All sources joined on date, line, SKU</div>
+      <div class="tags">
+        <span class="tag">Date</span>
+        <span class="tag">Line</span>
+        <span class="tag">SKU</span>
+        <span class="tag">Shift</span>
+        <span class="tag">Area</span>
+      </div>
+    </div>
+
+    <div class="arrows-out">
+      <svg width="70" height="30" viewBox="0 0 70 30">
+        <line class="conn-line" id="line-out-active" x1="0" y1="5" x2="70" y2="15" stroke="#DAF11B" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- RIGHT: KPI Carousel -->
+  <div class="kpi-carousel-wrapper">
+    <div class="kpi-carousel-header">
+      <div class="left">
+        <div class="icon" style="width:24px;height:24px;border-radius:6px;background:var(--pine-muted);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--lime);">◆</div>
+        <span style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;">KPIs</span>
+        <span id="kpi-page-label" style="font-size:10px; color:var(--text-secondary); font-weight:300; margin-left:8px;">1 / 4</span>
+      </div>
+      <div class="kpi-nav">
+        <button id="kpi-prev" onclick="moveCarousel(-1)">‹</button>
+        <button id="kpi-next" onclick="moveCarousel(1)">›</button>
+      </div>
+    </div>
+
+    <div class="kpi-carousel" id="kpiCarousel">
+
+      <!-- PAGE 1: Machine Efficiency + Plan Attainment -->
+      <div class="kpi-slide">
+        <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Machine Efficiency</h3>
+              <div class="subtitle">Potential Time ÷ Shift Time — management-level strategic metric</div>
+              <div class="formula">Machine Eff = Potential Time ÷ Shift Time</div>
+              <div class="decomp"><strong>Planning Eff</strong> = Actual Op. Time ÷ Shift Time &nbsp;|&nbsp; <strong>Operating Eff</strong> = Potential Time ÷ Actual Op. Time</div>
+              <div class="loss-bar">
+                <div class="loss-segment" style="flex:2.0; background:#1B5E20;">PT</div>
+                <div class="loss-segment" style="flex:0.8; background:#F97316;">LTSR</div>
+                <div class="loss-segment" style="flex:0.4; background:#EF4444;">LTMW</div>
+                <div class="loss-segment" style="flex:1.0; background:#8B5CF6;">UPDT</div>
+                <div class="loss-segment" style="flex:0.6; background:#3B82F6;">PDT</div>
+                <div class="loss-segment" style="flex:0.4; background:#64748B;">SL</div>
+              </div>
+              <div class="loss-label-row">
+                <div class="loss-label" style="flex:2.0;">Potential<br>Time</div>
+                <div class="loss-label" style="flex:0.8;">Slow<br>Running</div>
+                <div class="loss-label" style="flex:0.4;">Making<br>Waste</div>
+                <div class="loss-label" style="flex:1.0;">Unplanned<br>DT</div>
+                <div class="loss-label" style="flex:0.6;">Planned<br>DT</div>
+                <div class="loss-label" style="flex:0.4;">Sched<br>Loss</div>
+              </div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Additive: Shift Time = PT + LTSR + LTMW + UPDT + PDT + SL</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>All losses in hours — directly £-linkable</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Pareto of losses by reason, line, product</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-plan-attain" data-fed-by="src-works-orders,src-redzone" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Plan Attainment (SKU-level)</h3>
+              <div class="subtitle">Did we make what we said we'd make? Actual vs planned output per SKU per day</div>
+              <div class="formula">Plan Attainment % = Actual Good Output ÷ Planned Output (per SKU)</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Over- and under-production flagged</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Pareto: which SKUs consistently miss plan?</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Links to service level and schedule smoothing</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 2: Labour Productivity (Planning) + Labour Productivity (Financial) -->
+      <div class="kpi-slide">
+        <div class="card kpi-card" id="kpi-kg-lh-plan" data-fed-by="src-works-orders,src-hours,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Kg / Labour Hour vs Planning Standard (Weekly)</h3>
+              <div class="subtitle">Total productivity — uses direct + indirect hours vs planning standard hours</div>
+              <div class="formula">Actual kg ÷ (Direct + Indirect hrs) vs Planning Std kg/LH</div>
+              <div class="decomp"><strong>Planning Standards</strong> include both direct and indirect allowances — this is the operational planning view</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>X-axis: total planning standard hours (volume proxy, mix-adjusted)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Y-axis: actual kg per total labour hour (D+I)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Shows: do we get less productive as volume rises?</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Captures all labour including supervision, QA, etc.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-kg-lh-fin" data-fed-by="src-works-orders,src-hours,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Kg / Direct Hour vs Financial Standard (Weekly)</h3>
+              <div class="subtitle">Commercial productivity — uses direct hours only vs financial (commercial) standard hours</div>
+              <div class="formula">Actual kg ÷ Direct hrs only vs Financial Std kg/DH</div>
+              <div class="decomp"><strong>Financial Standards</strong> give direct hours only — this is the commercial / margin view</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>X-axis: financial standard direct hours (what the margin assumes)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Y-axis: actual kg per direct labour hour</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Gap = direct labour cost leakage vs commercial model</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Directly links to margin erosion from labour overspend</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 3: Yield -->
+      <div class="kpi-slide">
+        <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Yield</h3>
+              <div class="subtitle">Material efficiency — giveaway, gripper end, and £/kg recovery</div>
+
+              <!-- Sub-metrics -->
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; margin-top:10px;">
+                <div style="background:rgba(218,241,27,0.06); border:1px solid rgba(218,241,27,0.12); border-radius:6px; padding:7px 4px; text-align:center;">
+                  <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Giveaway</div>
+                  <div style="font-size:10px; font-weight:700; color:var(--lime);">g/pack &amp; %</div>
+                  <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Actual − target wt</div>
+                </div>
+                <div style="background:rgba(218,241,27,0.06); border:1px solid rgba(218,241,27,0.12); border-radius:6px; padding:7px 4px; text-align:center;">
+                  <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Gripper End</div>
+                  <div style="font-size:10px; font-weight:700; color:var(--lime);">% of input</div>
+                  <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Trim waste at slicer</div>
+                </div>
+                <div style="background:rgba(218,241,27,0.06); border:1px solid rgba(218,241,27,0.12); border-radius:6px; padding:7px 4px; text-align:center;">
+                  <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">£/kg Recovery</div>
+                  <div style="font-size:10px; font-weight:700; color:var(--lime);">£ vs target</div>
+                  <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Misshapes, sub-std</div>
+                </div>
+                <div style="background:rgba(218,241,27,0.06); border:1px solid rgba(218,241,27,0.12); border-radius:6px; padding:7px 4px; text-align:center;">
+                  <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Misshapes</div>
+                  <div style="font-size:10px; font-weight:700; color:var(--lime);">%</div>
+                  <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Not meeting spec</div>
+                </div>
+              </div>
+
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Giveaway:</strong> checkweigher pack weights vs target — both g/pack and giveaway % by SKU, line</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Gripper end:</strong> slicer trim waste — material lost at portion cutting</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>£/kg recovery:</strong> weighted avg selling price vs target — captures downgrade to misshapes, sub-standard, rework sold at lower £/kg</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Three Packer's Rules compliance on giveaway</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Pareto by SKU, line, shift</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 4: Planning Rate Review + Changeover Rate Review -->
+      <div class="kpi-slide">
+        <div class="card kpi-card" id="kpi-plan-rate" data-fed-by="src-redzone,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Planning Rate Review</h3>
+              <div class="subtitle">Are our planning rates right? Actual vs standard by SKU</div>
+              <div class="formula">Planning Rate = Good Output ÷ Actual Operating Time (per SKU)</div>
+              <!-- Tornado sorted: largest positive top, largest negative bottom -->
+              <div style="margin-top:10px; position:relative;">
+                <div style="font-size:8px; color:var(--text-muted); margin-bottom:4px; display:flex; justify-content:space-between;">
+                  <span>← Below standard</span><span>Above standard →</span>
+                </div>
+                <div style="position:relative; height:70px;">
+                  <div style="position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(218,241,27,0.3);"></div>
+                  <div style="position:absolute; top:1px; height:10px; width:100%;"><span style="position:absolute; left:50%; transform:translateX(2px); width:35%; height:100%; background:rgba(218,241,27,0.35); border-radius:0 3px 3px 0; display:flex; align-items:center; padding-left:4px; font-size:7px; color:var(--lime-muted);">SKU B +18%</span></div>
+                  <div style="position:absolute; top:13px; height:10px; width:100%;"><span style="position:absolute; left:50%; transform:translateX(2px); width:28%; height:100%; background:rgba(218,241,27,0.35); border-radius:0 3px 3px 0; display:flex; align-items:center; padding-left:4px; font-size:7px; color:var(--lime-muted);">SKU A +12%</span></div>
+                  <div style="position:absolute; top:25px; height:10px; width:100%;"><span style="position:absolute; left:50%; transform:translateX(2px); width:8%; height:100%; background:rgba(218,241,27,0.35); border-radius:0 3px 3px 0; display:flex; align-items:center; padding-left:4px; font-size:7px; color:var(--lime-muted);">SKU E +3%</span></div>
+                  <div style="position:absolute; top:38px; height:1px; width:80%; left:10%; background:rgba(255,255,255,0.05);"></div>
+                  <div style="position:absolute; top:42px; height:10px; width:100%;"><span style="position:absolute; right:50%; transform:translateX(-2px); width:22%; height:100%; background:rgba(239,68,68,0.3); border-radius:3px 0 0 3px; display:flex; align-items:center; justify-content:flex-end; padding-right:4px; font-size:7px; color:rgba(239,68,68,0.8);">SKU D −10%</span></div>
+                  <div style="position:absolute; top:54px; height:10px; width:100%;"><span style="position:absolute; right:50%; transform:translateX(-2px); width:35%; height:100%; background:rgba(239,68,68,0.3); border-radius:3px 0 0 3px; display:flex; align-items:center; justify-content:flex-end; padding-right:4px; font-size:7px; color:rgba(239,68,68,0.8);">SKU C −18%</span></div>
+                </div>
+              </div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Over-performing: standards too conservative → under-planning</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Under-performing: standards too optimistic → chronic misses</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Drives rate recalibration + improvement targeting</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-co-rate" data-fed-by="src-redzone,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Changeover Rate Review</h3>
+              <div class="subtitle">Are our changeover allowances right? Actual vs standard C/O duration by transition</div>
+              <div class="formula">Actual C/O time vs Standard C/O allowance (per SKU pair)</div>
+              <!-- Tornado for C/O -->
+              <div style="margin-top:10px; position:relative;">
+                <div style="font-size:8px; color:var(--text-muted); margin-bottom:4px; display:flex; justify-content:space-between;">
+                  <span>← Faster than std</span><span>Slower than std →</span>
+                </div>
+                <div style="position:relative; height:56px;">
+                  <div style="position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(218,241,27,0.3);"></div>
+                  <div style="position:absolute; top:1px; height:10px; width:100%;"><span style="position:absolute; right:50%; transform:translateX(-2px); width:40%; height:100%; background:rgba(218,241,27,0.35); border-radius:3px 0 0 3px; display:flex; align-items:center; justify-content:flex-end; padding-right:4px; font-size:7px; color:var(--lime-muted);">A→B −8min</span></div>
+                  <div style="position:absolute; top:13px; height:10px; width:100%;"><span style="position:absolute; right:50%; transform:translateX(-2px); width:20%; height:100%; background:rgba(218,241,27,0.35); border-radius:3px 0 0 3px; display:flex; align-items:center; justify-content:flex-end; padding-right:4px; font-size:7px; color:var(--lime-muted);">C→D −3min</span></div>
+                  <div style="position:absolute; top:26px; height:1px; width:80%; left:10%; background:rgba(255,255,255,0.05);"></div>
+                  <div style="position:absolute; top:30px; height:10px; width:100%;"><span style="position:absolute; left:50%; transform:translateX(2px); width:25%; height:100%; background:rgba(239,68,68,0.3); border-radius:0 3px 3px 0; display:flex; align-items:center; padding-left:4px; font-size:7px; color:rgba(239,68,68,0.8);">B→C +5min</span></div>
+                  <div style="position:absolute; top:42px; height:10px; width:100%;"><span style="position:absolute; left:50%; transform:translateX(2px); width:45%; height:100%; background:rgba(239,68,68,0.3); border-radius:0 3px 3px 0; display:flex; align-items:center; padding-left:4px; font-size:7px; color:rgba(239,68,68,0.8);">D→A +12min</span></div>
+                </div>
+              </div>
+              <!-- Feedback loop -->
+              <div style="margin-top:8px; padding:5px 8px; border-radius:5px; background:rgba(0,100,88,0.15); border:1px dashed rgba(0,100,88,0.4); font-size:9px; color:var(--text-secondary); display:flex; align-items:center; gap:5px;">
+                <span style="font-size:12px;">↩</span>
+                <span><strong style="color:#fff;">Feeds back into planning</strong> — C/O time is PDT, additive to operating time</span>
+              </div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Ranked by magnitude of deviation from standard</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Identifies transitions for SMED targeting</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Sequencing optimisation opportunity</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end carousel -->
+
+    <div class="kpi-dots" id="kpiDots">
+      <div class="kpi-dot active" onclick="goToSlide(0)"></div>
+      <div class="kpi-dot" onclick="goToSlide(1)"></div>
+      <div class="kpi-dot" onclick="goToSlide(2)"></div>
+      <div class="kpi-dot" onclick="goToSlide(3)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Time Hierarchy Section -->
+<div style="max-width:1280px; margin:48px auto 0;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+    <div style="width:32px; height:4px; border-radius:2px; background:var(--lime);"></div>
+    <span style="color:var(--lime); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">Definitions</span>
+  </div>
+  <h2 style="font-size:20px; font-weight:700; color:#fff; margin-bottom:6px;">Time Hierarchy Decomposition</h2>
+  <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
+    Every minute in the factory is classified into exactly one category. The hierarchy below shows how calendar time narrows to productive time, and where each loss category sits.
+  </p>
+  <div style="margin-bottom:24px;">
+    <div style="display:flex; gap:0; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.3);">
+      <div style="flex:1.5; background:#1a1a2e; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#64748B; border-right:1px solid rgba(255,255,255,0.05);">Non-working Time</div>
+      <div style="flex:0.5; background:#334155; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#94A3B8; border-right:1px solid rgba(255,255,255,0.05);">Schedule Loss</div>
+      <div style="flex:0.7; background:#1E3A5F; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#60A5FA; border-right:1px solid rgba(255,255,255,0.05);">PDT</div>
+      <div style="flex:1.0; background:#4C1D95; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#C4B5FD; border-right:1px solid rgba(255,255,255,0.05);">UPDT</div>
+      <div style="flex:0.8; background:#7C2D12; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#FDBA74; border-right:1px solid rgba(255,255,255,0.05);">LTSR</div>
+      <div style="flex:0.4; background:#7F1D1D; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#FCA5A5; border-right:1px solid rgba(255,255,255,0.05);">LTMW</div>
+      <div style="flex:2.5; background:var(--pine-muted); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--lime);">Potential Time ✓</div>
+    </div>
+    <div style="display:flex; gap:0; margin-top:6px; font-size:9px; font-weight:500;">
+      <div style="flex:1.5; text-align:center; color:#475569;"><div style="border-top:1px solid #334155; margin:0 4px; padding-top:3px;">Calendar Time only</div></div>
+      <div style="flex:1.2; text-align:center; color:#60A5FA;"><div style="border-top:1px solid rgba(96,165,250,0.3); margin:0 4px; padding-top:3px;">Planning Efficiency losses</div></div>
+      <div style="flex:2.2; text-align:center; color:#C4B5FD;"><div style="border-top:1px solid rgba(196,181,253,0.3); margin:0 4px; padding-top:3px;">Operating Efficiency losses</div></div>
+      <div style="flex:2.5; text-align:center; color:var(--lime);"><div style="border-top:1px solid rgba(218,241,27,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;">Calendar Time → Shift Time</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Calendar Time</strong> = Total hours in period (168 hrs/week)<br>
+        <strong style="color:var(--text-primary);">Shift Time</strong> = Calendar Time − non-working time<br>
+        <span style="color:var(--text-muted); font-style:italic;">Machine Efficiency denominator = Shift Time</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;">Shift Time → Actual Operating Time</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">Schedule Loss</strong> = Breaks, no-demand periods<br>
+        <strong style="color:var(--text-primary);">PDT</strong> = Changeovers, planned maintenance (at planned duration)<br>
+        <span style="color:var(--text-muted); font-style:italic;">Planning Efficiency = Actual Op. Time ÷ Shift Time</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;">Actual Operating Time → Up Time</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">UPDT</strong> = Stops &gt; threshold + PDT overruns<br>
+        <strong style="color:var(--text-primary);">Up Time</strong> = Actual Op. Time − UPDT<br>
+        <span style="color:var(--text-muted); font-style:italic;">Line physically running and producing output</span>
+      </div>
+    </div>
+    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+      <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;">Up Time → Potential Time</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+        <strong style="color:var(--text-primary);">LTSR</strong> = Time lost below BNS (good output only)<br>
+        <strong style="color:var(--text-primary);">LTMW</strong> = Time producing waste at run speed<br>
+        <span style="color:var(--text-muted); font-style:italic;">Operating Eff = Potential Time ÷ Actual Op. Time</span>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(218,241,27,0.06); border:1px solid rgba(218,241,27,0.15);">
+    <div style="font-size:12px; font-weight:700; color:var(--lime); margin-bottom:6px;">Key Equation</div>
+    <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--lime-muted); line-height:1.8;">
+      Shift Time = Potential Time + LTSR + LTMW + UPDT + PDT + Schedule Loss<br>
+      <span style="color:var(--text-muted);">Machine Efficiency = Potential Time ÷ Shift Time = Operating Efficiency × Planning Efficiency</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span class="label">Hover over KPIs and data sources to explore connections</span>
+  <span>•</span><span>All losses in hours — directly £-linkable</span>
+  <span>•</span><span style="font-style:italic;">Use ‹ › to browse KPI pages</span>
+</div>
+
+<script>
+  // Carousel logic
+  let currentSlide = 0;
+  const totalSlides = 4;
+  const carousel = document.getElementById('kpiCarousel');
+
+  function moveCarousel(dir) {
+    currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+    updateCarousel();
+  }
+  function goToSlide(idx) {
+    currentSlide = idx;
+    updateCarousel();
+  }
+  function updateCarousel() {
+    const slides = carousel.querySelectorAll('.kpi-slide');
+    slides.forEach((s, i) => { s.style.display = i === currentSlide ? 'flex' : 'none'; });
+    document.getElementById('kpi-page-label').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+    document.getElementById('kpi-prev').disabled = currentSlide === 0;
+    document.getElementById('kpi-next').disabled = currentSlide === totalSlides - 1;
+    document.querySelectorAll('.kpi-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === currentSlide);
+    });
+  }
+  // Init: hide all but first
+  updateCarousel();
+
+  // Highlight logic
+  const sourceLineMap = {
+    'src-redzone': 0, 'src-works-orders': 1, 'src-hours': 2,
+    'src-giveaway': 3, 'src-planning': 4, 'src-commercial': 5
+  };
+
+  function highlightSource(el) {
+    const feeds = el.dataset.feeds.split(',');
+    document.querySelectorAll('.source-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
+    document.querySelectorAll('.kpi-card').forEach(c => {
+      const kpiKey = c.id.replace('kpi-', '');
+      if (feeds.includes(kpiKey)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
+    });
+    const lineIdx = sourceLineMap[el.id];
+    if (lineIdx !== undefined) {
+      const line = document.getElementById('line-in-' + lineIdx);
+      if (line) { line.setAttribute('stroke-width', '2.5'); line.setAttribute('stroke-opacity', '0.9'); line.removeAttribute('stroke-dasharray'); }
+    }
+    const outLine = document.getElementById('line-out-active');
+    if (outLine) { outLine.setAttribute('stroke-width', '2.5'); outLine.setAttribute('stroke-opacity', '0.9'); outLine.removeAttribute('stroke-dasharray'); }
+  }
+
+  function highlightKPI(el) {
+    const fedBy = el.dataset.fedBy.split(',');
+    document.querySelectorAll('.kpi-card').forEach(c => { if (c !== el) c.classList.add('dimmed'); });
+    document.querySelectorAll('.source-card').forEach(c => {
+      if (fedBy.includes(c.id)) { c.classList.add('active'); } else { c.classList.add('dimmed'); }
+    });
+    fedBy.forEach(srcId => {
+      const lineIdx = sourceLineMap[srcId];
+      if (lineIdx !== undefined) {
+        const line = document.getElementById('line-in-' + lineIdx);
+        if (line) { line.setAttribute('stroke-width', '2.5'); line.setAttribute('stroke-opacity', '0.9'); line.removeAttribute('stroke-dasharray'); }
+      }
+    });
+    const outLine = document.getElementById('line-out-active');
+    if (outLine) { outLine.setAttribute('stroke-width', '2.5'); outLine.setAttribute('stroke-opacity', '0.9'); outLine.removeAttribute('stroke-dasharray'); }
+  }
+
+  function clearHighlight() {
+    document.querySelectorAll('.source-card, .kpi-card').forEach(c => { c.classList.remove('dimmed', 'active'); });
+    document.querySelectorAll('.conn-line').forEach(l => {
+      l.setAttribute('stroke-width', '1'); l.setAttribute('stroke-opacity', '0.3'); l.setAttribute('stroke-dasharray', '4 4');
+    });
+  }
+</script>
+</body>
+</html>
