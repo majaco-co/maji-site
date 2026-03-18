@@ -147,7 +147,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-  background-color: #1B4332;
+  background-color: #004a40;
   box-shadow: var(--shadow-green);
 }
 
@@ -492,7 +492,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero__title .highlight {
-  background: linear-gradient(135deg, #40916C 0%, #52B788 50%, #2D6A4F 100%);
+  background: linear-gradient(135deg, #008577 0%, #2a9d8f 50%, #006458 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -851,7 +851,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .cta-banner__title .highlight {
-  background: linear-gradient(135deg, #40916C 0%, #52B788 50%, #2D6A4F 100%);
+  background: linear-gradient(135deg, #008577 0%, #2a9d8f 50%, #006458 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -2025,7 +2025,7 @@ tbody tr:hover {
 
 /* Block types */
 .th-root {
-  background: linear-gradient(135deg, #1B4332, #2D6A4F);
+  background: linear-gradient(135deg, #004a40, #006458);
   color: #fff;
 }
 
@@ -2365,11 +2365,11 @@ tbody tr:hover {
 
 /* CSS Custom Properties for tools */
 :root {
-  --pine-primary: #2D6A4F;
-  --pine-dark: #1B4332;
-  --pine-accent: #40916C;
-  --pine-light: #D8F3DC;
-  --pine-dark-bg: #081C15;
+  --pine-primary: #006458;
+  --pine-dark: #004a40;
+  --pine-accent: #008577;
+  --pine-light: #d0f0ea;
+  --pine-dark-bg: #001412;
   --pine-primary-rgb: 45, 106, 79;
 }
 
@@ -2414,7 +2414,7 @@ tbody tr:hover {
   border-radius: 4px;
 }
 
-.nth-legend__swatch--root       { background: linear-gradient(135deg, var(--color-dark, #1B4332), var(--color-primary, #2D6A4F)); }
+.nth-legend__swatch--root       { background: linear-gradient(135deg, var(--color-dark, #004a40), var(--color-primary, #006458)); }
 .nth-legend__swatch--productive { background: #DAF11B; }
 .nth-legend__swatch--loss       { background: #e8e8e8; }
 .nth-legend__swatch--amber      { background: #fff3cd; }
@@ -2477,7 +2477,7 @@ tbody tr:hover {
   justify-content: center;
   font-weight: 700;
   font-size: 1.2em;
-  color: var(--color-primary, #2D6A4F);
+  color: var(--color-primary, #006458);
 }
 
 /* ---- Row hidden ---- */
@@ -2490,7 +2490,7 @@ tbody tr:hover {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: var(--color-primary, #2D6A4F);
+  background: var(--color-primary, #006458);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -2502,7 +2502,7 @@ tbody tr:hover {
 }
 
 .collapse-all:hover {
-  background: var(--color-dark, #1B4332);
+  background: var(--color-dark, #004a40);
 }
 
 /* ---- Block text elements ---- */
@@ -2538,7 +2538,7 @@ tbody tr:hover {
 
 /* ---- Block color variants ---- */
 .block.root {
-  background: linear-gradient(135deg, var(--color-dark, #1B4332), var(--color-primary, #2D6A4F));
+  background: linear-gradient(135deg, var(--color-dark, #004a40), var(--color-primary, #006458));
   color: white;
 }
 
@@ -2569,7 +2569,7 @@ tbody tr:hover {
 
 .block.plan {
   background: white;
-  border: 3px dashed var(--color-primary, #2D6A4F);
+  border: 3px dashed var(--color-primary, #006458);
   color: #000;
 }
 
@@ -2612,7 +2612,7 @@ tbody tr:hover {
 
 /* ---- Show Me buttons ---- */
 .show-me-btn {
-  background: var(--color-primary, #2D6A4F);
+  background: var(--color-primary, #006458);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -2624,7 +2624,7 @@ tbody tr:hover {
 }
 
 .show-me-btn:hover {
-  background: var(--color-dark, #1B4332);
+  background: var(--color-dark, #004a40);
 }
 
 /* ---- Legend for formula sections ---- */

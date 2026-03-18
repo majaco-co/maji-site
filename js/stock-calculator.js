@@ -320,7 +320,7 @@
 
     // Area fill under total cost curve
     ctx.globalAlpha = 0.05;
-    ctx.fillStyle = '#2D6A4F';
+    ctx.fillStyle = '#006458';
     ctx.beginPath();
     var started = false;
     filtered.forEach(function (d) {
@@ -350,13 +350,13 @@
       ctx.stroke();
     }
 
-    drawLine('holding', '#40916C', 2.5);
+    drawLine('holding', '#008577', 2.5);
     drawLine('stockout', '#EF4444', 2.5);
-    drawLine('total', '#2D6A4F', 3);
+    drawLine('total', '#006458', 3);
 
     // Optimal vertical line
     if (optSL >= slMin && optSL <= slMax) {
-      ctx.strokeStyle = '#2D6A4F';
+      ctx.strokeStyle = '#006458';
       ctx.lineWidth = 1.5;
       ctx.setLineDash([5, 5]);
       var ox = xPos(optSL);
@@ -372,20 +372,20 @@
       // Outer glow
       ctx.beginPath();
       ctx.arc(ox, optY, 10, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(45, 106, 79, 0.15)';
+      ctx.fillStyle = 'rgba(0, 100, 88, 0.15)';
       ctx.fill();
 
       // Inner dot
       ctx.beginPath();
       ctx.arc(ox, optY, 5, 0, Math.PI * 2);
-      ctx.fillStyle = '#2D6A4F';
+      ctx.fillStyle = '#006458';
       ctx.fill();
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // Label
-      ctx.fillStyle = '#1B4332';
+      ctx.fillStyle = '#004a40';
       ctx.font = 'bold 12px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Optimal: ' + optSL.toFixed(1) + '%', ox, pad.top - 10);
@@ -395,8 +395,8 @@
     var legX = pad.left + 14;
     var legY = pad.top + 14;
     var legItems = [
-      { label: 'Total Cost', color: '#2D6A4F' },
-      { label: 'Holding Cost', color: '#40916C' },
+      { label: 'Total Cost', color: '#006458' },
+      { label: 'Holding Cost', color: '#008577' },
       { label: 'Stockout Cost', color: '#EF4444' }
     ];
 
@@ -452,8 +452,8 @@
       }, chartMeta.filtered[0]);
 
       var html = '<div style="font-weight:700;margin-bottom:4px;">Service Level: ' + closest.sl.toFixed(1) + '%</div>';
-      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#2D6A4F"></span> Total: \u00A3' + Math.round(closest.total).toLocaleString() + '</div>';
-      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#40916C"></span> Holding: \u00A3' + Math.round(closest.holding).toLocaleString() + '</div>';
+      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#006458"></span> Total: \u00A3' + Math.round(closest.total).toLocaleString() + '</div>';
+      html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#008577"></span> Holding: \u00A3' + Math.round(closest.holding).toLocaleString() + '</div>';
       html += '<div class="chart-tooltip__row"><span class="chart-tooltip__swatch" style="background:#EF4444"></span> Stockout: \u00A3' + Math.round(closest.stockout).toLocaleString() + '</div>';
 
       chartTooltipEl.innerHTML = html;
@@ -477,7 +477,7 @@
     var inputs = document.querySelectorAll('.calc-row input[type="number"]');
     inputs.forEach(function (input) {
       input.addEventListener('focus', function () {
-        this.closest('.calc-row').style.background = 'rgba(45, 106, 79, 0.03)';
+        this.closest('.calc-row').style.background = 'rgba(0, 100, 88, 0.03)';
         this.closest('.calc-row').style.borderRadius = '8px';
         this.closest('.calc-row').style.transition = 'background 0.3s ease';
       });

@@ -117,7 +117,7 @@
     if (changeEl) {
       var sign = changePct >= 0 ? '+' : '';
       changeEl.textContent = sign + changePct.toFixed(1) + '%';
-      changeEl.style.color = changePct >= 0 ? '#2D6A4F' : '#EF4444';
+      changeEl.style.color = changePct >= 0 ? '#006458' : '#EF4444';
     }
 
     setText('optimal-speed', Math.round(optSpeed) + ' packs/hr');
@@ -251,7 +251,7 @@
     // Fill area under curve with gradient
     ctx.globalAlpha = 0.08;
     var areaGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
-    areaGrad.addColorStop(0, '#2D6A4F');
+    areaGrad.addColorStop(0, '#006458');
     areaGrad.addColorStop(1, 'transparent');
     ctx.fillStyle = areaGrad;
     ctx.beginPath();
@@ -268,7 +268,7 @@
     ctx.globalAlpha = 1;
 
     // PPLH curve - smooth with gradient stroke
-    ctx.strokeStyle = '#2D6A4F';
+    ctx.strokeStyle = '#006458';
     ctx.lineWidth = 3;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
@@ -305,14 +305,14 @@
       // Dot
       ctx.beginPath();
       ctx.arc(xPos(userIncrease), yPos(scenarioPPLH), 7, 0, Math.PI * 2);
-      ctx.fillStyle = scenarioPPLH >= points[0].pplh ? '#40916C' : '#EF4444';
+      ctx.fillStyle = scenarioPPLH >= points[0].pplh ? '#008577' : '#EF4444';
       ctx.fill();
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // Label
-      ctx.fillStyle = scenarioPPLH >= points[0].pplh ? '#1B4332' : '#991B1B';
+      ctx.fillStyle = scenarioPPLH >= points[0].pplh ? '#004a40' : '#991B1B';
       ctx.font = 'bold 11px Inter, sans-serif';
       ctx.textAlign = 'left';
       var labelX = xPos(userIncrease) + 12;
@@ -328,25 +328,25 @@
       // Outer glow rings
       ctx.beginPath();
       ctx.arc(xPos(optIncrease), yPos(optPPLH), 14, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(45, 106, 79, 0.08)';
+      ctx.fillStyle = 'rgba(0, 100, 88, 0.08)';
       ctx.fill();
 
       ctx.beginPath();
       ctx.arc(xPos(optIncrease), yPos(optPPLH), 10, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(45, 106, 79, 0.15)';
+      ctx.fillStyle = 'rgba(0, 100, 88, 0.15)';
       ctx.fill();
 
       // Inner dot
       ctx.beginPath();
       ctx.arc(xPos(optIncrease), yPos(optPPLH), 6, 0, Math.PI * 2);
-      ctx.fillStyle = '#2D6A4F';
+      ctx.fillStyle = '#006458';
       ctx.fill();
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
       // Label
-      ctx.fillStyle = '#1B4332';
+      ctx.fillStyle = '#004a40';
       ctx.font = 'bold 11px Inter, sans-serif';
       ctx.textAlign = 'left';
       var optLabelX = xPos(optIncrease) + 12;
@@ -371,9 +371,9 @@
     ctx.stroke();
 
     var legItems = [
-      { label: 'PPLH Curve', color: '#2D6A4F', type: 'line' },
-      { label: 'Your Scenario', color: '#40916C', type: 'dot' },
-      { label: 'Optimal Point', color: '#2D6A4F', type: 'dot' }
+      { label: 'PPLH Curve', color: '#006458', type: 'line' },
+      { label: 'Your Scenario', color: '#008577', type: 'dot' },
+      { label: 'Optimal Point', color: '#006458', type: 'dot' }
     ];
 
     legItems.forEach(function (item, idx) {

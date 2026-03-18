@@ -173,9 +173,9 @@
     // Show gap if both target and actual are filled
     if (state.target && state.actual) {
       var gap = parseFloat(state.actual) - parseFloat(state.target);
-      var gapColor = gap > 0 ? '#EF4444' : '#2D6A4F';
+      var gapColor = gap > 0 ? '#EF4444' : '#006458';
       var gapSign = gap > 0 ? '+' : '';
-      h += '<div style="background:' + (gap > 0 ? '#FEF2F2' : '#D8F3DC') + ';border-radius:8px;padding:8px 16px;margin-bottom:12px;font-size:0.85rem;">';
+      h += '<div style="background:' + (gap > 0 ? '#FEF2F2' : '#d0f0ea') + ';border-radius:8px;padding:8px 16px;margin-bottom:12px;font-size:0.85rem;">';
       h += '<strong>Gap:</strong> <span style="color:' + gapColor + ';font-weight:700;">' + gapSign + gap.toFixed(1) + esc(state.actualUnit || state.targetUnit) + '</span>';
       h += '</div>';
     }
@@ -185,7 +185,7 @@
 
     h += '<div class="ss-actions">';
     h += '<button class="btn btn-sm" id="ss-reset" style="color: var(--color-text-muted);">Start New</button>';
-    h += '<button class="btn btn-primary btn-sm" id="ss-proceed1" style="background:#2D6A4F;">Proceed to Split &rarr;</button>';
+    h += '<button class="btn btn-primary btn-sm" id="ss-proceed1" style="background:#006458;">Proceed to Split &rarr;</button>';
     h += '</div>';
     h += '</div>';
     return h;
@@ -210,7 +210,7 @@
 
     // Tree stats bar
     h += '<div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">';
-    h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#D8F3DC;color:#1B4332;">' + stats.ok + ' resolved</span>';
+    h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#d0f0ea;color:#004a40;">' + stats.ok + ' resolved</span>';
     h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#FEE2E2;color:#991B1B;">' + stats.causes + ' root cause' + (stats.causes !== 1 ? 's' : '') + '</span>';
     h += '<span style="font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#F3F4F6;color:#6B7280;">' + stats.unknown + ' to investigate</span>';
     h += '</div>';
@@ -223,8 +223,8 @@
 
     h += '<div class="ss-actions">';
     h += '<button class="btn btn-sm" id="ss-back2">&larr; Back</button>';
-    h += '<button class="btn btn-sm" id="ss-save2" style="background:#D8F3DC;color:#1B4332;">Save Progress</button>';
-    h += '<button class="btn btn-primary btn-sm" id="ss-proceed2" style="background:#2D6A4F;">Proceed to Understand &rarr;</button>';
+    h += '<button class="btn btn-sm" id="ss-save2" style="background:#d0f0ea;color:#004a40;">Save Progress</button>';
+    h += '<button class="btn btn-primary btn-sm" id="ss-proceed2" style="background:#006458;">Proceed to Understand &rarr;</button>';
     h += '</div>';
     h += '</div>';
     return h;
@@ -254,7 +254,7 @@
     h += '</div>';
     h += '<div class="ss-node__actions">';
     if (node.status === '?') {
-      h += '<button class="btn btn-primary btn-sm ss-btn-split" data-id="' + node.id + '" style="background:#2D6A4F;font-size:0.7rem;">Split</button>';
+      h += '<button class="btn btn-primary btn-sm ss-btn-split" data-id="' + node.id + '" style="background:#006458;font-size:0.7rem;">Split</button>';
     }
     h += '<button class="btn btn-sm ss-btn-ok" data-id="' + node.id + '" title="Mark OK" style="font-size:0.7rem;">&#10003;</button>';
     h += '<button class="btn btn-sm ss-btn-cause" data-id="' + node.id + '" title="Mark as Root Cause" style="font-size:0.7rem;">X</button>';
@@ -341,7 +341,7 @@
 
     h += '<div class="ss-actions">';
     h += '<button class="btn btn-sm" id="ss-back3">&larr; Back</button>';
-    h += '<button class="btn btn-primary btn-sm" id="ss-export" style="background:#2D6A4F;">Export PDF</button>';
+    h += '<button class="btn btn-primary btn-sm" id="ss-export" style="background:#006458;">Export PDF</button>';
     h += '<button class="btn btn-sm" id="ss-reset3" style="color:var(--color-text-muted);">Start New</button>';
     h += '</div>';
     h += '</div>';
@@ -412,13 +412,13 @@
     if (save2) save2.addEventListener('click', function () {
       saveState();
       this.textContent = 'Saved!';
-      this.style.background = '#2D6A4F';
+      this.style.background = '#006458';
       this.style.color = '#fff';
       var btn = this;
       setTimeout(function () {
         btn.textContent = 'Save Progress';
-        btn.style.background = '#D8F3DC';
-        btn.style.color = '#1B4332';
+        btn.style.background = '#d0f0ea';
+        btn.style.color = '#004a40';
       }, 1500);
     });
 
@@ -512,8 +512,8 @@
       '</div>' +
       '<div id="ss-split-rows"></div>' +
       '<div class="ss-actions" style="margin-top:10px;">' +
-      '<button class="btn btn-sm" id="ss-add-row" style="background:#D8F3DC;color:#1B4332;">+ Add Branch</button>' +
-      '<button class="btn btn-primary btn-sm" id="ss-split-ok" style="background:#2D6A4F;">Apply Split</button>' +
+      '<button class="btn btn-sm" id="ss-add-row" style="background:#d0f0ea;color:#004a40;">+ Add Branch</button>' +
+      '<button class="btn btn-primary btn-sm" id="ss-split-ok" style="background:#006458;">Apply Split</button>' +
       '<button class="btn btn-sm" id="ss-split-cancel" style="color:var(--color-text-muted);">Cancel</button>' +
       '</div></div>';
 
@@ -585,10 +585,10 @@
     var w = window.open('', '_blank');
     var html = '<!DOCTYPE html><html><head><title>Split Solve Report</title>';
     html += '<style>body{font-family:Inter,system-ui,sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#1a1a1a;}';
-    html += 'h1{font-size:1.5rem;margin-bottom:0.5rem;color:#1B4332;} h2{font-size:1.2rem;margin-top:1.5rem;border-bottom:2px solid #2D6A4F;padding-bottom:4px;color:#1B4332;}';
-    html += 'table{width:100%;border-collapse:collapse;margin:1rem 0;} th,td{border:1px solid #ddd;padding:6px 10px;text-align:left;} th{background:#D8F3DC;color:#1B4332;}';
+    html += 'h1{font-size:1.5rem;margin-bottom:0.5rem;color:#004a40;} h2{font-size:1.2rem;margin-top:1.5rem;border-bottom:2px solid #006458;padding-bottom:4px;color:#004a40;}';
+    html += 'table{width:100%;border-collapse:collapse;margin:1rem 0;} th,td{border:1px solid #ddd;padding:6px 10px;text-align:left;} th{background:#d0f0ea;color:#004a40;}';
     html += '.cause{background:#FEE2E2;padding:12px;border-radius:8px;margin:8px 0;border-left:3px solid #EF4444;}';
-    html += '.header-bar{background:#1B4332;color:#fff;padding:20px;border-radius:8px;margin-bottom:20px;}';
+    html += '.header-bar{background:#004a40;color:#fff;padding:20px;border-radius:8px;margin-bottom:20px;}';
     html += '@media print{body{margin:0;}.header-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style></head><body>';
     html += '<div class="header-bar"><h1 style="color:#fff;margin:0;">Split Solve Analysis Report</h1>';
     html += '<p style="color:rgba(255,255,255,0.7);margin:4px 0 0;">Generated by maji (majaco)</p></div>';

@@ -4,29 +4,29 @@
    ============================================= */
 
 :root {
-  /* ---- Colors (matches original majiai.co palette) ---- */
-  --color-primary:       #2D6A4F;   /* pine green */
-  --color-primary-dark:  #1B4332;   /* deep pine / forest */
-  --color-primary-light: #D8F3DC;   /* light mint */
-  --color-primary-rgb:   45, 106, 79;
+  /* ---- Colors (majaco brand palette) ---- */
+  --color-primary:       #006458;   /* majaco pine */
+  --color-primary-dark:  #004a40;   /* deep majaco pine */
+  --color-primary-light: #d0f0ea;   /* light majaco teal */
+  --color-primary-rgb:   0, 100, 88;
 
-  --color-accent:        #40916C;   /* medium green */
-  --color-sage:          #52796F;   /* muted sage */
-  --color-sage-light:    #74A68D;   /* soft sage */
+  --color-accent:        #DAF11B;   /* majaco lime green */
+  --color-sage:          #4a8a80;   /* muted teal */
+  --color-sage-light:    #6aab9f;   /* soft teal */
   --color-amber:         #D4A017;   /* golden amber accent */
   --color-amber-dark:    #B8860B;   /* dark gold */
 
   --color-bg:            #FFFFFF;
-  --color-bg-alt:        #F0F7F4;   /* barely green white */
-  --color-bg-dark:       #081C15;   /* very dark pine */
-  --color-bg-dark-2:     #0D2818;
+  --color-bg-alt:        #f0f7f5;   /* barely teal white */
+  --color-bg-dark:       #001412;   /* majaco dark */
+  --color-bg-dark-2:     #001e19;
 
   --color-text:          #1A1A1A;
-  --color-text-muted:    #52796F;   /* sage muted */
+  --color-text-muted:    #4a8a80;   /* teal muted */
   --color-text-light:    #FFFFFF;
-  --color-text-subtle:   #74A68D;   /* soft sage instead of grey */
+  --color-text-subtle:   #6aab9f;   /* soft teal */
 
-  --color-border:        #B7E4C7;
+  --color-border:        #a0ddd0;
   --color-border-dark:   #2E2E2E;
 
   --color-success:       #22C55E;
@@ -89,7 +89,7 @@
   --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
   --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.06);
   --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
-  --shadow-green: 0 4px 20px rgba(45, 106, 79, 0.30);
+  --shadow-green: 0 4px 20px rgba(0, 100, 88, 0.30);
 
   /* ---- Transitions ---- */
   --transition-fast:   150ms ease;
@@ -114,7 +114,7 @@
   --nav-height: 72px;
 
   /* ---- Dark Nav (matches original Webflow site) ---- */
-  --nav-bg: #081C15;
+  --nav-bg: #001412;
   --nav-text: #FFFFFF;
   --nav-link-color: rgba(255, 255, 255, 0.65);
   --nav-link-hover: #FFFFFF;
