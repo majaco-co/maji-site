@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run Rate Calculator — majaco | YORKS KX100551</title>
+<script src="js/auth-gate.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
+<style>
+  :root {
+    --pine: #006458;
+    --lime: #DAF11B;
+    --dark-green: #001412;
+    --light-bg: #f7f9f8;
+    --card-bg: #ffffff;
+    --border: #e0e6e4;
+    --text: #1a2b29;
+    --text-light: #5a6b69;
+    --bottleneck: #d94f4f;
+    --non-bottleneck: #4a9e8e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.5; }
+  header { background: var(--dark-green); color: white; padding: 1.1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+  header h1 { font-size: 1.3rem; font-weight: 600; }
+  header span { color: var(--lime); font-weight: 700; font-size: 1.1rem; }
+  header .sku-tag { font-size: 0.78rem; opacity: 0.6; margin-left: auto; }
+
+  .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 1440px; margin: 1.5rem auto; padding: 0 1.5rem; }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+  .card + .card { margin-top: 1.25rem; }
+  .card h2 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pine); margin-bottom: 0.9rem; padding-bottom: 0.45rem; border-bottom: 2px solid var(--lime); }
+
+  .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem 0.9rem; }
+  .input-item { display: flex; flex-direction: column; gap: 0.15rem; }
+  .input-item label { font-size: 0.72rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.03em; }
+  .input-item input { padding: 0.4rem 0.5rem; border: 1.5px solid var(--border); border-radius: 6px; font-size: 0.92rem; font-weight: 600; color: var(--text); background: var(--light-bg); width: 100%; transition: border-color 0.2s; }
+  .input-item input:focus { outline: none; border-color: var(--pine); background: white; }
+  .unit { font-size: 0.65rem; color: var(--text-light); font-weight: 400; }
+
+  /* Hero */
+  .run-rate-hero { padding: 1.1rem 1.3rem; background: var(--dark-green); border-radius: 10px; color: white; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; text-align: center; }
+  .hero-metric { padding: 0.4rem 0; }
+  .hero-metric.primary { border-right: 1px solid rgba(255,255,255,0.15); }
+  .hero-metric:last-child { border-right: none; }
+  .hero-metric .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; }
+  .hero-metric .value { font-size: 1.5rem; font-weight: 800; color: rgba(255,255,255,0.85); line-height: 1.2; }
+  .hero-metric.primary .value { font-size: 2.4rem; color: var(--lime); }
+  .hero-metric .unit-label { font-size: 0.68rem; opacity: 0.5; margin-top: 0.05rem; }
+  .hero-bn { text-align: center; font-size: 0.78rem; opacity: 0.55; margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+  .hero-bn strong { color: var(--lime); opacity: 1; }
+
+  /* Stage bars */
+  .stage-bar { margin-bottom: 0.5rem; }
+  .stage-bar-head { display: flex; justify-content: space-between; font-size: 0.73rem; font-weight: 600; margin-bottom: 0.1rem; }
+  .stage-bar-head .rate { font-weight: 700; font-size: 0.7rem; }
+  .stage-bar-track { height: 22px; background: #eef2f1; border-radius: 5px; overflow: hidden; }
+  .stage-bar-fill { height: 100%; border-radius: 5px; transition: width 0.4s ease, background 0.3s; }
+  .stage-bar-fill.bn { background: var(--bottleneck); }
+  .stage-bar-fill.ok { background: var(--non-bottleneck); }
+  .bn-tag { display: inline-block; background: var(--bottleneck); color: white; font-size: 0.58rem; font-weight: 700; padding: 0.08rem 0.3rem; border-radius: 3px; text-transform: uppercase; margin-left: 0.25rem; vertical-align: middle; }
+
+  /* Calc rows */
+  .calc-row { display: flex; justify-content: space-between; align-items: center; padding: 0.35rem 0; border-bottom: 1px solid var(--border); font-size: 0.78rem; }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-label { color: var(--text-light); }
+  .calc-val { font-weight: 700; }
+
+  /* Sensitivity */
+  .sens-item { margin-bottom: 0.6rem; }
+  .sens-head { display: flex; justify-content: space-between; font-size: 0.73rem; margin-bottom: 0.1rem; }
+  .sens-head .name { font-weight: 600; }
+  .sens-head .delta { font-weight: 700; }
+  .sens-head .delta.pos { color: var(--non-bottleneck); }
+  .sens-head .delta.neg { color: var(--bottleneck); }
+  .sens-track { height: 6px; background: #eef2f1; border-radius: 4px; overflow: hidden; }
+  .sens-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+
+  .note { font-size: 0.7rem; color: var(--text-light); margin-top: 0.5rem; font-style: italic; }
+  .formula-note { font-size: 0.68rem; color: var(--text-light); margin-top: 0.35rem; background: #f0f4f3; padding: 0.4rem 0.6rem; border-radius: 6px; font-family: 'Courier New', monospace; line-height: 1.6; }
+
+  /* Gantt */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt-canvas { width: 100%; min-width: 600px; }
+  .gantt-legend { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.7rem; color: var(--text-light); }
+  .gantt-legend span { display: flex; align-items: center; gap: 0.3rem; }
+  .gantt-legend .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+</style>
+</head>
+<body>
+<header>
+  <span>majaco</span>
+  <h1>Run Rate Calculator</h1>
+  <span class="sku-tag">YORKS &mdash; KX100551 &mdash; DTDB SM BACK MARQ MED 28x150G</span>
+</header>
+
+<div class="layout">
+  <!-- LEFT: INPUTS -->
+  <div>
+    <div class="card">
+      <h2>Feedstock &amp; Product</h2>
+      <div class="input-grid">
+        <div class="input-item">
+          <label>FSK Unit Kg <span class="unit">(raw weight)</span></label>
+          <input type="number" id="unitKg" value="6.430" step="0.001" min="0.1" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Yield <span class="unit">%</span></label>
+          <input type="number" id="yield" value="89" step="0.5" min="30" max="100" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Portion Kg</label>
+          <input type="number" id="portionKg" value="0.300" step="0.001" min="0.01" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Rashers / Portion</label>
+          <input type="number" id="rashers" value="10" step="1" min="1" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Pack Kg</label>
+          <input type="number" id="packKg" value="0.300" step="0.001" min="0.01" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Packs / Case</label>
+          <input type="number" id="packsPerCase" value="24" step="1" min="1" oninput="recalc()">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Slicer</h2>
+      <div class="input-grid">
+        <div class="input-item">
+          <label>RPM</label>
+          <input type="number" id="rpm" value="1200" step="10" min="100" max="3000" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Idle Cuts / Portion</label>
+          <input type="number" id="idleCuts" value="8" step="1" min="0" max="30" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Reload Time <span class="unit">seconds</span></label>
+          <input type="number" id="reloadSec" value="6" step="0.5" min="0" max="30" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Upfront Trim Cuts</label>
+          <input type="number" id="trimCuts" value="3" step="1" min="0" max="20" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>FSK Units / Slicer Cycle</label>
+          <input type="number" id="fskPerCycle" value="1" step="1" min="1" max="8" oninput="recalc()">
+        </div>
+      </div>
+      <div class="formula-note" style="margin-top:0.6rem;">
+        Cuts/Portion = Rashers + Idle Cuts<br>
+        Sec/Portion = Cuts / (RPM &divide; 60)<br>
+        Trim Time = Trim Cuts / (RPM &divide; 60)<br>
+        Sec/Unit = (Portions/Unit &times; Sec/Portion) + Trim Time + Reload<br>
+        Units/Min = (60 &divide; Sec/Unit) &times; FSK/Cycle
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Multivac &amp; Downstream</h2>
+      <div class="input-grid">
+        <div class="input-item">
+          <label>MV Pack / Min</label>
+          <input type="number" id="mvPackPerMin" value="88" step="1" min="1" max="120" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Weigher Cases/Hr <span class="unit">(0 = N/A)</span></label>
+          <input type="number" id="weigherCasesHr" value="0" step="10" min="0" max="3000" oninput="recalc()">
+        </div>
+        <div class="input-item">
+          <label>Changeover <span class="unit">minutes</span></label>
+          <input type="number" id="changeoverMin" value="3" step="0.5" min="0" max="60" oninput="recalc()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: RESULTS -->
+  <div>
+    <div class="run-rate-hero">
+      <div class="hero-grid">
+        <div class="hero-metric primary">
+          <div class="label">Cases / Hour</div>
+          <div class="value" id="heroCasesHr">&mdash;</div>
+          <div class="unit-label">cases/hr</div>
+        </div>
+        <div class="hero-metric">
+          <div class="label">Packs / Min</div>
+          <div class="value" id="heroPacksMin">&mdash;</div>
+          <div class="unit-label">packs/min</div>
+        </div>
+        <div class="hero-metric">
+          <div class="label">Kg / Min</div>
+          <div class="value" id="heroKgMin">&mdash;</div>
+          <div class="unit-label">kg/min (finished)</div>
+        </div>
+      </div>
+      <div class="hero-bn" id="adjLine"></div>
+    </div>
+
+    <div class="card">
+      <h2>Process Step Throughput</h2>
+      <div id="stageChart"></div>
+      <p class="note">The bottleneck (lowest throughput) sets the line run rate. Excess capacity on other steps is shown in green.</p>
+    </div>
+
+    <div class="card">
+      <h2>Slicer Cycle Gantt &mdash; 2 Cycles</h2>
+      <div class="gantt-wrap">
+        <canvas id="ganttCanvas" class="gantt-canvas" height="220"></canvas>
+      </div>
+      <div class="gantt-legend" id="ganttLegend"></div>
+      <p class="note">Shows the sub-step timing within a single FSK unit. Two consecutive cycles shown. Idle cuts precede each portion's product cuts.</p>
+    </div>
+
+    <div class="card">
+      <h2>Calculation Trace</h2>
+      <div id="calcTrace"></div>
+    </div>
+
+    <div class="card">
+      <h2>Sensitivity Analysis</h2>
+      <p style="font-size:0.73rem; color:var(--text-light); margin-bottom:0.5rem;">
+        Impact on run rate of a <strong>+10%</strong> change to each input. Ranked by magnitude.
+      </p>
+      <div id="sensChart"></div>
+      <p class="note">Green = increases run rate. Red = decreases run rate. Only inputs affecting the bottleneck move the run rate.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function calc() {
+  const unitKg = v('unitKg');
+  const yld = v('yield') / 100;
+  const portionKg = v('portionKg');
+  const rashers = v('rashers');
+  const packKg = v('packKg');
+  const packsPerCase = v('packsPerCase');
+  const rpm = v('rpm');
+  const idleCuts = v('idleCuts');
+  const reloadSec = v('reloadSec');
+  const trimCuts = v('trimCuts');
+  const fskPerCycle = v('fskPerCycle');
+  const mvPackPerMin = v('mvPackPerMin');
+  const weigherCasesHr = v('weigherCasesHr');
+
+  // Guard: if any critical divisor is zero/missing, return safe defaults
+  if (rpm <= 0 || portionKg <= 0 || packKg <= 0 || packsPerCase <= 0 || fskPerCycle <= 0) {
+    return {
+      runRate: 0, runRatePacksMin: 0, runRateKgMin: 0,
+      stages: [], trace: [{ l: 'Waiting for valid inputs\u2026', v: '\u2014' }],
+      caseKg: 0, packsPerCase: 0, ganttSteps: [], cycleDur: 0,
+      secPerPortion: 0, portionsPerUnit: 0, cutsPerSec: 0
+    };
+  }
+
+  // --- SLICER CHAIN ---
+  const cutsPerPortion = rashers + idleCuts;
+  const cutsPerSec = rpm / 60;
+  const secPerPortion = cutsPerPortion / cutsPerSec;
+  const trimTimeSec = trimCuts / cutsPerSec;
+  const portionsPerUnit = unitKg / portionKg;
+  const unitYldKg = unitKg * yld;
+  const secPerUnit = (portionsPerUnit * secPerPortion) + trimTimeSec + reloadSec;
+  const unitsPerMin = (60 / secPerUnit) * fskPerCycle;
+  const slicerKgHr = unitsPerMin * unitYldKg * 60;
+  const caseKg = packKg * packsPerCase;
+  const slicerCasesHr = slicerKgHr / caseKg;
+
+  // --- MULTIVAC ---
+  const mvCasesHr = (mvPackPerMin * 60) / packsPerCase;
+
+  // --- STAGES ---
+  const hasWeigher = weigherCasesHr > 0;
+  const stages = [
+    { name: 'Slicer', rate: slicerCasesHr },
+    { name: 'Multivac', rate: mvCasesHr },
+  ];
+  if (hasWeigher) stages.push({ name: 'Weigher', rate: weigherCasesHr });
+
+  const runRate = Math.min(...stages.map(s => s.rate));
+  stages.forEach(s => { s.bn = Math.abs(s.rate - runRate) < 0.5; });
+
+  const trace = [
+    { l: 'Cuts / Portion', v: cutsPerPortion.toFixed(0) },
+    { l: 'Cuts / Second (RPM\u00F760)', v: cutsPerSec.toFixed(2) },
+    { l: 'Seconds / Portion', v: secPerPortion.toFixed(3) },
+    { l: 'Trim Time (sec)', v: trimTimeSec.toFixed(3) },
+    { l: 'Portions / FSK Unit', v: portionsPerUnit.toFixed(1) },
+    { l: 'Unit Yield Kg', v: unitYldKg.toFixed(3) },
+    { l: 'Seconds / FSK Unit', v: secPerUnit.toFixed(3) },
+    { l: 'FSK Units / Min', v: unitsPerMin.toFixed(3) },
+    { l: 'Slicer Output Kg / Hr', v: Math.round(slicerKgHr).toLocaleString() },
+    { l: 'Case Kg', v: caseKg.toFixed(2) },
+    { l: 'Slicer Cases / Hr', v: slicerCasesHr.toFixed(1) },
+    { l: 'MV Cases / Hr', v: mvCasesHr.toFixed(1) },
+  ];
+  if (hasWeigher) trace.push({ l: 'Weigher Cases / Hr', v: weigherCasesHr.toFixed(1) });
+
+  // Unit conversions
+  const runRatePacksMin = (runRate * packsPerCase) / 60;
+  const runRateKgMin = (runRate * caseKg) / 60;
+  stages.forEach(s => {
+    s.packsMin = (s.rate * packsPerCase) / 60;
+    s.kgMin = (s.rate * caseKg) / 60;
+  });
+
+  // Gantt data: build sub-steps for one FSK unit cycle
+  const ganttSteps = [];
+  let t = 0;
+  // Load / Reload
+  ganttSteps.push({ label: 'Load / Reload', start: t, dur: reloadSec, type: 'reload' });
+  t += reloadSec;
+  // Upfront trim cuts
+  if (trimCuts > 0) {
+    const trimSec = trimCuts / cutsPerSec;
+    ganttSteps.push({ label: `Trim Cuts (${trimCuts} cuts)`, start: t, dur: trimSec, type: 'trim' });
+    t += trimSec;
+  }
+  // For each portion in the unit
+  const numPortions = Math.floor(portionsPerUnit);
+  for (let p = 0; p < numPortions; p++) {
+    // Idle cuts first
+    const idleSec = idleCuts / cutsPerSec;
+    if (idleCuts > 0) {
+      ganttSteps.push({ label: 'Idle Cuts', start: t, dur: idleSec, type: 'idle' });
+      t += idleSec;
+    }
+    // Product cuts (rashers)
+    const cutSec = rashers / cutsPerSec;
+    ganttSteps.push({ label: `Portion ${p+1} (${rashers} rashers)`, start: t, dur: cutSec, type: 'cut' });
+    t += cutSec;
+  }
+  // Fractional portion remainder (if any)
+  const remainder = portionsPerUnit - numPortions;
+  if (remainder > 0.05) {
+    const partialRashers = Math.round(rashers * remainder);
+    const idleSec = idleCuts / cutsPerSec;
+    if (idleCuts > 0) {
+      ganttSteps.push({ label: 'Idle Cuts', start: t, dur: idleSec, type: 'idle' });
+      t += idleSec;
+    }
+    const cutSec = partialRashers / cutsPerSec;
+    ganttSteps.push({ label: `Portion ${numPortions+1} (partial, ~${partialRashers} rashers)`, start: t, dur: cutSec, type: 'cut' });
+    t += cutSec;
+  }
+  const cycleDur = t;
+
+  return { runRate, runRatePacksMin, runRateKgMin, stages, trace, caseKg, packsPerCase, ganttSteps, cycleDur, secPerPortion, portionsPerUnit, cutsPerSec };
+}
+
+// --- GANTT DRAWING ---
+function drawGantt(ganttSteps, cycleDur) {
+  const canvas = document.getElementById('ganttCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.clientWidth;
+  const H = 220;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const colors = { reload: '#5b7a99', trim: '#b05a3a', idle: '#c9a84c', cut: '#006458' };
+  const colorLabels = { reload: 'Load / Reload', trim: 'Upfront Trim Cuts', idle: 'Idle Cuts', cut: 'Product Cuts (Rashers)' };
+
+  const margin = { left: 10, right: 10, top: 30, bottom: 30 };
+  const plotW = W - margin.left - margin.right;
+  const totalTime = cycleDur * 2; // 2 cycles
+  const pxPerSec = plotW / totalTime;
+
+  const rowH = 32;
+  const gap = 8;
+  const cycleY = [margin.top, margin.top + rowH + gap + 18];
+
+  // Draw two cycles
+  for (let c = 0; c < 2; c++) {
+    const yBase = cycleY[c];
+    const timeOffset = c * cycleDur;
+
+    // Cycle label
+    ctx.fillStyle = '#5a6b69';
+    ctx.font = '600 11px "Segoe UI", sans-serif';
+    ctx.fillText(`Cycle ${c+1}  (${cycleDur.toFixed(1)}s)`, margin.left, yBase - 4);
+
+    ganttSteps.forEach(step => {
+      const x = margin.left + (timeOffset + step.start) * pxPerSec;
+      const w = Math.max(1, step.dur * pxPerSec);
+      const y = yBase;
+
+      // Bar
+      ctx.fillStyle = colors[step.type];
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, rowH, 3);
+      ctx.fill();
+
+      // Label inside bar if wide enough
+      if (w > 35) {
+        ctx.fillStyle = 'white';
+        ctx.font = '600 9px "Segoe UI", sans-serif';
+        const txt = step.dur.toFixed(2) + 's';
+        ctx.fillText(txt, x + 4, y + rowH / 2 + 3);
+      }
+    });
+  }
+
+  // Time axis
+  const axisY = cycleY[1] + rowH + 16;
+  ctx.strokeStyle = '#ccc';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, axisY);
+  ctx.lineTo(margin.left + plotW, axisY);
+  ctx.stroke();
+
+  // Tick marks every second (or appropriate interval)
+  const tickInterval = totalTime > 60 ? 10 : totalTime > 30 ? 5 : totalTime > 15 ? 2 : 1;
+  ctx.fillStyle = '#5a6b69';
+  ctx.font = '500 9px "Segoe UI", sans-serif';
+  for (let t = 0; t <= totalTime; t += tickInterval) {
+    const x = margin.left + t * pxPerSec;
+    ctx.beginPath();
+    ctx.moveTo(x, axisY - 3);
+    ctx.lineTo(x, axisY + 3);
+    ctx.stroke();
+    ctx.fillText(t + 's', x - 6, axisY + 14);
+  }
+
+  // Cycle boundary line
+  const bx = margin.left + cycleDur * pxPerSec;
+  ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = '#aaa';
+  ctx.beginPath();
+  ctx.moveTo(bx, margin.top - 8);
+  ctx.lineTo(bx, axisY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Legend
+  let legendHTML = '';
+  for (const [type, label] of Object.entries(colorLabels)) {
+    legendHTML += `<span><span class="swatch" style="background:${colors[type]}"></span>${label}</span>`;
+  }
+  document.getElementById('ganttLegend').innerHTML = legendHTML;
+}
+
+function recalc() {
+  const r = calc();
+
+  // Hero
+  if (r.stages.length === 0) {
+    document.getElementById('heroCasesHr').textContent = '\u2014';
+    document.getElementById('heroPacksMin').textContent = '\u2014';
+    document.getElementById('heroKgMin').textContent = '\u2014';
+    document.getElementById('adjLine').innerHTML = '<em>Enter valid inputs</em>';
+    document.getElementById('stageChart').innerHTML = '';
+    document.getElementById('sensChart').innerHTML = '';
+    let h = '';
+    r.trace.forEach(t => { h += `<div class="calc-row"><span class="calc-label">${t.l}</span><span class="calc-val">${t.v}</span></div>`; });
+    document.getElementById('calcTrace').innerHTML = h;
+    drawGantt([], 0);
+    return;
+  }
+
+  document.getElementById('heroCasesHr').textContent = r.runRate.toFixed(1);
+  document.getElementById('heroPacksMin').textContent = r.runRatePacksMin.toFixed(1);
+  document.getElementById('heroKgMin').textContent = r.runRateKgMin.toFixed(2);
+  const bn = r.stages.find(s => s.bn);
+  document.getElementById('adjLine').innerHTML = bn ? `Bottleneck: <strong>${bn.name}</strong>` : '';
+
+  // Stage chart
+  const mx = Math.max(...r.stages.map(s => s.rate)) * 1.05;
+  let h = '';
+  r.stages.forEach(s => {
+    const pct = Math.max(2, (s.rate / mx) * 100);
+    const cls = s.bn ? 'bn' : 'ok';
+    const tag = s.bn ? '<span class="bn-tag">Bottleneck</span>' : '';
+    h += `<div class="stage-bar">
+      <div class="stage-bar-head">
+        <span>${s.name}${tag}</span>
+        <span class="rate">${s.rate.toFixed(1)} cases/hr &nbsp;|&nbsp; ${s.packsMin.toFixed(1)} packs/min &nbsp;|&nbsp; ${s.kgMin.toFixed(2)} kg/min</span>
+      </div>
+      <div class="stage-bar-track"><div class="stage-bar-fill ${cls}" style="width:${pct}%"></div></div>
+    </div>`;
+  });
+  document.getElementById('stageChart').innerHTML = h;
+
+  // Gantt
+  drawGantt(r.ganttSteps, r.cycleDur);
+
+  // Trace
+  h = '';
+  r.trace.forEach(t => {
+    h += `<div class="calc-row"><span class="calc-label">${t.l}</span><span class="calc-val">${t.v}</span></div>`;
+  });
+  document.getElementById('calcTrace').innerHTML = h;
+
+  // Sensitivity (excluding FSK Units/Cycle and Packs/Case — fixed)
+  const inputs = [
+    { id: 'rpm', label: 'Slicer RPM' },
+    { id: 'reloadSec', label: 'Reload Time' },
+    { id: 'idleCuts', label: 'Idle Cuts / Portion' },
+    { id: 'trimCuts', label: 'Upfront Trim Cuts' },
+    { id: 'rashers', label: 'Rashers / Portion' },
+    { id: 'mvPackPerMin', label: 'MV Pack / Min' },
+    { id: 'unitKg', label: 'FSK Unit Kg' },
+    { id: 'portionKg', label: 'Portion Kg' },
+    { id: 'yield', label: 'Yield %' },
+  ];
+  const base = r.runRate;
+  const results = [];
+  inputs.forEach(inp => {
+    const el = document.getElementById(inp.id);
+    const orig = parseFloat(el.value);
+    el.value = orig * 1.10;
+    const nr = calc();
+    const delta = nr.runRate - base;
+    results.push({ label: inp.label, delta, pct: base > 0 ? (delta / base) * 100 : 0 });
+    el.value = orig;
+  });
+  results.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+  const active = results.filter(r => Math.abs(r.delta) > 0.01);
+  const inactive = results.filter(r => Math.abs(r.delta) <= 0.01);
+  const maxD = Math.max(...active.map(r => Math.abs(r.delta)), 1);
+  h = '';
+  active.forEach(s => {
+    const pct = (Math.abs(s.delta) / maxD) * 100;
+    const sign = s.delta >= 0 ? '+' : '';
+    const cls = s.delta >= 0 ? 'pos' : 'neg';
+    const col = s.delta >= 0 ? 'var(--non-bottleneck)' : 'var(--bottleneck)';
+    h += `<div class="sens-item">
+      <div class="sens-head">
+        <span class="name">${s.label}</span>
+        <span class="delta ${cls}">${sign}${s.delta.toFixed(1)} cases/hr &nbsp;(${sign}${s.pct.toFixed(1)}%)</span>
+      </div>
+      <div class="sens-track"><div class="sens-fill" style="width:${pct}%;background:${col}"></div></div>
+    </div>`;
+  });
+  if (inactive.length > 0) {
+    h += `<div style="font-size:0.7rem;color:var(--text-light);margin-top:0.4rem;padding-top:0.4rem;border-top:1px solid var(--border);">
+      <strong>No impact (not on bottleneck):</strong> ${inactive.map(i => i.label).join(', ')}
+    </div>`;
+  }
+  document.getElementById('sensChart').innerHTML = h;
+}
+
+window.addEventListener('resize', recalc);
+recalc();
+</script>
+</body>
+</html>
