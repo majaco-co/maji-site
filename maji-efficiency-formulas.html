@@ -122,7 +122,7 @@
           <div class="formula"><strong>LTMW</strong> = Waste Output / Run Speed</div>
           <div class="formula"><strong>UPDT</strong> = Actual Operating Time &minus; Up Time</div>
           <div class="formula"><strong>Planning Rate</strong> = BNS &times; Operating Efficiency (planned)</div>
-          <div class="formula"><strong>Verification:</strong> Actual OT = PT + LTSR + LTMW + UPDT &nbsp;(must balance)</div>
+          <div class="formula"><strong>Verification:</strong> Actual OT = Potential Time + LTSR + LTMW + UPDT &nbsp;(must balance)</div>
         </div>
 
         <!-- 3. Efficiency Metrics -->
@@ -136,19 +136,19 @@
               <tbody>
                 <tr>
                   <td><strong>Operating Efficiency</strong></td>
-                  <td>PT / Actual OT</td>
+                  <td>Potential Time / Actual OT</td>
                   <td>Shop floor</td>
                   <td>Both</td>
                 </tr>
                 <tr>
                   <td><strong>Machine Efficiency / OOE</strong></td>
-                  <td>PT / Shift Time</td>
+                  <td>Potential Time / Shift Time</td>
                   <td>Management</td>
                   <td>Both</td>
                 </tr>
                 <tr>
                   <td><strong>TEEP</strong></td>
-                  <td>PT / Calendar Time</td>
+                  <td>Potential Time / Calendar Time</td>
                   <td>Strategic</td>
                   <td>Production-constrained</td>
                 </tr>
@@ -168,10 +168,13 @@
             </table>
           </div>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">
-            <strong>Machine Efficiency vs OOE:</strong> same formula (PT / ST), different name. "Machine Efficiency" is used in a sales context; "OOE" in a production context. The name signals strategic intent, not a different calculation.
+            <strong>Why this works:</strong> Operating Efficiency = Potential Time / Actual OT. Since Potential Time = Good Output / BNS, this simplifies to Good Output / (BNS &times; Actual OT) &mdash; i.e. good output as a proportion of what the line <em>could</em> have produced in the actual operating time. The same logic applies to every metric in the table: the numerator is always the time your good output <em>needed</em>; the denominator is the time window you are measuring against.
           </p>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong>OEE translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (PT / OT) provides the same insight without double-counting speed losses on waste units.
+            <strong>Machine Efficiency vs OOE:</strong> same formula (Potential Time / Shift Time), different name. &ldquo;Machine Efficiency&rdquo; is used in a sales context; &ldquo;OOE&rdquo; in a production context. The name signals strategic intent, not a different calculation.
+          </p>
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
+            <strong>OEE translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (Potential Time / OT) provides the same insight without double-counting speed losses on waste units.
           </p>
         </div>
 
@@ -255,7 +258,7 @@
           </div>
 
           <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">MECE Verification</h3>
-          <p>Actual OT must equal PT + LTSR + LTMW + UPDT. If it does not balance, a loss category has been mis-allocated. Check Run Speed and BNS inputs first.</p>
+          <p>Actual OT must equal Potential Time + LTSR + LTMW + UPDT. If it does not balance, a loss category has been mis-allocated. Check Run Speed and BNS inputs first.</p>
         </div>
 
         <!-- 6. CTA -->
