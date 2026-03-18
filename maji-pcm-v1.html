@@ -76,9 +76,12 @@
           <div class="formula" style="margin-top: 1.5rem;">
             <strong>System Availability (coupled)</strong> = A&#8321; &times; A&#8322; &times; &hellip; &times; A&#8345;
           </div>
-          <h3 style="margin-top: 1.5rem;">The Scout Troop Analogy</h3>
+          <h3 style="margin-top: 1.5rem;">The Hiking Analogy</h3>
           <p>
-            Imagine a line of hikers where each must wait for the one in front. If any hiker stumbles, everyone behind stops. Gaps between hikers &mdash; buffers &mdash; let the line absorb stumbles without propagating delays to the rest of the group.
+            Imagine a group of hikers walking in single file, each keeping pace with the person ahead. The slowest hiker sets the pace for the whole group. When a faster hiker stumbles, the group barely notices &mdash; that hiker catches back up. But when something causes the <em>slowest hiker</em> to stop, that time is lost forever &mdash; the group can never make it up because the slowest hiker was already setting the maximum pace.
+          </p>
+          <p>
+            The gap between hikers is the buffer. It needs to be large enough that a stumble from any faster hiker never propagates forward and stops the slowest one. If it does, the whole group covers less distance.
           </p>
           <div style="background: var(--color-primary-light); border-left: 4px solid var(--color-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1rem 1.5rem; margin-top: 1.5rem;">
             <strong>Food manufacturing worked example:</strong> Mixing 75%, Forming 82%, Packaging 78%. Coupled: 0.75 &times; 0.82 &times; 0.78 = 48.0%. Decoupled (forming is the constraint): 82%. Gain = +71%.
