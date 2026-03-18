@@ -947,17 +947,18 @@
             <div class="kpi-icon">◆</div>
             <div>
               <h3>Kg per Labour Hour</h3>
-              <div class="subtitle">Actual kg per total productive hour (direct + indirect) — the operational productivity metric. Majaco treats all factory labour except hygiene/technical as variable.</div>
-              <div class="formula">Kg/LH = Actual kg ÷ Total productive hours (D+I)</div>
+              <div class="subtitle">Actual kg per total factory hour — all roles planned for given volume: line crew, supervision, QA, goods in, dispatch, warehouse, hygiene. The whole-factory productivity metric.</div>
+              <div class="formula">Kg/LH = Actual kg ÷ Total factory hours (all planned roles)</div>
               <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span>Uses all productive hours (D+I) — captures supervision, QA, and indirect labour</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Gap to standard = efficiency variance expressed as a rate rather than £</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Shows: do we get less productive as volume rises?</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line — underlying metric that drives the efficiency variance</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Includes every role planned for production volume — direct, indirect, goods in, dispatch, warehouse, hygiene (semi-variable)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Higher volume:</strong> expect better Kg/LH — Machine Efficiency rises and indirect staff are better utilised across more output</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Lower volume:</strong> the opportunity is how you plan and flex indirect roles — without active flexing, Kg/LH deteriorates as fixed-ish heads spread over fewer kg</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Actual vs Planned:</strong> if actual Kg/LH is poor, is it an execution problem or a planning problem? If planned Kg/LH is already low, there was no chance of a good result — we planned in too much labour</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line and area — underlying metric that drives the efficiency variance</span></div>
               </div>
               <div style="margin-top:8px; padding:5px 8px; border-radius:5px; background:rgba(0,100,88,0.04); border:1px dashed rgba(0,100,88,0.25); font-size:9px; color:var(--text-secondary); display:flex; align-items:flex-start; gap:5px;">
                 <span style="font-size:12px; line-height:1;">※</span>
-                <span>Compared against <strong style="color:var(--text-primary);">planned Kg/LH</strong> — the standard derived from planning rates and manning allowances. As machine efficiency improves and updated rates are fed back into standards, the planned Kg/LH target rises too, maintaining a meaningful benchmark.</span>
+                <span>Compared against <strong style="color:var(--text-primary);">planned Kg/LH</strong> — the standard derived from planning rates and manning allowances for all factory roles at the given volume. As Machine Efficiency improves and updated rates feed back into standards, the planned target rises too. A persistently low planned Kg/LH signals a planning problem, not an operational one.</span>
               </div>
             </div>
           </div>
