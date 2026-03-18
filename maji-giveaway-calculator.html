@@ -935,13 +935,18 @@
           {/* ── Compliance baseline ── */}
           <div className="gc-chart-card" style={{background: warnNonCompliant ? '#fff' : '#f8f9fa', opacity: warnNonCompliant ? 1 : 0.55}}>
             <h3 style={{color: warnNonCompliant ? '#dc2626' : '#7A7A7A'}}>
-              {warnNonCompliant ? 'Current process is non-compliant' : 'Current process is compliant'}
+              {warnNonCompliant ? 'Pre-checkweigher process is non-compliant' : 'Current process is compliant'}
             </h3>
             <p style={{color: warnNonCompliant ? '#555' : '#999'}}>
               {warnNonCompliant
-                ? 'At your current SD (' + fmt(currentSD,1) + ' g), the minimum giveaway to satisfy all three W&M packer rules is shown below. The true saving opportunity is measured against this compliant baseline — not your current (non-compliant) giveaway.'
+                ? 'At your current SD (' + fmt(currentSD,1) + ' g), the pre-checkweigher distribution does not satisfy all three W&M packer rules. The true saving opportunity is measured against this compliant baseline — not your current giveaway.'
                 : 'Your current giveaway already satisfies W&M rules at the current SD. The section below shows the compliant baseline for reference.'}
             </p>
+            {warnNonCompliant && (
+              <div style={{background:'#fefce8',border:'1px solid #fde68a',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.78rem',color:'#92400e',marginBottom:'0.75rem',lineHeight:1.5}}>
+                <strong>Important:</strong> If the checkweigher is already catching and reworking underweight packs, the finished batch may still be W&M compliant. Check your checkweigh reject data carefully — if the rework loop is working, you are already bearing the rework cost shown in the comparison above.
+              </div>
+            )}
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'1rem',marginTop:'0.75rem'}}>
               <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
                 <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Compliant giveaway</div>
