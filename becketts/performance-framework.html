@@ -150,18 +150,18 @@
   .capture-col.visible { display: block; animation: slideIn 0.3s ease; }
   @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
 
-  .framework.tray-open { grid-template-columns: 230px 340px auto 1fr; }
+  .framework.tray-open { grid-template-columns: 210px 340px auto 1fr; }
 
   .capture-group-label {
     font-size: 8px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
-    color: var(--text-muted); margin: 8px 0 4px; padding-left: 2px;
+    color: var(--text-muted); margin: 5px 0 2px; padding-left: 2px;
   }
   .capture-group-label:first-of-type { margin-top: 0; }
 
   .capture-chip {
-    display: flex; align-items: center; gap: 6px;
-    border-radius: 7px; padding: 5px 8px; border: 1px solid var(--card-border);
-    background: var(--card-bg); margin-bottom: 3px; font-size: 9px;
+    display: flex; align-items: center; gap: 5px;
+    border-radius: 5px; padding: 3px 6px; border: 1px solid var(--card-border);
+    background: var(--card-bg); margin-bottom: 1px; font-size: 9px;
     cursor: default; transition: all 0.25s ease;
     border-left: 3px solid var(--card-border);
   }
@@ -170,12 +170,12 @@
   .capture-chip.dimmed { opacity: 0.18; }
 
   .capture-chip .chip-icon {
-    flex-shrink: 0; width: 16px; height: 16px; border-radius: 4px;
+    flex-shrink: 0; width: 14px; height: 14px; border-radius: 3px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 7px;
+    font-size: 6px;
   }
-  .capture-chip .chip-label { font-weight: 500; color: var(--text-primary); white-space: nowrap; }
-  .capture-chip .chip-desc { color: var(--text-muted); font-weight: 300; font-size: 8px; }
+  .capture-chip .chip-label { font-weight: 500; color: var(--text-primary); white-space: nowrap; font-size: 8px; }
+  .capture-chip .chip-desc { color: var(--text-muted); font-weight: 300; font-size: 7px; margin-left: 2px; }
 
   /* Chip source border colours */
   .capture-chip[data-source*="src-redzone"]     { border-left-color: #F97316; }
@@ -285,233 +285,233 @@
     <div class="capture-group-label" style="color:#78716C;">ERP Master Data</div>
     <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield,muv,pnl-bridge">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Pack spec per SKU</span><br><span class="chip-desc">ERP product master</span></span>
+      <span><span class="chip-label">Pack spec per SKU</span> <span class="chip-desc">—ERP product master</span></span>
     </div>
     <div class="capture-chip" data-source="src-unit-conv" data-kpis="plan-attain,pnl-bridge">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Case &amp; pallet config</span><br><span class="chip-desc">ERP packaging master</span></span>
+      <span><span class="chip-label">Case &amp; pallet config</span> <span class="chip-desc">—ERP packaging master</span></span>
     </div>
     <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Portions per pack</span><br><span class="chip-desc">ERP product spec (slicing config)</span></span>
+      <span><span class="chip-label">Portions per pack</span> <span class="chip-desc">—ERP product spec (slicing config)</span></span>
     </div>
     <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield,muv">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Back/block weight</span><br><span class="chip-desc">ERP product spec / supplier data</span></span>
+      <span><span class="chip-label">Back/block weight</span> <span class="chip-desc">—ERP product spec / supplier data</span></span>
     </div>
     <div class="capture-chip" data-source="src-unit-conv" data-kpis="yield">
       <span class="chip-icon cap-weigh">⚖</span>
-      <span><span class="chip-label">Empty pack / tare weight</span><br><span class="chip-desc">ERP packaging spec / verified tare study</span></span>
+      <span><span class="chip-label">Empty pack / tare weight</span> <span class="chip-desc">—ERP packaging spec / verified tare study</span></span>
     </div>
 
     <!-- OEE System -->
     <div class="capture-group-label" style="color:#F97316;">OEE System</div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-rate">
       <span class="chip-icon cap-sensor">◉</span>
-      <span><span class="chip-label">Downtime at bottleneck</span><br><span class="chip-desc">Line pulse sensor</span></span>
+      <span><span class="chip-label">Downtime at bottleneck</span> <span class="chip-desc">—Line pulse sensor</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-rate">
       <span class="chip-icon cap-sensor">◉</span>
-      <span><span class="chip-label">Line speed at bottleneck</span><br><span class="chip-desc">Sensor (with downtime)</span></span>
+      <span><span class="chip-label">Line speed at bottleneck</span> <span class="chip-desc">—Sensor (with downtime)</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Downtime reason code</span><br><span class="chip-desc">Operator touch screen</span></span>
+      <span><span class="chip-label">Downtime reason code</span> <span class="chip-desc">—Operator touch screen</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-attain,plan-rate,yield">
       <span class="chip-icon cap-sensor">◉</span>
-      <span><span class="chip-label">Good output count</span><br><span class="chip-desc">End-of-line counter</span></span>
+      <span><span class="chip-label">Good output count</span> <span class="chip-desc">—End-of-line counter</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,yield">
       <span class="chip-icon cap-sensor">◉</span>
-      <span><span class="chip-label">Waste output count</span><br><span class="chip-desc">End-of-line counter</span></span>
+      <span><span class="chip-label">Waste output count</span> <span class="chip-desc">—End-of-line counter</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,co-rate">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Changeover detection</span><br><span class="chip-desc">Auto-detected from run gap</span></span>
+      <span><span class="chip-label">Changeover detection</span> <span class="chip-desc">—Auto-detected from run gap</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff,plan-rate">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">BNS per SKU/line</span><br><span class="chip-desc">ERP system config per SKU</span></span>
+      <span><span class="chip-label">BNS per SKU/line</span> <span class="chip-desc">—ERP system config per SKU</span></span>
     </div>
     <div class="capture-chip" data-source="src-redzone" data-kpis="machine-eff">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Downtime threshold</span><br><span class="chip-desc">ERP system config (micro-stop cutoff)</span></span>
+      <span><span class="chip-label">Downtime threshold</span> <span class="chip-desc">—ERP system config (micro-stop cutoff)</span></span>
     </div>
 
     <!-- Works Orders -->
     <div class="capture-group-label" style="color:#3B82F6;">Works Orders</div>
     <div class="capture-chip" data-source="src-works-orders" data-kpis="plan-attain">
       <span class="chip-icon cap-scan">▦</span>
-      <span><span class="chip-label">W.O. quantity confirmed</span><br><span class="chip-desc">Pallet barcode scan</span></span>
+      <span><span class="chip-label">W.O. quantity confirmed</span> <span class="chip-desc">—Pallet barcode scan</span></span>
     </div>
     <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,plan-attain,kg-lh-plan">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">SKU-to-line assignment</span><br><span class="chip-desc">ERP system export</span></span>
+      <span><span class="chip-label">SKU-to-line assignment</span> <span class="chip-desc">—ERP system export</span></span>
     </div>
     <div class="capture-chip" data-source="src-works-orders" data-kpis="plan-attain,kg-lh-plan">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Daily production schedule</span><br><span class="chip-desc">Planner manual entry</span></span>
+      <span><span class="chip-label">Daily production schedule</span> <span class="chip-desc">—Planner manual entry</span></span>
     </div>
     <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Shift pattern / shift time</span><br><span class="chip-desc">ERP system config</span></span>
+      <span><span class="chip-label">Shift pattern / shift time</span> <span class="chip-desc">—ERP system config</span></span>
     </div>
     <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,co-rate">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Planned C/O sequence</span><br><span class="chip-desc">Planner entry</span></span>
+      <span><span class="chip-label">Planned C/O sequence</span> <span class="chip-desc">—Planner entry</span></span>
     </div>
 
     <!-- Hours -->
     <div class="capture-group-label" style="color:#8B5CF6;">Hours</div>
     <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,kg-lh-fin,labour-cost">
       <span class="chip-icon cap-scan">▦</span>
-      <span><span class="chip-label">Clock in / clock out</span><br><span class="chip-desc">Badge swipe</span></span>
+      <span><span class="chip-label">Clock in / clock out</span> <span class="chip-desc">—Badge swipe</span></span>
     </div>
     <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,kg-lh-fin,labour-cost">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Area allocation</span><br><span class="chip-desc">Supervisor entry</span></span>
+      <span><span class="chip-label">Area allocation</span> <span class="chip-desc">—Supervisor entry</span></span>
     </div>
     <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,kg-lh-fin,labour-cost">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Direct / indirect split</span><br><span class="chip-desc">Coded at clock-in</span></span>
+      <span><span class="chip-label">Direct / indirect split</span> <span class="chip-desc">—Coded at clock-in</span></span>
     </div>
     <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,labour-cost">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Crewing on line</span><br><span class="chip-desc">Manually entered</span></span>
+      <span><span class="chip-label">Crewing on line</span> <span class="chip-desc">—Manually entered</span></span>
     </div>
     <div class="capture-chip" data-source="src-hours" data-kpis="labour-cost">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Overtime flag</span><br><span class="chip-desc">T&amp;A system, auto from shift pattern</span></span>
+      <span><span class="chip-label">Overtime flag</span> <span class="chip-desc">—T&amp;A system, auto from shift pattern</span></span>
     </div>
     <div class="capture-chip" data-source="src-hours" data-kpis="labour-cost">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Agency / permanent code</span><br><span class="chip-desc">T&amp;A or payroll system code</span></span>
+      <span><span class="chip-label">Agency / permanent code</span> <span class="chip-desc">—T&amp;A or payroll system code</span></span>
     </div>
 
     <!-- Absence / Headcount -->
     <div class="capture-group-label" style="color:#10B981;">Absence / Headcount</div>
     <div class="capture-chip" data-source="src-absence" data-kpis="kg-lh-plan,labour-cost">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Planned headcount (roster)</span><br><span class="chip-desc">Scheduling system export</span></span>
+      <span><span class="chip-label">Planned headcount (roster)</span> <span class="chip-desc">—Scheduling system export</span></span>
     </div>
     <div class="capture-chip" data-source="src-absence" data-kpis="labour-cost">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Absence type classification</span><br><span class="chip-desc">HR / payroll system</span></span>
+      <span><span class="chip-label">Absence type classification</span> <span class="chip-desc">—HR / payroll system</span></span>
     </div>
     <div class="capture-chip" data-source="src-absence" data-kpis="labour-cost">
       <span class="chip-icon cap-scan">▦</span>
-      <span><span class="chip-label">Agency vs permanent flag</span><br><span class="chip-desc">T&amp;A system code at clock-in</span></span>
+      <span><span class="chip-label">Agency vs permanent flag</span> <span class="chip-desc">—T&amp;A system code at clock-in</span></span>
     </div>
 
     <!-- Yield -->
     <div class="capture-group-label" style="color:#EC4899;">Yield</div>
     <div class="capture-chip" data-source="src-giveaway" data-kpis="yield">
       <span class="chip-icon cap-weigh">⚖</span>
-      <span><span class="chip-label">Pack weight</span><br><span class="chip-desc">Inline checkweigher</span></span>
+      <span><span class="chip-label">Pack weight</span> <span class="chip-desc">—Inline checkweigher</span></span>
     </div>
     <div class="capture-chip" data-source="src-giveaway" data-kpis="yield">
       <span class="chip-icon cap-sensor">◉</span>
-      <span><span class="chip-label">Portion weight</span><br><span class="chip-desc">Slicer output data</span></span>
+      <span><span class="chip-label">Portion weight</span> <span class="chip-desc">—Slicer output data</span></span>
     </div>
     <div class="capture-chip" data-source="src-giveaway" data-kpis="yield">
       <span class="chip-icon cap-sensor">◉</span>
-      <span><span class="chip-label">Gripper end / trim</span><br><span class="chip-desc">Slicer trim measurement</span></span>
+      <span><span class="chip-label">Gripper end / trim</span> <span class="chip-desc">—Slicer trim measurement</span></span>
     </div>
     <div class="capture-chip" data-source="src-giveaway" data-kpis="yield">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Misshapes count</span><br><span class="chip-desc">QA visual inspection</span></span>
+      <span><span class="chip-label">Misshapes count</span> <span class="chip-desc">—QA visual inspection</span></span>
     </div>
     <div class="capture-chip" data-source="src-giveaway" data-kpis="yield">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Non-standard / downgrade</span><br><span class="chip-desc">QA classification</span></span>
+      <span><span class="chip-label">Non-standard / downgrade</span> <span class="chip-desc">—QA classification</span></span>
     </div>
     <div class="capture-chip" data-source="src-giveaway" data-kpis="yield">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Target weight per SKU</span><br><span class="chip-desc">ERP system config</span></span>
+      <span><span class="chip-label">Target weight per SKU</span> <span class="chip-desc">—ERP system config</span></span>
     </div>
 
     <!-- Raw Material Intake -->
     <div class="capture-group-label" style="color:#DC2626;">Raw Material Intake</div>
     <div class="capture-chip" data-source="src-intake" data-kpis="yield,muv">
       <span class="chip-icon cap-weigh">⚖</span>
-      <span><span class="chip-label">Intake batch weight</span><br><span class="chip-desc">Goods-in scales / weighbridge</span></span>
+      <span><span class="chip-label">Intake batch weight</span> <span class="chip-desc">—Goods-in scales / weighbridge</span></span>
     </div>
     <div class="capture-chip" data-source="src-intake" data-kpis="yield">
       <span class="chip-icon cap-scan">▦</span>
-      <span><span class="chip-label">Lot / batch tracking</span><br><span class="chip-desc">Barcode scan at intake</span></span>
+      <span><span class="chip-label">Lot / batch tracking</span> <span class="chip-desc">—Barcode scan at intake</span></span>
     </div>
     <div class="capture-chip" data-source="src-intake" data-kpis="muv">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Supplier &amp; spec reference</span><br><span class="chip-desc">ERP / system config</span></span>
+      <span><span class="chip-label">Supplier &amp; spec reference</span> <span class="chip-desc">—ERP / system config</span></span>
     </div>
     <div class="capture-chip" data-source="src-intake" data-kpis="muv">
       <span class="chip-icon cap-scan">▦</span>
-      <span><span class="chip-label">Material issued to production</span><br><span class="chip-desc">Stock system / ERP back-flush</span></span>
+      <span><span class="chip-label">Material issued to production</span> <span class="chip-desc">—Stock system / ERP back-flush</span></span>
     </div>
 
     <!-- BOM / Recipe -->
     <div class="capture-group-label" style="color:#06B6D4;">BOM / Recipe</div>
     <div class="capture-chip" data-source="src-bom" data-kpis="muv">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Recipe master (BOM)</span><br><span class="chip-desc">ERP recipe configuration</span></span>
+      <span><span class="chip-label">Recipe master (BOM)</span> <span class="chip-desc">—ERP recipe configuration</span></span>
     </div>
     <div class="capture-chip" data-source="src-bom" data-kpis="muv,pnl-bridge">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Standard cost roll-up</span><br><span class="chip-desc">Finance costing model</span></span>
+      <span><span class="chip-label">Standard cost roll-up</span> <span class="chip-desc">—Finance costing model</span></span>
     </div>
     <div class="capture-chip" data-source="src-bom" data-kpis="muv">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Material grade classification</span><br><span class="chip-desc">ERP material master</span></span>
+      <span><span class="chip-label">Material grade classification</span> <span class="chip-desc">—ERP material master</span></span>
     </div>
 
     <!-- Budget / Forecast -->
     <div class="capture-group-label" style="color:#7C3AED;">Budget / Forecast</div>
     <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Budget volumes by SKU</span><br><span class="chip-desc">Finance budget model</span></span>
+      <span><span class="chip-label">Budget volumes by SKU</span> <span class="chip-desc">—Finance budget model</span></span>
     </div>
     <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Standard margin per SKU</span><br><span class="chip-desc">Finance costing model</span></span>
+      <span><span class="chip-label">Standard margin per SKU</span> <span class="chip-desc">—Finance costing model</span></span>
     </div>
     <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge">
       <span class="chip-icon cap-human">✎</span>
-      <span><span class="chip-label">Period forecast</span><br><span class="chip-desc">Commercial planning (manual/system)</span></span>
+      <span><span class="chip-label">Period forecast</span> <span class="chip-desc">—Commercial planning (manual/system)</span></span>
     </div>
     <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Overhead absorption rate</span><br><span class="chip-desc">Finance cost allocation model</span></span>
+      <span><span class="chip-label">Overhead absorption rate</span> <span class="chip-desc">—Finance cost allocation model</span></span>
     </div>
 
     <!-- Planning Standards -->
     <div class="capture-group-label" style="color:var(--lime);">Planning Standards</div>
     <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh-plan,plan-rate">
       <span class="chip-icon cap-manual">⏱</span>
-      <span><span class="chip-label">Standard rate per SKU</span><br><span class="chip-desc">Engineering time study</span></span>
+      <span><span class="chip-label">Standard rate per SKU</span> <span class="chip-desc">—Engineering time study</span></span>
     </div>
     <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh-plan">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Manning allowance</span><br><span class="chip-desc">Historical analysis</span></span>
+      <span><span class="chip-label">Manning allowance</span> <span class="chip-desc">—Historical analysis</span></span>
     </div>
     <div class="capture-chip" data-source="src-planning" data-kpis="co-rate">
       <span class="chip-icon cap-manual">⏱</span>
-      <span><span class="chip-label">C/O time allowance</span><br><span class="chip-desc">Observed changeover studies</span></span>
+      <span><span class="chip-label">C/O time allowance</span> <span class="chip-desc">—Observed changeover studies</span></span>
     </div>
 
     <!-- Commercial Standards -->
     <div class="capture-group-label" style="color:#EAB308;">Commercial Standards</div>
     <div class="capture-chip" data-source="src-commercial" data-kpis="kg-lh-fin,labour-cost">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Direct hour cost</span><br><span class="chip-desc">Finance costing model</span></span>
+      <span><span class="chip-label">Direct hour cost</span> <span class="chip-desc">—Finance costing model</span></span>
     </div>
     <div class="capture-chip" data-source="src-commercial" data-kpis="yield">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">£/kg selling price target</span><br><span class="chip-desc">Commercial pricing model</span></span>
+      <span><span class="chip-label">£/kg selling price target</span> <span class="chip-desc">—Commercial pricing model</span></span>
     </div>
     <div class="capture-chip" data-source="src-commercial" data-kpis="yield,muv">
       <span class="chip-icon cap-system">⟳</span>
-      <span><span class="chip-label">Raw material £/kg cost</span><br><span class="chip-desc">Finance costing model</span></span>
+      <span><span class="chip-label">Raw material £/kg cost</span> <span class="chip-desc">—Finance costing model</span></span>
     </div>
 
     <!-- Legend -->
