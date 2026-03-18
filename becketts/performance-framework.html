@@ -33,8 +33,7 @@
   /* Wider container for framework content */
   .section .container { max-width: 1280px; }
 
-  .framework { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 340px auto 1fr; gap: 16px; align-items: start; position: relative; transition: grid-template-columns 0.3s ease; }
-  .framework.tray-open { max-width: 1540px; }
+  .framework { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; position: relative; }
 
   .column-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 0 4px; }
   .column-header .icon { width: 24px; height: 24px; border-radius: 6px; background: var(--pine-muted); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--pine); }
@@ -69,7 +68,13 @@
 
   /* KPI List */
   .kpi-list-wrapper { position: relative; }
-  .kpi-list { display: flex; flex-direction: column; gap: 8px; }
+  .kpi-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 8px; align-items: start; }
+  .kpi-list > .kpi-divider { grid-column: 1 / -1; }
+  .kpi-list > .card { margin-bottom: 0; }
+
+  .sources-col { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; align-items: start; }
+  .sources-col > .column-header, .sources-col > .source-divider { grid-column: 1 / -1; }
+  .sources-col > .card { margin-bottom: 0; }
 
 
   .kpi-icon {
@@ -93,9 +98,9 @@
   .loss-label-row { display: flex; gap: 2px; margin-top: 3px; }
   .loss-label { font-size: 7px; font-weight: 500; text-align: center; color: var(--text-muted); letter-spacing: 0.2px; line-height: 1.2; }
 
-  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 48px; }
+  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 0; }
   .center-db {
-    position: relative; width: 100%; min-width: 220px;
+    position: relative; width: 100%; min-width: 220px; max-width: 480px;
     border-radius: 16px; border: 2px solid var(--pine);
     background: #ffffff;
     padding: 22px 16px; text-align: center;
@@ -146,11 +151,17 @@
   .capture-toggle .chevron { display: inline-block; transition: transform 0.25s ease; font-size: 14px; color: var(--pine); }
   .capture-toggle.open .chevron { transform: rotate(180deg); }
 
-  .capture-col { display: none; min-width: 0; overflow: hidden; }
-  .capture-col.visible { display: block; animation: slideIn 0.3s ease; }
-  @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+  .capture-col { display: none; overflow: hidden; }
+  .capture-col.visible {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px 12px; align-items: start;
+    padding: 16px; border: 1px solid var(--card-border); border-radius: 12px;
+    background: var(--card-bg); animation: slideDown 0.3s ease;
+  }
+  .capture-col > .column-header, .capture-col > .capture-group-label, .capture-col > .capture-legend { grid-column: 1 / -1; }
+  .capture-col .capture-chip { margin-bottom: 0; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
 
-  .framework.tray-open { grid-template-columns: 210px 340px auto 1fr; }
 
   .capture-group-label {
     font-size: 8px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
@@ -262,10 +273,18 @@
   .def-contents-bar a:hover { text-decoration: underline; }
   .def-draft-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F97316; background: rgba(249,115,22,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(249,115,22,0.25); margin-left: 8px; }
 
+  @media (max-width: 1024px) {
+    .sources-col { grid-template-columns: repeat(2, 1fr); }
+    .kpi-list { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 768px) {
+    .sources-col { grid-template-columns: 1fr; }
+    .kpi-list { grid-template-columns: 1fr; }
+    .capture-col.visible { grid-template-columns: 1fr; }
     div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
     .spec-overlay { width: 100%; }
     .def-tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    #conn-svg { display: none; }
   }
 </style>
 </head>
@@ -335,7 +354,7 @@
 <div class="framework" id="framework">
   <svg id="conn-svg"></svg>
 
-  <!-- FAR LEFT: Capture Methods (hidden by default) -->
+  <!-- TOP: Capture Methods (hidden by default) -->
   <div class="capture-col" id="captureCol">
     <div class="column-header">
       <div class="icon" style="font-size:10px;">⚡</div>
@@ -576,7 +595,7 @@
     </div>
 
     <!-- Legend -->
-    <div style="margin-top:8px; padding:6px 8px; border-radius:7px; background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); font-size:8px; color:var(--text-muted); line-height:1.8;">
+    <div class="capture-legend" style="margin-top:8px; padding:6px 8px; border-radius:7px; background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); font-size:8px; color:var(--text-muted); line-height:1.8;">
       <span style="color:#F97316;">◉</span> Sensor &nbsp;
       <span style="color:#8B5CF6;">✎</span> Human &nbsp;
       <span style="color:#3B82F6;">▦</span> Scan &nbsp;
@@ -586,7 +605,7 @@
     </div>
   </div>
 
-  <!-- LEFT: Data Sources -->
+  <!-- DATA SOURCES -->
   <div class="sources-col">
     <div class="column-header">
       <div class="icon">⬡</div>
@@ -799,7 +818,7 @@
     </div>
   </div>
 
-  <!-- CENTER: Database -->
+  <!-- CALCULATION LAYER -->
   <div class="center">
     <div class="arrows-in">
       <svg width="70" height="70" viewBox="0 0 70 70">
@@ -843,7 +862,7 @@
     </div>
   </div>
 
-  <!-- RIGHT: KPIs -->
+  <!-- KPIs -->
   <div class="kpi-list-wrapper">
     <div class="column-header">
       <div class="icon">◆</div>
@@ -1476,6 +1495,8 @@
   function getEdge(el, side) {
     const fr = framework.getBoundingClientRect();
     const r = el.getBoundingClientRect();
+    if (side === 'top') return { x: r.left + r.width / 2 - fr.left, y: r.top - fr.top };
+    if (side === 'bottom') return { x: r.left + r.width / 2 - fr.left, y: r.bottom - fr.top };
     if (side === 'left') return { x: r.left - fr.left, y: r.top + r.height / 2 - fr.top };
     return { x: r.right - fr.left, y: r.top + r.height / 2 - fr.top };
   }
@@ -1486,18 +1507,18 @@
 
   function drawLines(sourceIds, kpiIds, captureEls) {
     connSvg.innerHTML = '';
-    const dbLeft = getEdge(centerDb, 'left');
-    const dbRight = getEdge(centerDb, 'right');
+    const dbTop = getEdge(centerDb, 'top');
+    const dbBottom = getEdge(centerDb, 'bottom');
 
     sourceIds.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
-      const from = getEdge(el, 'right');
-      const to = dbLeft;
+      const from = getEdge(el, 'bottom');
+      const to = dbTop;
       const color = sourceColors[id] || '#DAF11B';
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      const mx = from.x + (to.x - from.x) * 0.5;
-      path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+      const my = from.y + (to.y - from.y) * 0.5;
+      path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + from.x + ',' + my + ' ' + to.x + ',' + my + ' ' + to.x + ',' + to.y);
       path.setAttribute('stroke', color);
       path.setAttribute('stroke-width', '2');
       path.setAttribute('stroke-opacity', '0.7');
@@ -1535,11 +1556,11 @@
     kpiIds.forEach(id => {
       const el = document.getElementById(id);
       if (!el || el.offsetParent === null) return;
-      const from = dbRight;
-      const to = getEdge(el, 'left');
+      const from = dbBottom;
+      const to = getEdge(el, 'top');
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      const mx = from.x + (to.x - from.x) * 0.5;
-      path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+      const my = from.y + (to.y - from.y) * 0.5;
+      path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + from.x + ',' + my + ' ' + to.x + ',' + my + ' ' + to.x + ',' + to.y);
       path.setAttribute('stroke', '#DAF11B');
       path.setAttribute('stroke-width', '2');
       path.setAttribute('stroke-opacity', '0.7');
@@ -1553,12 +1574,12 @@
         const srcId = chip.dataset.source;
         const srcEl = document.getElementById(srcId);
         if (!srcEl) return;
-        const from = getEdge(chip, 'right');
-        const to = getEdge(srcEl, 'left');
+        const from = getEdge(chip, 'bottom');
+        const to = getEdge(srcEl, 'top');
         const color = sourceColors[srcId] || '#DAF11B';
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const mx = from.x + (to.x - from.x) * 0.5;
-        path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+        const my = from.y + (to.y - from.y) * 0.5;
+        path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + from.x + ',' + my + ' ' + to.x + ',' + my + ' ' + to.x + ',' + to.y);
         path.setAttribute('stroke', color);
         path.setAttribute('stroke-width', '1.5');
         path.setAttribute('stroke-opacity', '0.5');
