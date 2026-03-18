@@ -146,13 +146,13 @@
     .note {
       margin-top: 16px;
       padding: 14px 16px;
-      background: rgba(218,241,27,0.08);
-      border-left: 3px solid var(--lime);
+      background: rgba(0,100,88,0.04);
+      border-left: 3px solid var(--pine);
       border-radius: 0 6px 6px 0;
       font-size: 0.82rem;
-      color: rgba(255,255,255,0.7);
+      color: var(--dark);
     }
-    .note strong { color: var(--lime); }
+    .note strong { color: var(--pine); }
     .assumptions {
       grid-column: 1 / -1;
       font-size: 0.82rem;
@@ -422,19 +422,19 @@
         <div class="value" style="font-size:1.8rem;">£131.16<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (£0.13/pallet/day × 1000 pallets in store)</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(218,241,27,0.2);">
           <div>
-            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Higher fabric losses</div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">Higher fabric losses</div>
             <div style="font-size:1.1rem; font-weight:600;">£9.24<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">ΔT to ambient: 15°C → 21°C<br>+0.418 kWh thermal/pallet/day</div>
+            <div style="font-size:0.75rem; color:#999999;">ΔT to ambient: 15°C → 21°C<br>+0.418 kWh thermal/pallet/day</div>
           </div>
           <div>
-            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Lost "free cooling"</div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">Lost "free cooling"</div>
             <div style="font-size:1.1rem; font-weight:600;">£121.92<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Product offset: 5.66 → 0.15 kWh/p/d<br>Latent heat of fusion no longer absorbed</div>
+            <div style="font-size:0.75rem; color:#999999;">Product offset: 5.66 → 0.15 kWh/p/d<br>Latent heat of fusion no longer absorbed</div>
           </div>
           <div>
-            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">COP efficiency</div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">COP efficiency</div>
             <div style="font-size:1.1rem; font-weight:600;">3.2 → 2.8</div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Lower COP at -3°C means more<br>electricity per kWh of cooling<br>@ £0.28/kWh</div>
+            <div style="font-size:0.75rem; color:#999999;">Lower COP at -3°C means more<br>electricity per kWh of cooling<br>@ £0.28/kWh</div>
           </div>
         </div>
       </div>
@@ -451,7 +451,7 @@
       <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3);">
         <div class="label" style="color:var(--lime);">Net Annual Saving / (Cost)</div>
         <div class="value savings" style="font-size:1.8rem;">▼ £616.9k</div>
-        <div class="sub" style="color:rgba(255,255,255,0.6);">-74.1% · Total: £832.2k → £215.3k/yr</div>
+        <div class="sub" style="color:#7A7A7A;">-74.1% · Total: £832.2k → £215.3k/yr</div>
       </div>
       <div class="result-box">
         <div class="label">Latent Heat Avoided</div>
@@ -821,19 +821,19 @@
         <div class="value" style="font-size:1.8rem;">${fmt(Math.abs(dailyMarginalEnergy))}<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (${fmt(Math.abs(marginalPerPD))}/pallet/day × ${avgPalletsInStore.toFixed(0)} pallets in store)</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(218,241,27,0.2);">
           <div>
-            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Higher fabric losses</div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">Higher fabric losses</div>
             <div style="font-size:1.1rem; font-weight:600;">${fmt(Math.abs(fabricCostContrib))}<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">ΔT to ambient: ${(tAmbient - tCurrent).toFixed(0)}°C → ${(tAmbient - tProposed).toFixed(0)}°C<br>+${fabricIncrease_perPD.toFixed(3)} kWh thermal/pallet/day</div>
+            <div style="font-size:0.75rem; color:#999999;">ΔT to ambient: ${(tAmbient - tCurrent).toFixed(0)}°C → ${(tAmbient - tProposed).toFixed(0)}°C<br>+${fabricIncrease_perPD.toFixed(3)} kWh thermal/pallet/day</div>
           </div>
           <div>
-            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">Lost "free cooling"</div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">Lost "free cooling"</div>
             <div style="font-size:1.1rem; font-weight:600;">${fmt(Math.abs(coolingCostContrib))}<span style="font-size:0.75rem; opacity:0.6">/day</span></div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Product offset: ${productOffset_perDay_current.toFixed(2)} → ${productOffset_perDay_proposed.toFixed(2)} kWh/p/d<br>${crossesZeroCurrent && !crossesZeroProposed ? 'Latent heat of fusion no longer absorbed' : 'Less sensible heat absorbed'}</div>
+            <div style="font-size:0.75rem; color:#999999;">Product offset: ${productOffset_perDay_current.toFixed(2)} → ${productOffset_perDay_proposed.toFixed(2)} kWh/p/d<br>${crossesZeroCurrent && !crossesZeroProposed ? 'Latent heat of fusion no longer absorbed' : 'Less sensible heat absorbed'}</div>
           </div>
           <div>
-            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); margin-bottom:3px;">COP efficiency</div>
+            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">COP efficiency</div>
             <div style="font-size:1.1rem; font-weight:600;">${copCurrent.toFixed(1)} → ${copProposed.toFixed(1)}</div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.45);">Lower COP at ${tProposed}°C means more<br>electricity per kWh of cooling<br>@ ${fmt(elecCost)}/kWh</div>
+            <div style="font-size:0.75rem; color:#999999;">Lower COP at ${tProposed}°C means more<br>electricity per kWh of cooling<br>@ ${fmt(elecCost)}/kWh</div>
           </div>
         </div>
       </div>
@@ -850,7 +850,7 @@
       <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3);">
         <div class="label" style="color:var(--lime);">Net Annual Saving / (Cost)</div>
         <div class="value ${totalDelta <= 0 ? 'savings' : 'cost-increase'}" style="font-size:1.8rem;">${totalDelta <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(totalDelta))}</div>
-        <div class="sub" style="color:rgba(255,255,255,0.6);">${totalDeltaPct >= 0 ? '+' : ''}${totalDeltaPct.toFixed(1)}% · Total: ${fmt(totalCurrent)} → ${fmt(totalProposed)}/yr</div>
+        <div class="sub" style="color:#7A7A7A;">${totalDeltaPct >= 0 ? '+' : ''}${totalDeltaPct.toFixed(1)}% · Total: ${fmt(totalCurrent)} → ${fmt(totalProposed)}/yr</div>
       </div>
       <div class="result-box">
         <div class="label">Latent Heat Avoided</div>

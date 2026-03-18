@@ -244,6 +244,7 @@ h5, h6 {
   right: 0;
   z-index: var(--z-sticky);
   height: var(--nav-height);
+  padding-block: 8px;
   background-color: var(--nav-bg);
   border-bottom: 1px solid var(--nav-border);
   backdrop-filter: blur(8px);
@@ -1602,8 +1603,8 @@ tbody tr:hover {
    ============================================= */
 
 .page-hero {
-  padding-top: calc(var(--nav-height) + var(--space-3xl));
-  padding-bottom: var(--space-3xl);
+  padding-top: calc(var(--nav-height) + var(--space-2xl));
+  padding-bottom: var(--space-2xl);
   background-color: var(--color-bg-dark);
   color: var(--color-text-light);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);

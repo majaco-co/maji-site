@@ -387,7 +387,7 @@
               <div class="formula">Machine Eff = Potential Time ÷ Shift Time</div>
               <div class="decomp"><strong>Planning Eff</strong> = Actual Op. Time ÷ Shift Time &nbsp;|&nbsp; <strong>Operating Eff</strong> = Potential Time ÷ Actual Op. Time</div>
               <div class="loss-bar">
-                <div class="loss-segment" style="flex:2.0; background:#1B5E20;">PT</div>
+                <div class="loss-segment" style="flex:2.0; background:#006458;">PT</div>
                 <div class="loss-segment" style="flex:0.8; background:#F97316;">LTSR</div>
                 <div class="loss-segment" style="flex:0.4; background:#EF4444;">LTMW</div>
                 <div class="loss-segment" style="flex:1.0; background:#8B5CF6;">UPDT</div>
@@ -603,20 +603,18 @@
     Every minute in the factory is classified into exactly one category. The hierarchy below shows how calendar time narrows to productive time, and where each loss category sits.
   </p>
   <div style="margin-bottom:24px;">
-    <div style="display:flex; gap:0; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-      <div style="flex:1.5; background:#1a1a2e; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#64748B; border-right:1px solid rgba(255,255,255,0.2);">Non-working Time</div>
-      <div style="flex:0.5; background:#334155; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#94A3B8; border-right:1px solid rgba(255,255,255,0.2);">Schedule Loss</div>
-      <div style="flex:0.7; background:#1E3A5F; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#60A5FA; border-right:1px solid rgba(255,255,255,0.2);">PDT</div>
-      <div style="flex:1.0; background:#4C1D95; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#C4B5FD; border-right:1px solid rgba(255,255,255,0.2);">UPDT</div>
-      <div style="flex:0.8; background:#7C2D12; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#FDBA74; border-right:1px solid rgba(255,255,255,0.2);">LTSR</div>
-      <div style="flex:0.4; background:#7F1D1D; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#FCA5A5; border-right:1px solid rgba(255,255,255,0.2);">LTMW</div>
-      <div style="flex:2.5; background:var(--pine); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Potential Time ✓</div>
+    <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="flex:2.5; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Potential Time ✓</div>
+      <div style="flex:0.8; background:#F97316; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">LTSR</div>
+      <div style="flex:0.4; background:#EF4444; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">LTMW</div>
+      <div style="flex:1.0; background:#8B5CF6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">UPDT</div>
+      <div style="flex:0.7; background:#3B82F6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">PDT</div>
+      <div style="flex:0.5; background:#64748B; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Sched Loss</div>
     </div>
-    <div style="display:flex; gap:0; margin-top:6px; font-size:9px; font-weight:500;">
-      <div style="flex:1.5; text-align:center; color:#475569;"><div style="border-top:1px solid #334155; margin:0 4px; padding-top:3px;">Calendar Time only</div></div>
-      <div style="flex:1.2; text-align:center; color:#60A5FA;"><div style="border-top:1px solid rgba(96,165,250,0.3); margin:0 4px; padding-top:3px;">Planning Efficiency losses</div></div>
-      <div style="flex:2.2; text-align:center; color:#C4B5FD;"><div style="border-top:1px solid rgba(196,181,253,0.3); margin:0 4px; padding-top:3px;">Operating Efficiency losses</div></div>
+    <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
       <div style="flex:2.5; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
+      <div style="flex:2.2; text-align:center; color:#8B5CF6;"><div style="border-top:1px solid rgba(139,92,246,0.3); margin:0 4px; padding-top:3px;">Operating Efficiency losses</div></div>
+      <div style="flex:1.2; text-align:center; color:#3B82F6;"><div style="border-top:1px solid rgba(59,130,246,0.3); margin:0 4px; padding-top:3px;">Planning Efficiency losses</div></div>
     </div>
   </div>
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
