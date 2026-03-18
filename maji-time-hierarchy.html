@@ -52,9 +52,9 @@
         <span aria-current="page">Time Hierarchy Framework</span>
       </nav>
       <p class="page-hero__eyebrow">maji Framework</p>
-      <h1 class="page-hero__title">Operational Performance <span class="text-green">Measurement Framework</span></h1>
+      <h1 class="page-hero__title">The Time <span class="text-green">Hierarchy</span></h1>
       <p class="page-hero__subtitle">
-        A comprehensive methodology for measuring manufacturing performance through time-based decomposition, hierarchical efficiency metrics, and constraint-state-dependent financial valuation.
+        Every hour your factory loses has a cause and a cost. This framework makes both visible.
       </p>
     </div>
   </section>
@@ -63,18 +63,33 @@
     <section class="section">
       <div class="container">
 
-        <div class="tool-disclaimer">
-          This page was created by <strong>maji</strong>, majaco's AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+        <!-- 1. The problem with OEE -->
+        <div class="content-card reveal">
+          <h2>The Problem with OEE</h2>
+          <p>
+            Traditional OEE multiplies Availability &times; Performance &times; Quality into a single percentage. This has three problems:
+          </p>
+          <ul>
+            <li><strong>It obscures magnitude.</strong> A line at 65% OEE could have a 30% downtime problem and negligible quality losses, or moderate losses across all three. You cannot tell which from the number alone.</li>
+            <li><strong>It double-counts.</strong> Speed losses on waste units are counted in both Performance and Quality. The multiplicative structure makes this unavoidable.</li>
+            <li><strong>It cannot be valued in pounds.</strong> A percentage does not tell you what an improvement is worth. Time does &mdash; every lost hour has a financial value that depends on your constraint state.</li>
+          </ul>
+          <p>
+            Time-based additive decomposition expresses every loss as a duration. Losses are directly comparable, mutually exclusive, and convertible to financial impact.
+          </p>
         </div>
 
-        <!-- Why this framework -->
-        <div class="content-card reveal">
-          <h2>Why Time-Based Decomposition?</h2>
+        <!-- 2. The hierarchy at a glance -->
+        <div class="content-card reveal" data-delay="40">
+          <h2>How It Works</h2>
           <p>
-            Traditional OEE uses a multiplicative framework: Availability &times; Performance &times; Quality. This produces a single number that obscures the relative magnitude of different loss types.
+            Calendar Time is all time that exists. Through a series of subtractions &mdash; non-working time, schedule losses, planned downtime, unplanned downtime, speed losses, and quality losses &mdash; we arrive at <strong>Potential Time</strong>: the theoretical minimum time needed to produce your actual good output at maximum bottleneck speed.
           </p>
           <p>
-            Time-based additive decomposition expresses every loss as a duration of time &mdash; making losses directly comparable, additive, and easily converted to financial impact.
+            Everything between Calendar Time and Potential Time is a loss. The hierarchy classifies every loss into a mutually exclusive category so nothing is double-counted and every loss can be valued.
+          </p>
+          <p style="font-size:0.85rem;color:#7A7A7A;">
+            <strong>Key principle:</strong> The hierarchy is measured at the bottleneck &mdash; the process step that limits throughput. Non-bottleneck steps have excess capacity and are not the constraint.
           </p>
         </div>
 
@@ -208,65 +223,14 @@
           </div>
         </div>
 
-        <!-- Key Formulas -->
+        <!-- 4. Which metrics matter? -->
         <div class="content-card reveal" data-delay="160">
-          <h2>Key Mathematical Relationships</h2>
-          <div class="formula"><strong>Available Time:</strong> <code>Calendar Time &minus; Non-working Time</code></div>
-          <div class="formula"><strong>Planned Production Time:</strong> <code>Shift Time &minus; Schedule Loss</code></div>
-          <div class="formula"><strong>Operating Time (Planned):</strong> <code>Planned Production Time &minus; Planned Downtime</code></div>
-          <div class="formula"><strong>Operating Time (Actual):</strong> <code>Up Time + Unplanned Downtime</code></div>
-          <div class="formula"><strong>Up Time:</strong> <code>Potential Time + Lost Time Slow Running + Lost Time Making Waste</code></div>
-          <div class="formula"><strong>Potential Time:</strong> <code>Good Output / Bottleneck Speed</code></div>
-        </div>
-
-        <!-- Efficiency Metrics with Show Me -->
-        <div class="content-card reveal" data-delay="240">
-          <h2>1. Operating Efficiency (Shop Floor)</h2>
-          <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:15px;border-radius:8px;font-family:monospace;font-size:1.1em;margin:10px 0;display:flex;justify-content:space-between;align-items:center">
-            <span>Operating Efficiency = Potential Time / Operating Time</span>
-            <button class="show-me-btn" onclick="highlightMetric(['potential'],['run'])">Show Me</button>
-          </p>
-          <div class="legend-box">
-            <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator</span></div>
-            <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator</span></div>
-          </div>
-          <p><strong>Critical distinction:</strong> Measures shop floor execution within the operational window provided by planning. Shop floor teams control UPDT, LTSR, and LTMW but cannot influence Schedule Loss or Planned Downtime standards. World-class target: &ge;85%.</p>
-        </div>
-
-        <div class="content-card reveal" data-delay="280">
-          <h2>2. Machine Efficiency / OOE (Operational Management)</h2>
-          <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:15px;border-radius:8px;font-family:monospace;font-size:1.1em;margin:10px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
-            <span>Machine Efficiency = Potential Time / Shift Time</span>
-            <button class="show-me-btn" onclick="highlightMetric(['potential'],['shift'])">Show Me</button>
-          </p>
-          <div class="legend-box">
-            <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator</span></div>
-            <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator</span></div>
-          </div>
-          <p><strong>Critical distinction:</strong> Extends accountability beyond shop floor to include Schedule Loss design and Planned Downtime standards. Terminology varies by constraint state: "Machine Efficiency" (sales-constrained cost focus) vs "OOE" (production-constrained throughput focus). Formula identical.</p>
-        </div>
-
-        <div class="content-card reveal" data-delay="320">
-          <h2>3. TEEP (Strategic Leadership)</h2>
-          <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:15px;border-radius:8px;font-family:monospace;font-size:1.1em;margin:10px 0;display:flex;justify-content:space-between;align-items:center">
-            <span>TEEP = Potential Time / Calendar Time</span>
-            <button class="show-me-btn" onclick="highlightMetric(['potential'],['calendar'])">Show Me</button>
-          </p>
-          <div class="legend-box">
-            <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator</span></div>
-            <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator</span></div>
-          </div>
-          <p><strong>Use when production-constrained:</strong> Market demand exceeds production capacity. Every unit of additional capacity translates to additional sales at full margin.</p>
-        </div>
-
-        <!-- Constraint state -->
-        <div class="content-card reveal" data-delay="360">
-          <h2>Constraint State Determines Framework Selection</h2>
-          <p>The financial value of a lost hour depends on whether demand exceeds capacity.</p>
+          <h2>Which Metrics Matter to You?</h2>
+          <p>Before choosing a metric, identify your constraint state: <strong>can you sell more if you made more?</strong></p>
           <div class="table-wrapper">
             <table>
               <thead>
-                <tr><th>Accountability</th><th>Sales-Constrained</th><th>Production-Constrained</th><th>Formula</th><th>Sphere of Control</th></tr>
+                <tr><th>Who</th><th>Sales-Constrained</th><th>Production-Constrained</th><th>Formula</th></tr>
               </thead>
               <tbody>
                 <tr>
@@ -274,37 +238,110 @@
                   <td>Operating Efficiency</td>
                   <td>Operating Efficiency</td>
                   <td><code>PT / OT</code></td>
-                  <td>UPDT, LTSR, LTMW</td>
                 </tr>
                 <tr>
-                  <td><strong>Operational Management</strong></td>
+                  <td><strong>Operations Manager</strong></td>
                   <td>Machine Efficiency</td>
                   <td>OOE</td>
                   <td><code>PT / ST</code></td>
-                  <td>All shop floor losses + Schedule Loss + PDT</td>
                 </tr>
                 <tr>
                   <td><strong>Strategic Leadership</strong></td>
                   <td>Output per Labour Hour</td>
-                  <td>TEEP (or OOE if weekend working not possible)</td>
-                  <td><code>PT / CT</code> or <code>Good Output / Labour Hours</code></td>
-                  <td>All operational losses + crewing/shift pattern strategy</td>
+                  <td>TEEP</td>
+                  <td><code>Output / Labour Hrs</code> or <code>PT / CT</code></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <ul style="margin-top:1rem">
-            <li><strong>Production-constrained</strong> (demand &gt; capacity): Every lost hour = lost throughput at full margin. Use TEEP to measure total asset utilisation. If weekend working is not possible, use OOE (same formula but against Shift Time, not Calendar Time).</li>
-            <li><strong>Sales-constrained</strong> (capacity &gt; demand): Lost hours reduce labour efficiency but do not directly reduce sales. Use Output per Labour Hour to measure how productively labour is deployed.</li>
-          </ul>
-          <p style="margin-top:1rem;font-size:0.85rem;color:#7A7A7A"><strong>Note:</strong> Machine Efficiency and OOE are mathematically identical (<code>PT / ST</code>); terminology reflects strategic context. Output per Labour Hour = Good Output / Total Labour Hours Worked. PT=Potential Time, OT=Operating Time (Actual), ST=Shift Time, CT=Calendar Time.</p>
+          <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">Machine Efficiency and OOE are the same formula &mdash; the name changes with the strategic intent. If weekend working is not possible, use OOE instead of TEEP.</p>
+        </div>
+
+        <!-- 5. The metrics explained -->
+        <div class="content-card reveal" data-delay="200">
+          <h2>The Metrics</h2>
+
+          <div style="margin-bottom:1.5rem">
+            <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center">
+              <span><strong>Operating Efficiency</strong> = Potential Time / Operating Time (Actual)</span>
+              <button class="show-me-btn" onclick="highlightMetric(['potential'],['run'])">Show Me</button>
+            </p>
+            <p style="font-size:0.85rem;color:#555">Shop floor metric. Measures execution within the operational window &mdash; UPDT, LTSR, and LTMW are in scope. Schedule Loss and PDT are not (planning decisions). World-class: &ge;85%.</p>
+          </div>
+
+          <div style="margin-bottom:1.5rem">
+            <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+              <span><strong>Machine Efficiency / OOE</strong> = Potential Time / Shift Time</span>
+              <button class="show-me-btn" onclick="highlightMetric(['potential'],['shift'])">Show Me</button>
+            </p>
+            <p style="font-size:0.85rem;color:#555">Management metric. Adds Schedule Loss and PDT to the denominator &mdash; holds the operation accountable for how it uses all available shift hours, not just the time allocated to production.</p>
+          </div>
+
+          <div style="margin-bottom:1.5rem">
+            <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0;display:flex;justify-content:space-between;align-items:center">
+              <span><strong>TEEP</strong> = Potential Time / Calendar Time</span>
+              <button class="show-me-btn" onclick="highlightMetric(['potential'],['calendar'])">Show Me</button>
+            </p>
+            <p style="font-size:0.85rem;color:#555">Strategic metric for production-constrained environments. Measures total asset utilisation including non-working time. Answers: "how much of the factory's theoretical capacity are we using?"</p>
+          </div>
+
+          <div style="margin-bottom:1.5rem">
+            <p style="background:var(--color-dark, #004a40);color:#DAF11B;padding:12px 15px;border-radius:8px;font-size:0.95em;margin:0 0 8px 0">
+              <span><strong>Output per Labour Hour</strong> = Good Output / Total Labour Hours</span>
+            </p>
+            <p style="font-size:0.85rem;color:#555">Strategic metric for sales-constrained environments. Measures how productively labour is deployed. Improving machine efficiency or optimising crew size both increase this metric, reducing cost per unit.</p>
+          </div>
+
+          <div style="font-size:0.85rem;color:#555;margin-top:0.5rem">
+            <div class="legend-box" style="margin-bottom:0.5rem">
+              <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50;border:2px solid #2E7D32"></div><span>Numerator (in cascade)</span></div>
+              <div class="legend-item"><div class="legend-swatch" style="background:#2196F3;border:2px solid #1565C0"></div><span>Denominator (in cascade)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. From time to money -->
+        <div class="content-card reveal" data-delay="240">
+          <h2>From Time to Money</h2>
+          <p>The framework&rsquo;s payoff: every lost hour has a pound value.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1rem 0">
+            <div style="background:#f0fdf4;border-radius:10px;padding:1rem;border:1px solid #bbf7d0">
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#006458;font-weight:600;margin-bottom:0.5rem">Production-Constrained</div>
+              <div style="font-size:0.85rem;color:#333;line-height:1.6">
+                Lost Time &times; Bottleneck Speed &times; Unit Marginal Profit = <strong>opportunity value</strong>.<br>
+                Every recovered hour produces additional saleable output.
+              </div>
+            </div>
+            <div style="background:#f8f9fa;border-radius:10px;padding:1rem;border:1px solid #e0e0e0">
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#7A7A7A;font-weight:600;margin-bottom:0.5rem">Sales-Constrained</div>
+              <div style="font-size:0.85rem;color:#333;line-height:1.6">
+                Labour Hours Saved &times; Fully Loaded Labour Cost = <strong>opportunity value</strong>.<br>
+                Recovered time enables fewer people or fewer hours for the same output.
+              </div>
+            </div>
+          </div>
+          <p style="font-size:0.85rem;color:#555;line-height:1.6">
+            <strong>The difference matters enormously.</strong> The same 2.5 hours of unplanned downtime per day can be worth &pound;5.4M/yr (production-constrained, valued at throughput margin) or &pound;82k/yr (sales-constrained, valued at labour cost saved) &mdash; a 66&times; difference. Getting the constraint diagnosis right is not optional.
+          </p>
+        </div>
+
+        <!-- 7. Formulas reference -->
+        <div class="content-card reveal" data-delay="280">
+          <h2>Key Formulas</h2>
+          <div class="formula"><strong>Potential Time</strong> = Good Output / Bottleneck Speed</div>
+          <div class="formula"><strong>Up Time</strong> = Potential Time + LTSR + LTMW</div>
+          <div class="formula"><strong>Operating Time (Actual)</strong> = Up Time + UPDT</div>
+          <div class="formula"><strong>LTSR</strong> = Good Output / Run Speed &minus; Good Output / Bottleneck Speed</div>
+          <div class="formula"><strong>LTMW</strong> = Waste Output / Run Speed</div>
+          <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
+          <div class="formula"><strong>Verification:</strong> Actual OT = PT + LTSR + LTMW + UPDT (must balance)</div>
         </div>
 
         <!-- CTA -->
         <div style="text-align: center; padding: 3rem 0;">
-          <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">Implement time-based measurement</h2>
+          <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">See what your lost time is costing you</h2>
           <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 500px; margin-inline: auto;">
-            majaco can implement this framework in your facility — from data collection design through to live dashboards and management reporting.
+            majaco can implement this framework in your facility &mdash; from data collection design through to live dashboards and financial valuation.
           </p>
           <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
             Talk to majaco
