@@ -732,7 +732,7 @@
       var elapsed = ((now - startTime) / 1000) % T_TOTAL;
 
       // Determine phase index and local progress (0→1)
-      var acc = 0, phase = 4, t = 1;
+      var acc = 0, phase = -1, t = 0;
       for (var i = 0; i < 5; i++) {
         if (elapsed < acc + PHASE_DUR[i]) {
           phase = i;
@@ -741,10 +741,7 @@
         }
         acc += PHASE_DUR[i];
       }
-      // If past all phases → pause, hold final state
-      if (elapsed >= acc + (phase === 4 ? PHASE_DUR[4] : 0)) {
-        phase = -1; // pause
-      }
+      // If elapsed >= sum of all phase durations, we're in the pause gap
 
       var upBuf, dnBuf;
 
