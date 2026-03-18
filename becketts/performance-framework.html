@@ -217,8 +217,55 @@
   .kpi-filter-btn.active { background: var(--pine); color: #fff; border-color: var(--pine); }
   .kpi-section-hidden { display: none; }
 
+  .view-toggle { display: inline-flex; border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; margin-left: 16px; vertical-align: middle; }
+  .view-toggle button { padding: 6px 16px; font-size: 11px; font-weight: 500; font-family: inherit; border: none; cursor: pointer; transition: all 0.2s; }
+  .view-toggle button.active { background: var(--pine); color: #fff; }
+  .view-toggle button:not(.active) { background: var(--card-bg); color: var(--pine); }
+
+  /* Integration view */
+  .source-card, .center-db { position: relative; }
+  .cog-icon { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; border-radius: 5px; background: var(--pine-muted); color: var(--pine); font-size: 11px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.2s; z-index: 2; }
+  .source-card:hover .cog-icon, .center-db:hover .cog-icon { opacity: 0.7; }
+  .cog-icon:hover { opacity: 1 !important; }
+  .integration-view .cog-icon { opacity: 0.5; }
+  .integration-strip { display: none; align-items: center; gap: 10px; margin-top: 8px; padding: 6px 10px; border-top: 1px solid var(--card-border); font-size: 9px; color: var(--text-secondary); font-weight: 300; }
+  .integration-strip .method-icon { font-size: 11px; flex-shrink: 0; }
+  .integration-strip .sys-name { color: var(--text-muted); margin-left: auto; white-space: nowrap; }
+  .integration-view .integration-strip { display: flex; }
+
+  /* Spec overlay */
+  .spec-overlay { position: fixed; top: 0; right: 0; width: 440px; height: 100vh; background: #fff; box-shadow: -4px 0 24px rgba(0,0,0,0.12); z-index: 1000; transform: translateX(100%); transition: transform 0.3s ease; overflow-y: auto; padding: 28px 24px; }
+  .spec-overlay.open { transform: translateX(0); }
+  .spec-overlay-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.15); z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .spec-overlay-backdrop.open { opacity: 1; pointer-events: auto; }
+  .spec-overlay .close-btn { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text-muted); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .spec-overlay .close-btn:hover { background: var(--card-bg-hover); color: var(--text-primary); }
+  .spec-overlay .spec-title { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .spec-overlay .spec-title .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .spec-overlay .spec-title h2 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .spec-overlay .spec-summary { font-size: 10px; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0; font-weight: 300; }
+  .spec-row { padding: 14px 0; border-bottom: 1px solid #f0f0f0; }
+  .spec-row .spec-row-icon { font-size: 14px; margin-right: 8px; vertical-align: middle; }
+  .spec-row .spec-row-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .spec-row .spec-row-content { font-size: 12px; color: var(--text-primary); line-height: 1.7; font-weight: 300; }
+
+  /* Definitions tabs */
+  .definitions-section { max-width: 1280px; margin: 48px auto 0; }
+  .def-tab-bar { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 24px; }
+  .def-tab { padding: 10px 20px; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; background: none; border-left: none; border-right: none; border-top: none; font-family: inherit; }
+  .def-tab:hover { color: var(--text-primary); }
+  .def-tab.active { color: var(--pine); border-bottom-color: var(--pine); font-weight: 700; }
+  .def-tab-content { display: none; }
+  .def-tab-content.active { display: block; }
+  .def-contents-bar { display: flex; gap: 16px; margin-bottom: 20px; padding: 8px 12px; background: rgba(0,100,88,0.03); border-radius: 8px; font-size: 10px; flex-wrap: wrap; }
+  .def-contents-bar a { color: var(--pine); font-weight: 500; cursor: pointer; text-decoration: none; }
+  .def-contents-bar a:hover { text-decoration: underline; }
+  .def-draft-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F97316; background: rgba(249,115,22,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(249,115,22,0.25); margin-left: 8px; }
+
   @media (max-width: 768px) {
     div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .spec-overlay { width: 100%; }
+    .def-tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 </style>
 </head>
@@ -279,6 +326,10 @@
   <button class="capture-toggle" id="captureToggle" onclick="toggleCaptureTray()">
     <span class="chevron">›</span> Data capture methods
   </button>
+  <div class="view-toggle">
+    <button class="active" id="viewFrameworkBtn">Framework</button>
+    <button id="viewIntegrationBtn">Integration</button>
+  </div>
 </div>
 
 <div class="framework" id="framework">
@@ -544,6 +595,7 @@
 
     <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Reference &amp; Master Data</div>
     <div class="card source-card src-accent-stone" id="src-unit-conv" data-feeds="machine-eff,plan-attain,kg-lh-plan,kg-lh-fin,labour-cost,yield,muv,pnl-bridge">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -557,12 +609,14 @@
             <div class="detail-row"><span class="arrow">›</span><span>Empty pack weight (tare) by SKU/pack format — for net weight derivation from checkweigher</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Canonical unit declared per KPI — ensures cross-source consistency</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">⟳</span> System config · On-change <span class="sys-name">Sage X3 product master</span></div>
         </div>
       </div>
     </div>
 
     <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Transactional Data</div>
     <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield,muv">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -574,11 +628,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Good + waste output → Run Speed, LTSR, LTMW</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Changeover events → actual C/O durations</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">⟳</span> Automated feed · Near real-time <span class="sys-name">Bespoke IoT / OEE system</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-blue" id="src-works-orders" data-feeds="machine-eff,kg-lh-plan,kg-lh-fin,plan-attain,labour-cost">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -590,11 +646,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Changeover schedule → PDT</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Shift Time and Schedule Loss</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">⟳</span> Automated · Real-time via SFDC <span class="sys-name">Sage X3 + SFDC</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-purple" id="src-hours" data-feeds="kg-lh-plan,kg-lh-fin,labour-cost">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -607,11 +665,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Overtime hours flagged separately from standard hours</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Skill/role mix — distinguishes skilled vs unskilled and role type on line</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">📄</span> Daily export · Daily <span class="sys-name">T&amp;A system</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-emerald" id="src-absence" data-feeds="kg-lh-plan,kg-lh-fin,labour-cost">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -623,11 +683,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Absence classified: planned (holiday, training) vs unplanned (sick, no-show)</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Agency vs permanent hours split</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">📄</span> Daily export · Daily <span class="sys-name">T&amp;A + spreadsheet roster</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-pink" id="src-giveaway" data-feeds="yield">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -640,11 +702,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Misshapes % — product not meeting visual spec</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Non-standard % — downgrades sold at lower £/kg</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">⟳</span> Machine feed · Real-time <span class="sys-name">Checkweighers + slicers</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-red" id="src-intake" data-feeds="yield,muv">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -656,12 +720,14 @@
             <div class="detail-row"><span class="arrow">›</span><span>Supplier and raw material spec reference</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Material issued to production per run — stock system / back-flush from ERP</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">⟳</span> Automated · Real-time via SFDC <span class="sys-name">SFDC → Sage X3</span></div>
         </div>
       </div>
     </div>
 
     <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Standards &amp; Targets</div>
     <div class="card source-card src-accent-teal" id="src-planning" data-feeds="kg-lh-plan,plan-rate,co-rate">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -672,11 +738,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Direct + indirect allowances</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Standard planning rates + C/O allowances</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">✋</span> Manual config · Periodic review <span class="sys-name">IE team / X3 config</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-fin,yield,labour-cost,muv">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -689,11 +757,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Raw material £/kg cost — for converting yield losses to £ impact</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Standard material price by material type/grade — for MUV price variance</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">📄</span> Periodic extract · Quarterly <span class="sys-name">X3 costing model</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-cyan" id="src-bom" data-feeds="muv,pnl-bridge">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -705,11 +775,13 @@
             <div class="detail-row"><span class="arrow">›</span><span>Material type/grade classification with unit costs</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Yield allowance built into recipe standard</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">🔗</span> System config · On-change <span class="sys-name">Sage X3 recipe module</span></div>
         </div>
       </div>
     </div>
 
     <div class="card source-card src-accent-violet" id="src-budget" data-feeds="pnl-bridge">
+      <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -721,6 +793,7 @@
             <div class="detail-row"><span class="arrow">›</span><span>Period forecast (weekly/monthly) for volume and mix</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption rates per line-hour</span></div>
           </div>
+          <div class="integration-strip"><span class="method-icon">📄</span> Periodic extract · Monthly/weekly <span class="sys-name">Finance (TBC)</span></div>
         </div>
       </div>
     </div>
@@ -740,6 +813,7 @@
     </div>
 
     <div class="center-db">
+      <span class="cog-icon">⚙</span>
       <div class="glow"></div>
       <div class="db-icon">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -1073,209 +1147,225 @@
   </div>
 </div>
 
-<!-- Time Hierarchy Section -->
-<div style="max-width:1280px; margin:48px auto 0;">
-  <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-    <div style="width:32px; height:4px; border-radius:2px; background:var(--pine);"></div>
-    <span style="color:var(--pine); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">Machine Definitions</span>
+<!-- Definitions Tabs Section -->
+<div class="definitions-section" id="definitionsSection">
+  <div class="def-tab-bar">
+    <button class="def-tab active" data-def-tab="time">Time Hierarchy</button>
+    <button class="def-tab" data-def-tab="labour">Labour Hierarchy <span class="def-draft-badge">Draft</span></button>
+    <button class="def-tab" data-def-tab="yield">Yield Hierarchy <span class="def-draft-badge">Draft</span></button>
   </div>
-  <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Time Hierarchy Decomposition</h2>
-  <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
-    Every minute in the factory is classified into exactly one category. The hierarchy below shows how calendar time narrows to productive time, and where each loss category sits.
-  </p>
-  <div style="margin-bottom:24px;">
-    <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-      <div style="flex:2.5; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Potential Time ✓</div>
-      <div style="flex:0.8; background:#F97316; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">LTSR</div>
-      <div style="flex:0.4; background:#EF4444; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">LTMW</div>
-      <div style="flex:1.0; background:#8B5CF6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">UPDT</div>
-      <div style="flex:0.7; background:#3B82F6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">PDT</div>
-      <div style="flex:0.5; background:#64748B; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Sched Loss</div>
-    </div>
-    <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
-      <div style="flex:2.5; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
-      <div style="flex:2.2; text-align:center; color:#8B5CF6;"><div style="border-top:1px solid rgba(139,92,246,0.3); margin:0 4px; padding-top:3px;">Operating Efficiency losses</div></div>
-      <div style="flex:1.2; text-align:center; color:#3B82F6;"><div style="border-top:1px solid rgba(59,130,246,0.3); margin:0 4px; padding-top:3px;">Planning Efficiency losses</div></div>
-    </div>
-  </div>
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Calendar Time → Shift Time</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Calendar Time</strong> = Total hours in period (168 hrs/week)<br>
-        <strong style="color:var(--text-primary);">Shift Time</strong> = Calendar Time − non-working time<br>
-        <span style="color:var(--text-muted); font-style:italic;">Machine Efficiency denominator = Shift Time</span>
-      </div>
-    </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Shift Time → Actual Operating Time</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Schedule Loss</strong> = Breaks, no-demand periods<br>
-        <strong style="color:var(--text-primary);">PDT</strong> = Changeovers, planned maintenance (at planned duration)<br>
-        <span style="color:var(--text-muted); font-style:italic;">Planning Efficiency = Actual Op. Time ÷ Shift Time</span>
-      </div>
-    </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Actual Operating Time → Up Time</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">UPDT</strong> = Stops &gt; threshold + PDT overruns<br>
-        <strong style="color:var(--text-primary);">Up Time</strong> = Actual Op. Time − UPDT<br>
-        <span style="color:var(--text-muted); font-style:italic;">Line physically running and producing output</span>
-      </div>
-    </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Up Time → Potential Time</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">LTSR</strong> = Time lost below BNS (good output only)<br>
-        <strong style="color:var(--text-primary);">LTMW</strong> = Time producing waste at run speed<br>
-        <span style="color:var(--text-muted); font-style:italic;">Operating Eff = Potential Time ÷ Actual Op. Time</span>
-      </div>
-    </div>
-  </div>
-  <div style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
-    <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
-    <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
-      Shift Time = Potential Time + LTSR + LTMW + UPDT + PDT + Schedule Loss<br>
-      <span style="color:var(--text-muted);">Machine Efficiency = Potential Time ÷ Shift Time = Operating Efficiency × Planning Efficiency</span>
-    </div>
-  </div>
-</div>
 
-<!-- Labour Hierarchy Section -->
-<div style="max-width:1280px; margin:48px auto 0;">
-  <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-    <div style="width:32px; height:4px; border-radius:2px; background:var(--pine);"></div>
-    <span style="color:var(--pine); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">Labour Definitions</span>
-    <span style="margin-left:auto; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#F97316; background:rgba(249,115,22,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(249,115,22,0.25);">Draft</span>
-  </div>
-  <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Labour Hierarchy Decomposition</h2>
-  <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
-    Every paid hour is classified into exactly one category. The hierarchy below shows how paid hours narrow to productive hours, and where each labour loss sits.
-  </p>
-  <div style="margin-bottom:24px;">
-    <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-      <div style="flex:2.0; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Productive Hours</div>
-      <div style="flex:0.6; background:#F97316; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Idle / Over</div>
-      <div style="flex:1.2; background:#8B5CF6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Indirect</div>
-      <div style="flex:0.8; background:#10B981; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Absence</div>
-      <div style="flex:0.4; background:#EAB308; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Agency Prem</div>
+  <!-- Time Hierarchy Tab -->
+  <div class="def-tab-content active" id="def-time">
+    <div class="def-contents-bar">
+      <a href="#def-time-calendar">Calendar → Shift</a>
+      <a href="#def-time-shift">Shift → Operating</a>
+      <a href="#def-time-operating">Operating → Up Time</a>
+      <a href="#def-time-uptime">Up Time → Potential</a>
+      <a href="#def-time-equation">Key Equation</a>
     </div>
-    <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
-      <div style="flex:2.0; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
-      <div style="flex:1.8; text-align:center; color:#8B5CF6;"><div style="border-top:1px solid rgba(139,92,246,0.3); margin:0 4px; padding-top:3px;">Attended but not productive</div></div>
-      <div style="flex:1.2; text-align:center; color:#10B981;"><div style="border-top:1px solid rgba(16,185,129,0.3); margin:0 4px; padding-top:3px;">Cost without attendance</div></div>
-    </div>
-  </div>
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Paid Hours → Attended Hours</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Absence</strong> = Paid hours not at work (holiday, sick, no-show, training)<br>
-        <strong style="color:var(--text-primary);">Agency Premium</strong> = Additional cost of agency hours vs permanent rate<br>
-        <span style="color:var(--text-muted); font-style:italic;">Attended Hours = Paid Hours − Absence</span>
+    <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Time Hierarchy Decomposition</h2>
+    <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
+      Every minute in the factory is classified into exactly one category. The hierarchy below shows how calendar time narrows to productive time, and where each loss category sits.
+    </p>
+    <div style="margin-bottom:24px;">
+      <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <div style="flex:2.5; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Potential Time ✓</div>
+        <div style="flex:0.8; background:#F97316; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">LTSR</div>
+        <div style="flex:0.4; background:#EF4444; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">LTMW</div>
+        <div style="flex:1.0; background:#8B5CF6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">UPDT</div>
+        <div style="flex:0.7; background:#3B82F6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">PDT</div>
+        <div style="flex:0.5; background:#64748B; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Sched Loss</div>
+      </div>
+      <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
+        <div style="flex:2.5; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
+        <div style="flex:2.2; text-align:center; color:#8B5CF6;"><div style="border-top:1px solid rgba(139,92,246,0.3); margin:0 4px; padding-top:3px;">Operating Efficiency losses</div></div>
+        <div style="flex:1.2; text-align:center; color:#3B82F6;"><div style="border-top:1px solid rgba(59,130,246,0.3); margin:0 4px; padding-top:3px;">Planning Efficiency losses</div></div>
       </div>
     </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Attended Hours → Direct Hours</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Indirect Time</strong> = Supervision, QA, cleaning, maintenance support, line setup<br>
-        <strong style="color:var(--text-primary);">Direct Hours</strong> = Attended Hours − Indirect Hours<br>
-        <span style="color:var(--text-muted); font-style:italic;">Direct hours are the denominator for Kg/DH financial metric</span>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div id="def-time-calendar" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Calendar Time → Shift Time</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Calendar Time</strong> = Total hours in period (168 hrs/week)<br>
+          <strong style="color:var(--text-primary);">Shift Time</strong> = Calendar Time − non-working time<br>
+          <span style="color:var(--text-muted); font-style:italic;">Machine Efficiency denominator = Shift Time</span>
+        </div>
+      </div>
+      <div id="def-time-shift" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Shift Time → Actual Operating Time</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Schedule Loss</strong> = Breaks, no-demand periods<br>
+          <strong style="color:var(--text-primary);">PDT</strong> = Changeovers, planned maintenance (at planned duration)<br>
+          <span style="color:var(--text-muted); font-style:italic;">Planning Efficiency = Actual Op. Time ÷ Shift Time</span>
+        </div>
+      </div>
+      <div id="def-time-operating" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Actual Operating Time → Up Time</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">UPDT</strong> = Stops &gt; threshold + PDT overruns<br>
+          <strong style="color:var(--text-primary);">Up Time</strong> = Actual Op. Time − UPDT<br>
+          <span style="color:var(--text-muted); font-style:italic;">Line physically running and producing output</span>
+        </div>
+      </div>
+      <div id="def-time-uptime" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Up Time → Potential Time</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">LTSR</strong> = Time lost below BNS (good output only)<br>
+          <strong style="color:var(--text-primary);">LTMW</strong> = Time producing waste at run speed<br>
+          <span style="color:var(--text-muted); font-style:italic;">Operating Eff = Potential Time ÷ Actual Op. Time</span>
+        </div>
       </div>
     </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Direct Hours → On-Line Hours</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Area Allocation</strong> = Direct hours assigned to specific lines vs unallocated<br>
-        <strong style="color:var(--text-primary);">On-Line Hours</strong> = Direct hours with a line assignment<br>
-        <span style="color:var(--text-muted); font-style:italic;">On-line hours enable line-level labour productivity analysis</span>
-      </div>
-    </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">On-Line Hours → Productive Hours</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Idle / Waiting</strong> = On-line but no product running (starved, blocked, waiting for materials)<br>
-        <strong style="color:var(--text-primary);">Overmanning</strong> = More crew than standard requires for the SKU running<br>
-        <span style="color:var(--text-muted); font-style:italic;">Productive Hours = standard crew × operating time</span>
+    <div id="def-time-equation" style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
+      <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
+      <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
+        Shift Time = Potential Time + LTSR + LTMW + UPDT + PDT + Schedule Loss<br>
+        <span style="color:var(--text-muted);">Machine Efficiency = Potential Time ÷ Shift Time = Operating Efficiency × Planning Efficiency</span>
       </div>
     </div>
   </div>
-  <div style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
-    <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
-    <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
-      Paid Hours = Productive Hours + Idle/Overmanning + Indirect + Absence<br>
-      £/kg Labour = (Paid Hours × Blended Rate) ÷ Actual kg<br>
-      <span style="color:var(--text-muted);">Labour Variance = Actual £/kg Labour − Standard £/kg Labour</span>
-    </div>
-  </div>
-</div>
 
-<!-- Yield Hierarchy Section -->
-<div style="max-width:1280px; margin:48px auto 0;">
-  <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-    <div style="width:32px; height:4px; border-radius:2px; background:var(--pine);"></div>
-    <span style="color:var(--pine); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">Yield Definitions</span>
-    <span style="margin-left:auto; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#F97316; background:rgba(249,115,22,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(249,115,22,0.25);">Draft</span>
+  <!-- Labour Hierarchy Tab -->
+  <div class="def-tab-content" id="def-labour">
+    <div class="def-contents-bar">
+      <a href="#def-labour-paid">Paid → Attended</a>
+      <a href="#def-labour-attended">Attended → Direct</a>
+      <a href="#def-labour-direct">Direct → On-Line</a>
+      <a href="#def-labour-online">On-Line → Productive</a>
+      <a href="#def-labour-equation">Key Equation</a>
+    </div>
+    <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Labour Hierarchy Decomposition</h2>
+    <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
+      Every paid hour is classified into exactly one category. The hierarchy below shows how paid hours narrow to productive hours, and where each labour loss sits.
+    </p>
+    <div style="margin-bottom:24px;">
+      <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <div style="flex:2.0; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Productive Hours</div>
+        <div style="flex:0.6; background:#F97316; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Idle / Over</div>
+        <div style="flex:1.2; background:#8B5CF6; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Indirect</div>
+        <div style="flex:0.8; background:#10B981; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Absence</div>
+        <div style="flex:0.4; background:#EAB308; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Agency Prem</div>
+      </div>
+      <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
+        <div style="flex:2.0; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Value-adding time</div></div>
+        <div style="flex:1.8; text-align:center; color:#8B5CF6;"><div style="border-top:1px solid rgba(139,92,246,0.3); margin:0 4px; padding-top:3px;">Attended but not productive</div></div>
+        <div style="flex:1.2; text-align:center; color:#10B981;"><div style="border-top:1px solid rgba(16,185,129,0.3); margin:0 4px; padding-top:3px;">Cost without attendance</div></div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div id="def-labour-paid" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Paid Hours → Attended Hours</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Absence</strong> = Paid hours not at work (holiday, sick, no-show, training)<br>
+          <strong style="color:var(--text-primary);">Agency Premium</strong> = Additional cost of agency hours vs permanent rate<br>
+          <span style="color:var(--text-muted); font-style:italic;">Attended Hours = Paid Hours − Absence</span>
+        </div>
+      </div>
+      <div id="def-labour-attended" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Attended Hours → Direct Hours</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Indirect Time</strong> = Supervision, QA, cleaning, maintenance support, line setup<br>
+          <strong style="color:var(--text-primary);">Direct Hours</strong> = Attended Hours − Indirect Hours<br>
+          <span style="color:var(--text-muted); font-style:italic;">Direct hours are the denominator for Kg/DH financial metric</span>
+        </div>
+      </div>
+      <div id="def-labour-direct" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Direct Hours → On-Line Hours</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Area Allocation</strong> = Direct hours assigned to specific lines vs unallocated<br>
+          <strong style="color:var(--text-primary);">On-Line Hours</strong> = Direct hours with a line assignment<br>
+          <span style="color:var(--text-muted); font-style:italic;">On-line hours enable line-level labour productivity analysis</span>
+        </div>
+      </div>
+      <div id="def-labour-online" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">On-Line Hours → Productive Hours</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Idle / Waiting</strong> = On-line but no product running (starved, blocked, waiting for materials)<br>
+          <strong style="color:var(--text-primary);">Overmanning</strong> = More crew than standard requires for the SKU running<br>
+          <span style="color:var(--text-muted); font-style:italic;">Productive Hours = standard crew × operating time</span>
+        </div>
+      </div>
+    </div>
+    <div id="def-labour-equation" style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
+      <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
+      <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
+        Paid Hours = Productive Hours + Idle/Overmanning + Indirect + Absence<br>
+        £/kg Labour = (Paid Hours × Blended Rate) ÷ Actual kg<br>
+        <span style="color:var(--text-muted);">Labour Variance = Actual £/kg Labour − Standard £/kg Labour</span>
+      </div>
+    </div>
   </div>
-  <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Yield Hierarchy Decomposition</h2>
-  <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
-    Every kilogram of raw material input is accounted for. The hierarchy below shows how input material narrows to saleable output, and where each yield loss sits.
-  </p>
-  <div style="margin-bottom:24px;">
-    <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-      <div style="flex:2.0; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Saleable Output</div>
-      <div style="flex:0.6; background:#EC4899; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Giveaway</div>
-      <div style="flex:0.8; background:#DC2626; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Gripper End</div>
-      <div style="flex:0.5; background:#EAB308; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Downgrade</div>
-      <div style="flex:0.3; background:#64748B; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Waste</div>
+
+  <!-- Yield Hierarchy Tab -->
+  <div class="def-tab-content" id="def-yield">
+    <div class="def-contents-bar">
+      <a href="#def-yield-input">Input → Sliced</a>
+      <a href="#def-yield-sliced">Sliced → Packed</a>
+      <a href="#def-yield-packed">Packed → Saleable</a>
+      <a href="#def-yield-recovery">£/kg Recovery</a>
+      <a href="#def-yield-equation">Key Equation</a>
     </div>
-    <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
-      <div style="flex:2.0; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Sold at target £/kg</div></div>
-      <div style="flex:1.4; text-align:center; color:#DC2626;"><div style="border-top:1px solid rgba(220,38,38,0.3); margin:0 4px; padding-top:3px;">Material conversion losses</div></div>
-      <div style="flex:0.8; text-align:center; color:#EAB308;"><div style="border-top:1px solid rgba(234,179,8,0.3); margin:0 4px; padding-top:3px;">Quality losses</div></div>
-    </div>
-  </div>
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Raw Material Input → Sliced Output</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Gripper End / Trim</strong> = Material lost at the slicer — the end pieces that can't be portioned<br>
-        <strong style="color:var(--text-primary);">Sliced Output</strong> = Input kg − Gripper End (kg)<br>
-        <span style="color:var(--text-muted); font-style:italic;">Gripper end % varies by back/block size and slicer setup</span>
+    <h2 style="font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Yield Hierarchy Decomposition</h2>
+    <p style="font-size:13px; color:var(--text-secondary); font-weight:300; margin-bottom:24px; max-width:700px; line-height:1.7;">
+      Every kilogram of raw material input is accounted for. The hierarchy below shows how input material narrows to saleable output, and where each yield loss sits.
+    </p>
+    <div style="margin-bottom:24px;">
+      <div style="display:flex; gap:2px; border-radius:10px; overflow:hidden; height:40px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <div style="flex:2.0; background:#006458; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffffff;">Saleable Output</div>
+        <div style="flex:0.6; background:#EC4899; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Giveaway</div>
+        <div style="flex:0.8; background:#DC2626; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Gripper End</div>
+        <div style="flex:0.5; background:#EAB308; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Downgrade</div>
+        <div style="flex:0.3; background:#64748B; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; color:#ffffff;">Waste</div>
+      </div>
+      <div style="display:flex; gap:2px; margin-top:6px; font-size:9px; font-weight:500;">
+        <div style="flex:2.0; text-align:center; color:var(--pine);"><div style="border-top:1px solid rgba(0,100,88,0.3); margin:0 4px; padding-top:3px;">Sold at target £/kg</div></div>
+        <div style="flex:1.4; text-align:center; color:#DC2626;"><div style="border-top:1px solid rgba(220,38,38,0.3); margin:0 4px; padding-top:3px;">Material conversion losses</div></div>
+        <div style="flex:0.8; text-align:center; color:#EAB308;"><div style="border-top:1px solid rgba(234,179,8,0.3); margin:0 4px; padding-top:3px;">Quality losses</div></div>
       </div>
     </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Sliced Output → Packed Output</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Giveaway</strong> = Actual pack weight − target pack weight (per pack, summed across production)<br>
-        <strong style="color:var(--text-primary);">Packed Output</strong> = Sliced Output − Giveaway (kg)<br>
-        <span style="color:var(--text-muted); font-style:italic;">Must comply with Three Packer's Rules</span>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div id="def-yield-input" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Raw Material Input → Sliced Output</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Gripper End / Trim</strong> = Material lost at the slicer — the end pieces that can't be portioned<br>
+          <strong style="color:var(--text-primary);">Sliced Output</strong> = Input kg − Gripper End (kg)<br>
+          <span style="color:var(--text-muted); font-style:italic;">Gripper end % varies by back/block size and slicer setup</span>
+        </div>
+      </div>
+      <div id="def-yield-sliced" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Sliced Output → Packed Output</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Giveaway</strong> = Actual pack weight − target pack weight (per pack, summed across production)<br>
+          <strong style="color:var(--text-primary);">Packed Output</strong> = Sliced Output − Giveaway (kg)<br>
+          <span style="color:var(--text-muted); font-style:italic;">Must comply with Three Packer's Rules</span>
+        </div>
+      </div>
+      <div id="def-yield-packed" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Packed Output → Saleable Output</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Misshapes</strong> = Product not meeting visual specification — sold at reduced £/kg or disposed<br>
+          <strong style="color:var(--text-primary);">Non-standard / Downgrades</strong> = Product meeting food safety but not premium spec — sold at lower £/kg<br>
+          <span style="color:var(--text-muted); font-style:italic;">Saleable Output = Packed Output − Downgrades − Waste</span>
+        </div>
+      </div>
+      <div id="def-yield-recovery" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">£/kg Recovery</div>
+        <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
+          <strong style="color:var(--text-primary);">Target £/kg</strong> = Weighted average selling price at standard mix<br>
+          <strong style="color:var(--text-primary);">Actual £/kg</strong> = Weighted average accounting for downgrades at lower prices<br>
+          <strong style="color:var(--text-primary);">Recovery Gap</strong> = Target £/kg − Actual £/kg<br>
+          <span style="color:var(--text-muted); font-style:italic;">Annual Impact = Recovery Gap × Total kg</span>
+        </div>
       </div>
     </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Packed Output → Saleable Output</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Misshapes</strong> = Product not meeting visual specification — sold at reduced £/kg or disposed<br>
-        <strong style="color:var(--text-primary);">Non-standard / Downgrades</strong> = Product meeting food safety but not premium spec — sold at lower £/kg<br>
-        <span style="color:var(--text-muted); font-style:italic;">Saleable Output = Packed Output − Downgrades − Waste</span>
+    <div id="def-yield-equation" style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
+      <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
+      <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
+        Overall Yield % = Saleable Output (kg) ÷ Raw Material Input (kg)<br>
+        £ Yield Loss = (1 − Overall Yield %) × Input kg × Raw Material £/kg<br>
+        <span style="color:var(--text-muted);">MUV captures the £ impact; Yield % captures the operational efficiency</span>
       </div>
-    </div>
-    <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-      <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">£/kg Recovery</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
-        <strong style="color:var(--text-primary);">Target £/kg</strong> = Weighted average selling price at standard mix<br>
-        <strong style="color:var(--text-primary);">Actual £/kg</strong> = Weighted average accounting for downgrades at lower prices<br>
-        <strong style="color:var(--text-primary);">Recovery Gap</strong> = Target £/kg − Actual £/kg<br>
-        <span style="color:var(--text-muted); font-style:italic;">Annual Impact = Recovery Gap × Total kg</span>
-      </div>
-    </div>
-  </div>
-  <div style="margin-top:16px; padding:14px 18px; border-radius:10px; background:rgba(0,100,88,0.04); border:1px solid rgba(0,100,88,0.15);">
-    <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
-    <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
-      Overall Yield % = Saleable Output (kg) ÷ Raw Material Input (kg)<br>
-      £ Yield Loss = (1 − Overall Yield %) × Input kg × Raw Material £/kg<br>
-      <span style="color:var(--text-muted);">MUV captures the £ impact; Yield % captures the operational efficiency</span>
     </div>
   </div>
 </div>
@@ -1347,6 +1437,33 @@
       path.setAttribute('stroke-opacity', '0.7');
       path.setAttribute('fill', 'none');
       connSvg.appendChild(path);
+
+      // Add midpoint label in integration view
+      if (currentView === 'integration' && integrationLabels[id]) {
+        const midX = (from.x + to.x) / 2;
+        const midY = (from.y + to.y) / 2;
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', midX);
+        label.setAttribute('y', midY - 4);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('font-size', '8');
+        label.setAttribute('font-weight', '500');
+        label.setAttribute('fill', color);
+        label.setAttribute('font-family', 'inherit');
+        label.textContent = integrationLabels[id];
+        // Add background rect for readability
+        const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        const textLen = integrationLabels[id].length * 4.2;
+        bg.setAttribute('x', midX - textLen / 2 - 3);
+        bg.setAttribute('y', midY - 12);
+        bg.setAttribute('width', textLen + 6);
+        bg.setAttribute('height', 12);
+        bg.setAttribute('fill', '#fff');
+        bg.setAttribute('rx', '3');
+        bg.setAttribute('opacity', '0.9');
+        connSvg.appendChild(bg);
+        connSvg.appendChild(label);
+      }
     });
 
     kpiIds.forEach(id => {
@@ -1521,7 +1638,7 @@
   // Background click clears lock
   document.getElementById('framework').addEventListener('click', function(e) {
     if (!lockedEl) return;
-    const card = e.target.closest('.source-card, .kpi-card, .capture-chip, .capture-toggle');
+    const card = e.target.closest('.source-card, .kpi-card, .capture-chip, .capture-toggle, .cog-icon, .spec-overlay');
     if (!card) {
       lockedEl = null;
       resetHighlight();
@@ -1563,6 +1680,311 @@
     el.addEventListener('mouseenter', () => highlightCapture(el));
     el.addEventListener('mouseleave', () => clearHighlight());
     el.addEventListener('click', () => toggleLock(el, 'capture'));
+  });
+
+  // --- Integration Specs ---
+  const integrationSpecs = {
+    'src-unit-conv': {
+      title: 'ERP Master Data',
+      color: '#78716C',
+      summary: '\u27F3 System config \u00B7 On-change \u2014 Sage X3 product master',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Sage X3 \u2014 product master tables' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Supply chain / product development team' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Direct database extract from X3 product master. Could also be surfaced via SFDC for shop floor reference.' },
+        { icon: '\u23F1', label: 'How often', content: 'On-change \u2014 triggered when a new SKU is created or an existing SKU\'s specifications are modified in X3' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'SKU master records: pack weights (g nominal), case configurations (packs per case, cases per pallet), portions per pack, back/block weights, empty pack tare weights, and derived kg conversions' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'SKU code is the primary key \u2014 it must be identical across X3, the IoT/OEE system, T&A, checkweighers, and SFDC. Any mismatch causes silent failures across all KPIs.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Every active production SKU must have complete conversion data with no gaps in X3. Tare weights must be verified at least annually against actual empty packs. Pack weight in X3 must match the target weight configured in each checkweigher.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Unit conversion errors cascade to every KPI. If a SKU exists in production but not in X3 master data, all kg-based metrics for that SKU are wrong. Tare weight errors flow directly into giveaway calculations.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'X3 is the single source of truth for SKU master data. SKU codes are unique and consistent across all systems \u2014 no aliases or site-specific variants.' },
+        { icon: '\u2753', label: 'Open questions', content: 'Is there a product lifecycle management (PLM) process for new SKUs in X3? How are SKU changes version-controlled \u2014 can you see the history of modifications? Is there a formal sign-off before a new SKU enters production?' }
+      ]
+    },
+    'src-redzone': {
+      title: 'OEE System Data (Bespoke IoT)',
+      color: '#F97316',
+      summary: '\u27F3 Automated feed \u00B7 Near real-time \u2014 Bespoke IoT / OEE system',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Bespoke IoT / OEE system (to be built \u2014 replacing the role a product like Redzone would fill)' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Operations / production management, with IT responsible for the IoT infrastructure' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Automated feed from IoT sensors and edge devices to the SQL database. The architecture needs to be defined \u2014 options include direct sensor-to-database, an IoT gateway/broker, or edge computing with periodic sync.' },
+        { icon: '\u23F1', label: 'How often', content: 'Near real-time \u2014 events (run starts/stops, downtime, output counts) should stream as they happen. Daily batch reconciliation against X3 works order quantities.' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Run events (line running/stopped with timestamps), downtime events with operator-assigned reason codes, good and waste output counts from end-of-line sensors, changeover events (detected from run gaps or operator input), line speed data at bottleneck point' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Date + Line + Shift. Line identifiers in the IoT system must exactly match those used in X3, SFDC, and all other systems. Shift definitions must align with X3/SFDC.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Every downtime event longer than the configured threshold must have a reason code \u2014 the system must enforce this. Output counts must reconcile to X3 works order confirmed quantities within \u00B12%. BNS (bottleneck speed) must be configured per SKU per line. Sensor calibration must be maintained.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Uncoded downtime makes UPDT Pareto analysis useless \u2014 you can see that time was lost but not why. Mismatched line identifiers between the IoT system and X3 cause silent join failures \u2014 data appears missing. Missing BNS configuration means LTSR (speed loss) cannot be calculated, making a major loss category invisible.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'The bespoke IoT solution will cover all production lines. Line sensors (pulse counters, speed sensors) will be installed at each bottleneck point. There will be an operator interface (touchscreen or tablet) for reason coding \u2014 this could potentially be integrated into the existing SFDC system.' },
+        { icon: '\u2753', label: 'Open questions', content: 'What is the planned architecture for the IoT solution \u2014 sensor types, edge vs cloud, data broker? Will reason coding happen in the IoT system\'s own interface or via SFDC? How will BNS be determined and maintained \u2014 manufacturer rated speed or observed best demonstrated rate? What is the timeline for IoT deployment across all lines? Could SFDC be extended to serve as the operator interface for the IoT system, keeping one shop floor tool rather than two?' }
+      ]
+    },
+    'src-works-orders': {
+      title: 'Works Order Data',
+      color: '#3B82F6',
+      summary: '\u27F3 Automated \u00B7 Real-time via SFDC \u2014 Sage X3 + SFDC',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Sage X3 (works order module), interacted with on the shop floor via the custom SFDC system' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Production planning team (schedule), shop floor teams via SFDC (execution and confirmation)' },
+        { icon: '\u27F3', label: 'How it moves', content: 'X3 is the system of record. SFDC provides the shop floor interface for operators and supervisors to confirm quantities, record completions, and capture production data against works orders. Schedule inputs currently come from spreadsheets (transitioning to Relex \u2014 Relex will integrate to X3 to drive works order creation).' },
+        { icon: '\u23F1', label: 'How often', content: 'Works orders are created in X3 based on the production schedule. SFDC interactions happen in real-time throughout the shift as production progresses. Confirmed quantities flow back to X3 immediately via SFDC.' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Daily production schedule by line and SKU, planned volumes (in the canonical unit from master data), changeover sequence between SKUs, shift patterns and planned shift times, confirmed output quantities (via SFDC), actual production completion times' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Date + Line + SKU. Works order number in X3 is the primary reference. SFDC transactions link to X3 works orders. Shift pattern must align with the IoT/OEE system\'s shift definition.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Every scheduled line-day must have a corresponding works order in X3. Planned volumes must use the canonical unit defined in master data. SFDC confirmed quantities must reconcile with IoT/OEE output counts. The changeover sequence must be complete in the schedule.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Missing works orders mean Plan Attainment cannot be calculated. If SFDC confirmed quantities diverge from IoT output counts, you get two conflicting versions of "what we made." Missing changeover sequences mean PDT cannot be properly separated from UPDT.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'X3 is the system of record for works orders. SFDC is the established shop floor interaction layer and is reliably used by operators. The transition from spreadsheet scheduling to Relex will include an integration to X3 for automated works order creation.' },
+        { icon: '\u2753', label: 'Open questions', content: 'How does the current spreadsheet schedule feed into X3 works order creation \u2014 manual entry by a planner, or is there an import mechanism? When Relex goes live, will it integrate directly to X3 to generate works orders automatically? How are intra-day schedule changes captured \u2014 does the original plan get preserved alongside the revised plan? What is the Relex implementation timeline?' }
+      ]
+    },
+    'src-hours': {
+      title: 'Hours Data',
+      color: '#8B5CF6',
+      summary: '\uD83D\uDCC4 Daily export \u00B7 Daily \u2014 T&A system',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Dedicated Time & Attendance system' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'HR / site management' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Daily file export from the T&A system to the SQL database. Manual interventions in the T&A system (corrections, area re-allocations) are captured before the export.' },
+        { icon: '\u23F1', label: 'How often', content: 'Daily \u2014 previous day\'s hours available by early morning after manual interventions are completed' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Clock in/out times per individual, area allocation (which line or department), direct/indirect classification, overtime flag (derived from shift pattern), agency/permanent employee code, crewing numbers per line' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Date + Individual + Area. The "Area" field must map to Line identifiers used in X3, SFDC, and the IoT/OEE system for line-level productivity analysis.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Every paid hour must be classified as direct or indirect. Every direct hour must have an area allocation \u2014 unallocated hours cannot be attributed to specific lines. Agency workers must be flagged at point of entry. Overtime must be automatically calculated from the shift pattern, not manually tagged.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Unallocated hours make Kg/LH at line level unreliable \u2014 you can only report site-level productivity. Missing agency flags mean the true labour cost is understated. Manual overtime tagging is frequently missed, distorting rate calculations in the \u00A3/kg Labour Cost KPI. The manual intervention step introduces a delay \u2014 if corrections aren\'t completed before the export, the previous day\'s data is wrong until corrected.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'Badge swipe is the primary clock-in method. Supervisors allocate individuals to areas daily (either at clock-in or retrospectively before the daily export). The T&A system can export in a format compatible with the SQL database.' },
+        { icon: '\u2753', label: 'Open questions', content: 'Which T&A system is in place \u2014 does it have an automated export capability, or is the export manual? Is area allocation done at clock-in or retrospectively? What is the typical volume and nature of manual interventions \u2014 how many corrections per day and what causes them? Is there an existing interface between the T&A system and X3 payroll?' }
+      ]
+    },
+    'src-absence': {
+      title: 'Absence / Headcount Data',
+      color: '#10B981',
+      summary: '\uD83D\uDCC4 Daily export \u00B7 Daily \u2014 T&A + spreadsheet roster',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'T&A system (for actual attendance) + spreadsheet rosters (for planned headcount)' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'HR / shift managers' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Actual attendance derived from T&A clock-in data. Planned headcount currently comes from spreadsheet rosters \u2014 requires manual import or transcription into the SQL database.' },
+        { icon: '\u23F1', label: 'How often', content: 'Daily' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Planned headcount per line per day (from roster spreadsheets), actual attendance versus plan, absence type classification (planned: holiday, training; unplanned: sick, no-show), agency versus permanent split' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Date + Individual for attendance. Planned headcount aggregates to Date + Line. Links to Hours Data on the Individual field.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Rosters must be completed and available before the shift starts. Every absence must be classified by type. The agency/permanent flag must be consistent between the roster and the T&A system.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Spreadsheet-based rosters are a data quality risk \u2014 they can\'t easily feed the central database automatically, and are prone to version control issues. Without a planned headcount baseline, you cannot distinguish "short-staffed" from "inefficient" when Kg/LH is poor.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'Shift managers complete rosters in advance. There is a consistent format for the roster spreadsheets that could be standardised for automated import.' },
+        { icon: '\u2753', label: 'Open questions', content: 'Is there appetite to move rostering into a system (either the T&A system or a dedicated workforce management tool) to eliminate the spreadsheet dependency? How far in advance are rosters typically published? How are short-notice changes (sickness, agency call-offs) captured \u2014 updated in the spreadsheet or just handled verbally?' }
+      ]
+    },
+    'src-giveaway': {
+      title: 'Yield Data',
+      color: '#EC4899',
+      summary: '\u27F3 Machine feed \u00B7 Real-time \u2014 Checkweighers + slicers',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Multiple \u2014 networked checkweighers (pack weights), slicers (portion weights, gripper end), and SFDC/X3 works orders (misshapes, downgrades)' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Quality / technical team' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Checkweighers and slicers feed data automatically via network connections (most are networked; remainder being connected over time). Misshapes and downgrade classifications are recorded against works orders via SFDC, flowing back to X3.' },
+        { icon: '\u23F1', label: 'How often', content: 'Real-time from networked machines (pack-by-pack for checkweighers, portion-by-portion for slicers). QA classifications via SFDC as production progresses \u2014 typically recorded per run or batch.' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Individual pack weights from checkweighers, portion weights from slicers, gripper end/trim measurements per slicer, misshape counts and classifications (via SFDC), non-standard/downgrade counts and classifications (via SFDC), target weight per SKU (from X3 master data / checkweigher config)' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Date + Line + SKU for aggregated metrics. Individual pack weights link to specific runs via timestamp. QA classifications link to works orders in X3 via SFDC.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Checkweighers must be calibrated daily (legal requirement under Weights & Measures). Every production run must have pack weight data \u2014 gaps mean giveaway is underreported. Target weights in the checkweigher must match X3 master data. QA classifications via SFDC must reconcile: total output minus saleable must equal downgrades plus waste.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Uncalibrated checkweighers produce false giveaway figures. Non-networked checkweighers create data gaps until they\'re connected \u2014 yield reporting is incomplete for those lines. If target weights in the checkweigher drift from X3 master data, giveaway % is calculated against the wrong baseline. Inconsistent QA classification via SFDC makes downgrade trending unreliable.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'The programme to network all checkweighers will complete within a defined timeframe. Slicer data output is electronic where slicers have that capability. SFDC is the established mechanism for QA classification recording.' },
+        { icon: '\u2753', label: 'Open questions', content: 'What is the timeline for networking the remaining checkweighers? Do all slicers have electronic data output capability, or is gripper end manually measured on some? Is the target weight per SKU maintained centrally in X3 and pushed to checkweighers, or configured locally on each machine? How granular is the QA classification in SFDC \u2014 is it detailed enough for the yield analysis, or would it need enhancing?' }
+      ]
+    },
+    'src-intake': {
+      title: 'Raw Material Intake Data',
+      color: '#DC2626',
+      summary: '\u27F3 Automated \u00B7 Real-time via SFDC \u2014 SFDC \u2192 Sage X3',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'SFDC \u2192 Sage X3. Goods-in weighing is captured via SFDC and flows to X3.' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Goods-in / warehouse team' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Goods-in weighing captured through SFDC, which writes to X3. Stock movements (material issued to production) also flow through SFDC to X3.' },
+        { icon: '\u23F1', label: 'How often', content: 'Real-time \u2014 as deliveries arrive and are processed through SFDC. Material issue to production recorded as runs start or via back-flush on completion.' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Batch weights at goods-in (via SFDC to X3), lot/batch tracking numbers, supplier reference and spec, material issued to production per run' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Batch/Lot number is the primary traceability key from intake through to finished product. Material issue links to production runs on Date + Line + Works Order.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Every intake must be physically weighed via SFDC \u2014 estimated weights are not acceptable for yield calculation or MUV. Lot numbers must be unique and traceable to supplier. Material issue to production must be recorded before or immediately after each run.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Estimated weights make Overall Yield % unreliable. Missing lot tracking is both a data quality and a food safety compliance issue. Late or missing material issue records mean MUV cannot be calculated.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'SFDC is already the mechanism for goods-in processing. The weighing process through SFDC is established. Lot tracking is in place for food safety compliance.' },
+        { icon: '\u2753', label: 'Open questions', content: 'How is material issued to production \u2014 physical pick-and-issue recorded in SFDC, or back-flush in X3 based on BOM and confirmed output? Is the weighing at goods-in automated (scales integrated to SFDC) or manual entry into SFDC? Is lot tracking electronic end-to-end through SFDC and X3, or paper-based at any stage?' }
+      ]
+    },
+    'src-bom': {
+      title: 'BOM / Recipe Standards',
+      color: '#06B6D4',
+      summary: '\uD83D\uDD17 System config \u00B7 On-change \u2014 Sage X3 recipe module',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Sage X3 \u2014 recipe/BOM module with standard cost roll-up' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Product development / technical team (recipe), Finance (standard cost roll-up)' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Direct extract from X3 BOM tables to the SQL database' },
+        { icon: '\u23F1', label: 'How often', content: 'On-change \u2014 updated when recipes are created or modified in X3, or when a standard cost roll-up is performed' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Standard material quantity per unit output per SKU (the recipe), standard material cost per SKU (priced BOM from X3 cost roll-up), material type and grade classification, yield allowance' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'SKU code links to all other sources. Material type links to the raw material master in X3 for cost lookup.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Every active production SKU must have a current, approved BOM in X3. Standard costs must be rolled up at least annually or when material prices change significantly. Yield allowances must be based on actual observed data, not assumptions.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Missing or outdated BOMs mean MUV is calculated against incorrect standards. Incorrect yield allowances mask real losses or create persistent false variances.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'X3 is the single master for BOMs. The standard cost roll-up process in X3 is established and runs on a known cycle. Recipe changes go through a formal approval process in X3.' },
+        { icon: '\u2753', label: 'Open questions', content: 'How often is the X3 standard cost roll-up performed? Is there a formal yield allowance review process \u2014 how were current allowances set? How are recipe changes version-controlled in X3?' }
+      ]
+    },
+    'src-budget': {
+      title: 'Budget / Forecast Data',
+      color: '#7C3AED',
+      summary: '\uD83D\uDCC4 Periodic extract \u00B7 Monthly/weekly \u2014 Finance (TBC)',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Finance system (to be confirmed)' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Finance / commercial team' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Periodic file extract or manual upload to the SQL database' },
+        { icon: '\u23F1', label: 'How often', content: 'Monthly for annual budget, weekly for rolling forecast updates' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Budgeted production volumes by SKU by period, standard margin per SKU, period forecast (weekly or monthly), overhead absorption rates per line-hour' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'Period (week or month) + SKU. SKU codes must align with X3 master data.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Budget must be at SKU level for meaningful mix variance analysis \u2014 category-level budgets are insufficient. Standard margins must be consistent with the commercial standards in X3. Overhead rates must be recalculated when capacity changes.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Category-level budgets make mix variance analysis impossible. Stale forecasts make volume variance meaningless. Incorrect overhead rates distort the P&L bridge.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'There is a formal budgeting process. Forecasts are updated regularly.' },
+        { icon: '\u2753', label: 'Open questions', content: 'Is budgeting performed at SKU level or product category level? Which tool is used \u2014 X3 finance module, a dedicated budgeting tool, or Excel? How frequently is the demand forecast updated? Are overhead absorption rates calculated per line or site-wide?' }
+      ]
+    },
+    'src-planning': {
+      title: 'Planning Standards',
+      color: '#DAF11B',
+      summary: '\u270B Manual config \u00B7 Periodic review \u2014 IE team / X3 config',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Industrial engineering team output, stored in X3 configuration or planning tool' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Production planning / industrial engineering' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Manual configuration updates in X3 based on time studies and periodic reviews' },
+        { icon: '\u23F1', label: 'How often', content: 'On-change \u2014 reviewed periodically (quarterly recommended) or after improvement projects' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Standard production rate per SKU per line, manning allowances (direct and indirect components stated separately), changeover time allowances per SKU-to-SKU transition pair' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'SKU + Line for production rates. SKU pair (from \u2192 to) for changeover allowances.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Standards must be based on time studies or robust observed data, not estimates. Manning allowances must separately state direct and indirect. The changeover matrix must cover all common transitions, not a single site-wide average.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Inaccurate standards make Plan Attainment misleading and mask real performance. A missing changeover matrix means PDT is estimated rather than calculated.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'Time studies have been conducted. Standards are stored in X3 configuration.' },
+        { icon: '\u2753', label: 'Open questions', content: 'When were standards last reviewed or studied? Is there a complete changeover time matrix in X3, or is a single average used? How are standards updated after improvement projects \u2014 is there a recalibration process?' }
+      ]
+    },
+    'src-commercial': {
+      title: 'Commercial Standards',
+      color: '#EAB308',
+      summary: '\uD83D\uDCC4 Periodic extract \u00B7 Quarterly \u2014 X3 costing model',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'Source system', content: 'Sage X3 \u2014 costing model' },
+        { icon: '\uD83D\uDC64', label: 'Who owns it', content: 'Finance / commercial team' },
+        { icon: '\u27F3', label: 'How it moves', content: 'Periodic extract from X3 costing tables to the SQL database' },
+        { icon: '\u23F1', label: 'How often', content: 'On-change \u2014 typically aligned with pricing reviews (quarterly or annually). Raw material costs may update more frequently.' },
+        { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Direct labour hour cost rate (including on-costs), target selling price per kg per SKU, raw material cost per kg by material type and grade' },
+        { icon: '\uD83D\uDD17', label: 'How records match', content: 'SKU for selling prices. Material type for raw material costs. Cost centre for labour hour rates.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Labour hour rates must include all on-costs (NI, pension, holiday accrual). Selling prices must reflect current contracted customer prices. Raw material costs must reflect current purchase prices or recent rolling average.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Stale selling prices make \u00A3/kg recovery misleading. Incorrect hour rates mean the \u00A3/kg Labour Cost variance is against the wrong benchmark. Outdated material costs distort MUV price variance.' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'X3 costing model is the single source. Pricing is managed centrally.' },
+        { icon: '\u2753', label: 'Open questions', content: 'How often are commercial standards refreshed in X3? Are raw material costs set as annual standards or actual rolling averages? How are customer-specific pricing tiers handled \u2014 blended target or SKU-specific?' }
+      ]
+    },
+    'center-db': {
+      title: 'Calculation & Reporting Layer',
+      color: '#006458',
+      summary: 'SQL database + QlikView \u2014 data integration and calculation engine',
+      rows: [
+        { icon: '\uD83C\uDFE2', label: 'What it is', content: 'SQL database + QlikView \u2014 the data integration and calculation engine that brings all sources together' },
+        { icon: '\u27F3', label: 'What it does', content: 'Joins data across shared dimensions (date, line, SKU, shift, area, batch, individual), applies the calculation logic defined in the KPI formulas, aggregates from transaction level to reporting periods, and serves results to QlikView dashboards' },
+        { icon: '\u23F1', label: 'Refresh approach', content: 'Depends on source frequencies \u2014 IoT/OEE-driven metrics (Machine Efficiency, Plan Attainment) could refresh near real-time. Labour metrics (Kg/LH, \u00A3/kg Labour Cost) refresh daily after T&A data arrives. Financial metrics (MUV, P&L Bridge) refresh weekly or monthly aligned with finance reporting.' },
+        { icon: '\uD83D\uDD27', label: 'Key design decisions', content: 'Where does calculation logic live \u2014 in SQL views/stored procedures, in QlikView load script, or split between both? How are historical corrections handled \u2014 if yesterday\'s data is restated, do KPIs recalculate automatically? How is data quality monitored \u2014 automated alerts for missing data, failed joins, outlier values?' },
+        { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'The existing SQL + QlikView infrastructure has capacity for the additional data volumes. QlikView licences cover the required user base.' },
+        { icon: '\u2753', label: 'Open questions', content: 'Is the current SQL database a structured data warehouse or more of a staging area? What QlikView apps exist today \u2014 are we extending an existing app or building new? Who maintains the SQL/QlikView infrastructure \u2014 internal IT, an external partner, or a managed service? What is the QlikView licence position \u2014 are there enough user licences? Is there any consideration of migrating from QlikView to Qlik Sense or another platform?' }
+      ]
+    }
+  };
+
+  const integrationLabels = {
+    'src-unit-conv': 'Config \u00B7 On-change',
+    'src-redzone': 'IoT \u00B7 Real-time',
+    'src-works-orders': 'SFDC \u00B7 Real-time',
+    'src-hours': 'Export \u00B7 Daily',
+    'src-absence': 'Export \u00B7 Daily',
+    'src-giveaway': 'Machine \u00B7 Real-time',
+    'src-intake': 'SFDC \u00B7 Real-time',
+    'src-bom': 'X3 \u00B7 On-change',
+    'src-budget': 'File \u00B7 Monthly',
+    'src-planning': 'Config \u00B7 Periodic',
+    'src-commercial': 'X3 \u00B7 Quarterly'
+  };
+
+  // Current view mode
+  let currentView = 'framework';
+
+  function openSpecOverlay(id) {
+    const spec = integrationSpecs[id];
+    if (!spec) return;
+    const content = document.getElementById('specContent');
+    let html = '<div class="spec-title"><div class="dot" style="background:' + spec.color + ';"></div><h2>' + spec.title + '</h2></div>';
+    html += '<div class="spec-summary">' + spec.summary + '</div>';
+    spec.rows.forEach(function(row) {
+      html += '<div class="spec-row"><div class="spec-row-label"><span class="spec-row-icon">' + row.icon + '</span>' + row.label + '</div><div class="spec-row-content">' + row.content + '</div></div>';
+    });
+    content.innerHTML = html;
+    document.getElementById('specOverlay').classList.add('open');
+    document.getElementById('specBackdrop').classList.add('open');
+  }
+
+  function closeSpecOverlay() {
+    document.getElementById('specOverlay').classList.remove('open');
+    document.getElementById('specBackdrop').classList.remove('open');
+  }
+
+  document.getElementById('specClose').addEventListener('click', closeSpecOverlay);
+  document.getElementById('specBackdrop').addEventListener('click', closeSpecOverlay);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSpecOverlay();
+  });
+
+  // Cog icon click handlers
+  document.querySelectorAll('.cog-icon').forEach(function(cog) {
+    cog.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var card = cog.closest('.source-card') || cog.closest('.center-db');
+      if (card) {
+        var id = card.id || 'center-db';
+        openSpecOverlay(id);
+      }
+    });
+  });
+
+  // View toggle
+  function toggleView(mode) {
+    currentView = mode;
+    var fw = document.getElementById('framework');
+    var frameworkBtn = document.getElementById('viewFrameworkBtn');
+    var integrationBtn = document.getElementById('viewIntegrationBtn');
+    if (mode === 'integration') {
+      fw.classList.add('integration-view');
+      frameworkBtn.classList.remove('active');
+      integrationBtn.classList.add('active');
+    } else {
+      fw.classList.remove('integration-view');
+      frameworkBtn.classList.add('active');
+      integrationBtn.classList.remove('active');
+    }
+    // Reset any locks/highlights
+    lockedEl = null;
+    resetHighlight();
+  }
+
+  document.getElementById('viewFrameworkBtn').addEventListener('click', function() { toggleView('framework'); });
+  document.getElementById('viewIntegrationBtn').addEventListener('click', function() { toggleView('integration'); });
+
+  // Definitions tabs
+  document.querySelectorAll('.def-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = tab.dataset.defTab;
+      document.querySelectorAll('.def-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.def-tab-content').forEach(function(c) { c.classList.remove('active'); });
+      var content = document.getElementById('def-' + target);
+      if (content) content.classList.add('active');
+    });
+  });
+
+  // Smooth scroll for definition anchor links
+  document.querySelectorAll('.def-contents-bar a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = link.getAttribute('href');
+      var target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
   });
 
   // KPI section filter
@@ -1612,6 +2034,12 @@
       </div>
     </div>
   </footer>
+
+  <div class="spec-overlay-backdrop" id="specBackdrop"></div>
+  <div class="spec-overlay" id="specOverlay">
+    <button class="close-btn" id="specClose">✕</button>
+    <div id="specContent"></div>
+  </div>
 
   <script src="../js/main.js"></script>
 </body>
