@@ -406,15 +406,15 @@
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">W.O. quantity confirmed</span> <span class="chip-desc">—Pallet barcode scan</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,plan-attain,kg-lh-plan">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,plan-attain,kg-lh">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">SKU-to-line assignment</span> <span class="chip-desc">—ERP system export</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" data-kpis="plan-attain,kg-lh-plan">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="plan-attain,kg-lh">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Daily production schedule</span> <span class="chip-desc">—Planner manual entry</span></span>
     </div>
-    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff">
+    <div class="capture-chip" data-source="src-works-orders" data-kpis="machine-eff,overhead">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Shift pattern / shift time</span> <span class="chip-desc">—ERP system config</span></span>
     </div>
@@ -425,42 +425,42 @@
 
     <!-- Hours -->
     <div class="capture-group-label" style="color:#8B5CF6;">Hours</div>
-    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,labour-cost">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">Clock in / clock out</span> <span class="chip-desc">—Badge swipe</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,labour-cost">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Area allocation</span> <span class="chip-desc">—Supervisor entry</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,labour-cost">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Direct / indirect split</span> <span class="chip-desc">—Coded at clock-in</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh-plan,labour-cost">
+    <div class="capture-chip" data-source="src-hours" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Crewing on line</span> <span class="chip-desc">—Manually entered</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" data-kpis="labour-cost">
+    <div class="capture-chip" data-source="src-hours" data-kpis="labour-eff,labour-rate">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Overtime flag</span> <span class="chip-desc">—T&amp;A system, auto from shift pattern</span></span>
     </div>
-    <div class="capture-chip" data-source="src-hours" data-kpis="labour-cost">
+    <div class="capture-chip" data-source="src-hours" data-kpis="labour-eff,labour-rate">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Agency / permanent code</span> <span class="chip-desc">—T&amp;A or payroll system code</span></span>
     </div>
 
     <!-- Absence / Headcount -->
     <div class="capture-group-label" style="color:#10B981;">Absence / Headcount</div>
-    <div class="capture-chip" data-source="src-absence" data-kpis="kg-lh-plan,labour-cost">
+    <div class="capture-chip" data-source="src-absence" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Planned headcount (roster)</span> <span class="chip-desc">—Scheduling system export</span></span>
     </div>
-    <div class="capture-chip" data-source="src-absence" data-kpis="labour-cost">
+    <div class="capture-chip" data-source="src-absence" data-kpis="labour-eff,labour-rate">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Absence type classification</span> <span class="chip-desc">—HR / payroll system</span></span>
     </div>
-    <div class="capture-chip" data-source="src-absence" data-kpis="labour-cost">
+    <div class="capture-chip" data-source="src-absence" data-kpis="labour-eff,labour-rate">
       <span class="chip-icon cap-scan">▦</span>
       <span><span class="chip-label">Agency vs permanent flag</span> <span class="chip-desc">—T&amp;A system code at clock-in</span></span>
     </div>
@@ -540,18 +540,18 @@
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Period forecast</span> <span class="chip-desc">—Commercial planning (manual/system)</span></span>
     </div>
-    <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge">
+    <div class="capture-chip" data-source="src-budget" data-kpis="pnl-bridge,overhead">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Overhead absorption rate</span> <span class="chip-desc">—Finance cost allocation model</span></span>
     </div>
 
     <!-- Planning Standards -->
     <div class="capture-group-label" style="color:var(--lime);">Planning Standards</div>
-    <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh-plan,plan-rate">
+    <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh,plan-rate">
       <span class="chip-icon cap-manual">⏱</span>
       <span><span class="chip-label">Standard rate per SKU</span> <span class="chip-desc">—Engineering time study</span></span>
     </div>
-    <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh-plan">
+    <div class="capture-chip" data-source="src-planning" data-kpis="kg-lh">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Manning allowance</span> <span class="chip-desc">—Historical analysis</span></span>
     </div>
@@ -562,7 +562,7 @@
 
     <!-- Commercial Standards -->
     <div class="capture-group-label" style="color:#EAB308;">Commercial Standards</div>
-    <div class="capture-chip" data-source="src-commercial" data-kpis="kg-lh-plan,labour-cost">
+    <div class="capture-chip" data-source="src-commercial" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Direct hour cost</span> <span class="chip-desc">—Finance costing model</span></span>
     </div>
@@ -594,7 +594,7 @@
     </div>
 
     <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Reference &amp; Master Data</div>
-    <div class="card source-card src-accent-stone" id="src-unit-conv" data-feeds="machine-eff,plan-attain,kg-lh-plan,labour-cost,yield,muv,pnl-bridge">
+    <div class="card source-card src-accent-stone" id="src-unit-conv" data-feeds="machine-eff,plan-attain,kg-lh,labour-eff,labour-rate,yield,muv,pnl-bridge">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -615,7 +615,7 @@
     </div>
 
     <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Transactional Data</div>
-    <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield,muv">
+    <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield,muv,overhead">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -633,7 +633,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-blue" id="src-works-orders" data-feeds="machine-eff,kg-lh-plan,plan-attain,labour-cost">
+    <div class="card source-card src-accent-blue" id="src-works-orders" data-feeds="machine-eff,kg-lh,plan-attain,labour-eff,overhead">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -651,7 +651,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-purple" id="src-hours" data-feeds="kg-lh-plan,labour-cost">
+    <div class="card source-card src-accent-purple" id="src-hours" data-feeds="kg-lh,labour-eff,labour-rate">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -670,7 +670,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-emerald" id="src-absence" data-feeds="kg-lh-plan,labour-cost">
+    <div class="card source-card src-accent-emerald" id="src-absence" data-feeds="kg-lh,labour-eff,labour-rate">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -726,7 +726,7 @@
     </div>
 
     <div class="source-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--text-muted);">Standards &amp; Targets</div>
-    <div class="card source-card src-accent-teal" id="src-planning" data-feeds="kg-lh-plan,plan-rate,co-rate">
+    <div class="card source-card src-accent-teal" id="src-planning" data-feeds="kg-lh,plan-rate,co-rate">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -743,7 +743,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-plan,yield,labour-cost,muv">
+    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh,yield,labour-eff,labour-rate,muv">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -780,7 +780,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-violet" id="src-budget" data-feeds="pnl-bridge">
+    <div class="card source-card src-accent-violet" id="src-budget" data-feeds="pnl-bridge,overhead">
       <span class="cog-icon">⚙</span>
       <div class="card-head">
         <div class="dot"></div>
@@ -852,16 +852,18 @@
 
     <div class="kpi-filters">
       <button class="kpi-filter-btn active" data-filter="all">All</button>
-      <button class="kpi-filter-btn" data-filter="financial">Financial</button>
-      <button class="kpi-filter-btn" data-filter="productivity">Productivity</button>
-      <button class="kpi-filter-btn" data-filter="material">Material &amp; Yield</button>
+      <button class="kpi-filter-btn" data-filter="financial">P&amp;L</button>
+      <button class="kpi-filter-btn" data-filter="volume">Volume</button>
+      <button class="kpi-filter-btn" data-filter="labour">Labour</button>
+      <button class="kpi-filter-btn" data-filter="material">Material</button>
+      <button class="kpi-filter-btn" data-filter="efficiency">Efficiency</button>
       <button class="kpi-filter-btn" data-filter="standards">Standards</button>
     </div>
 
     <div class="kpi-list">
-        <div class="kpi-divider" data-section="financial" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Financial Summary</div>
+        <div class="kpi-divider" data-section="financial" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--pine);">P&amp;L Bridge</div>
 
-        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone,src-unit-conv" data-linked-kpis="kpi-muv,kpi-labour-cost,kpi-yield,kpi-machine-eff">
+        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone,src-unit-conv" data-linked-kpis="kpi-labour-eff,kpi-labour-rate,kpi-muv,kpi-ppv,kpi-overhead">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -919,133 +921,14 @@
           </div>
         </div>
 
-        <div class="kpi-divider" data-section="productivity" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Productivity &amp; Labour</div>
-
-        <!-- TOP LEVEL: Labour Variance -->
-        <div class="card kpi-card" id="kpi-labour-cost" data-fed-by="src-hours,src-absence,src-works-orders,src-commercial,src-unit-conv,src-redzone" data-linked-kpis="kpi-machine-eff,kpi-kg-lh-plan,kpi-plan-attain">
-          <div class="card-head">
-            <div class="kpi-icon">◆</div>
-            <div style="width:100%;">
-              <h3>Labour Variance (£)</h3>
-              <div class="subtitle">Top-level P&amp;L variance — splits into efficiency (productivity) and rate (cost per hour)</div>
-              <div class="formula">Labour Variance = Efficiency Variance + Rate Variance</div>
-
-              <!-- Two-way split -->
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
-                <div style="background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); border-radius:8px; padding:10px;">
-                  <div style="font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--pine); margin-bottom:4px;">Efficiency Variance</div>
-                  <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:9px; color:var(--pine); margin-bottom:6px;">(Actual hrs − Std hrs) × Std rate</div>
-                  <div style="font-size:10px; color:var(--text-secondary); line-height:1.5; font-weight:300;">
-                    Did we use more or fewer hours than standard for actual output?<br>
-                    Decomposes into:
-                  </div>
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:6px;">
-                    <div style="background:#fff; border:1px solid var(--card-border); border-radius:6px; padding:6px; text-align:center;">
-                      <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Machine Efficiency</div>
-                      <div style="font-size:9px; font-weight:700; color:var(--pine);">PT ÷ Shift Time</div>
-                      <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Line speed &amp; uptime</div>
-                    </div>
-                    <div style="background:#fff; border:1px solid var(--card-border); border-radius:6px; padding:6px; text-align:center;">
-                      <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Crewing Efficiency</div>
-                      <div style="font-size:9px; font-weight:700; color:var(--pine);">Std crew ÷ Actual</div>
-                      <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Overmanning &amp; indirect</div>
-                    </div>
-                  </div>
-                </div>
-                <div style="background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.15); border-radius:8px; padding:10px;">
-                  <div style="font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#8B5CF6; margin-bottom:4px;">Rate Variance</div>
-                  <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:9px; color:#8B5CF6; margin-bottom:6px;">(Actual rate − Std rate) × Actual hrs</div>
-                  <div style="font-size:10px; color:var(--text-secondary); line-height:1.5; font-weight:300;">
-                    Did we pay more or less per hour than standard?<br>
-                    Driven by:
-                  </div>
-                  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin-top:6px;">
-                    <div style="background:#fff; border:1px solid var(--card-border); border-radius:6px; padding:6px; text-align:center;">
-                      <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Agency</div>
-                      <div style="font-size:7px; color:var(--text-muted);">Premium vs perm</div>
-                    </div>
-                    <div style="background:#fff; border:1px solid var(--card-border); border-radius:6px; padding:6px; text-align:center;">
-                      <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Overtime</div>
-                      <div style="font-size:7px; color:var(--text-muted);">Premium hours</div>
-                    </div>
-                    <div style="background:#fff; border:1px solid var(--card-border); border-radius:6px; padding:6px; text-align:center;">
-                      <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Base Rate</div>
-                      <div style="font-size:7px; color:var(--text-muted);">Pay vs standard</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span><strong>Efficiency × Rate</strong> gives the complete labour variance from the P&amp;L bridge</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Machine Eff × Crewing Eff = total labour efficiency — if the line runs slowly OR we overman, efficiency variance is adverse</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Rate variance is independent of productivity — even a perfectly crewed shift can have an adverse rate if agency % is too high</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line and area</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUB-METRIC: Machine Efficiency (component of efficiency variance) -->
-        <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders,src-unit-conv" style="margin-left:20px; border-left:3px solid rgba(0,100,88,0.2);">
-          <div class="card-head">
-            <div class="kpi-icon" style="font-size:8px;">⤷</div>
-            <div style="width:100%;">
-              <h3>Machine Efficiency <span style="font-size:9px; font-weight:400; color:var(--text-muted);">— component of efficiency variance</span></h3>
-              <div class="subtitle">Potential Time ÷ Shift Time — how well the line converts available time to output</div>
-              <div class="formula">Machine Eff = Potential Time ÷ Shift Time</div>
-              <div class="decomp"><strong>Planning Eff</strong> = Actual Op. Time ÷ Shift Time &nbsp;|&nbsp; <strong>Operating Eff</strong> = Potential Time ÷ Actual Op. Time</div>
-              <div class="loss-bar">
-                <div class="loss-segment" style="flex:2.0; background:#006458;">PT</div>
-                <div class="loss-segment" style="flex:0.8; background:#F97316;">LTSR</div>
-                <div class="loss-segment" style="flex:0.4; background:#EF4444;">LTMW</div>
-                <div class="loss-segment" style="flex:1.0; background:#8B5CF6;">UPDT</div>
-                <div class="loss-segment" style="flex:0.6; background:#3B82F6;">PDT</div>
-                <div class="loss-segment" style="flex:0.4; background:#64748B;">SL</div>
-              </div>
-              <div class="loss-label-row">
-                <div class="loss-label" style="flex:2.0;">Potential<br>Time</div>
-                <div class="loss-label" style="flex:0.8;">Slow<br>Running</div>
-                <div class="loss-label" style="flex:0.4;">Making<br>Waste</div>
-                <div class="loss-label" style="flex:1.0;">Unplanned<br>DT</div>
-                <div class="loss-label" style="flex:0.6;">Planned<br>DT</div>
-                <div class="loss-label" style="flex:0.4;">Sched<br>Loss</div>
-              </div>
-              <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span>Additive: Shift Time = PT + LTSR + LTMW + UPDT + PDT + SL</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>All losses in hours — directly £-linkable via labour rate</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Pareto of losses by reason, line, product</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUPPORTING METRICS -->
-        <div style="font-size:8px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-muted); margin:14px 0 6px; padding-left:4px;">Supporting Metrics</div>
-
-        <div class="card kpi-card" id="kpi-kg-lh-plan" data-fed-by="src-works-orders,src-hours,src-planning,src-unit-conv,src-commercial">
-          <div class="card-head">
-            <div class="kpi-icon">◆</div>
-            <div>
-              <h3>Kg / Labour Hour — Actual vs Standard</h3>
-              <div class="subtitle">Actual kg per total productive hour (direct + indirect) vs planning standard — the operational productivity metric</div>
-              <div class="formula">Actual kg/LH = Actual kg ÷ (Direct + Indirect hrs)</div>
-              <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span>Uses all productive hours (D+I) — captures supervision, QA, and indirect labour</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Gap to standard = efficiency variance expressed as a rate rather than £</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Shows: do we get less productive as volume rises?</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line — underlying metric that drives the efficiency variance</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="kpi-divider" data-section="volume" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Volume &amp; Planning</div>
 
         <div class="card kpi-card" id="kpi-plan-attain" data-fed-by="src-works-orders,src-redzone,src-unit-conv">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
-              <h3>Plan Attainment (SKU-level)</h3>
-              <div class="subtitle">Did we make what we said we'd make? Actual vs planned output per SKU per day</div>
+              <h3>Plan Attainment</h3>
+              <div class="subtitle">Did we make what we planned? SKU-level over/under-production drives the Volume and Mix variances.</div>
               <div class="formula">Plan Attainment % = Actual Good Output ÷ Planned Output (per SKU)</div>
               <div class="details">
                 <div class="detail-row"><span class="arrow">›</span><span>Over- and under-production flagged by SKU</span></div>
@@ -1057,8 +940,64 @@
           </div>
         </div>
 
+        <div class="kpi-divider" data-section="labour" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Labour</div>
 
-        <div class="kpi-divider" data-section="material" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Material &amp; Yield</div>
+        <div class="card kpi-card" id="kpi-kg-lh" data-fed-by="src-works-orders,src-hours,src-planning,src-unit-conv,src-commercial" data-linked-kpis="kpi-labour-eff">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Kg per Labour Hour</h3>
+              <div class="subtitle">Actual kg per total productive hour (direct + indirect) — the operational productivity metric. Majaco treats all factory labour except hygiene/technical as variable.</div>
+              <div class="formula">Kg/LH = Actual kg ÷ Total productive hours (D+I)</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Uses all productive hours (D+I) — captures supervision, QA, and indirect labour</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Gap to standard = efficiency variance expressed as a rate rather than £</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Shows: do we get less productive as volume rises?</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line — underlying metric that drives the efficiency variance</span></div>
+              </div>
+              <div style="margin-top:8px; padding:5px 8px; border-radius:5px; background:rgba(0,100,88,0.04); border:1px dashed rgba(0,100,88,0.25); font-size:9px; color:var(--text-secondary); display:flex; align-items:flex-start; gap:5px;">
+                <span style="font-size:12px; line-height:1;">※</span>
+                <span>Compared against <strong style="color:var(--text-primary);">planned Kg/LH</strong> — the standard derived from planning rates and manning allowances. As machine efficiency improves and updated rates are fed back into standards, the planned Kg/LH target rises too, maintaining a meaningful benchmark.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-labour-eff" data-fed-by="src-hours,src-absence,src-works-orders,src-unit-conv,src-redzone" data-linked-kpis="kpi-kg-lh,kpi-machine-eff">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Labour Efficiency Variance (£)</h3>
+              <div class="subtitle">Financial impact of using more or fewer hours than standard for actual output</div>
+              <div class="formula">(Actual hrs − Std hrs for actual output) × Std rate</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Decomposes into Machine Efficiency (line speed &amp; uptime) and Crewing Efficiency (overmanning &amp; indirect)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Machine Eff × Crewing Eff = total labour efficiency — if the line runs slowly OR we overman, efficiency variance is adverse</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Independent of rate — even expensive hours are efficient if they produce standard output</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line and area</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-labour-rate" data-fed-by="src-hours,src-absence,src-commercial">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Labour Rate Variance (£)</h3>
+              <div class="subtitle">Financial impact of paying more or less per hour than standard — agency, overtime, base rate changes</div>
+              <div class="formula">(Actual rate − Std rate) × Actual hrs</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Independent of productivity — even a perfectly crewed shift can have an adverse rate if agency % is too high</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Driven by: agency premium, overtime premium, base rate vs standard</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Split by cost driver: agency %, overtime %, base rate deviation</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by area</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-divider" data-section="material" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Material</div>
 
         <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial,src-intake,src-unit-conv">
           <div class="card-head">
@@ -1134,6 +1073,58 @@
                 <div class="detail-row"><span class="arrow">›</span><span>Driven by: supplier negotiations, market price moves, spot vs contract buying</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Split by material type / grade / supplier</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Separate from MUV so operations and procurement are accountable for their own variances</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-divider" data-section="efficiency" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Machine Efficiency &amp; Overhead</div>
+
+        <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders,src-unit-conv" data-linked-kpis="kpi-labour-eff,kpi-overhead">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Machine Efficiency</h3>
+              <div class="subtitle">Potential Time ÷ Shift Time — how well the line converts available time to output. Cross-cutting: drives both labour productivity and overhead recovery.</div>
+              <div class="formula">Machine Eff = Potential Time ÷ Shift Time</div>
+              <div class="decomp"><strong>Planning Eff</strong> = Actual Op. Time ÷ Shift Time &nbsp;|&nbsp; <strong>Operating Eff</strong> = Potential Time ÷ Actual Op. Time</div>
+              <div class="loss-bar">
+                <div class="loss-segment" style="flex:2.0; background:#006458;">PT</div>
+                <div class="loss-segment" style="flex:0.8; background:#F97316;">LTSR</div>
+                <div class="loss-segment" style="flex:0.4; background:#EF4444;">LTMW</div>
+                <div class="loss-segment" style="flex:1.0; background:#8B5CF6;">UPDT</div>
+                <div class="loss-segment" style="flex:0.6; background:#3B82F6;">PDT</div>
+                <div class="loss-segment" style="flex:0.4; background:#64748B;">SL</div>
+              </div>
+              <div class="loss-label-row">
+                <div class="loss-label" style="flex:2.0;">Potential<br>Time</div>
+                <div class="loss-label" style="flex:0.8;">Slow<br>Running</div>
+                <div class="loss-label" style="flex:0.4;">Making<br>Waste</div>
+                <div class="loss-label" style="flex:1.0;">Unplanned<br>DT</div>
+                <div class="loss-label" style="flex:0.6;">Planned<br>DT</div>
+                <div class="loss-label" style="flex:0.4;">Sched<br>Loss</div>
+              </div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Additive: Shift Time = PT + LTSR + LTMW + UPDT + PDT + SL</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>All losses in hours — directly £-linkable via labour rate</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Pareto of losses by reason, line, product</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-overhead" data-fed-by="src-budget,src-redzone,src-works-orders" data-linked-kpis="kpi-machine-eff">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Overhead Absorption Variance (£)</h3>
+              <div class="subtitle">Under/over-absorption of fixed overhead driven by actual vs budgeted machine hours</div>
+              <div class="formula">(Actual machine hrs − Budget machine hrs) × OH rate per hr</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Machine hours are the absorption driver — low utilisation means under-recovery of fixed costs</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Directly linked to Machine Efficiency — if lines run fewer hours than budgeted, overhead is under-absorbed</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Volume-driven: more volume = more hours = better absorption (all else equal)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>OH rate per hour set by Finance — reviewed when capacity changes</span></div>
               </div>
             </div>
           </div>
@@ -1355,7 +1346,7 @@
       <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
       <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
         Paid Hours = Productive Hours + Idle/Overmanning + Indirect + Absence<br>
-        £/kg Labour = (Actual hrs × Actual rate) ÷ Actual kg<br>
+        Kg/LH = Actual kg ÷ Total productive hours (D+I)<br>
         <span style="color:var(--text-muted);">Labour Efficiency Variance = (Actual hrs − Std hrs) × Std rate</span><br>
         <span style="color:var(--text-muted);">Labour Rate Variance = (Actual rate − Std rate) × Actual hrs</span>
       </div>
@@ -1821,7 +1812,7 @@
         { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Clock in/out times per individual, area allocation (which line or department), direct/indirect classification, overtime flag (derived from shift pattern), agency/permanent employee code, crewing numbers per line' },
         { icon: '\uD83D\uDD17', label: 'How records match', content: 'Date + Individual + Area. The "Area" field must map to Line identifiers used in X3, SFDC, and the IoT/OEE system for line-level productivity analysis.' },
         { icon: '\u2713', label: 'What must be true', content: 'Every paid hour must be classified as direct or indirect. Every direct hour must have an area allocation \u2014 unallocated hours cannot be attributed to specific lines. Agency workers must be flagged at point of entry. Overtime must be automatically calculated from the shift pattern, not manually tagged.' },
-        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Unallocated hours make Kg/LH at line level unreliable \u2014 you can only report site-level productivity. Missing agency flags mean the true labour cost is understated. Manual overtime tagging is frequently missed, distorting rate calculations in the \u00A3/kg Labour Cost KPI. The manual intervention step introduces a delay \u2014 if corrections aren\'t completed before the export, the previous day\'s data is wrong until corrected.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Unallocated hours make Kg/LH at line level unreliable \u2014 you can only report site-level productivity. Missing agency flags mean the true labour cost is understated. Manual overtime tagging is frequently missed, distorting rate calculations in the Labour Efficiency, Labour Rate KPI. The manual intervention step introduces a delay \u2014 if corrections aren\'t completed before the export, the previous day\'s data is wrong until corrected.' },
         { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'Badge swipe is the primary clock-in method. Supervisors allocate individuals to areas daily (either at clock-in or retrospectively before the daily export). The T&A system can export in a format compatible with the SQL database.' },
         { icon: '\u2753', label: 'Open questions', content: 'Which T&A system is in place \u2014 does it have an automated export capability, or is the export manual? Is area allocation done at clock-in or retrospectively? What is the typical volume and nature of manual interventions \u2014 how many corrections per day and what causes them? Is there an existing interface between the T&A system and X3 payroll?' }
       ]
@@ -1940,7 +1931,7 @@
         { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Direct labour hour cost rate (including on-costs), target selling price per kg per SKU, raw material cost per kg by material type and grade' },
         { icon: '\uD83D\uDD17', label: 'How records match', content: 'SKU for selling prices. Material type for raw material costs. Cost centre for labour hour rates.' },
         { icon: '\u2713', label: 'What must be true', content: 'Labour hour rates must include all on-costs (NI, pension, holiday accrual). Selling prices must reflect current contracted customer prices. Raw material costs must reflect current purchase prices or recent rolling average.' },
-        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Stale selling prices make \u00A3/kg recovery misleading. Incorrect hour rates mean the \u00A3/kg Labour Cost variance is against the wrong benchmark. Outdated material costs distort MUV price variance.' },
+        { icon: '\u26A0', label: 'What breaks if this fails', content: 'Stale selling prices make \u00A3/kg recovery misleading. Incorrect hour rates mean the Labour Efficiency, Labour Rate variance is against the wrong benchmark. Outdated material costs distort MUV price variance.' },
         { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'X3 costing model is the single source. Pricing is managed centrally.' },
         { icon: '\u2753', label: 'Open questions', content: 'How often are commercial standards refreshed in X3? Are raw material costs set as annual standards or actual rolling averages? How are customer-specific pricing tiers handled \u2014 blended target or SKU-specific?' }
       ]
@@ -1952,7 +1943,7 @@
       rows: [
         { icon: '\uD83C\uDFE2', label: 'What it is', content: 'SQL database + QlikView \u2014 the data integration and calculation engine that brings all sources together' },
         { icon: '\u27F3', label: 'What it does', content: 'Joins data across shared dimensions (date, line, SKU, shift, area, batch, individual), applies the calculation logic defined in the KPI formulas, aggregates from transaction level to reporting periods, and serves results to QlikView dashboards' },
-        { icon: '\u23F1', label: 'Refresh approach', content: 'Depends on source frequencies \u2014 IoT/OEE-driven metrics (Machine Efficiency, Plan Attainment) could refresh near real-time. Labour metrics (Kg/LH, \u00A3/kg Labour Cost) refresh daily after T&A data arrives. Financial metrics (MUV, P&L Bridge) refresh weekly or monthly aligned with finance reporting.' },
+        { icon: '\u23F1', label: 'Refresh approach', content: 'Depends on source frequencies \u2014 IoT/OEE-driven metrics (Machine Efficiency, Plan Attainment) could refresh near real-time. Labour metrics (Kg/LH, Labour Efficiency, Labour Rate) refresh daily after T&A data arrives. Financial metrics (MUV, P&L Bridge) refresh weekly or monthly aligned with finance reporting.' },
         { icon: '\uD83D\uDD27', label: 'Key design decisions', content: 'Where does calculation logic live \u2014 in SQL views/stored procedures, in QlikView load script, or split between both? How are historical corrections handled \u2014 if yesterday\'s data is restated, do KPIs recalculate automatically? How is data quality monitored \u2014 automated alerts for missing data, failed joins, outlier values?' },
         { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'The existing SQL + QlikView infrastructure has capacity for the additional data volumes. QlikView licences cover the required user base.' },
         { icon: '\u2753', label: 'Open questions', content: 'Is the current SQL database a structured data warehouse or more of a staging area? What QlikView apps exist today \u2014 are we extending an existing app or building new? Who maintains the SQL/QlikView infrastructure \u2014 internal IT, an external partner, or a managed service? What is the QlikView licence position \u2014 are there enough user licences? Is there any consideration of migrating from QlikView to Qlik Sense or another platform?' }
