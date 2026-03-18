@@ -6,7 +6,7 @@
   <title>Efficiency Formulas Quick Reference | maji by majaco</title>
   <meta name="description" content="Formula reference for majaco's time-based measurement framework. Corrected lost time equations, efficiency metrics by constraint state, and financial valuation of opportunities.">
   <meta property="og:title" content="Efficiency Formulas Quick Reference | maji by majaco">
-  <meta property="og:description" content="Core formulas for operating efficiency, machine efficiency, TEEP, lost time categories, and financial valuation of manufacturing opportunities.">
+  <meta property="og:description" content="Core formulas for operating efficiency, machine efficiency, Total Effective Equipment Performance, lost time categories, and financial valuation of manufacturing opportunities.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://majiai.co/maji-efficiency-formulas">
   <meta property="og:image" content="https://majiai.co/assets/og-image.png">
@@ -93,15 +93,15 @@
                   </div>
 
                   <div style="padding-left:1.5rem">
-                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Unplanned Downtime (UPDT) &rarr;</div>
+                    <div style="color:#7A7A7A;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Unplanned Downtime &rarr;</div>
                     <div style="background:#f0fdf4;border-left:4px solid var(--color-primary);padding:0.75rem 1rem;border-radius:6px">
-                      <strong>Up Time</strong> <span style="color:#7A7A7A">&mdash; OT &minus; UPDT &mdash; actually running</span>
+                      <strong>Up Time</strong> <span style="color:#7A7A7A">&mdash; Operating Time &minus; Unplanned Downtime &mdash; actually running</span>
                     </div>
 
                     <div style="padding-left:1.5rem">
-                      <div style="color:#d97706;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; LTSR, LTMW &rarr;</div>
+                      <div style="color:#d97706;font-size:0.85rem;padding:0.35rem 0 0.35rem 0">&minus; Lost Time Slow Running, Lost Time Making Waste &rarr;</div>
                       <div style="background:#f0fdf4;border-left:4px solid #DAF11B;padding:0.75rem 1rem;border-radius:6px">
-                        <strong style="color:var(--color-primary)">Potential Time</strong> <span style="color:#7A7A7A">&mdash; Good Output / BNS &mdash; theoretical minimum</span>
+                        <strong style="color:var(--color-primary)">Potential Time</strong> <span style="color:#7A7A7A">&mdash; Good Output / Bottleneck Speed &mdash; theoretical minimum</span>
                       </div>
                     </div>
 
@@ -116,13 +116,13 @@
         <!-- 2. Core Formulas -->
         <div class="content-card reveal" data-delay="80">
           <h2>Core Formulas</h2>
-          <div class="formula"><strong>Potential Time</strong> = Good Output / Bottleneck Speed (BNS)</div>
+          <div class="formula"><strong>Potential Time</strong> = Good Output / Bottleneck Speed</div>
           <div class="formula"><strong>Run Speed</strong> = Total Output / Up Time</div>
-          <div class="formula"><strong>LTSR</strong> = Good Output / Run Speed &minus; Good Output / BNS</div>
-          <div class="formula"><strong>LTMW</strong> = Waste Output / Run Speed</div>
-          <div class="formula"><strong>UPDT</strong> = Actual Operating Time &minus; Up Time</div>
-          <div class="formula"><strong>Planning Rate</strong> = BNS &times; Operating Efficiency (planned)</div>
-          <div class="formula"><strong>Verification:</strong> Actual OT = Potential Time + LTSR + LTMW + UPDT &nbsp;(must balance)</div>
+          <div class="formula"><strong>Lost Time Slow Running</strong> = Good Output / Run Speed &minus; Good Output / Bottleneck Speed</div>
+          <div class="formula"><strong>Lost Time Making Waste</strong> = Waste Output / Run Speed</div>
+          <div class="formula"><strong>Unplanned Downtime</strong> = Actual Operating Time &minus; Up Time</div>
+          <div class="formula"><strong>Planning Rate</strong> = Bottleneck Speed &times; Operating Efficiency (planned)</div>
+          <div class="formula"><strong>Verification:</strong> Actual Operating Time = Potential Time + Lost Time Slow Running + Lost Time Making Waste + Unplanned Downtime &nbsp;(must balance)</div>
         </div>
 
         <!-- 3. Efficiency Metrics -->
@@ -141,13 +141,13 @@
                   <td>Both</td>
                 </tr>
                 <tr>
-                  <td><strong>Machine Efficiency / OOE</strong></td>
+                  <td><strong>Machine Efficiency / Overall Operations Effectiveness</strong></td>
                   <td>Potential Time / Shift Time</td>
                   <td>Management</td>
                   <td>Both</td>
                 </tr>
                 <tr>
-                  <td><strong>TEEP</strong></td>
+                  <td><strong>Total Effective Equipment Performance</strong></td>
                   <td>Potential Time / Calendar Time</td>
                   <td>Strategic</td>
                   <td>Production-constrained</td>
@@ -168,13 +168,13 @@
             </table>
           </div>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.75rem">
-            <strong>Why this works:</strong> Operating Efficiency = Potential Time / Actual OT. Since Potential Time = Good Output / BNS, this simplifies to Good Output / (BNS &times; Actual OT) &mdash; i.e. good output as a proportion of what the line <em>could</em> have produced in the actual operating time. The same logic applies to every metric in the table: the numerator is always the time your good output <em>needed</em>; the denominator is the time window you are measuring against.
+            <strong>Why this works:</strong> Operating Efficiency = Potential Time / Actual Operating Time. Since Potential Time = Good Output / Bottleneck Speed, this simplifies to Good Output / (Bottleneck Speed &times; Actual Operating Time) &mdash; i.e. good output as a proportion of what the line <em>could</em> have produced in the actual operating time. The same logic applies to every metric in the table: the numerator is always the time your good output <em>needed</em>; the denominator is the time window you are measuring against.
           </p>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong>Machine Efficiency vs OOE:</strong> same formula (Potential Time / Shift Time), different name. &ldquo;Machine Efficiency&rdquo; is used in a sales context; &ldquo;OOE&rdquo; in a production context. The name signals strategic intent, not a different calculation.
+            <strong>Machine Efficiency vs Overall Operations Effectiveness:</strong> same formula (Potential Time / Shift Time), different name. &ldquo;Machine Efficiency&rdquo; is used in a sales context; &ldquo;Overall Operations Effectiveness&rdquo; in a production context. The name signals strategic intent, not a different calculation.
           </p>
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:0.5rem">
-            <strong>OEE translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (Potential Time / OT) provides the same insight without double-counting speed losses on waste units.
+            <strong>Overall Equipment Effectiveness translation:</strong> the industry-standard Availability &times; Performance &times; Quality is the multiplicative equivalent. majaco&rsquo;s additive framework (Potential Time / Operating Time) provides the same insight without double-counting speed losses on waste units.
           </p>
         </div>
 
@@ -217,7 +217,7 @@
 
           <p style="font-size:0.85rem;color:#7A7A7A;margin-top:1rem"><strong>Lost time scope:</strong></p>
           <ul style="font-size:0.85rem;color:#7A7A7A;line-height:1.6;margin:0.25rem 0 0 0;padding-left:1.25rem;list-style:disc">
-            <li style="display:list-item"><strong>Operational</strong> &mdash; losses within Operating Time (UPDT, LTSR, LTMW)</li>
+            <li style="display:list-item"><strong>Operational</strong> &mdash; losses within Operating Time (Unplanned Downtime, Lost Time Slow Running, Lost Time Making Waste)</li>
             <li style="display:list-item"><strong>Tactical</strong> &mdash; losses within Shift Time (adds Schedule Loss and Planned Downtime)</li>
             <li style="display:list-item"><strong>Strategic</strong> &mdash; losses within Calendar Time (adds Non-working Time)</li>
           </ul>
@@ -227,15 +227,15 @@
         <div class="content-card reveal" data-delay="320">
           <h2>Diagnostic Quick Reference</h2>
 
-          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">LTSR Elevated?</h3>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">Lost Time Slow Running Elevated?</h3>
           <p>Two possible causes &mdash; the fix is different for each:</p>
           <ol style="font-size:0.9rem;color:#555;line-height:1.6;margin:0.5rem 0 1.25rem 0;padding-left:1.25rem;list-style:decimal">
-            <li style="display:list-item"><strong>True slow running</strong> &mdash; the line deliberately operates below BNS (e.g. operator reduces speed for quality reasons).</li>
-            <li style="display:list-item"><strong>LTSS micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as UPDT but reduce the average Run Speed.</li>
+            <li style="display:list-item"><strong>True slow running</strong> &mdash; the line deliberately operates below bottleneck speed (e.g. operator reduces speed for quality reasons).</li>
+            <li style="display:list-item"><strong>Micro-stops</strong> &mdash; the line runs at full speed between frequent brief stops that are too short to log as Unplanned Downtime but reduce the average Run Speed.</li>
           </ol>
-          <p style="font-size:0.85rem;color:#7A7A7A">Diagnose with a lineside time study: observe whether the line speed setting matches BNS, or whether frequent micro-stops are dragging the average down.</p>
+          <p style="font-size:0.85rem;color:#7A7A7A">Diagnose with a lineside time study: observe whether the line speed setting matches bottleneck speed, or whether frequent micro-stops are dragging the average down.</p>
 
-          <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">UPDT Prioritisation</h3>
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">Unplanned Downtime Prioritisation</h3>
           <p>Use a frequency&ndash;duration matrix to prioritise downtime events:</p>
           <div class="table-wrapper" style="margin-top:0.75rem">
             <table>
@@ -258,7 +258,7 @@
           </div>
 
           <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem 0">MECE Verification</h3>
-          <p>Actual OT must equal Potential Time + LTSR + LTMW + UPDT. If it does not balance, a loss category has been mis-allocated. Check Run Speed and BNS inputs first.</p>
+          <p>Actual Operating Time must equal Potential Time + Lost Time Slow Running + Lost Time Making Waste + Unplanned Downtime. If it does not balance, a loss category has been mis-allocated. Check Run Speed and Bottleneck Speed inputs first.</p>
         </div>
 
         <!-- 6. CTA -->
