@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Portals | majaco</title>
+  <script src="js/auth-gate.js" data-password-hash="8f0fe9da80957354e81379271df8a3a4c7a74649c5528fd1fb8ff466b29d589b"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    .cl-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.25rem; margin-top:2rem; }
+    .cl-card { display:block; background:var(--color-bg-alt); border:1px solid var(--color-border); border-radius:12px; padding:1.75rem; text-decoration:none; color:inherit; transition:border-color .2s, box-shadow .2s; }
+    .cl-card:hover { border-color:var(--color-primary); box-shadow:0 4px 20px rgba(45,106,79,.1); }
+    .cl-card h3 { font-size:var(--font-size-lg); font-weight:var(--font-weight-semibold); margin-bottom:.25rem; color:var(--color-text); }
+    .cl-card .cl-path { font-size:var(--font-size-xs); color:var(--color-text-muted); font-family:var(--font-mono); }
+    .cl-card .cl-arrow { display:inline-block; margin-top:.75rem; font-size:var(--font-size-sm); color:var(--color-primary); font-weight:var(--font-weight-medium); }
+    .cl-count { font-size:var(--font-size-sm); color:var(--color-text-muted); margin-top:.5rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Clients</span>
+      </nav>
+      <p class="page-hero__eyebrow">Internal</p>
+      <h1 class="page-hero__title">Client <span class="text-green">Portals</span></h1>
+      <p class="page-hero__subtitle">All active client resource areas.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="cl-count" id="count"></p>
+      <div class="cl-grid" id="grid"></div>
+    </div>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Add new client folders here
+    var CLIENTS = [
+      { name: 'Becketts', folder: 'becketts' },
+      { name: 'Nine/Ten', folder: 'nineten' },
+    ];
+
+    var grid = document.getElementById('grid');
+    var count = document.getElementById('count');
+
+    if (grid && count) {
+      count.textContent = CLIENTS.length + ' client portal' + (CLIENTS.length !== 1 ? 's' : '');
+      CLIENTS.forEach(function(c) {
+        var a = document.createElement('a');
+        a.href = c.folder + '/index.html';
+        a.className = 'cl-card';
+        a.innerHTML = '<h3>' + c.name + '</h3><span class="cl-path">/' + c.folder + '/</span><span class="cl-arrow">Open portal &rarr;</span>';
+        grid.appendChild(a);
+      });
+    }
+  </script>
+</body>
+</html>
