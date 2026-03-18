@@ -2467,23 +2467,25 @@ tbody tr:hover {
   display: grid;
   grid-template-columns: repeat(100, 1fr);
   grid-template-rows: repeat(7, auto);
-  gap: 8px;
-  min-width: 1100px;
-  padding: 12px;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+  padding: 8px;
 }
 
 /* ---- Block base ---- */
 .block {
-  border-radius: 10px;
-  padding: 12px 10px;
+  border-radius: 8px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 70px;
+  min-height: 50px;
   position: relative;
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .block.expandable {
@@ -2562,6 +2564,19 @@ tbody tr:hover {
 .sub-list {
   font-size: 0.62em;
   margin-top: 6px;
+  display: none;
+}
+.block:hover .sub-list,
+.block.expanded .sub-list {
+  display: block;
+}
+.block.subtracted .block-desc,
+.block.loss .block-desc {
+  display: none;
+}
+.block.subtracted:hover .block-desc,
+.block.loss:hover .block-desc {
+  display: block;
 }
 
 .sub-list div {
@@ -2681,8 +2696,11 @@ tbody tr:hover {
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
+  .cascade-scroll {
+    overflow-x: auto;
+  }
   .cascade-container {
-    min-width: 900px;
+    min-width: 700px;
   }
 }
 
