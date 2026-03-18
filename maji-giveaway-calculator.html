@@ -728,7 +728,7 @@
                 <div className="gc-group" style={{marginTop:'0.5rem',marginBottom:0}}>
                   <label>Cost per rework (£/pack)</label>
                   <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
-                  <div className="gc-hint">Materials cost only (re-open, top-up, re-seal). Typically low — rework is done by existing labour during downtime, not additional operating time.</div>
+                  <div className="gc-hint">Materials cost only if done during planned downtime. If rework stops the line, costs spiral — include lost throughput in this figure.</div>
                 </div>
               </div>
             </div>
@@ -743,8 +743,8 @@
                   <NumInput value={tneManual !== null ? tneManual : tne} onChange={v => setTneManual(v)} decimals={2} min={0}
                     placeholder={fmt(tne,2) + ' (auto)'} />
                   <div className="gc-hint">
-                    Auto: <strong>{fmt(tne,2)} g</strong> for {fmtK(nominal)} g nominal.
-                    <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}> {showTNE ? 'Hide' : 'Show'} TNE table</span>
+                    Auto: <strong>{fmt(tne,2)} g</strong> for {fmtK(nominal)} g nominal.{' '}
+                    <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}>{showTNE ? 'Hide' : 'Show'} TNE table</span>
                   </div>
                   {showTNE && (
                     <table className="gc-tne-table">
@@ -823,7 +823,7 @@
               <div className="gc-rc-sub">{fmt(currentGAPct,1)}% → {fmt(targetGAPct,1)}%</div>
             </div>
             <div className="gc-result-card">
-              <div className="gc-rc-label">Binding Rule</div>
+              <div className="gc-rc-label">Binding Rule (broken first)</div>
               <div className="gc-rc-value" style={{fontSize:'1rem'}}>{ruleLabel(bindingRule)}</div>
               <div className="gc-rc-sub">Target mean: {fmt(targetMean,1)} g</div>
             </div>
