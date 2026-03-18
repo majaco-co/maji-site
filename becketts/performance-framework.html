@@ -68,20 +68,6 @@
   .kpi-list-wrapper { position: relative; }
   .kpi-list { display: flex; flex-direction: column; gap: 8px; }
 
-  /* Reorder active cards to top on hover */
-  .sources-col { display: flex; flex-direction: column; }
-  .sources-col .column-header { order: -1; }
-  .kpi-list .kpi-card, .sources-col .source-card { transition: all 0.25s ease, order 0s; order: 1; }
-  .kpi-list .kpi-card.active, .sources-col .source-card.active { order: 0; }
-  .kpi-list .kpi-card.dimmed, .sources-col .source-card.dimmed { order: 2; }
-
-  /* Capture chips reorder */
-  .capture-col .capture-chip { transition: all 0.25s ease, order 0s; order: 1; }
-  .capture-col .capture-chip.active { order: 0; }
-  .capture-col .capture-chip.dimmed { order: 2; }
-  /* Group labels stay in natural flow but hide when reordering is active */
-  .capture-col .capture-group-label { transition: opacity 0.25s ease, order 0s; order: 1; }
-  .capture-col.reordering .capture-group-label { opacity: 0; order: 3; height: 0; margin: 0; overflow: hidden; }
 
   .kpi-icon {
     width: 24px; height: 24px; border-radius: 6px;
@@ -1046,7 +1032,6 @@
 
   function dimCaptures(exceptSourceIds) {
     if (!isTrayOpen()) return;
-    document.getElementById('captureCol').classList.add('reordering');
     document.querySelectorAll('.capture-chip').forEach(chip => {
       if (exceptSourceIds.includes(chip.dataset.source)) {
         chip.classList.add('active');
@@ -1090,7 +1075,6 @@
   function highlightCapture(chip) {
     const srcId = chip.dataset.source;
     // Dim all other capture chips
-    document.getElementById('captureCol').classList.add('reordering');
     document.querySelectorAll('.capture-chip').forEach(c => {
       if (c !== chip) c.classList.add('dimmed');
     });
@@ -1111,7 +1095,6 @@
   function clearHighlight() {
     document.querySelectorAll('.source-card, .kpi-card').forEach(c => { c.classList.remove('dimmed', 'active'); });
     document.querySelectorAll('.capture-chip').forEach(c => { c.classList.remove('dimmed', 'active'); });
-    document.getElementById('captureCol').classList.remove('reordering');
     connSvg.innerHTML = '';
   }
 
