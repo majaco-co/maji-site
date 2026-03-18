@@ -23,7 +23,7 @@
     .gc-group{margin-bottom:1rem}
     .gc-group label{display:block;font-size:0.82rem;font-weight:600;margin-bottom:0.3rem;color:#333}
     .gc-group .gc-hint{font-size:0.72rem;color:#888;margin-top:0.2rem}
-    .gc-group input[type="number"],.gc-group select{width:100%;padding:0.5rem 0.75rem;border:1px solid #ddd;border-radius:8px;font-size:0.9rem;font-family:inherit;transition:border-color 0.2s,box-shadow 0.2s}
+    .gc-group input[type="number"],.gc-group input[type="text"],.gc-group select{width:100%;padding:0.5rem 0.75rem;border:1px solid #ddd;border-radius:8px;font-size:0.9rem;font-family:inherit;transition:border-color 0.2s,box-shadow 0.2s;box-sizing:border-box}
     .gc-group input:focus,.gc-group select:focus{outline:none;border-color:#006458;box-shadow:0 0 0 3px rgba(0,100,88,0.15)}
     .gc-slider-wrap{display:flex;align-items:center;gap:0.75rem}
     .gc-slider-wrap input[type="range"]{flex:1;height:6px;-webkit-appearance:none;appearance:none;background:linear-gradient(to right,#006458 0%,#006458 var(--fill,50%),#ddd var(--fill,50%),#ddd 100%);border-radius:999px;outline:none}
@@ -33,10 +33,13 @@
     .gc-output{background:#f8f9fa;border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.6rem;display:flex;justify-content:space-between;align-items:center}
     .gc-output .gc-olabel{font-size:0.82rem;color:#555}
     .gc-output .gc-ovalue{font-size:1.1rem;font-weight:700;color:#006458}
-    .gc-hero{background:linear-gradient(135deg,#001412,#006458);border-radius:16px;padding:1.5rem;text-align:center;margin-bottom:1rem}
+    .gc-hero{background:linear-gradient(135deg,#001412,#006458);border-radius:16px;padding:1.5rem 2rem;text-align:center;margin-bottom:2rem}
     .gc-hero .gc-olabel{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:0.25rem}
     .gc-hero .gc-ovalue{color:#DAF11B;font-size:2.4rem;font-weight:700;line-height:1.1}
     .gc-hero .gc-osub{color:rgba(255,255,255,0.5);font-size:0.75rem;margin-top:0.25rem}
+    .gc-hero-row{display:flex;justify-content:center;gap:2rem;margin-top:0.75rem;flex-wrap:wrap}
+    .gc-hero-stat{color:rgba(255,255,255,0.85);font-size:0.85rem}
+    .gc-hero-stat strong{color:#fff;font-weight:700}
     .gc-warn{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.8rem;color:#856404;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
     .gc-warn::before{content:'⚠';font-size:1rem}
     .gc-chart-card{background:#fff;border:1px solid var(--color-border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
@@ -47,9 +50,42 @@
     .gc-tne-table td{padding:4px 8px;border-bottom:1px solid #eee}
     .gc-tne-table tr:nth-child(even) td{background:#f9f9f9}
     .gc-tne-toggle{font-size:0.75rem;color:#006458;cursor:pointer;text-decoration:underline;margin-top:0.25rem;display:inline-block}
+    .gc-cv{font-size:0.78rem;color:#006458;font-weight:600;margin-top:0.25rem;padding:0.3rem 0.5rem;background:rgba(0,100,88,0.06);border-radius:6px;display:inline-block}
+    .gc-cv-explain{font-size:0.68rem;color:#888;margin-top:0.15rem;line-height:1.4}
+    .gc-results-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+    .gc-result-card{background:#fff;border:1px solid var(--color-border);border-radius:12px;padding:1rem;text-align:center}
+    .gc-result-card .gc-rc-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:#7A7A7A;margin-bottom:0.35rem}
+    .gc-result-card .gc-rc-value{font-size:1.3rem;font-weight:700;color:#006458;line-height:1.2}
+    .gc-result-card .gc-rc-sub{font-size:0.72rem;color:#888;margin-top:0.2rem}
+    .gc-expandable{margin-bottom:1.5rem}
+    .gc-expand-toggle{display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;font-weight:600;color:#006458;cursor:pointer;padding:0.75rem 1rem;background:#fff;border:1px solid var(--color-border);border-radius:12px;width:100%;text-align:left;transition:background 0.15s}
+    .gc-expand-toggle:hover{background:#f0faf8}
+    .gc-expand-toggle .gc-chevron{transition:transform 0.2s;font-size:0.7rem}
+    .gc-expand-toggle .gc-chevron.open{transform:rotate(90deg)}
+    .gc-expand-body{background:#fff;border:1px solid var(--color-border);border-top:none;border-radius:0 0 12px 12px;padding:1.25rem;margin-top:-1px}
+    .gc-preset-bar{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap}
+    .gc-preset-label{font-size:0.78rem;color:#7A7A7A}
+    .gc-preset-chip{font-size:0.78rem;padding:0.35rem 0.85rem;border-radius:999px;border:1px solid #ddd;background:#fff;cursor:pointer;color:#333;transition:all 0.15s;font-family:inherit}
+    .gc-preset-chip:hover{border-color:#006458;color:#006458}
+    .gc-preset-chip.active{background:#006458;color:#fff;border-color:#006458}
     .gc-compliance-row{display:flex;gap:0.75rem}
     .gc-compliance-row>div{flex:1}
-    @media(max-width:768px){.gc-grid{grid-template-columns:1fr}.gc-compliance-row{flex-direction:column}}
+    @media(max-width:768px){
+      .gc-grid{grid-template-columns:1fr}
+      .gc-results-row{grid-template-columns:1fr 1fr}
+      .gc-compliance-row{flex-direction:column}
+    }
+    @media(max-width:480px){
+      .gc-results-row{grid-template-columns:1fr}
+    }
+    .gc-compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+    .gc-compare-card{border-radius:12px;padding:1rem 1.25rem;border:1px solid var(--color-border);background:#fff}
+    .gc-compare-card h4{font-size:0.85rem;font-weight:700;margin-bottom:0.5rem;color:#001412}
+    .gc-compare-stat{font-size:0.78rem;line-height:1.7;color:#444}
+    .gc-compare-total{font-size:1.1rem;font-weight:700;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid #eee}
+    .gc-legal-box{background:#f8f9fa;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.75rem;line-height:1.6;color:#555;margin-bottom:0.5rem}
+    .gc-legal-box strong{color:#001412}
+    @media(max-width:768px){.gc-compare{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -195,7 +231,7 @@
     const { useState, useMemo } = React;
     const {
       ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-      ReferenceLine, ResponsiveContainer, LineChart, Legend
+      ReferenceLine, ResponsiveContainer, Legend
     } = Recharts;
 
     /* ── Maths helpers ──────────────────────────── */
@@ -207,12 +243,34 @@
     }
 
     function normalCDF(z) {
-      // Abramowitz & Stegun approximation
       const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
       const sign = z < 0 ? -1 : 1;
       const t = 1 / (1 + p * Math.abs(z));
       const y = 1 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-z*z/2);
       return 0.5 * (1 + sign * y);
+    }
+
+    /* Inverse normal CDF — Acklam rational approximation */
+    function inverseNormalCDF(p) {
+      if (p <= 0) return -Infinity;
+      if (p >= 1) return Infinity;
+      if (p === 0.5) return 0;
+      const a = [-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+      const b = [-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+      const c = [-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+      const d = [7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+      const pLow = 0.02425, pHigh = 1 - pLow;
+      let q, r;
+      if (p < pLow) {
+        q = Math.sqrt(-2 * Math.log(p));
+        return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+      } else if (p <= pHigh) {
+        q = p - 0.5; r = q * q;
+        return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+      } else {
+        q = Math.sqrt(-2 * Math.log(1 - p));
+        return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+      }
     }
 
     function complianceRate(mean, sd, legalMin) {
@@ -225,13 +283,13 @@
 
     function getTNE(nominalG) {
       if (nominalG < 5) return 0;
-      if (nominalG <= 50)   return nominalG * 0.09;          // 9%
-      if (nominalG <= 100)  return 4.5;                       // 4.5g fixed
-      if (nominalG <= 200)  return nominalG * 0.045;          // 4.5%
-      if (nominalG <= 300)  return 9;                         // 9g fixed
-      if (nominalG <= 500)  return nominalG * 0.03;           // 3%
-      if (nominalG <= 1000) return 15;                        // 15g fixed
-      if (nominalG <= 10000) return nominalG * 0.015;         // 1.5%
+      if (nominalG <= 50)   return nominalG * 0.09;
+      if (nominalG <= 100)  return 4.5;
+      if (nominalG <= 200)  return nominalG * 0.045;
+      if (nominalG <= 300)  return 9;
+      if (nominalG <= 500)  return nominalG * 0.03;
+      if (nominalG <= 1000) return 15;
+      if (nominalG <= 10000) return nominalG * 0.015;
       return nominalG * 0.015;
     }
 
@@ -245,87 +303,204 @@
       { range: '1,000 – 10,000 g', rule: '1.5% of nominal' },
     ];
 
-    const CONFIDENCE = [
-      { label: '0.1% below T2 (3.09σ)',  z: 3.09,  pct: 99.9, t2pct: 0.1 },
-      { label: '0.5% below T2 (2.58σ)',  z: 2.576, pct: 99.5, t2pct: 0.5 },
-      { label: '1% below T2 (2.33σ)',    z: 2.326, pct: 99.0, t2pct: 1.0 },
-    ];
+    const BECKETTS_PRESET = {
+      nominal: 2250,
+      currentGAPct: 2.7,
+      currentSD: 78,
+      targetGAPct: 1.0,
+      costPerKg: 2.5,
+      annualVol: 6000000,
+      safetyMargin: 1,
+      rule2OneIn: 40,
+      rule3OneIn: 10000,
+      reworkCostPerPack: 0.50,
+    };
 
     const fmt  = (v,d=1) => v.toFixed(d);
     const fmtK = v => v.toLocaleString('en-GB', { maximumFractionDigits: 0 });
     const fmtGBP = v => '£' + v.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
+    /* ── Formatted number input (commas, no leading-zero bug) ── */
+
+    function NumInput({ value, onChange, decimals, min, max, style, placeholder }) {
+      const [editing, setEditing] = useState(false);
+      const [raw, setRaw] = useState('');
+      const dec = decimals || 0;
+      const display = (typeof value === 'number' && !isNaN(value))
+        ? (dec > 0
+            ? value.toLocaleString('en-GB', { minimumFractionDigits: dec, maximumFractionDigits: dec })
+            : value.toLocaleString('en-GB'))
+        : '';
+      return (
+        <input
+          type="text"
+          inputMode="decimal"
+          value={editing ? raw : display}
+          placeholder={placeholder}
+          style={style}
+          onFocus={e => {
+            setEditing(true);
+            setRaw(value != null && !isNaN(value) ? String(value) : '');
+            requestAnimationFrame(() => e.target.select());
+          }}
+          onBlur={() => {
+            setEditing(false);
+            const parsed = parseFloat(raw.replace(/,/g, ''));
+            if (!isNaN(parsed)) {
+              let v = parsed;
+              if (min != null) v = Math.max(min, v);
+              if (max != null) v = Math.min(max, v);
+              onChange(v);
+            }
+          }}
+          onChange={e => setRaw(e.target.value)}
+        />
+      );
+    }
+
+    /* ── Expandable section ──────────────────────── */
+
+    function Expandable({ title, defaultOpen, children }) {
+      const [open, setOpen] = useState(defaultOpen || false);
+      return (
+        <div className="gc-expandable">
+          <button className="gc-expand-toggle" onClick={() => setOpen(!open)}>
+            <span className={'gc-chevron' + (open ? ' open' : '')}>&#9654;</span>
+            {title}
+          </button>
+          {open && <div className="gc-expand-body">{children}</div>}
+        </div>
+      );
+    }
+
     /* ── Main App ───────────────────────────────── */
 
     function App() {
-      const [nominal, setNominal]       = useState(200);
-      const [tneManual, setTneManual]   = useState('');
-      const [currentMean, setCurrentMean] = useState(206);
-      const [currentSD, setCurrentSD]   = useState(5);
-      const [targetSD, setTargetSD]     = useState(3.5);
-      const [confIdx, setConfIdx]       = useState(1);
-      const [costPerKg, setCostPerKg]   = useState(3);
-      const [annualVol, setAnnualVol]   = useState(2000000);
-      const [showTNE, setShowTNE]       = useState(false);
+      const [nominal, setNominal]           = useState(200);
+      const [tneManual, setTneManual]       = useState(null);
+      const [currentGAPct, setCurrentGAPct] = useState(3.0);
+      const [currentSD, setCurrentSD]       = useState(6);
+      const [targetGAPct, setTargetGAPct]   = useState(0.5);
+      const [costPerKg, setCostPerKg]       = useState(3);
+      const [annualVol, setAnnualVol]       = useState(2000000);
       const [safetyMargin, setSafetyMargin] = useState(1);
-      const [targetGAInput, setTargetGAInput] = useState(2);
+      const [rule2OneIn, setRule2OneIn]     = useState(40);
+      const [rule3OneIn, setRule3OneIn]     = useState(10000);
+      const [showTNE, setShowTNE]           = useState(false);
+      const [presetActive, setPresetActive] = useState(false);
+      const [reworkCostPerPack, setReworkCostPerPack] = useState(0.50);
+      const [volMode, setVolMode] = useState('packs'); // 'packs' or 'kg'
 
-      // Derived
-      const tne = tneManual !== '' ? parseFloat(tneManual) || 0 : getTNE(nominal);
-      const z   = CONFIDENCE[confIdx].z;
-      const t1  = nominal - tne;       // T1: Tolerable deficiency threshold
-      const t2  = nominal - 2 * tne;   // T2: Absolute minimum threshold
-      const legalMin = t1;              // Keep alias for chart compatibility
+      /* ── Derived values ──────────────────────── */
+
+      const tne = tneManual !== null ? tneManual : getTNE(nominal);
+      const t1  = nominal - tne;
+      const t2  = nominal - 2 * tne;
       const sm  = Math.max(0, safetyMargin);
 
-      // Three Packer Rules — required mean for current SD
-      const rule1Mean = nominal + sm;                   // Rule 1: Average ≥ Nominal + safety margin
-      const rule2MeanCur = t1 + 1.96 * currentSD;      // Rule 2: ≤2.5% below T1 (z=1.96 fixed)
-      const rule3MeanCur = t2 + z * currentSD;          // Rule 3: ≤X% below T2 (user z)
+      // Z-values from compliance tolerance inputs
+      const rule2Pct = Math.max(0.001, 100 / Math.max(2, rule2OneIn));
+      const rule3Pct = Math.max(0.0001, 100 / Math.max(2, rule3OneIn));
+      const z2 = inverseNormalCDF(1 - rule2Pct / 100);
+      const z3 = inverseNormalCDF(1 - rule3Pct / 100);
+
+      // Giveaway in grams
+      const currentGA_g = nominal * currentGAPct / 100;
+      const currentMean = nominal + currentGA_g;
+      const targetGA_g  = Math.max(sm, nominal * targetGAPct / 100);
+      const targetMean  = nominal + targetGA_g;
+
+      // CV %
+      const currentCV = nominal > 0 ? (currentSD / nominal) * 100 : 0;
+
+      // Required SD for target giveaway (from three packer rules)
+      const sdFromRule2 = z2 > 0 ? (targetGA_g + tne) / z2 : Infinity;
+      const sdFromRule3 = z3 > 0 ? (targetGA_g + 2 * tne) / z3 : Infinity;
+      const requiredSD  = Math.min(sdFromRule2, sdFromRule3);
+      const bindingRule = sdFromRule2 <= sdFromRule3 ? 2 : 3;
+      const requiredCV  = nominal > 0 ? (requiredSD / nominal) * 100 : 0;
+
+      // SD reduction
+      const sdReduction   = currentSD - requiredSD;
+      const cvReduction   = currentCV - requiredCV;
+      const needsReduction = sdReduction > 0.01;
+
+      // Three packer rules — required mean for current SD (compliance check)
+      const rule1Mean = nominal + sm;
+      const rule2MeanCur = t1 + z2 * currentSD;
+      const rule3MeanCur = t2 + z3 * currentSD;
       const requiredMeanCurrent = Math.max(rule1Mean, rule2MeanCur, rule3MeanCur);
+      const bindingCurRule = requiredMeanCurrent === rule1Mean ? 1 : requiredMeanCurrent === rule2MeanCur ? 2 : 3;
+      const ruleLabel = r => r === 1 ? 'Average Rule' : r === 2 ? 'TNE Rule (T1)' : '2×TNE Rule (T2)';
 
-      // Three Packer Rules — required mean for target SD
-      const rule2MeanTgt = t1 + 1.96 * targetSD;
-      const rule3MeanTgt = t2 + z * targetSD;
-      const requiredMeanTarget = Math.max(rule1Mean, rule2MeanTgt, rule3MeanTgt);
+      // Savings
+      const giveawayReduction_g = Math.max(0, currentGA_g - targetGA_g);
+      const annualKgSaved = (giveawayReduction_g / 1000) * annualVol;
+      const annualSaving  = annualKgSaved * costPerKg;
 
-      // Binding rule labels
-      const bindingCur = requiredMeanCurrent === rule1Mean ? 1 : requiredMeanCurrent === rule2MeanCur ? 2 : 3;
-      const bindingTgt = requiredMeanTarget === rule1Mean ? 1 : requiredMeanTarget === rule2MeanTgt ? 2 : 3;
-      const ruleLabel = r => r === 1 ? 'Average Rule' : r === 2 ? 'TNE Rule' : '2×TNE Rule';
-
-      const actualGiveaway  = Math.max(0, currentMean - nominal);
-      const targetGiveaway  = Math.max(0, requiredMeanTarget - nominal);
-      const giveawayReduction = actualGiveaway - targetGiveaway;
-      const annualKgSaved   = Math.max(0, (giveawayReduction / 1000) * annualVol);
-      const annualSaving    = annualKgSaved * costPerKg;
-
-      // Compliance rates against T1 and T2
+      // Compliance rates
       const currentCompT1 = complianceRate(currentMean, currentSD, t1);
-      const targetCompT1  = complianceRate(requiredMeanTarget, targetSD, t1);
       const currentCompT2 = complianceRate(currentMean, currentSD, t2);
-      const targetCompT2  = complianceRate(requiredMeanTarget, targetSD, t2);
+      const currentPctBelowT2 = 100 - currentCompT2;
+      const currentPctBelowT1 = 100 - currentCompT1;
+      const currentPctBetweenT1T2 = Math.max(0, currentPctBelowT1 - currentPctBelowT2);
 
-      // Reverse calc: target giveaway → required SD
-      const tgaVal = Math.max(sm, targetGAInput);
-      const sdFromRule2 = (tne + tgaVal) / 1.96;
-      const sdFromRule3 = (2 * tne + tgaVal) / z;
-      const requiredSD = Math.min(sdFromRule2, sdFromRule3);
-      const requiredSDPct = (requiredSD / nominal) * 100;
-      const bindingSDRule = sdFromRule2 <= sdFromRule3 ? 2 : 3;
-      const targetGAPct = (tgaVal / nominal) * 100;
+      // Compliant giveaway at current SD (what you'd need to give away to pass 3 packers)
+      const compliantGA_g = Math.max(0, requiredMeanCurrent - nominal);
+      const compliantGAPct = nominal > 0 ? (compliantGA_g / nominal) * 100 : 0;
+      const complianceGACost = (compliantGA_g / 1000) * annualVol * costPerKg;
+      const currentGACost = (currentGA_g / 1000) * annualVol * costPerKg;
+      const complianceOnCost = complianceGACost - currentGACost;
 
-      const warnNonCompliant = currentMean < requiredMeanCurrent;
-      const warnTargetHigher = targetSD >= currentSD;
+      // Warnings
+      const warnNonCompliant  = currentMean < requiredMeanCurrent;
+      const warnNoImprovement = targetGAPct >= currentGAPct;
+      const warnBelowSM       = (nominal * targetGAPct / 100) < sm;
 
-      const sliderMax = Math.max(currentSD * 2, 1);
-      const sliderFill = ((sliderMax - targetSD) / sliderMax * 100);
+      // Slider
+      const gaSliderMax  = Math.max(currentGAPct * 1.5, 1);
+      const gaSliderFill = (targetGAPct / gaSliderMax * 100);
 
-      /* ── Distribution chart data ──────────────── */
+      // Volume helpers — packs ↔ kg (linked)
+      const annualKg = nominal > 0 ? annualVol * nominal / 1000 : 0;
+      function setVolFromKg(kg) { setAnnualVol(nominal > 0 ? Math.round(kg * 1000 / nominal) : 0); }
+
+      // Rework analysis: at target mean and CURRENT SD
+      const pctBelowT2 = 100 - complianceRate(targetMean, currentSD, t2);
+      const pctBelowT1 = 100 - complianceRate(targetMean, currentSD, t1);
+      const pctBetweenT1T2 = pctBelowT1 - pctBelowT2;
+      // W&M Rule 3: zero packs below T2 → must rework all
+      const reworkT2Packs = Math.round(annualVol * pctBelowT2 / 100);
+      // W&M Rule 2: ≤2.5% below T1. After reworking T2 packs, remaining below T1 = between T1-T2
+      const excessT1Pct = Math.max(0, pctBetweenT1T2 - 2.5);
+      const reworkT1Packs = Math.round(annualVol * excessT1Pct / 100);
+      const totalReworkPacks = reworkT2Packs + reworkT1Packs;
+      const annualReworkCost = totalReworkPacks * reworkCostPerPack;
+      const netSavingWithRework = Math.max(0, annualSaving) - annualReworkCost;
+
+      // Deactivate preset on any manual change
+      const unset = fn => v => { fn(v); setPresetActive(false); };
+
+      function loadBecketts() {
+        setNominal(BECKETTS_PRESET.nominal);
+        setCurrentGAPct(BECKETTS_PRESET.currentGAPct);
+        setCurrentSD(BECKETTS_PRESET.currentSD);
+        setTargetGAPct(BECKETTS_PRESET.targetGAPct);
+        setCostPerKg(BECKETTS_PRESET.costPerKg);
+        setAnnualVol(BECKETTS_PRESET.annualVol);
+        setSafetyMargin(BECKETTS_PRESET.safetyMargin);
+        setRule2OneIn(BECKETTS_PRESET.rule2OneIn);
+        setRule3OneIn(BECKETTS_PRESET.rule3OneIn);
+        setReworkCostPerPack(BECKETTS_PRESET.reworkCostPerPack);
+        setTneManual(null);
+        setPresetActive(true);
+      }
+
+      /* ── Chart data ──────────────────────────── */
 
       const distData = useMemo(() => {
-        const maxSD = Math.max(currentSD, targetSD, 1);
-        const lo = Math.min(requiredMeanTarget, t2, nominal) - 4 * maxSD;
+        const maxSD = Math.max(currentSD, requiredSD, 1);
+        const lo = Math.min(targetMean, t2, nominal) - 4 * maxSD;
         const hi = Math.max(currentMean, nominal) + 4 * maxSD;
         const pts = [];
         const N = 250;
@@ -333,37 +508,35 @@
         for (let i = 0; i <= N; i++) {
           const x = lo + i * step;
           const cPDF = normalPDF(x, currentMean, currentSD);
-          const tPDF = normalPDF(x, requiredMeanTarget, targetSD);
+          const tPDF = normalPDF(x, targetMean, requiredSD);
           pts.push({
             x: Math.round(x * 100) / 100,
             current: cPDF,
             target: tPDF,
             currentGA: (x >= nominal && x <= currentMean) ? cPDF : null,
-            targetGA: (x >= nominal && x <= requiredMeanTarget && requiredMeanTarget > nominal) ? tPDF : null,
+            targetGA:  (x >= nominal && x <= targetMean && targetMean > nominal) ? tPDF : null,
             nonComplyT1: (x <= t1) ? cPDF : null,
             nonComplyT2: (x <= t2) ? cPDF : null,
           });
         }
         return pts;
-      }, [currentMean, currentSD, requiredMeanTarget, targetSD, nominal, t1, t2]);
-
-      /* ── Sensitivity chart data ───────────────── */
+      }, [currentMean, currentSD, targetMean, requiredSD, nominal, t1, t2]);
 
       const sensData = useMemo(() => {
         const pts = [];
         const maxS = currentSD * 2;
         for (let s = 0.1; s <= maxS; s += maxS / 80) {
-          const r2 = t1 + 1.96 * s;
-          const r3 = t2 + z * s;
-          const reqMean = Math.max(nominal + sm, r2, r3);
+          const r2m = t1 + z2 * s;
+          const r3m = t2 + z3 * s;
+          const reqMean = Math.max(nominal + sm, r2m, r3m);
           const ga = Math.max(0, reqMean - nominal);
-          const saving = Math.max(0, ((actualGiveaway - ga) / 1000) * annualVol * costPerKg);
+          const saving = Math.max(0, ((currentGA_g - ga) / 1000) * annualVol * costPerKg);
           pts.push({ sd: Math.round(s * 100) / 100, saving: Math.round(saving) });
         }
         return pts;
-      }, [currentSD, z, tne, t1, t2, nominal, sm, actualGiveaway, annualVol, costPerKg]);
+      }, [currentSD, z2, z3, t1, t2, nominal, sm, currentGA_g, annualVol, costPerKg]);
 
-      /* ── Custom chart tooltip ─────────────────── */
+      /* ── Chart tooltips ──────────────────────── */
 
       function DistTooltip({ active, payload }) {
         if (!active || !payload || !payload.length) return null;
@@ -394,261 +567,445 @@
         <div>
           {/* Warnings */}
           {warnNonCompliant && (
-            <div className="gc-warn">Current mean fill ({fmt(currentMean)} g) is below the required mean ({fmt(requiredMeanCurrent)} g) set by the {ruleLabel(bindingCur)}. Packs may be non-compliant.</div>
+            <div className="gc-warn">Current mean ({fmt(currentMean)} g) is below the required mean ({fmt(requiredMeanCurrent)} g) for your current SD. {ruleLabel(bindingCurRule)} is binding — your current process may be non-compliant.</div>
           )}
-          {warnTargetHigher && (
-            <div className="gc-warn">Target SD ({fmt(targetSD)} g) is not lower than current SD ({fmt(currentSD)} g). Reduce the target to see savings.</div>
+          {warnNoImprovement && (
+            <div className="gc-warn">Target giveaway ({fmt(targetGAPct,1)}%) is not lower than current ({fmt(currentGAPct,1)}%). Reduce the target to see savings.</div>
+          )}
+          {warnBelowSM && (
+            <div className="gc-warn">Target giveaway ({fmt(nominal * targetGAPct / 100,1)} g) is below the safety margin ({fmt(sm)} g). Effective target capped at {fmt(sm)} g.</div>
           )}
 
-          {/* Inputs + Outputs grid */}
+          {/* ── HERO ── */}
+          <div className="gc-hero">
+            <div className="gc-olabel">Annual Saving</div>
+            <div className="gc-ovalue">{fmtGBP(Math.max(0, annualSaving))}</div>
+            <div className="gc-hero-row">
+              <span className="gc-hero-stat"><strong>{fmtK(Math.max(0, Math.round(annualKgSaved)))} kg</strong> saved per year</span>
+              <span className="gc-hero-stat"><strong>{fmt(giveawayReduction_g)} g</strong> less per pack</span>
+            </div>
+          </div>
+
+          {/* ── Preset ── */}
+          <div className="gc-preset-bar">
+            <span className="gc-preset-label">Load example:</span>
+            <button className={'gc-preset-chip' + (presetActive ? ' active' : '')}
+              onClick={presetActive ? () => setPresetActive(false) : loadBecketts}>
+              {presetActive ? 'Becketts Bacon ✓' : 'Becketts Bacon'}
+            </button>
+          </div>
+
+          {/* ── Two-column inputs ── */}
           <div className="gc-grid">
-            {/* ── INPUTS ── */}
+            {/* LEFT: Your Product */}
             <div className="gc-panel">
-              <h3>Inputs</h3>
+              <h3>Your Product</h3>
 
               <div className="gc-group">
                 <label>Nominal Weight (g)</label>
-                <input type="number" value={nominal} min={1} step={1}
-                  onChange={e => { setNominal(+e.target.value); setTneManual(''); }} />
+                <NumInput value={nominal} onChange={v => { setNominal(v); setTneManual(null); setPresetActive(false); }} min={1} />
               </div>
 
               <div className="gc-group">
-                <label>TNE — Tolerable Negative Error (g)</label>
-                <input type="number" value={tneManual !== '' ? tneManual : fmt(tne,2)} step={0.1}
-                  onChange={e => setTneManual(e.target.value)}
-                  placeholder={fmt(tne,2) + ' (auto)'} />
-                <div className="gc-hint">
-                  Auto-calculated from UK rules: <strong>{fmt(tne,2)} g</strong> for {nominal} g nominal.
-                  <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}> {showTNE ? 'Hide' : 'Show'} TNE table</span>
-                </div>
-                {showTNE && (
-                  <table className="gc-tne-table">
-                    <thead><tr><th>Nominal Weight</th><th>TNE</th></tr></thead>
-                    <tbody>{TNE_TABLE.map((r,i) => <tr key={i}><td>{r.range}</td><td>{r.rule}</td></tr>)}</tbody>
-                  </table>
+                <label>Product Cost (£/kg)</label>
+                <NumInput value={costPerKg} onChange={unset(setCostPerKg)} decimals={2} min={0} />
+                <div className="gc-hint">Raw material + direct labour cost per kg of finished product</div>
+              </div>
+
+              <div className="gc-group">
+                <label style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                  Annual Volume
+                  <span style={{display:'inline-flex',gap:0,fontSize:'0.72rem',border:'1px solid #ddd',borderRadius:6,overflow:'hidden',marginLeft:'auto'}}>
+                    <button onClick={() => setVolMode('packs')} style={{padding:'0.2rem 0.5rem',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'0.72rem',background: volMode==='packs' ? '#006458' : '#fff',color: volMode==='packs' ? '#fff' : '#555'}}>Packs/yr</button>
+                    <button onClick={() => setVolMode('kg')} style={{padding:'0.2rem 0.5rem',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'0.72rem',background: volMode==='kg' ? '#006458' : '#fff',color: volMode==='kg' ? '#fff' : '#555'}}>kg/yr</button>
+                  </span>
+                </label>
+                {volMode === 'packs' ? (
+                  <NumInput value={annualVol} onChange={unset(setAnnualVol)} min={0} />
+                ) : (
+                  <NumInput value={Math.round(annualKg)} onChange={v => { setVolFromKg(v); setPresetActive(false); }} min={0} />
                 )}
+                <div className="gc-hint">
+                  {volMode === 'packs'
+                    ? fmtK(Math.round(annualKg)) + ' kg/yr at ' + fmtK(nominal) + ' g nominal'
+                    : fmtK(annualVol) + ' packs/yr at ' + fmtK(nominal) + ' g nominal'}
+                </div>
               </div>
+            </div>
+
+            {/* RIGHT: Your Process */}
+            <div className="gc-panel">
+              <h3>Your Process</h3>
 
               <div className="gc-group">
-                <label>Current Mean Fill (g)</label>
-                <input type="number" value={currentMean} min={0} step={0.1}
-                  onChange={e => setCurrentMean(+e.target.value)} />
-                <div className="gc-hint">Actual measured mean. Required minimum: {fmt(requiredMeanCurrent)} g (binding: {ruleLabel(bindingCur)})</div>
+                <label>Current Giveaway (%)</label>
+                <NumInput value={currentGAPct} onChange={unset(setCurrentGAPct)} decimals={1} min={0} />
+                <div className="gc-hint">{fmt(currentGA_g,1)} g/pack &mdash; mean fill: {fmt(currentMean,1)} g</div>
               </div>
 
               <div className="gc-group">
                 <label>Current SD (g)</label>
-                <input type="number" value={currentSD} min={0.01} step={0.1}
-                  onChange={e => setCurrentSD(+e.target.value)} />
+                <NumInput value={currentSD} onChange={unset(setCurrentSD)} decimals={1} min={0.01} />
+                <div className="gc-cv">CV = {fmt(currentCV,2)}%</div>
+                <div className="gc-cv-explain">CV % = SD ÷ Nominal × 100</div>
               </div>
 
               <div className="gc-group">
-                <label>Target SD (g) — <strong style={{color:'#006458'}}>{fmt(targetSD)} g</strong></label>
+                <label>Target Giveaway (%) — <strong style={{color:'#006458'}}>{fmt(targetGAPct,1)}%</strong></label>
                 <div className="gc-slider-wrap">
-                  <input type="range" min={0.1} max={sliderMax} step={0.1} value={targetSD}
-                    style={{'--fill': sliderFill + '%'}}
-                    onChange={e => setTargetSD(+e.target.value)} />
-                  <input type="number" value={targetSD} min={0.1} step={0.1} style={{width:70}}
-                    onChange={e => setTargetSD(+e.target.value)} />
+                  <input type="range" min={0} max={gaSliderMax} step={0.1} value={targetGAPct}
+                    style={{'--fill': gaSliderFill + '%'}}
+                    onChange={e => { setTargetGAPct(+e.target.value); setPresetActive(false); }} />
+                  <NumInput value={targetGAPct} onChange={unset(setTargetGAPct)} decimals={1} min={0} style={{width:70}} />
                 </div>
+                <div className="gc-hint">{fmt(targetGA_g,1)} g/pack &mdash; target mean: {fmt(targetMean,1)} g</div>
               </div>
 
-              <div className="gc-group">
-                <label>Confidence Level (Rule 3 — absolute minimum)</label>
-                <select value={confIdx} onChange={e => setConfIdx(+e.target.value)}>
-                  {CONFIDENCE.map((c,i) => <option key={i} value={i}>{c.label}</option>)}
-                </select>
-              </div>
-
-              <div className="gc-group">
-                <label>Safety Margin / Positive Bias (g)</label>
-                <input type="number" value={safetyMargin} min={0} step={0.1}
-                  onChange={e => setSafetyMargin(+e.target.value)} />
-                <div className="gc-hint">Minimum overfill above nominal to absorb process drift. Applied to Rule 1. Typically 0.5–2 g.</div>
-              </div>
-
-              <div className="gc-group">
-                <label>Product Cost (£ / kg)</label>
-                <input type="number" value={costPerKg} min={0} step={0.1}
-                  onChange={e => setCostPerKg(+e.target.value)} />
-              </div>
-
-              <div className="gc-group">
-                <label>Annual Volume (packs / year)</label>
-                <input type="number" value={annualVol} min={0} step={1000}
-                  onChange={e => setAnnualVol(+e.target.value)} />
-              </div>
-            </div>
-
-            {/* ── OUTPUTS ── */}
-            <div className="gc-panel">
-              <h3>Results</h3>
-
-              {/* Hero: annual saving */}
-              <div className="gc-hero">
-                <div className="gc-olabel">Annual Saving</div>
-                <div className="gc-ovalue">{fmtGBP(Math.max(0, annualSaving))}</div>
-                <div className="gc-osub">{fmtK(Math.max(0, Math.round(annualKgSaved)))} kg / year saved</div>
-              </div>
-
-              <div className="gc-output">
-                <span className="gc-olabel">Current giveaway</span>
-                <span className="gc-ovalue">{fmt(actualGiveaway)} g / pack</span>
-              </div>
-              <div className="gc-output">
-                <span className="gc-olabel">Target giveaway</span>
-                <span className="gc-ovalue">{fmt(Math.max(0, targetGiveaway))} g / pack</span>
-              </div>
-              <div className="gc-output">
-                <span className="gc-olabel">Giveaway reduction</span>
-                <span className="gc-ovalue" style={{color: giveawayReduction > 0 ? '#006458' : '#dc3545'}}>
-                  {giveawayReduction > 0 ? '−' : ''}{fmt(Math.abs(giveawayReduction))} g / pack
-                </span>
-              </div>
-              <div className="gc-output">
-                <span className="gc-olabel">Target mean fill</span>
-                <span className="gc-ovalue">{fmt(requiredMeanTarget)} g</span>
-              </div>
-              <div className="gc-output">
-                <span className="gc-olabel">Binding rule</span>
-                <span className="gc-ovalue" style={{fontSize:'0.9rem'}}>{ruleLabel(bindingTgt)}</span>
-              </div>
-
-              <h3 style={{marginTop:'1.25rem'}}>Three Packer Rules</h3>
-              <div style={{fontSize:'0.8rem',lineHeight:1.6,marginBottom:'0.5rem',color:'#555'}}>
-                <div><strong>T1</strong> (Nom − TNE) = {fmt(t1)} g &nbsp;|&nbsp; <strong>T2</strong> (Nom − 2×TNE) = {fmt(t2)} g</div>
-              </div>
-              <div style={{fontSize:'0.78rem',lineHeight:1.7,color:'#444'}}>
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>Rule 1: Mean ≥ Nominal + {fmt(sm)} g bias</span>
-                  <span style={{fontWeight:600,color: bindingTgt===1 ? '#006458' : '#888'}}>{fmt(rule1Mean)} g {bindingTgt===1 ? '← binding' : ''}</span>
+              {/* W&M Legal Rules */}
+              <div style={{marginTop:'0.75rem',paddingTop:'0.75rem',borderTop:'1px solid #eee'}}>
+                <label style={{fontSize:'0.78rem',fontWeight:600,color:'#001412',marginBottom:'0.4rem',display:'block'}}>W&M Batch Rules (legal compliance)</label>
+                <div className="gc-legal-box">
+                  <div><strong>Rule 1 (Average):</strong> Batch average ≥ Nominal Weight ({fmtK(nominal)} g)</div>
+                  <div><strong>Rule 2 (T1):</strong> ≤2.5% of packs between T1 ({fmt(t1)} g) and T2 ({fmt(t2)} g)</div>
+                  <div><strong>Rule 3 (T2):</strong> Zero packs below T2 ({fmt(t2)} g) — any pack below T2 is an automatic non-conformance</div>
                 </div>
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>Rule 2: ≤2.5% below T1</span>
-                  <span style={{fontWeight:600,color: bindingTgt===2 ? '#006458' : '#888'}}>{fmt(rule2MeanTgt)} g {bindingTgt===2 ? '← binding' : ''}</span>
-                </div>
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>Rule 3: ≤{CONFIDENCE[confIdx].t2pct}% below T2</span>
-                  <span style={{fontWeight:600,color: bindingTgt===3 ? '#006458' : '#888'}}>{fmt(rule3MeanTgt)} g {bindingTgt===3 ? '← binding' : ''}</span>
-                </div>
-              </div>
+                <div className="gc-hint" style={{marginBottom:'0.75rem'}}>Fixed by UK W&M regulations. Every completed batch must pass all three.</div>
 
-              <h3 style={{marginTop:'1.25rem'}}>Compliance</h3>
-              <div style={{fontSize:'0.78rem',lineHeight:1.8,color:'#444'}}>
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>% above T1 (need ≥97.5%)</span>
-                  <span style={{fontWeight:600,color: currentCompT1 >= 97.5 ? '#006458' : '#dc3545'}}>{fmt(currentCompT1,2)}%</span>
+                {/* Internal Targets */}
+                <label style={{fontSize:'0.78rem',fontWeight:600,color:'#001412',marginBottom:'0.3rem',display:'block'}}>Internal Production Targets</label>
+                <div className="gc-hint" style={{marginBottom:'0.5rem'}}>
+                  Your checkweigher rejects packs that breach these thresholds. Targets can be <strong>looser</strong> than W&amp;M if rework is cheap and raw materials are expensive (accept more rework to reduce giveaway), or <strong>stricter</strong> if non-conformance costs are high and rework is disruptive.
                 </div>
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <span>% above T2 (need ≥{fmt(100 - CONFIDENCE[confIdx].t2pct,1)}%)</span>
-                  <span style={{fontWeight:600,color: currentCompT2 >= CONFIDENCE[confIdx].pct ? '#006458' : '#dc3545'}}>{fmt(currentCompT2,2)}%</span>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.75rem'}}>
+                  <div>
+                    <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T1</div>
+                    <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
+                      <span>1 in</span>
+                      <NumInput value={rule2OneIn} onChange={v => { setRule2OneIn(Math.round(v)); setPresetActive(false); }} min={2} style={{width:60,textAlign:'center'}} />
+                    </div>
+                    <div className="gc-hint">{fmt(rule2Pct,2)}% &middot; z = {fmt(z2,2)}</div>
+                  </div>
+                  <div>
+                    <div style={{fontSize:'0.72rem',color:'#7A7A7A',marginBottom:'0.2rem'}}>Max below T2</div>
+                    <div style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.82rem',color:'#555'}}>
+                      <span>1 in</span>
+                      <NumInput value={rule3OneIn} onChange={v => { setRule3OneIn(Math.round(v)); setPresetActive(false); }} min={2} style={{width:80,textAlign:'center'}} />
+                    </div>
+                    <div className="gc-hint">{rule3Pct < 0.01 ? rule3Pct.toExponential(1) : fmt(rule3Pct,4)}% &middot; z = {fmt(z3,2)}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="gc-hint" style={{textAlign:'center',marginTop:'0.5rem'}}>
-                TNE: {fmt(tne,2)} g &nbsp;|&nbsp; T1: {fmt(t1)} g &nbsp;|&nbsp; T2: {fmt(t2)} g
+                <div className="gc-group" style={{marginTop:'0.5rem',marginBottom:0}}>
+                  <label>Cost per rework (£/pack)</label>
+                  <NumInput value={reworkCostPerPack} onChange={unset(setReworkCostPerPack)} decimals={2} min={0} style={{width:100}} />
+                  <div className="gc-hint">Labour + materials to identify, re-open, top-up, and re-seal a non-conforming pack</div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* ── Reverse Calculator: Target GA → Required SD ── */}
+          {/* ── Advanced Settings ── */}
+          <Expandable title="Advanced Settings">
+            <div className="gc-grid" style={{marginBottom:0}}>
+              <div>
+                <div className="gc-group">
+                  <label>TNE — Tolerable Negative Error (g)</label>
+                  <NumInput value={tneManual !== null ? tneManual : tne} onChange={v => setTneManual(v)} decimals={2} min={0}
+                    placeholder={fmt(tne,2) + ' (auto)'} />
+                  <div className="gc-hint">
+                    Auto: <strong>{fmt(tne,2)} g</strong> for {fmtK(nominal)} g nominal.
+                    <span className="gc-tne-toggle" onClick={() => setShowTNE(!showTNE)}> {showTNE ? 'Hide' : 'Show'} TNE table</span>
+                  </div>
+                  {showTNE && (
+                    <table className="gc-tne-table">
+                      <thead><tr><th>Nominal Weight</th><th>TNE</th></tr></thead>
+                      <tbody>{TNE_TABLE.map((r,i) => <tr key={i}><td>{r.range}</td><td>{r.rule}</td></tr>)}</tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+              <div>
+                <div className="gc-group">
+                  <label>Safety Margin (g)</label>
+                  <NumInput value={safetyMargin} onChange={setSafetyMargin} decimals={1} min={0} />
+                  <div className="gc-hint">A safety buffer above nominal weight to absorb natural process drift and measurement uncertainty. Without this, any slight downward drift puts your batch average below nominal (Rule 1 breach). Typically 0.5–2 g depending on process stability.</div>
+                </div>
+              </div>
+            </div>
+          </Expandable>
+
+          {/* ── Results row ── */}
+          <div className="gc-results-row">
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Required Target SD</div>
+              <div className="gc-rc-value">{fmt(requiredSD,1)} g</div>
+              <div className="gc-rc-sub">CV = {fmt(requiredCV,2)}%</div>
+            </div>
+            <div className="gc-result-card">
+              <div className="gc-rc-label">SD Reduction Needed</div>
+              <div className="gc-rc-value" style={{color: needsReduction ? '#006458' : '#7A7A7A'}}>
+                {needsReduction ? '−' + fmt(sdReduction,1) + ' g' : 'None'}
+              </div>
+              <div className="gc-rc-sub">
+                {needsReduction
+                  ? 'CV: ' + fmt(currentCV,1) + '% → ' + fmt(requiredCV,1) + '% (−' + fmt(cvReduction,1) + 'pp)'
+                  : 'Current SD already sufficient'}
+              </div>
+            </div>
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Giveaway Reduction</div>
+              <div className="gc-rc-value" style={{color: giveawayReduction_g > 0 ? '#006458' : '#7A7A7A'}}>
+                {giveawayReduction_g > 0 ? '−' + fmt(giveawayReduction_g) + ' g' : '0 g'}
+              </div>
+              <div className="gc-rc-sub">{fmt(currentGAPct,1)}% → {fmt(targetGAPct,1)}%</div>
+            </div>
+            <div className="gc-result-card">
+              <div className="gc-rc-label">Binding Rule</div>
+              <div className="gc-rc-value" style={{fontSize:'1rem'}}>{ruleLabel(bindingRule)}</div>
+              <div className="gc-rc-sub">Target mean: {fmt(targetMean,1)} g</div>
+            </div>
+          </div>
+
+          {/* ── Rework vs SD Reduction ── */}
           <div className="gc-chart-card" style={{background:'#f0faf8'}}>
-            <h3>Target Giveaway → Required SD</h3>
-            <p style={{fontSize:'0.82rem',color:'#555',marginBottom:'1rem'}}>Set your target giveaway and see the SD you need to achieve it while meeting all three packer rules.</p>
-            <div style={{display:'flex',gap:'1rem',flexWrap:'wrap',alignItems:'flex-end',marginBottom:'1rem'}}>
-              <div className="gc-group" style={{flex:'1 1 140px',marginBottom:0}}>
-                <label>Target Giveaway (g)</label>
-                <input type="number" value={targetGAInput} min={0} step={0.1}
-                  onChange={e => setTargetGAInput(+e.target.value)} />
-                <div className="gc-hint">{fmt(targetGAPct,2)}% of nominal</div>
+            <h3>Rework vs SD Reduction</h3>
+            <p>Two strategies to reduce giveaway: rework underweight packs at current SD, or invest in process improvement to reduce SD.</p>
+            <div className="gc-compare">
+              {/* Strategy A: Rework */}
+              <div className="gc-compare-card" style={{borderColor: netSavingWithRework > 0 ? '#006458' : '#ddd'}}>
+                <h4>A: Rework at Current SD ({fmt(currentSD,1)} g)</h4>
+                <div className="gc-compare-stat">
+                  <div>Set mean to {fmt(targetMean,1)} g and rework non-conforming packs</div>
+                  <div style={{marginTop:'0.4rem'}}>
+                    <div>Below T2: <strong>{fmt(pctBelowT2,3)}%</strong> ({fmtK(reworkT2Packs)} packs/yr) &mdash; must rework (Rule 3: zero allowed)</div>
+                    <div>Between T1–T2: <strong>{fmt(pctBetweenT1T2,2)}%</strong> &mdash; Rule 2 allows ≤2.5%</div>
+                    {excessT1Pct > 0 && <div>Excess to rework: <strong>{fmt(excessT1Pct,2)}%</strong> ({fmtK(reworkT1Packs)} packs/yr) &mdash; above 2.5% allowance</div>}
+                    <div>Total rework: <strong>{fmtK(totalReworkPacks)} packs/yr</strong></div>
+                    <div>Rework cost: <strong style={{color:'#dc2626'}}>{fmtGBP(annualReworkCost)}/yr</strong></div>
+                  </div>
+                </div>
+                <div className="gc-compare-total" style={{color: netSavingWithRework > 0 ? '#006458' : '#dc2626'}}>
+                  Net saving: {fmtGBP(netSavingWithRework)}/yr
+                </div>
               </div>
-              <div style={{flex:'1 1 200px',background:'#fff',borderRadius:8,padding:'0.75rem 1rem',border:'1px solid #e0e0e0'}}>
-                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.08em',color:'#888',marginBottom:4}}>Required SD</div>
-                <div style={{fontSize:'1.5rem',fontWeight:700,color:'#006458'}}>{fmt(requiredSD,2)} g</div>
-                <div style={{fontSize:'0.82rem',color:'#555'}}>{fmt(requiredSDPct,2)}% of nominal</div>
-                <div style={{fontSize:'0.72rem',color:'#888',marginTop:4}}>Binding: {ruleLabel(bindingSDRule)}</div>
+
+              {/* Strategy B: Reduce SD */}
+              <div className="gc-compare-card" style={{borderColor: needsReduction ? '#ddd' : '#006458'}}>
+                <h4>B: Reduce SD to {fmt(requiredSD,1)} g</h4>
+                <div className="gc-compare-stat">
+                  <div>Meet internal targets without rework</div>
+                  <div style={{marginTop:'0.4rem'}}>
+                    {needsReduction ? (
+                      <div>
+                        <div>SD reduction: <strong>{fmt(currentSD,1)} g → {fmt(requiredSD,1)} g (−{fmt(sdReduction,1)} g)</strong></div>
+                        <div>CV reduction: <strong>{fmt(currentCV,1)}% → {fmt(requiredCV,1)}%</strong></div>
+                        <div>No rework needed</div>
+                        <div style={{marginTop:'0.3rem',fontSize:'0.72rem',color:'#888'}}>Requires process improvement investment (equipment, controls, training)</div>
+                      </div>
+                    ) : (
+                      <div>
+                        <div>Current SD ({fmt(currentSD,1)} g) already meets internal targets</div>
+                        <div>No SD reduction or rework needed</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="gc-compare-total" style={{color:'#006458'}}>
+                  Full saving: {fmtGBP(Math.max(0, annualSaving))}/yr
+                </div>
               </div>
             </div>
-            {tgaVal < sm && (
-              <div className="gc-warn" style={{fontSize:'0.8rem'}}>Target giveaway ({fmt(targetGAInput)} g) is below the safety margin ({fmt(sm)} g). Minimum giveaway = safety margin.</div>
-            )}
-            {requiredSD < currentSD && (
-              <div style={{fontSize:'0.82rem',color:'#006458',fontWeight:500}}>Current SD is {fmt(currentSD)} g — you need to reduce it by {fmt(currentSD - requiredSD,2)} g ({fmt(((currentSD - requiredSD)/currentSD)*100,1)}%) to hit this giveaway target.</div>
-            )}
-            {requiredSD >= currentSD && (
-              <div style={{fontSize:'0.82rem',color:'#006458',fontWeight:500}}>Your current SD ({fmt(currentSD)} g) already achieves this giveaway target.</div>
+            {netSavingWithRework > 0 && needsReduction && annualReworkCost > 0 && (
+              <div style={{marginTop:'1rem',fontSize:'0.82rem',color:'#555',lineHeight:1.6}}>
+                <strong>Short-term:</strong> Reworking {fmtK(totalReworkPacks)} packs/yr costs {fmtGBP(annualReworkCost)} but still saves {fmtGBP(netSavingWithRework)} net.
+                {' '}<strong>Long-term:</strong> Reducing SD to {fmt(requiredSD,1)} g eliminates rework entirely and unlocks the full {fmtGBP(Math.max(0, annualSaving))} saving &mdash;
+                an additional {fmtGBP(annualReworkCost)}/yr over the rework approach.
+              </div>
             )}
           </div>
 
-          {/* ── Distribution Chart ────────────── */}
+          {/* ── Distribution Chart ── */}
           <div className="gc-chart-card">
             <h3>Fill Weight Distribution</h3>
-            <p>Blue = current distribution. Green = target at minimum compliant mean. Red shading = non-compliance zones (T1 lighter, T2 darker). Blue/green shading = giveaway bands.</p>
-            <ResponsiveContainer width="100%" height={380}>
-              <ComposedChart data={distData} margin={{top:30,right:30,left:10,bottom:30}}>
+            <p>Blue = current process. Green = target at required SD. Red shading = non-compliance zones.</p>
+            {(currentPctBelowT2 > 0.01 || currentPctBetweenT1T2 > 2.5) && (
+              <div style={{background:'#fef2f2',border:'1px solid #fecaca',borderRadius:8,padding:'0.6rem 0.85rem',fontSize:'0.8rem',color:'#991b1b',marginBottom:'1rem',lineHeight:1.5}}>
+                <strong>Current process is likely breaching W&M rules.</strong>
+                {currentPctBelowT2 > 0.01 && <span> <strong>Rule 3 breach:</strong> {fmt(currentPctBelowT2,2)}% of packs ({fmtK(Math.round(annualVol * currentPctBelowT2 / 100))}/yr) fall below T2 ({fmt(t2)} g) &mdash; must be zero.</span>}
+                {currentPctBetweenT1T2 > 2.5 && <span> <strong>Rule 2 breach:</strong> {fmt(currentPctBetweenT1T2,1)}% of packs between T1 and T2 &mdash; max 2.5% allowed.</span>}
+                {' '}This batch would fail a W&M inspection without rework.
+              </div>
+            )}
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={distData} margin={{top:20,right:20,left:10,bottom:30}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
                 <XAxis dataKey="x" type="number" domain={['auto','auto']}
                   tickFormatter={v => fmt(v,0) + 'g'}
                   label={{value:'Fill Weight (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:12}}} />
                 <YAxis hide />
                 <Tooltip content={<DistTooltip />} />
-
-                {/* Shaded regions */}
                 <Area type="monotone" dataKey="nonComplyT2" stroke="none" fill="#dc2626" fillOpacity={0.35} isAnimationActive={false} dot={false} connectNulls={false} />
                 <Area type="monotone" dataKey="nonComplyT1" stroke="none" fill="#ef4444" fillOpacity={0.18} isAnimationActive={false} dot={false} connectNulls={false} />
                 <Area type="monotone" dataKey="currentGA" stroke="none" fill="#3b82f6" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
                 <Area type="monotone" dataKey="targetGA" stroke="none" fill="#22c55e" fillOpacity={0.2} isAnimationActive={false} dot={false} connectNulls={false} />
-
-                {/* Curves */}
-                <Line type="monotone" dataKey="current" stroke="#3b82f6" strokeWidth={2.5} dot={false} name="Current" />
-                <Line type="monotone" dataKey="target" stroke="#22c55e" strokeWidth={2.5} dot={false} name="Target" />
-
-                {/* Reference lines */}
-                <ReferenceLine x={nominal} stroke="#888" strokeWidth={2} label={{value:'Nominal',position:'top',fill:'#888',fontSize:11}} />
-                <ReferenceLine x={t1} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'T1 (Nom−TNE)',position:'top',fill:'#ef4444',fontSize:10}} />
-                <ReferenceLine x={t2} stroke="#dc2626" strokeDasharray="3 3" strokeWidth={1.5} label={{value:'T2 (Nom−2×TNE)',position:'insideTopLeft',fill:'#dc2626',fontSize:10}} />
-                <ReferenceLine x={currentMean} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current Mean',position:'top',fill:'#3b82f6',fontSize:11}} />
-                {requiredMeanTarget > nominal - 4 * Math.max(currentSD, targetSD) && (
-                  <ReferenceLine x={requiredMeanTarget} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target Mean',position:'top',fill:'#22c55e',fontSize:11}} />
+                <Line type="monotone" dataKey="current" stroke="#3b82f6" strokeWidth={2.5} dot={false} name="Current process" />
+                <Line type="monotone" dataKey="target" stroke="#22c55e" strokeWidth={2.5} dot={false} name="Target process" />
+                <ReferenceLine x={nominal} stroke="#001412" strokeWidth={2} />
+                <ReferenceLine x={t1} stroke="#ef4444" strokeDasharray="6 3" strokeWidth={1.5} />
+                <ReferenceLine x={t2} stroke="#dc2626" strokeDasharray="3 3" strokeWidth={1.5} />
+                <ReferenceLine x={currentMean} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} />
+                {targetMean > nominal - 4 * Math.max(currentSD, requiredSD) && (
+                  <ReferenceLine x={targetMean} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} />
                 )}
-
-                <Legend verticalAlign="top" height={36} />
               </ComposedChart>
             </ResponsiveContainer>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem 1.25rem',fontSize:'0.72rem',color:'#555',marginTop:'0.5rem',justifyContent:'center'}}>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#001412',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Nominal ({fmtK(nominal)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #ef4444',verticalAlign:'middle',marginRight:4}}></span> T1 ({fmt(t1)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dotted #dc2626',verticalAlign:'middle',marginRight:4}}></span> T2 ({fmt(t2)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#3b82f6',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Current process (mean {fmt(currentMean,1)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#22c55e',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Target process (mean {fmt(targetMean,1)} g)</span>
+              <span><span style={{display:'inline-block',width:10,height:10,background:'rgba(220,38,38,0.25)',verticalAlign:'middle',marginRight:4,borderRadius:2}}></span> Non-compliance zone</span>
+            </div>
           </div>
 
-          {/* ── Sensitivity Chart ─────────────── */}
+          {/* ── Compliance baseline ── */}
+          <div className="gc-chart-card" style={{background: warnNonCompliant ? '#fff' : '#f8f9fa', opacity: warnNonCompliant ? 1 : 0.55}}>
+            <h3 style={{color: warnNonCompliant ? '#dc2626' : '#7A7A7A'}}>
+              {warnNonCompliant ? 'Current process is non-compliant' : 'Current process is compliant'}
+            </h3>
+            <p style={{color: warnNonCompliant ? '#555' : '#999'}}>
+              {warnNonCompliant
+                ? 'At your current SD (' + fmt(currentSD,1) + ' g), the minimum giveaway to satisfy all three W&M packer rules is shown below. The true saving opportunity is measured against this compliant baseline — not your current (non-compliant) giveaway.'
+                : 'Your current giveaway already satisfies W&M rules at the current SD. The section below shows the compliant baseline for reference.'}
+            </p>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'1rem',marginTop:'0.75rem'}}>
+              <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
+                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Compliant giveaway</div>
+                <div style={{fontSize:'1.3rem',fontWeight:700,color: warnNonCompliant ? '#dc2626' : '#006458'}}>{fmt(compliantGAPct,2)}%</div>
+                <div style={{fontSize:'0.75rem',color:'#888'}}>{fmt(compliantGA_g,1)} g/pack — mean {fmt(requiredMeanCurrent,1)} g</div>
+              </div>
+              <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
+                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>Annual cost of compliance</div>
+                <div style={{fontSize:'1.3rem',fontWeight:700,color: warnNonCompliant ? '#dc2626' : '#006458'}}>{fmtGBP(Math.round(complianceGACost))}/yr</div>
+                <div style={{fontSize:'0.75rem',color:'#888'}}>Giveaway at compliant mean × volume × cost</div>
+              </div>
+              <div style={{background:'#f8f9fa',borderRadius:10,padding:'0.75rem',textAlign:'center'}}>
+                <div style={{fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.04em',color:'#7A7A7A',marginBottom:'0.25rem'}}>
+                  {warnNonCompliant ? 'On-cost vs current' : 'Current giveaway cost'}
+                </div>
+                <div style={{fontSize:'1.3rem',fontWeight:700,color: complianceOnCost > 0 ? '#dc2626' : '#006458'}}>
+                  {warnNonCompliant ? (complianceOnCost > 0 ? '+' : '') + fmtGBP(Math.round(complianceOnCost)) + '/yr' : fmtGBP(Math.round(currentGACost)) + '/yr'}
+                </div>
+                <div style={{fontSize:'0.75rem',color:'#888'}}>
+                  {warnNonCompliant
+                    ? 'Additional ' + fmt(compliantGAPct - currentGAPct,2) + 'pp giveaway needed to comply'
+                    : 'At ' + fmt(currentGAPct,1) + '% giveaway'}
+                </div>
+              </div>
+            </div>
+            {warnNonCompliant && (
+              <div style={{marginTop:'0.75rem',fontSize:'0.82rem',color:'#555',lineHeight:1.5}}>
+                <strong>Binding rule:</strong> {ruleLabel(bindingCurRule)} — requires mean ≥ {fmt(requiredMeanCurrent,1)} g at SD {fmt(currentSD,1)} g.
+                Your current mean of {fmt(currentMean,1)} g is {fmt(requiredMeanCurrent - currentMean,1)} g short.
+                To comply without reducing SD, giveaway must increase from {fmt(currentGAPct,1)}% to {fmt(compliantGAPct,2)}%, costing an additional <strong>{fmtGBP(Math.round(complianceOnCost))}/yr</strong>.
+                The saving from reducing giveaway to your target ({fmt(targetGAPct,1)}%) should be measured against this compliant baseline.
+              </div>
+            )}
+          </div>
+
+          {/* ── Sensitivity Chart ── */}
           <div className="gc-chart-card">
             <h3>Sensitivity: Annual Saving vs Standard Deviation</h3>
-            <p>Shows how savings change as SD is reduced. Vertical markers show current and target positions.</p>
-            <ResponsiveContainer width="100%" height={340}>
-              <ComposedChart data={sensData} margin={{top:30,right:30,left:20,bottom:30}}>
+            <p>Shows how savings change as SD is reduced. Markers show current and required target SD.</p>
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={sensData} margin={{top:20,right:120,left:10,bottom:30}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
                 <XAxis dataKey="sd" type="number" domain={['auto','auto']}
-                  tickFormatter={v => v + 'g'}
-                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:12}}} />
-                <YAxis width={70} tickFormatter={v => '£' + fmtK(v)}
-                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:-5,style:{fill:'#7A7A7A',fontSize:12}}} />
+                  tick={{fontSize:10}} tickFormatter={v => v + 'g'}
+                  label={{value:'Standard Deviation (g)',position:'insideBottom',offset:-15,style:{fill:'#7A7A7A',fontSize:11}}} />
+                <YAxis width={70} tick={{fontSize:10}} tickFormatter={v => '£' + fmtK(v)}
+                  label={{value:'Annual Saving (£)',angle:-90,position:'insideLeft',offset:5,style:{fill:'#7A7A7A',fontSize:11}}} />
                 <Tooltip content={<SensTooltip />} />
-                <Area type="monotone" dataKey="saving" stroke="#006458" fill="#006458" fillOpacity={0.1} strokeWidth={2.5} dot={false} />
-                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Current SD',position:'insideTopRight',fill:'#3b82f6',fontSize:11,fontWeight:600}} />
-                <ReferenceLine x={targetSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} label={{value:'Target SD',position:'insideTopRight',fill:'#22c55e',fontSize:11,fontWeight:600}} />
+                <Area type="monotone" dataKey="saving" stroke="#006458" fill="#006458" fillOpacity={0.1} strokeWidth={2.5} dot={false} name="Saving" />
+                <ReferenceLine x={currentSD} stroke="#3b82f6" strokeDasharray="6 3" strokeWidth={1.5} name="Current SD" />
+                <ReferenceLine x={requiredSD} stroke="#22c55e" strokeDasharray="6 3" strokeWidth={1.5} name="Required SD" />
               </ComposedChart>
             </ResponsiveContainer>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'0.4rem 1.25rem',fontSize:'0.72rem',color:'#555',marginTop:'0.5rem',justifyContent:'center'}}>
+              <span><span style={{display:'inline-block',width:16,height:3,background:'#006458',verticalAlign:'middle',marginRight:4,borderRadius:1}}></span> Annual saving</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #3b82f6',verticalAlign:'middle',marginRight:4}}></span> Current SD ({fmt(currentSD,1)} g)</span>
+              <span><span style={{display:'inline-block',width:16,height:0,borderTop:'2px dashed #22c55e',verticalAlign:'middle',marginRight:4}}></span> Required SD ({fmt(requiredSD,1)} g)</span>
+            </div>
           </div>
 
-          {/* ── Methodology ───────────────────── */}
+          {/* ── Three Packer Rules ── */}
+          <Expandable title="Three Packer Rules — Detail">
+            <div style={{fontSize:'0.8rem',lineHeight:1.6,marginBottom:'0.75rem',color:'#555'}}>
+              <div><strong>T1</strong> = {fmt(t1)} g &nbsp;|&nbsp; <strong>T2</strong> = {fmt(t2)} g &nbsp;|&nbsp; <strong>TNE</strong> = {fmt(tne,2)} g</div>
+            </div>
+
+            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>W&M Legal Rules (batch must pass)</div>
+            <div className="gc-legal-box" style={{marginBottom:'1rem'}}>
+              <div><strong>Rule 1:</strong> Batch average ≥ {fmtK(nominal)} g (nominal)</div>
+              <div><strong>Rule 2:</strong> ≤2.5% of packs between T1 ({fmt(t1)} g) and T2 ({fmt(t2)} g) &mdash; packs below T2 already breach Rule 3</div>
+              <div><strong>Rule 3:</strong> Zero packs below T2 ({fmt(t2)} g) &mdash; automatic non-conformance</div>
+            </div>
+
+            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>Your internal targets (at current SD: {fmt(currentSD,1)} g)</div>
+            <div style={{fontSize:'0.78rem',lineHeight:1.7,color:'#444',marginBottom:'1rem'}}>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>Rule 1: Mean ≥ Nominal + {fmt(sm)} g safety margin</span>
+                <span style={{fontWeight:600,color: bindingCurRule===1 ? '#006458' : '#888'}}>{fmt(rule1Mean)} g {bindingCurRule===1 ? '← binding' : ''}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>Rule 2: ≤1 in {fmtK(rule2OneIn)} below T1 ({fmt(rule2Pct,2)}%)</span>
+                <span style={{fontWeight:600,color: bindingCurRule===2 ? '#006458' : '#888'}}>{fmt(rule2MeanCur)} g {bindingCurRule===2 ? '← binding' : ''}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>Rule 3: ≤1 in {fmtK(rule3OneIn)} below T2</span>
+                <span style={{fontWeight:600,color: bindingCurRule===3 ? '#006458' : '#888'}}>{fmt(rule3MeanCur)} g {bindingCurRule===3 ? '← binding' : ''}</span>
+              </div>
+            </div>
+
+            <div style={{fontSize:'0.82rem',fontWeight:600,color:'#001412',marginBottom:'0.5rem'}}>Current process compliance</div>
+            <div style={{fontSize:'0.78rem',lineHeight:1.8,color:'#444'}}>
+              <div style={{fontWeight:600,fontSize:'0.72rem',color:'#7A7A7A',textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:'0.2rem'}}>W&M Legal</div>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>Rule 3: % below T2 (must be 0%)</span>
+                <span style={{fontWeight:600,color: currentPctBelowT2 <= 0.01 ? '#006458' : '#dc2626'}}>{fmt(currentPctBelowT2,2)}% {currentPctBelowT2 > 0.01 ? '✘ FAIL' : '✔ PASS'}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>Rule 2: % between T1–T2 (must be ≤2.5%)</span>
+                <span style={{fontWeight:600,color: currentPctBetweenT1T2 <= 2.5 ? '#006458' : '#dc2626'}}>{fmt(currentPctBetweenT1T2,2)}% {currentPctBetweenT1T2 > 2.5 ? '✘ FAIL' : '✔ PASS'}</span>
+              </div>
+              <div style={{fontWeight:600,fontSize:'0.72rem',color:'#7A7A7A',textTransform:'uppercase',letterSpacing:'0.04em',marginTop:'0.5rem',marginBottom:'0.2rem'}}>Internal targets</div>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>% below T2 (target ≤1 in {fmtK(rule3OneIn)})</span>
+                <span style={{fontWeight:600,color: currentPctBelowT2 <= rule3Pct ? '#006458' : '#dc2626'}}>{fmt(currentPctBelowT2,3)}%</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                <span>% between T1–T2 (target ≤1 in {fmtK(rule2OneIn)})</span>
+                <span style={{fontWeight:600,color: currentPctBetweenT1T2 <= rule2Pct ? '#006458' : '#dc2626'}}>{fmt(currentPctBetweenT1T2,2)}%</span>
+              </div>
+            </div>
+          </Expandable>
+
+          {/* ── Methodology ── */}
           <div className="gc-chart-card" style={{background:'#f8f9fa'}}>
-            <h3>Methodology — Three Packer Rules</h3>
+            <h3>Methodology</h3>
             <p style={{color:'#333',fontSize:'0.85rem',lineHeight:1.7}}>
-              Under UK/EU Average Quantity (Weights &amp; Measures) regulations, packers must satisfy <strong>three rules simultaneously</strong>:<br/><br/>
-              <strong>Rule 1 (Average Rule):</strong> The mean fill weight must be ≥ Nominal Weight.<br/>
-              <strong>Rule 2 (TNE Rule):</strong> No more than 2.5% of packs may fall below T1 (Nominal − TNE). This requires: Mean ≥ T1 + 1.96 × SD.<br/>
-              <strong>Rule 3 (2×TNE Rule):</strong> Practically no packs should fall below T2 (Nominal − 2×TNE). Typical targets are 0.5–1% below T2. This requires: Mean ≥ T2 + z × SD, where z is the chosen confidence level.<br/><br/>
-              <strong>T1</strong> = Nominal − TNE &nbsp;|&nbsp; <strong>T2</strong> = Nominal − 2×TNE<br/>
-              <strong>Required mean</strong> = max(Rule 1, Rule 2, Rule 3) — the binding constraint.<br/>
-              <strong>Giveaway per pack</strong> = Required mean − Nominal Weight<br/>
-              <strong>Annual saving</strong> = Giveaway reduction (g) × Volume ÷ 1000 × Cost (£/kg)<br/><br/>
-              TNE values follow the UK/EU Average Quantity regulations. The confidence level controls the target % of packs allowed below T2 — typically 0.5–1% depending on the SKU.
+              Under UK/EU Average Quantity (Weights &amp; Measures) regulations, packers must satisfy <strong>three rules simultaneously</strong> for each completed batch:<br/><br/>
+              <strong>Rule 1 (Average):</strong> Batch mean ≥ Nominal Weight.<br/>
+              <strong>Rule 2 (T1):</strong> No more than 2.5% of packs between T1 (Nominal − TNE) and T2 (Nominal − 2×TNE).<br/>
+              <strong>Rule 3 (T2):</strong> Zero packs below T2 — any pack below T2 is an automatic non-conformance.<br/><br/>
+              <strong>Legal vs internal targets:</strong> The W&M rules define what a finished batch must achieve. Internal production targets can be <strong>stricter</strong> (if non-conformance is costly and rework is disruptive) or <strong>looser</strong> (if rework is cheap and raw materials are expensive — accepting more rework to reduce giveaway). The checkweigher rejects packs breaching internal thresholds for rework before the batch is submitted.<br/><br/>
+              <strong>Two strategies to reduce giveaway:</strong><br/>
+              <strong>A) Rework:</strong> Keep current SD, lower the mean fill target, and rework any underweight packs. Immediate saving with no process investment, but ongoing rework costs.<br/>
+              <strong>B) Reduce SD:</strong> Invest in process improvement (equipment, controls, training) to tighten variability. Eliminates rework and unlocks the full giveaway saving long-term.<br/><br/>
+              <strong>Required SD</strong> = min((giveaway + TNE) / z₂, (giveaway + 2×TNE) / z₃)<br/>
+              Where z₂ = inverse normal CDF for your T1 tolerance (e.g. 1 in {fmtK(rule2OneIn)} = z of {fmt(z2,2)}), and z₃ = inverse normal CDF for your T2 tolerance (e.g. 1 in {fmtK(rule3OneIn)} = z of {fmt(z3,2)}). Higher z means stricter tolerance, requiring tighter SD.<br/><br/>
+              <strong>Annual saving</strong> = Giveaway reduction (g) × Volume ÷ 1,000 × Cost (£/kg)<br/>
+              <strong>Net saving (rework)</strong> = Annual saving − (rework packs × cost per rework)
             </p>
           </div>
         </div>

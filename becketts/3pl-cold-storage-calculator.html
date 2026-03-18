@@ -115,7 +115,7 @@
       margin-top: 2px;
     }
     .savings { color: var(--pine); }
-    .cost-increase { color: #EF4444; }
+    .cost-increase { color: #dc2626; }
     .breakdown {
       grid-column: 1 / -1;
     }
@@ -418,8 +418,8 @@
         <div class="sub">365,000 pallet-days · 365 days/yr</div>
       </div>
       <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3); grid-column: 1 / -1;">
-        <div class="label" style="color:var(--lime);">Marginal Daily Cost of Switching (+3°C → -3°C)</div>
-        <div class="value" style="font-size:1.8rem;">£131.16<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (£0.13/pallet/day × 1000 pallets in store)</span></div>
+        <div class="label" style="color:var(--pine);">Marginal Daily Cost of Switching (+3°C → -3°C)</div>
+        <div class="value cost-increase" style="font-size:1.8rem;">▲ £131.16<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (£0.13/pallet/day × 1000 pallets in store)</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(218,241,27,0.2);">
           <div>
             <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">Higher fabric losses</div>
@@ -449,7 +449,7 @@
         <div class="sub">Waste, refreezing, penalties: £638.8k → £0.00/yr</div>
       </div>
       <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3);">
-        <div class="label" style="color:var(--lime);">Net Annual Saving / (Cost)</div>
+        <div class="label" style="color:var(--pine);">Net Annual Saving / (Cost)</div>
         <div class="value savings" style="font-size:1.8rem;">▼ £616.9k</div>
         <div class="sub" style="color:#7A7A7A;">-74.1% · Total: £832.2k → £215.3k/yr</div>
       </div>
@@ -817,8 +817,8 @@
         <div class="sub">${annualPalletDays.toLocaleString()} pallet-days · ${opDays} days/yr</div>
       </div>
       <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3); grid-column: 1 / -1;">
-        <div class="label" style="color:var(--lime);">Marginal Daily Cost of Switching (${tCurrent >= 0 ? '+' : ''}${tCurrent}°C → ${tProposed >= 0 ? '+' : ''}${tProposed}°C)</div>
-        <div class="value" style="font-size:1.8rem;">${fmt(Math.abs(dailyMarginalEnergy))}<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (${fmt(Math.abs(marginalPerPD))}/pallet/day × ${avgPalletsInStore.toFixed(0)} pallets in store)</span></div>
+        <div class="label" style="color:var(--pine);">Marginal Daily Cost of Switching (${tCurrent >= 0 ? '+' : ''}${tCurrent}°C → ${tProposed >= 0 ? '+' : ''}${tProposed}°C)</div>
+        <div class="value ${dailyMarginalEnergy > 0 ? 'cost-increase' : 'savings'}" style="font-size:1.8rem;">${dailyMarginalEnergy > 0 ? '▲ ' : '▼ '}${fmt(Math.abs(dailyMarginalEnergy))}<span style="font-size:0.9rem; opacity:0.7">/day</span>  <span style="font-size:0.95rem; opacity:0.7;">  (${fmt(Math.abs(marginalPerPD))}/pallet/day × ${avgPalletsInStore.toFixed(0)} pallets in store)</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(218,241,27,0.2);">
           <div>
             <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#7A7A7A; margin-bottom:3px;">Higher fabric losses</div>
@@ -848,7 +848,7 @@
         <div class="sub">Waste, refreezing, penalties: ${fmt(downstreamCurrent)} → ${fmt(downstreamProposed)}/yr</div>
       </div>
       <div class="result-box" style="background:rgba(218,241,27,0.15); border: 1px solid rgba(218,241,27,0.3);">
-        <div class="label" style="color:var(--lime);">Net Annual Saving / (Cost)</div>
+        <div class="label" style="color:var(--pine);">Net Annual Saving / (Cost)</div>
         <div class="value ${totalDelta <= 0 ? 'savings' : 'cost-increase'}" style="font-size:1.8rem;">${totalDelta <= 0 ? '▼ ' : '▲ '}${fmt(Math.abs(totalDelta))}</div>
         <div class="sub" style="color:#7A7A7A;">${totalDeltaPct >= 0 ? '+' : ''}${totalDeltaPct.toFixed(1)}% · Total: ${fmt(totalCurrent)} → ${fmt(totalProposed)}/yr</div>
       </div>
