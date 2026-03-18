@@ -63,6 +63,8 @@
   .src-accent-yellow .dot { background: #EAB308; }
   .src-accent-emerald .dot { background: #10B981; }
   .src-accent-red .dot { background: #DC2626; }
+  .src-accent-cyan .dot { background: #06B6D4; }
+  .src-accent-violet .dot { background: #7C3AED; }
 
   /* KPI List */
   .kpi-list-wrapper { position: relative; }
@@ -180,6 +182,8 @@
   .capture-chip[data-source*="src-planning"]     { border-left-color: #DAF11B; }
   .capture-chip[data-source*="src-absence"]      { border-left-color: #10B981; }
   .capture-chip[data-source*="src-intake"]       { border-left-color: #DC2626; }
+  .capture-chip[data-source*="src-bom"]          { border-left-color: #06B6D4; }
+  .capture-chip[data-source*="src-budget"]       { border-left-color: #7C3AED; }
   .capture-chip[data-source*="src-commercial"]   { border-left-color: #EAB308; }
 
   .cap-sensor { background: rgba(249,115,22,0.15); color: #F97316; }
@@ -410,6 +414,44 @@
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Supplier &amp; spec reference</span><br><span class="chip-desc">ERP / system config</span></span>
     </div>
+    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-scan">▦</span>
+      <span><span class="chip-label">Material issued to production</span><br><span class="chip-desc">Stock system / ERP back-flush</span></span>
+    </div>
+
+    <!-- BOM / Recipe -->
+    <div class="capture-group-label" style="color:#06B6D4;">BOM / Recipe</div>
+    <div class="capture-chip" data-source="src-bom" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Recipe master (BOM)</span><br><span class="chip-desc">ERP recipe configuration</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-bom" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Standard cost roll-up</span><br><span class="chip-desc">Finance costing model</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-bom" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Material grade classification</span><br><span class="chip-desc">ERP material master</span></span>
+    </div>
+
+    <!-- Budget / Forecast -->
+    <div class="capture-group-label" style="color:#7C3AED;">Budget / Forecast</div>
+    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Budget volumes by SKU</span><br><span class="chip-desc">Finance budget model</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Standard margin per SKU</span><br><span class="chip-desc">Finance costing model</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-human">✎</span>
+      <span><span class="chip-label">Period forecast</span><br><span class="chip-desc">Commercial planning (manual/system)</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-budget" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Overhead absorption rate</span><br><span class="chip-desc">Finance cost allocation model</span></span>
+    </div>
 
     <!-- Planning Standards -->
     <div class="capture-group-label" style="color:var(--lime);">Planning Standards</div>
@@ -459,7 +501,7 @@
       <span>Data Sources</span>
     </div>
 
-    <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+    <div class="card source-card src-accent-orange" id="src-redzone" data-feeds="machine-eff,plan-attain,plan-rate,co-rate,yield,muv" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -541,7 +583,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-red" id="src-intake" data-feeds="yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+    <div class="card source-card src-accent-red" id="src-intake" data-feeds="yield,muv" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -551,6 +593,39 @@
             <div class="detail-row"><span class="arrow">›</span><span>Intake batch weight — kg of raw material input to each line/run</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Lot/batch traceability from goods-in to finished pack</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Supplier and raw material spec reference</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Material issued to production per run — stock system / back-flush from ERP</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-cyan" id="src-bom" data-feeds="muv,pnl-bridge" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>BOM / Recipe Standards</h3>
+          <div class="subtitle">Standard material quantity and cost per SKU — the recipe 'should use'</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Standard material quantity per unit output by SKU (recipe)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Standard material cost per SKU (priced BOM)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Material type/grade classification with unit costs</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Yield allowance built into recipe standard</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-violet" id="src-budget" data-feeds="pnl-bridge" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Budget / Forecast Data</h3>
+          <div class="subtitle">Budgeted volumes, standard margins, period targets</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Budgeted production volumes by SKU by period</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Standard margin per SKU from commercial model</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Period forecast (weekly/monthly) for volume and mix</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption rates per line-hour</span></div>
           </div>
         </div>
       </div>
@@ -571,7 +646,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-fin,yield,labour-cost" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-fin,yield,labour-cost,muv" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -582,6 +657,7 @@
             <div class="detail-row"><span class="arrow">›</span><span>Target selling price per kg by SKU</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Benchmark for actual vs allowed</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Raw material £/kg cost — for converting yield losses to £ impact</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Standard material price by material type/grade — for MUV price variance</span></div>
           </div>
         </div>
       </div>
@@ -789,6 +865,24 @@
         </div>
 
 
+        <div class="card kpi-card" id="kpi-muv" data-fed-by="src-bom,src-intake,src-redzone,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Material Usage Variance (£)</h3>
+              <div class="subtitle">Difference between what materials should have cost for actual output vs what they did cost</div>
+              <div class="formula">MUV = (Std qty for actual output − Actual qty used) × Std price per kg</div>
+              <div class="decomp">Decomposes into: <strong>yield variance</strong> (quantity) | <strong>mix variance</strong> (grade) | <strong>price variance</strong> (cost)</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Yield variance: actual material consumed vs recipe standard for good output produced</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Mix variance: using higher/lower grade materials than recipe specifies</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Price variance: actual material cost vs standard price (often procurement-driven)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Pareto by SKU, line, material type — identifies where material cost leaks</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="card kpi-card" id="kpi-plan-rate" data-fed-by="src-redzone,src-planning" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
@@ -850,6 +944,45 @@
                 <div class="detail-row"><span class="arrow">›</span><span>Ranked by magnitude of deviation from standard</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Identifies transitions for SMED targeting</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Sequencing optimisation opportunity</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div style="width:100%;">
+              <h3>Production P&L Bridge</h3>
+              <div class="subtitle">Variance waterfall from budgeted margin to actual margin — connects all operational metrics to financial outcome</div>
+              <div class="formula">Actual Margin = Budget Margin ± Volume ± Mix ± MUV ± Labour ± Yield Recovery ± Overhead</div>
+              <div class="loss-bar">
+                <div class="loss-segment" style="flex:2.0; background:#006458;">Budget</div>
+                <div class="loss-segment" style="flex:0.8; background:#3B82F6;">Vol</div>
+                <div class="loss-segment" style="flex:0.6; background:#7C3AED;">Mix</div>
+                <div class="loss-segment" style="flex:0.8; background:#06B6D4;">MUV</div>
+                <div class="loss-segment" style="flex:0.7; background:#8B5CF6;">Labour</div>
+                <div class="loss-segment" style="flex:0.6; background:#EC4899;">Yield</div>
+                <div class="loss-segment" style="flex:0.5; background:#64748B;">O/H</div>
+                <div class="loss-segment" style="flex:2.0; background:#006458;">Actual</div>
+              </div>
+              <div class="loss-label-row">
+                <div class="loss-label" style="flex:2.0;">Budget<br>Margin</div>
+                <div class="loss-label" style="flex:0.8;">Volume<br>Var</div>
+                <div class="loss-label" style="flex:0.6;">Mix<br>Var</div>
+                <div class="loss-label" style="flex:0.8;">Material<br>Usage</div>
+                <div class="loss-label" style="flex:0.7;">Labour<br>Var</div>
+                <div class="loss-label" style="flex:0.6;">Yield<br>Recovery</div>
+                <div class="loss-label" style="flex:0.5;">Overhead<br>Absorp</div>
+                <div class="loss-label" style="flex:2.0;">Actual<br>Margin</div>
+              </div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Volume variance: (actual vol − budget vol) × std margin per unit</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Mix variance: shift in SKU mix vs plan, valued at standard margins</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>MUV: material usage efficiency — links to MUV KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Labour variance: actual vs standard labour cost — links to £/kg Labour Cost KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Yield recovery: £/kg shortfall from downgrades — links to Yield KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption: machine efficiency impact on fixed cost recovery</span></div>
               </div>
             </div>
           </div>
@@ -953,7 +1086,8 @@
   const sourceColors = {
     'src-redzone': '#F97316', 'src-works-orders': '#3B82F6', 'src-hours': '#8B5CF6',
     'src-giveaway': '#EC4899', 'src-planning': '#DAF11B', 'src-commercial': '#EAB308',
-    'src-absence': '#10B981', 'src-intake': '#DC2626'
+    'src-absence': '#10B981', 'src-intake': '#DC2626',
+    'src-bom': '#06B6D4', 'src-budget': '#7C3AED'
   };
 
   function getCenter(el) {
