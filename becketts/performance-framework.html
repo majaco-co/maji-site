@@ -61,6 +61,8 @@
   .src-accent-pink .dot { background: #EC4899; }
   .src-accent-teal .dot { background: var(--lime); }
   .src-accent-yellow .dot { background: #EAB308; }
+  .src-accent-emerald .dot { background: #10B981; }
+  .src-accent-red .dot { background: #DC2626; }
 
   /* KPI Carousel */
   .kpi-carousel-wrapper { position: relative; }
@@ -202,6 +204,8 @@
   .capture-chip[data-source*="src-hours"]        { border-left-color: #8B5CF6; }
   .capture-chip[data-source*="src-giveaway"]     { border-left-color: #EC4899; }
   .capture-chip[data-source*="src-planning"]     { border-left-color: #DAF11B; }
+  .capture-chip[data-source*="src-absence"]      { border-left-color: #10B981; }
+  .capture-chip[data-source*="src-intake"]       { border-left-color: #DC2626; }
   .capture-chip[data-source*="src-commercial"]   { border-left-color: #EAB308; }
 
   .cap-sensor { background: rgba(249,115,22,0.15); color: #F97316; }
@@ -317,6 +321,14 @@
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Changeover detection</span><br><span class="chip-desc">Auto-detected from run gap</span></span>
     </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">BNS per SKU/line</span><br><span class="chip-desc">System config per SKU</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-redzone" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Downtime threshold</span><br><span class="chip-desc">System config (micro-stop cutoff)</span></span>
+    </div>
 
     <!-- Works Orders -->
     <div class="capture-group-label" style="color:#3B82F6;">Works Orders</div>
@@ -359,6 +371,29 @@
       <span class="chip-icon cap-human">✎</span>
       <span><span class="chip-label">Crewing on line</span><br><span class="chip-desc">Manually entered</span></span>
     </div>
+    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Overtime flag</span><br><span class="chip-desc">T&amp;A system, auto from shift pattern</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-hours" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Agency / permanent code</span><br><span class="chip-desc">T&amp;A or payroll system code</span></span>
+    </div>
+
+    <!-- Absence / Headcount -->
+    <div class="capture-group-label" style="color:#10B981;">Absence / Headcount</div>
+    <div class="capture-chip" data-source="src-absence" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Planned headcount (roster)</span><br><span class="chip-desc">Scheduling system export</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-absence" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Absence type classification</span><br><span class="chip-desc">HR / payroll system</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-absence" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-scan">▦</span>
+      <span><span class="chip-label">Agency vs permanent flag</span><br><span class="chip-desc">T&amp;A system code at clock-in</span></span>
+    </div>
 
     <!-- Yield -->
     <div class="capture-group-label" style="color:#EC4899;">Yield</div>
@@ -387,6 +422,21 @@
       <span><span class="chip-label">Target weight per SKU</span><br><span class="chip-desc">System config</span></span>
     </div>
 
+    <!-- Raw Material Intake -->
+    <div class="capture-group-label" style="color:#DC2626;">Raw Material Intake</div>
+    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-weigh">⚖</span>
+      <span><span class="chip-label">Intake batch weight</span><br><span class="chip-desc">Goods-in scales / weighbridge</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-scan">▦</span>
+      <span><span class="chip-label">Lot / batch tracking</span><br><span class="chip-desc">Barcode scan at intake</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-intake" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Supplier &amp; spec reference</span><br><span class="chip-desc">ERP / system config</span></span>
+    </div>
+
     <!-- Planning Standards -->
     <div class="capture-group-label" style="color:var(--lime);">Planning Standards</div>
     <div class="capture-chip" data-source="src-planning" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
@@ -411,6 +461,10 @@
     <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">£/kg selling price target</span><br><span class="chip-desc">Commercial pricing model</span></span>
+    </div>
+    <div class="capture-chip" data-source="src-commercial" onmouseenter="highlightCapture(this)" onmouseleave="clearHighlight()">
+      <span class="chip-icon cap-system">⟳</span>
+      <span><span class="chip-label">Raw material £/kg cost</span><br><span class="chip-desc">Finance costing model</span></span>
     </div>
 
     <!-- Legend -->
@@ -447,7 +501,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-blue" id="src-works-orders" data-feeds="machine-eff,kg-lh-plan,kg-lh-fin,plan-attain" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+    <div class="card source-card src-accent-blue" id="src-works-orders" data-feeds="machine-eff,kg-lh-plan,kg-lh-fin,plan-attain,labour-cost" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -463,7 +517,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-purple" id="src-hours" data-feeds="kg-lh-plan,kg-lh-fin" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+    <div class="card source-card src-accent-purple" id="src-hours" data-feeds="kg-lh-plan,kg-lh-fin,labour-cost" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -473,6 +527,24 @@
             <div class="detail-row"><span class="arrow">›</span><span>Total hours per day, tagged to individuals</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Classified by area (line, department)</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Direct vs indirect split</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Overtime hours flagged separately from standard hours</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Skill/role mix — distinguishes skilled vs unskilled and role type on line</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card source-card src-accent-emerald" id="src-absence" data-feeds="kg-lh-plan,kg-lh-fin,labour-cost" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Absence / Headcount Data</h3>
+          <div class="subtitle">Planned vs actual headcount, absence type, agency/permanent split</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Planned headcount by line/day from roster</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Actual attendance vs plan — gap = absence</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Absence classified: planned (holiday, training) vs unplanned (sick, no-show)</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Agency vs permanent hours split</span></div>
           </div>
         </div>
       </div>
@@ -495,6 +567,21 @@
       </div>
     </div>
 
+    <div class="card source-card src-accent-red" id="src-intake" data-feeds="yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+      <div class="card-head">
+        <div class="dot"></div>
+        <div>
+          <h3>Raw Material Intake Data</h3>
+          <div class="subtitle">Batch input weights, lot tracking, supplier spec</div>
+          <div class="details">
+            <div class="detail-row"><span class="arrow">›</span><span>Intake batch weight — kg of raw material input to each line/run</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Lot/batch traceability from goods-in to finished pack</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Supplier and raw material spec reference</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="card source-card src-accent-teal" id="src-planning" data-feeds="kg-lh-plan,plan-rate,co-rate" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
@@ -510,7 +597,7 @@
       </div>
     </div>
 
-    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-fin,yield" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
+    <div class="card source-card src-accent-yellow" id="src-commercial" data-feeds="kg-lh-fin,yield,labour-cost" onmouseenter="highlightSource(this)" onmouseleave="clearHighlight()">
       <div class="card-head">
         <div class="dot"></div>
         <div>
@@ -520,6 +607,7 @@
             <div class="detail-row"><span class="arrow">›</span><span>'Should cost' for direct labour</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Target selling price per kg by SKU</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Benchmark for actual vs allowed</span></div>
+            <div class="detail-row"><span class="arrow">›</span><span>Raw material £/kg cost — for converting yield losses to £ impact</span></div>
           </div>
         </div>
       </div>
@@ -671,11 +759,29 @@
             </div>
           </div>
         </div>
+
+        <div class="card kpi-card" id="kpi-labour-cost" data-fed-by="src-hours,src-absence,src-works-orders,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>£/kg Labour Cost</h3>
+              <div class="subtitle">Total labour cost per kg produced — actual vs commercial standard</div>
+              <div class="formula">£/kg Labour = (Direct hrs × Direct rate + Indirect hrs × Indirect rate) ÷ Actual kg</div>
+              <div class="decomp">Decomposes into: <strong>agency premium</strong> | <strong>overtime premium</strong> | <strong>crewing efficiency</strong> | <strong>indirect ratio</strong></div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Gap to commercial standard = margin erosion from labour</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Split by agency vs permanent cost impact</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Overtime cost separated from base rate overspend</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line and area</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- PAGE 3: Yield -->
       <div class="kpi-slide">
-        <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
+        <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial,src-intake" onmouseenter="highlightKPI(this)" onmouseleave="clearHighlight()">
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
@@ -683,7 +789,7 @@
               <div class="subtitle">Material efficiency — giveaway, gripper end, and £/kg recovery</div>
 
               <!-- Sub-metrics -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; margin-top:10px;">
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1fr; gap:5px; margin-top:10px;">
                 <div style="background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); border-radius:6px; padding:7px 4px; text-align:center;">
                   <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Giveaway</div>
                   <div style="font-size:10px; font-weight:700; color:var(--pine);">g/pack &amp; %</div>
@@ -703,6 +809,11 @@
                   <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Misshapes</div>
                   <div style="font-size:10px; font-weight:700; color:var(--pine);">%</div>
                   <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Not meeting spec</div>
+                </div>
+                <div style="background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); border-radius:6px; padding:7px 4px; text-align:center;">
+                  <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Overall Yield</div>
+                  <div style="font-size:10px; font-weight:700; color:var(--pine);">%</div>
+                  <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Saleable output ÷ input kg</div>
                 </div>
               </div>
 
@@ -910,7 +1021,8 @@
 
   const sourceColors = {
     'src-redzone': '#F97316', 'src-works-orders': '#3B82F6', 'src-hours': '#8B5CF6',
-    'src-giveaway': '#EC4899', 'src-planning': '#DAF11B', 'src-commercial': '#EAB308'
+    'src-giveaway': '#EC4899', 'src-planning': '#DAF11B', 'src-commercial': '#EAB308',
+    'src-absence': '#10B981', 'src-intake': '#DC2626'
   };
 
   function getCenter(el) {
