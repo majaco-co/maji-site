@@ -14,6 +14,227 @@
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Buffer Animation Styles -->
+  <style>
+    .ba {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f8faf9;
+      border-radius: var(--radius-md, 10px);
+      border: 1px solid #e0e0e0;
+      overflow: hidden;
+    }
+    .ba__label {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-grey, #7A7A7A);
+      font-weight: 400;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .ba__track {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding-bottom: 1.5rem;
+    }
+    .ba__machine {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+    }
+    .ba__machine--up { background: var(--color-primary, #006458); }
+    .ba__machine--constraint {
+      background: var(--color-primary, #006458);
+      border: 2px solid var(--color-accent, #DAF11B);
+    }
+    .ba__machine--down { background: var(--color-primary, #006458); }
+    .ba__machine-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      color: #fff;
+    }
+    .ba__machine-label {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.85);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .ba__machine-status {
+      position: absolute;
+      bottom: -1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.5625rem;
+      font-weight: 400;
+      white-space: nowrap;
+      color: var(--color-primary, #006458);
+      transition: color 0.3s ease;
+    }
+    .ba__flow {
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+      font-size: 1rem;
+      color: var(--color-primary, #006458);
+      transition: opacity 0.4s ease;
+    }
+    .ba__buffer-wrap {
+      flex: 1;
+      min-width: 80px;
+      position: relative;
+    }
+    .ba__buffer-label {
+      position: absolute;
+      top: -1.25rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.5625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-grey, #7A7A7A);
+      font-weight: 400;
+    }
+    .ba__buffer-bar {
+      width: 100%;
+      height: 28px;
+      background: #e8ece9;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .ba__buffer-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--color-primary, #006458);
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+    .ba__buffer-target {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--color-accent, #DAF11B);
+      z-index: 2;
+    }
+    .ba__buffer-readout {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      z-index: 3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      pointer-events: none;
+    }
+    .ba__buffer-fill--critical {
+      background: #c0392b !important;
+    }
+
+    /* Phase timeline */
+    .ba__phases {
+      display: flex;
+      margin-top: 0.75rem;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 6px;
+      background: #e0e0e0;
+    }
+    .ba__phase-seg {
+      height: 100%;
+      transition: opacity 0.3s ease;
+      opacity: 0.25;
+    }
+    .ba__phase-seg--active { opacity: 1; }
+    .ba__phase-seg--normal { flex: 3; background: var(--color-primary, #006458); }
+    .ba__phase-seg--up-stop { flex: 4; background: #c0392b; }
+    .ba__phase-seg--recover1 { flex: 2; background: var(--color-accent, #DAF11B); }
+    .ba__phase-seg--down-stop { flex: 4; background: #c0392b; }
+    .ba__phase-seg--recover2 { flex: 2; background: var(--color-accent, #DAF11B); }
+
+    .ba__phase-labels {
+      display: flex;
+      margin-top: 0.35rem;
+    }
+    .ba__phase-label {
+      font-size: 0.5625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-grey, #7A7A7A);
+      font-weight: 400;
+      text-align: center;
+      transition: color 0.3s ease, font-weight 0.3s ease;
+    }
+    .ba__phase-label--normal { flex: 3; }
+    .ba__phase-label--up-stop { flex: 4; }
+    .ba__phase-label--recover1 { flex: 2; }
+    .ba__phase-label--down-stop { flex: 4; }
+    .ba__phase-label--recover2 { flex: 2; }
+    .ba__phase-label--active {
+      color: var(--color-primary, #006458);
+      font-weight: 700;
+    }
+    .ba__phase-label--active.ba__phase-label--up-stop,
+    .ba__phase-label--active.ba__phase-label--down-stop {
+      color: #c0392b;
+    }
+
+    /* Annotation */
+    .ba__annotation {
+      text-align: center;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--color-primary, #006458);
+      font-weight: 400;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      min-height: 1.25rem;
+    }
+    .ba__annotation--visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Machine disruption states — toggled by JS */
+    .ba__machine--stopped {
+      background: #c0392b !important;
+      box-shadow: 0 0 16px rgba(192,57,43,0.4);
+    }
+    .ba__machine--stopped .ba__machine-status {
+      color: #c0392b;
+    }
+
+    @media (max-width: 639px) {
+      .ba { padding: 1rem; }
+      .ba__track { gap: 0.25rem; }
+      .ba__machine { width: 38px; height: 38px; border-radius: 8px; }
+      .ba__machine-icon { font-size: 0.875rem; }
+      .ba__machine-label { font-size: 0.4375rem; }
+      .ba__machine-status { font-size: 0.5rem; }
+      .ba__flow { width: 14px; font-size: 0.75rem; }
+      .ba__buffer-wrap { min-width: 56px; }
+      .ba__buffer-bar { height: 22px; }
+      .ba__buffer-readout { font-size: 0.625rem; }
+      .ba__buffer-label { font-size: 0.5rem; }
+      .ba__phase-label { font-size: 0.5rem; letter-spacing: 0.04em; }
+    }
+  </style>
 </head>
 <body>
 
@@ -127,6 +348,74 @@
           <p style="margin-top: 0.75rem;">
             Use downstream <em>speed</em> (not effective throughput) &mdash; during upstream downtime, the downstream stage continues consuming at its full rated speed. Size the buffer to cover 95% of disruption events. Undersized buffers provide only partial decoupling.
           </p>
+
+          <!-- Buffer Animation — 3-stage with both buffers -->
+          <div class="ba" id="bufferAnim" aria-label="Animated diagram showing how upstream and downstream buffers protect the constraint from disruptions in either direction">
+            <div class="ba__label">Asymmetric Buffer Protection &mdash; Live Demo</div>
+            <div class="ba__track">
+              <!-- Upstream machine -->
+              <div class="ba__machine ba__machine--up" id="baMachUp">
+                <span class="ba__machine-icon" aria-hidden="true">⚙</span>
+                <span class="ba__machine-label">Mixing</span>
+                <span class="ba__machine-status">100 u/hr</span>
+              </div>
+              <div class="ba__flow" id="baFlowA" aria-hidden="true">→</div>
+
+              <!-- Upstream buffer (target = FULL) -->
+              <div class="ba__buffer-wrap">
+                <span class="ba__buffer-label">Upstream &middot; target full</span>
+                <div class="ba__buffer-bar">
+                  <div class="ba__buffer-fill" id="baFillUp"></div>
+                  <div class="ba__buffer-target" style="left:80%"></div>
+                  <span class="ba__buffer-readout" id="baReadUp">0</span>
+                </div>
+              </div>
+              <div class="ba__flow" id="baFlowB" aria-hidden="true">→</div>
+
+              <!-- Constraint -->
+              <div class="ba__machine ba__machine--constraint" id="baMachCon">
+                <span class="ba__machine-icon" aria-hidden="true">⚙</span>
+                <span class="ba__machine-label">Forming</span>
+                <span class="ba__machine-status">80 u/hr</span>
+              </div>
+              <div class="ba__flow" id="baFlowC" aria-hidden="true">→</div>
+
+              <!-- Downstream buffer (target = EMPTY) -->
+              <div class="ba__buffer-wrap">
+                <span class="ba__buffer-label">Downstream &middot; target empty</span>
+                <div class="ba__buffer-bar">
+                  <div class="ba__buffer-fill" id="baFillDn"></div>
+                  <div class="ba__buffer-target" style="left:20%"></div>
+                  <span class="ba__buffer-readout" id="baReadDn">0</span>
+                </div>
+              </div>
+              <div class="ba__flow" id="baFlowD" aria-hidden="true">→</div>
+
+              <!-- Downstream machine -->
+              <div class="ba__machine ba__machine--down" id="baMachDn">
+                <span class="ba__machine-icon" aria-hidden="true">⚙</span>
+                <span class="ba__machine-label">Packing</span>
+                <span class="ba__machine-status">90 u/hr</span>
+              </div>
+            </div>
+
+            <!-- Phase timeline -->
+            <div class="ba__phases">
+              <div class="ba__phase-seg ba__phase-seg--normal" id="baSeg0"></div>
+              <div class="ba__phase-seg ba__phase-seg--up-stop" id="baSeg1"></div>
+              <div class="ba__phase-seg ba__phase-seg--recover1" id="baSeg2"></div>
+              <div class="ba__phase-seg ba__phase-seg--down-stop" id="baSeg3"></div>
+              <div class="ba__phase-seg ba__phase-seg--recover2" id="baSeg4"></div>
+            </div>
+            <div class="ba__phase-labels">
+              <span class="ba__phase-label ba__phase-label--normal" id="baLbl0">Normal</span>
+              <span class="ba__phase-label ba__phase-label--up-stop" id="baLbl1">Upstream stops</span>
+              <span class="ba__phase-label ba__phase-label--recover1" id="baLbl2">Recovery</span>
+              <span class="ba__phase-label ba__phase-label--down-stop" id="baLbl3">Downstream stops</span>
+              <span class="ba__phase-label ba__phase-label--recover2" id="baLbl4">Recovery</span>
+            </div>
+            <div class="ba__annotation" id="baAnnotation"></div>
+          </div>
 
           <h3 style="margin-top: 1.5rem;">Component 2 &mdash; Speed Differential</h3>
           <div class="formula">
@@ -340,5 +629,206 @@
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>
   <script src="js/main.js"></script>
+
+  <!-- Buffer Animation Script — 3-stage, 2-buffer -->
+  <script>
+  (function() {
+    var root = document.getElementById('bufferAnim');
+    if (!root) return;
+
+    // DOM refs — machines
+    var machUp  = document.getElementById('baMachUp');
+    var machCon = document.getElementById('baMachCon');
+    var machDn  = document.getElementById('baMachDn');
+
+    // DOM refs — flows
+    var flowA = document.getElementById('baFlowA');
+    var flowB = document.getElementById('baFlowB');
+    var flowC = document.getElementById('baFlowC');
+    var flowD = document.getElementById('baFlowD');
+
+    // DOM refs — buffers
+    var fillUp  = document.getElementById('baFillUp');
+    var readUp  = document.getElementById('baReadUp');
+    var fillDn  = document.getElementById('baFillDn');
+    var readDn  = document.getElementById('baReadDn');
+
+    // DOM refs — phase bar + labels
+    var segs = [
+      document.getElementById('baSeg0'),
+      document.getElementById('baSeg1'),
+      document.getElementById('baSeg2'),
+      document.getElementById('baSeg3'),
+      document.getElementById('baSeg4')
+    ];
+    var lbls = [
+      document.getElementById('baLbl0'),
+      document.getElementById('baLbl1'),
+      document.getElementById('baLbl2'),
+      document.getElementById('baLbl3'),
+      document.getElementById('baLbl4')
+    ];
+    var annotation = document.getElementById('baAnnotation');
+
+    // --- Constants (matching worked example) ---
+    var UP_BUF_TARGET = 40;   // upstream buffer target (full = protection)
+    var UP_BUF_MAX    = 50;   // visual max
+    var DN_BUF_TARGET = 10;   // downstream buffer target (near-empty)
+    var DN_BUF_MAX    = 50;
+
+    // Phase durations (seconds)
+    // 0: Normal (3s)  — both buffers settle to targets
+    // 1: Upstream stops (4s) — upstream buffer depletes, constraint keeps running
+    // 2: Recovery 1 (2s) — upstream restarts, buffer refills
+    // 3: Downstream stops (4s) — downstream buffer fills, constraint keeps running
+    // 4: Recovery 2 (2s) — downstream restarts, buffer empties
+    // + 1.5s pause
+    var PHASE_DUR = [3, 4, 2, 4, 2];
+    var T_PAUSE   = 1.5;
+    var T_TOTAL   = PHASE_DUR.reduce(function(a,b){return a+b;}, 0) + T_PAUSE;
+
+    var running = false, startTime = null, rafId = null;
+
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+    function setBarLevel(fillEl, readEl, units, max, criticalThresh) {
+      var pct = clamp((units / max) * 100, 0, 100);
+      fillEl.style.width = pct + '%';
+      readEl.textContent = Math.round(units);
+      if (units < criticalThresh) {
+        fillEl.classList.add('ba__buffer-fill--critical');
+      } else {
+        fillEl.classList.remove('ba__buffer-fill--critical');
+      }
+    }
+
+    function highlightPhase(idx) {
+      for (var i = 0; i < 5; i++) {
+        segs[i].classList.toggle('ba__phase-seg--active', i === idx);
+        lbls[i].classList.toggle('ba__phase-label--active', i === idx);
+      }
+    }
+
+    function setMachineStopped(el, stopped) {
+      el.classList.toggle('ba__machine--stopped', stopped);
+    }
+
+    function setFlowDim(el, dim) {
+      el.style.opacity = dim ? '0.15' : '1';
+    }
+
+    function showAnnotation(text) {
+      annotation.textContent = text;
+      annotation.classList.add('ba__annotation--visible');
+    }
+    function hideAnnotation() {
+      annotation.classList.remove('ba__annotation--visible');
+    }
+
+    function tick(now) {
+      if (!running) return;
+      if (!startTime) startTime = now;
+
+      var elapsed = ((now - startTime) / 1000) % T_TOTAL;
+
+      // Determine phase index and local progress (0→1)
+      var acc = 0, phase = 4, t = 1;
+      for (var i = 0; i < 5; i++) {
+        if (elapsed < acc + PHASE_DUR[i]) {
+          phase = i;
+          t = (elapsed - acc) / PHASE_DUR[i];
+          break;
+        }
+        acc += PHASE_DUR[i];
+      }
+      // If past all phases → pause, hold final state
+      if (elapsed >= acc + (phase === 4 ? PHASE_DUR[4] : 0)) {
+        phase = -1; // pause
+      }
+
+      var upBuf, dnBuf;
+
+      // Default: all machines running, all flows visible
+      setMachineStopped(machUp, false);
+      setMachineStopped(machCon, false);
+      setMachineStopped(machDn, false);
+      setFlowDim(flowA, false);
+      setFlowDim(flowB, false);
+      setFlowDim(flowC, false);
+      setFlowDim(flowD, false);
+
+      switch (phase) {
+        case 0: // Normal — buffers settle to targets
+          upBuf = 20 + t * (UP_BUF_TARGET - 20); // ramp 20→40
+          dnBuf = 20 - t * (20 - DN_BUF_TARGET);  // drain 20→10
+          highlightPhase(0);
+          hideAnnotation();
+          break;
+
+        case 1: // Upstream stops — upstream buffer depletes
+          setMachineStopped(machUp, true);
+          setFlowDim(flowA, true);
+          upBuf = UP_BUF_TARGET * (1 - t); // 40→0
+          dnBuf = DN_BUF_TARGET;
+          highlightPhase(1);
+          showAnnotation('Upstream stops \u2014 buffer feeds the constraint \u2192 no lost throughput');
+          break;
+
+        case 2: // Recovery 1 — upstream restarts, buffer refills
+          upBuf = t * UP_BUF_TARGET; // 0→40
+          dnBuf = DN_BUF_TARGET;
+          highlightPhase(2);
+          hideAnnotation();
+          break;
+
+        case 3: // Downstream stops — downstream buffer fills up
+          setMachineStopped(machDn, true);
+          setFlowDim(flowD, true);
+          upBuf = UP_BUF_TARGET;
+          dnBuf = DN_BUF_TARGET + t * (DN_BUF_MAX - DN_BUF_TARGET - 5); // 10→45
+          highlightPhase(3);
+          showAnnotation('Downstream stops \u2014 buffer absorbs output \u2192 constraint keeps running');
+          break;
+
+        case 4: // Recovery 2 — downstream restarts, buffer empties
+          upBuf = UP_BUF_TARGET;
+          dnBuf = 45 - t * (45 - DN_BUF_TARGET); // 45→10
+          highlightPhase(4);
+          hideAnnotation();
+          break;
+
+        default: // Pause — hold at targets
+          upBuf = UP_BUF_TARGET;
+          dnBuf = DN_BUF_TARGET;
+          highlightPhase(-1);
+          hideAnnotation();
+      }
+
+      setBarLevel(fillUp, readUp, upBuf, UP_BUF_MAX, 10);
+      setBarLevel(fillDn, readDn, dnBuf, DN_BUF_MAX, 10);
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      startTime = null;
+      rafId = requestAnimationFrame(tick);
+    }
+    function stop() {
+      running = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { e.isIntersecting ? start() : stop(); });
+      }, { threshold: 0.3 }).observe(root);
+    } else {
+      start();
+    }
+  })();
+  </script>
 </body>
 </html>
