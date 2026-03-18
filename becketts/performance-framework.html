@@ -207,6 +207,16 @@
 
   .kpi-card { margin-bottom: 0; }
 
+  .kpi-filters { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .kpi-filter-btn {
+    padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 600;
+    letter-spacing: 0.5px; border: 1px solid var(--card-border); background: var(--card-bg);
+    color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+  }
+  .kpi-filter-btn:hover { border-color: var(--pine); color: var(--pine); }
+  .kpi-filter-btn.active { background: var(--pine); color: #fff; border-color: var(--pine); }
+  .kpi-section-hidden { display: none; }
+
   @media (max-width: 768px) {
     div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
   }
@@ -766,8 +776,16 @@
       <span>KPIs</span>
     </div>
 
+    <div class="kpi-filters">
+      <button class="kpi-filter-btn active" data-filter="all">All</button>
+      <button class="kpi-filter-btn" data-filter="financial">Financial</button>
+      <button class="kpi-filter-btn" data-filter="productivity">Productivity</button>
+      <button class="kpi-filter-btn" data-filter="material">Material &amp; Yield</button>
+      <button class="kpi-filter-btn" data-filter="standards">Standards</button>
+    </div>
+
     <div class="kpi-list">
-        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Financial Summary</div>
+        <div class="kpi-divider" data-section="financial" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Financial Summary</div>
 
         <div class="card kpi-card" id="kpi-pnl-bridge" data-fed-by="src-budget,src-bom,src-works-orders,src-hours,src-absence,src-commercial,src-giveaway,src-intake,src-redzone,src-unit-conv" data-linked-kpis="kpi-muv,kpi-labour-cost,kpi-yield,kpi-machine-eff">
           <div class="card-head">
@@ -808,7 +826,7 @@
           </div>
         </div>
 
-        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Machine Performance</div>
+        <div class="kpi-divider" data-section="productivity" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Productivity</div>
 
         <div class="card kpi-card" id="kpi-machine-eff" data-fed-by="src-redzone,src-works-orders,src-unit-conv">
           <div class="card-head">
@@ -859,8 +877,6 @@
           </div>
         </div>
 
-
-        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Labour Productivity</div>
 
         <div class="card kpi-card" id="kpi-kg-lh-plan" data-fed-by="src-works-orders,src-hours,src-planning,src-unit-conv">
           <div class="card-head">
@@ -917,7 +933,7 @@
         </div>
 
 
-        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Material &amp; Yield</div>
+        <div class="kpi-divider" data-section="material" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Material &amp; Yield</div>
 
         <div class="card kpi-card" id="kpi-yield" data-fed-by="src-giveaway,src-redzone,src-commercial,src-intake,src-unit-conv">
           <div class="card-head">
@@ -985,7 +1001,7 @@
           </div>
         </div>
 
-        <div class="kpi-divider" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Standards Review</div>
+        <div class="kpi-divider" data-section="standards" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:16px 0 8px; padding-left:4px; border-left:3px solid var(--pine);">Standards Review</div>
 
         <div class="card kpi-card" id="kpi-plan-rate" data-fed-by="src-redzone,src-planning,src-unit-conv">
           <div class="card-head">
@@ -1547,6 +1563,41 @@
     el.addEventListener('mouseenter', () => highlightCapture(el));
     el.addEventListener('mouseleave', () => clearHighlight());
     el.addEventListener('click', () => toggleLock(el, 'capture'));
+  });
+
+  // KPI section filter
+  document.querySelectorAll('.kpi-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      // Update active button
+      document.querySelectorAll('.kpi-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Clear any lock/highlight
+      lockedEl = null;
+      resetHighlight();
+      // Show/hide sections
+      const dividers = document.querySelectorAll('.kpi-divider[data-section]');
+      if (filter === 'all') {
+        dividers.forEach(d => {
+          d.classList.remove('kpi-section-hidden');
+          let el = d.nextElementSibling;
+          while (el && !el.classList.contains('kpi-divider')) {
+            el.classList.remove('kpi-section-hidden');
+            el = el.nextElementSibling;
+          }
+        });
+      } else {
+        dividers.forEach(d => {
+          const match = d.dataset.section === filter;
+          d.classList.toggle('kpi-section-hidden', !match);
+          let el = d.nextElementSibling;
+          while (el && !el.classList.contains('kpi-divider')) {
+            el.classList.toggle('kpi-section-hidden', !match);
+            el = el.nextElementSibling;
+          }
+        });
+      }
+    });
   });
 </script>
 
