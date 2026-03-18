@@ -867,33 +867,42 @@
             <div style="width:100%;">
               <h3>Production P&amp;L Bridge</h3>
               <div class="subtitle">Variance waterfall from budgeted margin to actual margin — connects all operational metrics to financial outcome</div>
-              <div class="formula">Actual Margin = Budget Margin ± Volume ± Mix ± MUV ± Labour ± Yield Recovery ± Overhead</div>
+              <div class="formula">Actual Margin = Budget ± Volume ± Mix ± MUV ± PPV ± Lab Eff ± Lab Rate ± Yield ± Commercial ± Overhead</div>
               <div class="loss-bar">
                 <div class="loss-segment" style="flex:2.0; background:#006458;">Budget</div>
-                <div class="loss-segment" style="flex:0.8; background:#3B82F6;">Vol</div>
-                <div class="loss-segment" style="flex:0.6; background:#7C3AED;">Mix</div>
-                <div class="loss-segment" style="flex:0.8; background:#06B6D4;">MUV</div>
-                <div class="loss-segment" style="flex:0.7; background:#8B5CF6;">Labour</div>
-                <div class="loss-segment" style="flex:0.6; background:#EC4899;">Yield</div>
-                <div class="loss-segment" style="flex:0.5; background:#64748B;">O/H</div>
+                <div class="loss-segment" style="flex:0.7; background:#3B82F6;">Vol</div>
+                <div class="loss-segment" style="flex:0.5; background:#7C3AED;">Mix</div>
+                <div class="loss-segment" style="flex:0.7; background:#06B6D4;">MUV</div>
+                <div class="loss-segment" style="flex:0.5; background:#0E7490;">PPV</div>
+                <div class="loss-segment" style="flex:0.6; background:#8B5CF6;">Lab Eff</div>
+                <div class="loss-segment" style="flex:0.5; background:#A78BFA;">Lab Rate</div>
+                <div class="loss-segment" style="flex:0.5; background:#EC4899;">Yield</div>
+                <div class="loss-segment" style="flex:0.5; background:#EAB308;">Comm</div>
+                <div class="loss-segment" style="flex:0.4; background:#64748B;">O/H</div>
                 <div class="loss-segment" style="flex:2.0; background:#006458;">Actual</div>
               </div>
               <div class="loss-label-row">
                 <div class="loss-label" style="flex:2.0;">Budget<br>Margin</div>
-                <div class="loss-label" style="flex:0.8;">Volume<br>Var</div>
-                <div class="loss-label" style="flex:0.6;">Mix<br>Var</div>
-                <div class="loss-label" style="flex:0.8;">Material<br>Usage</div>
-                <div class="loss-label" style="flex:0.7;">Labour<br>Var</div>
-                <div class="loss-label" style="flex:0.6;">Yield<br>Recovery</div>
-                <div class="loss-label" style="flex:0.5;">Overhead<br>Absorp</div>
+                <div class="loss-label" style="flex:0.7;">Volume<br>Var</div>
+                <div class="loss-label" style="flex:0.5;">Mix<br>Var</div>
+                <div class="loss-label" style="flex:0.7;">Material<br>Usage</div>
+                <div class="loss-label" style="flex:0.5;">Purchase<br>Price</div>
+                <div class="loss-label" style="flex:0.6;">Labour<br>Efficiency</div>
+                <div class="loss-label" style="flex:0.5;">Labour<br>Rate</div>
+                <div class="loss-label" style="flex:0.5;">Yield<br>Loss</div>
+                <div class="loss-label" style="flex:0.5;">Commercial<br>Recovery</div>
+                <div class="loss-label" style="flex:0.4;">Overhead<br>Absorp</div>
                 <div class="loss-label" style="flex:2.0;">Actual<br>Margin</div>
               </div>
               <div class="details">
                 <div class="detail-row"><span class="arrow">›</span><span>Volume variance: (actual vol − budget vol) × std margin per unit</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Mix variance: shift in SKU mix vs plan, valued at standard margins</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>MUV: material usage efficiency — links to MUV KPI</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Labour variance: actual vs standard labour cost — links to £/kg Labour Cost KPI</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Yield recovery: £/kg shortfall from downgrades — links to Yield KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>MUV: material usage variance — kg used vs standard kg for actual output (operational)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>PPV: purchase price variance — actual £/kg paid vs standard £/kg (procurement)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Labour efficiency: hours worked vs standard hours for actual output (productivity)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Labour rate: actual £/hr paid vs standard £/hr (mix of agency, overtime, base rates)</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Yield loss: material lost through giveaway, gripper end, waste — links to Yield KPI</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Commercial recovery: £/kg selling price shortfall from downgrades, misshapes sold at lower price — commercial variance, not operational</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Overhead absorption: machine efficiency impact on fixed cost recovery</span></div>
               </div>
             </div>
@@ -993,13 +1002,14 @@
             <div class="kpi-icon">◆</div>
             <div>
               <h3>£/kg Labour Cost</h3>
-              <div class="subtitle">Total labour cost per kg produced — actual vs commercial standard</div>
-              <div class="formula">£/kg Labour = (Direct hrs × Direct rate + Indirect hrs × Indirect rate) ÷ Actual kg</div>
-              <div class="decomp">Decomposes into: <strong>agency premium</strong> | <strong>overtime premium</strong> | <strong>crewing efficiency</strong> | <strong>indirect ratio</strong></div>
+              <div class="subtitle">Total labour cost per kg produced — splits into efficiency variance (productivity) and rate variance (cost per hour)</div>
+              <div class="formula">£/kg Labour = (Actual hrs × Actual rate) ÷ Actual kg</div>
+              <div class="decomp">Two primary variances: <strong>Labour Efficiency</strong> (hours vs standard) | <strong>Labour Rate</strong> (£/hr vs standard)</div>
               <div class="details">
-                <div class="detail-row"><span class="arrow">›</span><span>Gap to commercial standard = margin erosion from labour</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Split by agency vs permanent cost impact</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Overtime cost separated from base rate overspend</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Labour Efficiency Variance</strong> = (Actual hrs − Std hrs for actual output) × Std rate — measures productivity</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Labour Rate Variance</strong> = (Actual rate − Std rate) × Actual hrs — measures cost per hour</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Rate drivers: agency premium, overtime premium, base rate changes</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Efficiency drivers: crewing levels, indirect ratio, idle time, skill mix</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Weekly trend by line and area</span></div>
               </div>
             </div>
@@ -1014,10 +1024,10 @@
             <div class="kpi-icon">◆</div>
             <div style="width:100%;">
               <h3>Yield</h3>
-              <div class="subtitle">Material efficiency — giveaway, gripper end, and £/kg recovery</div>
+              <div class="subtitle">Material efficiency — giveaway, gripper end, and overall yield %</div>
 
               <!-- Sub-metrics -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1fr; gap:5px; margin-top:10px;">
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; margin-top:10px;">
                 <div style="background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); border-radius:6px; padding:7px 4px; text-align:center;">
                   <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Giveaway</div>
                   <div style="font-size:10px; font-weight:700; color:var(--pine);">g/pack &amp; %</div>
@@ -1027,11 +1037,6 @@
                   <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Gripper End</div>
                   <div style="font-size:10px; font-weight:700; color:var(--pine);">% of input</div>
                   <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Trim waste at slicer</div>
-                </div>
-                <div style="background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); border-radius:6px; padding:7px 4px; text-align:center;">
-                  <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">£/kg Recovery</div>
-                  <div style="font-size:10px; font-weight:700; color:var(--pine);">£ vs target</div>
-                  <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">Misshapes, sub-std</div>
                 </div>
                 <div style="background:rgba(0,100,88,0.06); border:1px solid rgba(0,100,88,0.15); border-radius:6px; padding:7px 4px; text-align:center;">
                   <div style="font-size:8px; color:var(--text-muted); margin-bottom:2px;">Misshapes</div>
@@ -1048,9 +1053,10 @@
               <div class="details">
                 <div class="detail-row"><span class="arrow">›</span><span><strong>Giveaway:</strong> checkweigher pack weights vs target — both g/pack and giveaway % by SKU, line</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span><strong>Gripper end:</strong> slicer trim waste — material lost at portion cutting</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span><strong>£/kg recovery:</strong> weighted avg selling price vs target — captures downgrade to misshapes, sub-standard, rework sold at lower £/kg</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><strong>Misshapes:</strong> product not meeting visual spec — quantity tracked here, £ impact flows to commercial recovery variance</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Three Packer's Rules compliance on giveaway</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Pareto by SKU, line, shift</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span><em>Note: £/kg selling price recovery is a commercial variance — see Commercial Recovery in P&amp;L Bridge</em></span></div>
               </div>
             </div>
           </div>
@@ -1061,15 +1067,32 @@
           <div class="card-head">
             <div class="kpi-icon">◆</div>
             <div>
-              <h3>Material Usage Variance (£)</h3>
-              <div class="subtitle">Difference between what materials should have cost for actual output vs what they did cost</div>
+              <h3>Material Usage Variance — MUV (£)</h3>
+              <div class="subtitle">Kg used vs standard kg for actual output — operational efficiency of material consumption</div>
               <div class="formula">MUV = (Std qty for actual output − Actual qty used) × Std price per kg</div>
-              <div class="decomp">Decomposes into: <strong>yield variance</strong> (quantity) | <strong>mix variance</strong> (grade) | <strong>price variance</strong> (cost)</div>
+              <div class="decomp">Decomposes into: <strong>yield variance</strong> (quantity) | <strong>mix variance</strong> (grade substitution)</div>
               <div class="details">
                 <div class="detail-row"><span class="arrow">›</span><span>Yield variance: actual material consumed vs recipe standard for good output produced</span></div>
                 <div class="detail-row"><span class="arrow">›</span><span>Mix variance: using higher/lower grade materials than recipe specifies</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Price variance: actual material cost vs standard price (often procurement-driven)</span></div>
-                <div class="detail-row"><span class="arrow">›</span><span>Pareto by SKU, line, material type — identifies where material cost leaks</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>MUV is purely operational — valued at standard prices to isolate usage from price</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Pareto by SKU, line, material type — identifies where material usage leaks</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi-card" id="kpi-ppv" data-fed-by="src-intake,src-commercial,src-bom" data-linked-kpis="kpi-muv">
+          <div class="card-head">
+            <div class="kpi-icon">◆</div>
+            <div>
+              <h3>Purchase Price Variance — PPV (£)</h3>
+              <div class="subtitle">What we paid per kg vs standard price — procurement-driven, not operational</div>
+              <div class="formula">PPV = (Actual price per kg − Std price per kg) × Actual qty purchased</div>
+              <div class="details">
+                <div class="detail-row"><span class="arrow">›</span><span>Isolated from usage — shows pure price impact from procurement</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Driven by: supplier negotiations, market price moves, spot vs contract buying</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Split by material type / grade / supplier</span></div>
+                <div class="detail-row"><span class="arrow">›</span><span>Separate from MUV so operations and procurement are accountable for their own variances</span></div>
               </div>
             </div>
           </div>
@@ -1291,8 +1314,9 @@
       <div style="font-size:12px; font-weight:700; color:var(--pine); margin-bottom:6px;">Key Equation</div>
       <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
         Paid Hours = Productive Hours + Idle/Overmanning + Indirect + Absence<br>
-        £/kg Labour = (Paid Hours × Blended Rate) ÷ Actual kg<br>
-        <span style="color:var(--text-muted);">Labour Variance = Actual £/kg Labour − Standard £/kg Labour</span>
+        £/kg Labour = (Actual hrs × Actual rate) ÷ Actual kg<br>
+        <span style="color:var(--text-muted);">Labour Efficiency Variance = (Actual hrs − Std hrs) × Std rate</span><br>
+        <span style="color:var(--text-muted);">Labour Rate Variance = (Actual rate − Std rate) × Actual hrs</span>
       </div>
     </div>
   </div>
@@ -1349,13 +1373,13 @@
           <span style="color:var(--text-muted); font-style:italic;">Saleable Output = Packed Output − Downgrades − Waste</span>
         </div>
       </div>
-      <div id="def-yield-recovery" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
-        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">£/kg Recovery</div>
+      <div id="def-yield-recovery" style="background:var(--card-bg); border:1px solid #EAB308; border-radius:10px; padding:14px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">£/kg Recovery <span style="font-size:9px; font-weight:400; color:#EAB308; text-transform:uppercase; letter-spacing:0.08em;">— Commercial Variance</span></div>
         <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; font-weight:300;">
           <strong style="color:var(--text-primary);">Target £/kg</strong> = Weighted average selling price at standard mix<br>
           <strong style="color:var(--text-primary);">Actual £/kg</strong> = Weighted average accounting for downgrades at lower prices<br>
           <strong style="color:var(--text-primary);">Recovery Gap</strong> = Target £/kg − Actual £/kg<br>
-          <span style="color:var(--text-muted); font-style:italic;">Annual Impact = Recovery Gap × Total kg</span>
+          <span style="color:var(--text-muted); font-style:italic;">This is a commercial / pricing variance, not an operational yield metric. Misshapes drive the quantity; the £ impact sits in the P&amp;L bridge as Commercial Recovery.</span>
         </div>
       </div>
     </div>
@@ -1364,7 +1388,8 @@
       <div style="font-family:'Roboto Mono','SF Mono',monospace; font-size:12px; color:var(--text-primary); line-height:1.8;">
         Overall Yield % = Saleable Output (kg) ÷ Raw Material Input (kg)<br>
         £ Yield Loss = (1 − Overall Yield %) × Input kg × Raw Material £/kg<br>
-        <span style="color:var(--text-muted);">MUV captures the £ impact; Yield % captures the operational efficiency</span>
+        <span style="color:var(--text-muted);">MUV captures the £ usage impact; Yield % captures operational efficiency</span><br>
+        <span style="color:var(--text-muted);">£/kg recovery (selling price shortfall from downgrades) is a commercial variance — not yield</span>
       </div>
     </div>
   </div>
