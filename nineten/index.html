@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nine/Ten — majaco</title>
+  <script src="../js/auth-gate.js" data-password-hash="16d21c3746628074269f846458618ac01b89a76ef62ae7557dc09ec899dc698d"></script>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <style>
+    .portal-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:2rem; }
+    .portal-card { background:var(--color-bg-alt); border:1px solid var(--color-border); border-radius:12px; padding:2rem; text-decoration:none; color:inherit; transition:border-color .2s, box-shadow .2s; }
+    .portal-card:hover { border-color:var(--color-primary); box-shadow:0 4px 20px rgba(45,106,79,.1); }
+    .portal-card h3 { font-size:var(--font-size-lg); font-weight:var(--font-weight-semibold); margin-bottom:.375rem; color:var(--color-text); }
+    .portal-card p { font-size:var(--font-size-sm); color:var(--color-text-muted); line-height:var(--line-height-normal); }
+    .portal-card .arrow { display:inline-block; margin-top:.75rem; font-size:var(--font-size-sm); color:var(--color-primary); font-weight:var(--font-weight-medium); }
+    .portal-empty { margin-top:2rem; padding:3rem 2rem; text-align:center; border:1px dashed var(--color-border); border-radius:12px; color:var(--color-text-muted); font-size:var(--font-size-sm); }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Nine/Ten</span>
+      </nav>
+      <p class="page-hero__eyebrow">Client Portal</p>
+      <h1 class="page-hero__title">
+        Nine/Ten <span class="text-green">Resources</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        Tools and analysis built for your operation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="section">
+    <div class="container">
+      <div class="portal-grid">
+        <!-- Tools will be added here -->
+      </div>
+      <div class="portal-empty">
+        Resources coming soon.
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
