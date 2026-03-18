@@ -3,8 +3,30 @@
    Mobile-first responsive design
    ============================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import './variables.css';
+
+/* TT Hoves Pro — majaco brand typeface */
+@font-face {
+  font-family: 'TT Hoves Pro';
+  src: url('../assets/fonts/TT_Hoves_Pro_Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Hoves Pro';
+  src: url('../assets/fonts/TT_Hoves_Pro_Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Hoves Pro';
+  src: url('../assets/fonts/TT_Hoves_Pro_Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* =============================================
    RESET & BASE
