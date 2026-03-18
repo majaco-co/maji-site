@@ -579,8 +579,8 @@
       <span><span class="chip-label">C/O time allowance</span> <span class="chip-desc">—Observed changeover studies</span></span>
     </div>
 
-    <!-- Commercial Standards -->
-    <div class="capture-group-label" style="color:#EAB308;">Commercial Standards</div>
+    <!-- Financial Standards -->
+    <div class="capture-group-label" style="color:#EAB308;">Financial Standards</div>
     <div class="capture-chip" data-source="src-commercial" data-kpis="kg-lh,labour-eff,labour-rate">
       <span class="chip-icon cap-system">⟳</span>
       <span><span class="chip-label">Direct hour cost</span> <span class="chip-desc">—Finance costing model</span></span>
@@ -767,8 +767,8 @@
       <div class="card-head">
         <div class="dot"></div>
         <div>
-          <h3>Commercial Standards</h3>
-          <div class="subtitle">Direct hours + target £/kg by commercial model</div>
+          <h3>Financial Standards</h3>
+          <div class="subtitle">Direct hours + target £/kg by financial model</div>
           <div class="details">
             <div class="detail-row"><span class="arrow">›</span><span>'Should cost' for direct labour</span></div>
             <div class="detail-row"><span class="arrow">›</span><span>Target selling price per kg by SKU</span></div>
@@ -1918,7 +1918,7 @@
         { icon: '\u23F1', label: 'How often', content: 'Monthly for annual budget, weekly for rolling forecast updates' },
         { icon: '\uD83D\uDCE6', label: 'What gets sent', content: 'Budgeted production volumes by SKU by period, standard margin per SKU, period forecast (weekly or monthly), overhead absorption rates per line-hour' },
         { icon: '\uD83D\uDD17', label: 'How records match', content: 'Period (week or month) + SKU. SKU codes must align with X3 master data.' },
-        { icon: '\u2713', label: 'What must be true', content: 'Budget must be at SKU level for meaningful mix variance analysis \u2014 category-level budgets are insufficient. Standard margins must be consistent with the commercial standards in X3. Overhead rates must be recalculated when capacity changes.' },
+        { icon: '\u2713', label: 'What must be true', content: 'Budget must be at SKU level for meaningful mix variance analysis \u2014 category-level budgets are insufficient. Standard margins must be consistent with the financial standards in X3. Overhead rates must be recalculated when capacity changes.' },
         { icon: '\u26A0', label: 'What breaks if this fails', content: 'Category-level budgets make mix variance analysis impossible. Stale forecasts make volume variance meaningless. Incorrect overhead rates distort the P&L bridge.' },
         { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'There is a formal budgeting process. Forecasts are updated regularly.' },
         { icon: '\u2753', label: 'Open questions', content: 'Is budgeting performed at SKU level or product category level? Which tool is used \u2014 X3 finance module, a dedicated budgeting tool, or Excel? How frequently is the demand forecast updated? Are overhead absorption rates calculated per line or site-wide?' }
@@ -1942,7 +1942,7 @@
       ]
     },
     'src-commercial': {
-      title: 'Commercial Standards',
+      title: 'Financial Standards',
       color: '#EAB308',
       summary: '\uD83D\uDCC4 Periodic extract \u00B7 Quarterly \u2014 X3 costing model',
       rows: [
@@ -1955,7 +1955,7 @@
         { icon: '\u2713', label: 'What must be true', content: 'Labour hour rates must include all on-costs (NI, pension, holiday accrual). Selling prices must reflect current contracted customer prices. Raw material costs must reflect current purchase prices or recent rolling average.' },
         { icon: '\u26A0', label: 'What breaks if this fails', content: 'Stale selling prices make \u00A3/kg recovery misleading. Incorrect hour rates mean the Labour Efficiency, Labour Rate variance is against the wrong benchmark. Outdated material costs distort MUV price variance.' },
         { icon: '\uD83D\uDCA1', label: 'Assumptions', content: 'X3 costing model is the single source. Pricing is managed centrally.' },
-        { icon: '\u2753', label: 'Open questions', content: 'How often are commercial standards refreshed in X3? Are raw material costs set as annual standards or actual rolling averages? How are customer-specific pricing tiers handled \u2014 blended target or SKU-specific?' }
+        { icon: '\u2753', label: 'Open questions', content: 'How often are financial standards refreshed in X3? Are raw material costs set as annual standards or actual rolling averages? How are customer-specific pricing tiers handled \u2014 blended target or SKU-specific?' }
       ]
     },
     'center-db': {
