@@ -30,11 +30,11 @@
     padding: 0;
   }
 
-  /* Wider container for framework content */
-  .section .container { max-width: 1280px; }
+  /* Wider container for framework content — 90% viewport width exception */
+  .section .container { max-width: 90vw; }
 
-  .framework { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 340px auto 1fr; gap: 16px; align-items: start; position: relative; transition: grid-template-columns 0.3s ease; }
-  .framework.tray-open { max-width: 1540px; }
+  .framework { max-width: 90vw; margin: 0 auto; display: grid; grid-template-columns: 340px auto 1fr; gap: 16px; align-items: start; position: relative; transition: grid-template-columns 0.3s ease; }
+  .framework.tray-open { max-width: 95vw; }
 
   .column-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 0 4px; }
   .column-header .icon { width: 24px; height: 24px; border-radius: 6px; background: var(--pine-muted); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--pine); }
@@ -323,7 +323,7 @@
     <section class="section">
       <div class="container">
 
-<div style="max-width:1280px; margin:0 auto 12px;">
+<div style="max-width:90vw; margin:0 auto 12px;">
   <button class="capture-toggle" id="captureToggle" onclick="toggleCaptureTray()">
     <span class="chevron">›</span> Data capture methods
   </button>
