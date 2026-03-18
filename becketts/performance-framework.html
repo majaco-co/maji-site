@@ -68,8 +68,7 @@
   .src-accent-violet .dot { background: #7C3AED; }
 
   /* KPI List */
-  .kpi-list-wrapper { position: relative; margin-top: -8px; }
-  .kpi-list-wrapper .column-header { margin-bottom: 6px; }
+  .kpi-list-wrapper { position: relative; }
   .kpi-list { display: flex; flex-direction: column; gap: 8px; }
 
 
@@ -324,13 +323,27 @@
     <section class="section">
       <div class="container">
 
-<div style="max-width:90vw; margin:0 auto 12px;">
-  <button class="capture-toggle" id="captureToggle" onclick="toggleCaptureTray()">
-    <span class="chevron">›</span> Data capture methods
-  </button>
-  <div class="view-toggle">
-    <button class="active" id="viewFrameworkBtn">Framework</button>
-    <button id="viewIntegrationBtn">Integration</button>
+<div style="max-width:90vw; margin:0 auto 12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+  <div style="display:flex; align-items:center; gap:8px;">
+    <button class="capture-toggle" id="captureToggle" onclick="toggleCaptureTray()">
+      <span class="chevron">›</span> Data capture methods
+    </button>
+    <div class="view-toggle">
+      <button class="active" id="viewFrameworkBtn">Framework</button>
+      <button id="viewIntegrationBtn">Integration</button>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <span style="font-size:11px; font-weight:700; color:#999; letter-spacing:1.5px; text-transform:uppercase;">KPIs</span>
+    <div class="kpi-filters" id="kpiFiltersTop" style="margin-bottom:0;">
+      <button class="kpi-filter-btn" data-filter="all">All</button>
+      <button class="kpi-filter-btn active" data-filter="financial">P&amp;L</button>
+      <button class="kpi-filter-btn" data-filter="volume">Volume</button>
+      <button class="kpi-filter-btn" data-filter="labour">Labour</button>
+      <button class="kpi-filter-btn" data-filter="material">Material</button>
+      <button class="kpi-filter-btn" data-filter="efficiency">Efficiency</button>
+      <button class="kpi-filter-btn" data-filter="standards">Standards</button>
+    </div>
   </div>
 </div>
 
@@ -847,21 +860,6 @@
 
   <!-- RIGHT: KPIs -->
   <div class="kpi-list-wrapper">
-    <div class="column-header">
-      <div class="icon">◆</div>
-      <span>KPIs</span>
-    </div>
-
-    <div class="kpi-filters">
-      <button class="kpi-filter-btn" data-filter="all">All</button>
-      <button class="kpi-filter-btn active" data-filter="financial">P&amp;L</button>
-      <button class="kpi-filter-btn" data-filter="volume">Volume</button>
-      <button class="kpi-filter-btn" data-filter="labour">Labour</button>
-      <button class="kpi-filter-btn" data-filter="material">Material</button>
-      <button class="kpi-filter-btn" data-filter="efficiency">Efficiency</button>
-      <button class="kpi-filter-btn" data-filter="standards">Standards</button>
-    </div>
-
     <div class="kpi-list">
         <div class="kpi-divider" data-section="financial" style="font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--pine); margin:0 0 8px; padding-left:4px; border-left:3px solid var(--pine);">P&amp;L Bridge</div>
 
