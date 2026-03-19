@@ -78,13 +78,16 @@
   var SIM_BUFFER_SIZE = 4; // user-configurable
   var tickCount = 0;
 
+  // rate: 1 (slowest) to 6 (fastest), internally: cycleTicks = 7 - rate
   var stationConfigs = [
-    { uptime: 90, cycleTicks: 2 },
-    { uptime: 90, cycleTicks: 2 },
-    { uptime: 90, cycleTicks: 2 },
-    { uptime: 90, cycleTicks: 2 },
-    { uptime: 90, cycleTicks: 2 }
+    { uptime: 90, rate: 5 },
+    { uptime: 90, rate: 5 },
+    { uptime: 90, rate: 5 },
+    { uptime: 90, rate: 5 },
+    { uptime: 90, rate: 5 }
   ];
+
+  function rateToTicks(rate) { return 7 - rate; }
 
   var simSpeed = 2;
   var flowHistory = [];
@@ -116,7 +119,7 @@
     this.stations = [];
     for (var i = 0; i < stationConfigs.length; i++) {
       var cfg = stationConfigs[i];
-      this.stations.push(new Station(i, cfg.cycleTicks, calcFailProb(cfg.uptime)));
+      this.stations.push(new Station(i, rateToTicks(cfg.rate), calcFailProb(cfg.uptime)));
     }
     this.buffers = [];
     for (var i = 0; i < stationConfigs.length - 1; i++) {
@@ -222,9 +225,9 @@
         '<input type="number" class="ssc-input" data-idx="' + i + '" data-field="uptime" ' +
           'min="50" max="99" step="1" value="' + cfg.uptime + '" title="Availability %">' +
         '<span class="ssc-unit">%</span>' +
-        '<input type="number" class="ssc-input ssc-input-sm" data-idx="' + i + '" data-field="cycleTicks" ' +
-          'min="1" max="6" step="1" value="' + cfg.cycleTicks + '" title="Cycle ticks">' +
-        '<span class="ssc-unit">ticks</span>' +
+        '<input type="number" class="ssc-input ssc-input-sm" data-idx="' + i + '" data-field="rate" ' +
+          'min="1" max="6" step="1" value="' + cfg.rate + '" title="Station rate (1=slow, 6=fast)">' +
+        '<span class="ssc-unit"></span>' +
         '</div>';
     }
     container.innerHTML = html;
@@ -236,7 +239,7 @@
         var val = parseInt(this.value);
         if (isNaN(val)) return;
         if (field === 'uptime') val = Math.max(50, Math.min(99, val));
-        if (field === 'cycleTicks') val = Math.max(1, Math.min(6, val));
+        if (field === 'rate') val = Math.max(1, Math.min(6, val));
         this.value = val;
         stationConfigs[idx][field] = val;
         if (!simRunning) { resetSim(); renderSim(); }
@@ -246,7 +249,7 @@
 
   function addStation() {
     if (stationConfigs.length >= 8) return;
-    stationConfigs.push({ uptime: 90, cycleTicks: 2 });
+    stationConfigs.push({ uptime: 90, rate: 5 });
     renderStationConfigs();
     if (!simRunning) { resetSim(); renderSim(); }
   }
@@ -346,7 +349,7 @@
       for (var i = 0; i < line.stations.length && i < stationConfigs.length; i++) {
         var cfg = stationConfigs[i];
         line.stations[i].failProb = calcFailProb(cfg.uptime);
-        line.stations[i].cycleTicks = cfg.cycleTicks;
+        line.stations[i].cycleTicks = rateToTicks(cfg.rate);
       }
     });
   }
@@ -432,7 +435,7 @@
       html += '<div class="' + cls + '">' +
         '<div class="sim-station-label">S' + (i + 1) + '</div>' +
         '<div class="sim-progress"><div class="sim-progress-fill" style="width:' + pct + '%"></div></div>' +
-        '<div class="sim-ct-label">' + st.cycleTicks + 't / ' + stationConfigs[i].uptime + '%</div>' +
+        '<div class="sim-ct-label">rate ' + stationConfigs[i].rate + ' / ' + stationConfigs[i].uptime + '%</div>' +
         (!st.isUp ? '<div class="sim-down-icon">!</div>' : '') +
         '</div>';
 
