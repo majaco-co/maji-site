@@ -743,7 +743,7 @@
           This simulation runs two identical production lines side by side. Both have 5 stations, and both experience exactly the same random breakdowns at the same times. The only difference is that one has no buffers (one-piece flow) and the other has small buffers of 4 units between each station.
         </p>
         <p class="bvf-intro">
-          Set each station&rsquo;s availability and cycle time on the left, then hit start. Both lines experience exactly the same random breakdowns &mdash; the only difference is whether there are buffers between stations. Try reducing availability on one station, or giving them different cycle times, and watch what happens.
+          Set each station&rsquo;s availability and cycle time on the left, then hit start. Both lines experience exactly the same random breakdowns &mdash; the only difference is whether there are buffers between stations. Try reducing availability on one station, or giving them different cycle times, and watch what happens. You can change parameters while paused and resume to apply them mid-run, or reset to start fresh.
         </p>
 
         <div class="sim-counters">
@@ -777,6 +777,7 @@
               <button id="sim-add-station">+ Station</button>
               <button id="sim-remove-station">&minus; Station</button>
             </div>
+            <p style="font-size:10px;color:#7A7A7A;margin-top:8px;line-height:1.4;">Pause &amp; resume to apply changes mid-run, or reset to start fresh.</p>
             <div class="sim-speed-row">
               <label>Speed</label>
               <input type="range" id="sim-speed" min="0.5" max="10" value="2" step="0.5">

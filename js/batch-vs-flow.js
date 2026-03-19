@@ -280,6 +280,7 @@
         startBtn.textContent = 'Resume';
       } else {
         if (tickCount === 0) { resetSim(); renderSim(); }
+        else { applyConfigsToRunning(); } // pick up any parameter changes
         startSim();
         startBtn.textContent = 'Pause';
       }
@@ -328,6 +329,17 @@
     }
 
     drawChart();
+  }
+
+  function applyConfigsToRunning() {
+    // Update failProb and cycleTicks on existing stations without losing state
+    [flowLine, bufferLine].forEach(function (line) {
+      for (var i = 0; i < line.stations.length && i < stationConfigs.length; i++) {
+        var cfg = stationConfigs[i];
+        line.stations[i].failProb = calcFailProb(cfg.uptime);
+        line.stations[i].cycleTicks = cfg.cycleTicks;
+      }
+    });
   }
 
   function resetSim() {
