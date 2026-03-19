@@ -330,9 +330,10 @@
       box-shadow: 0 0 6px rgba(181, 58, 30, 0.3);
       background: #fef0ec;
     }
-    .sim-buf-row {
+    .sim-buf-col {
       display: flex;
-      gap: 3px;
+      flex-direction: column;
+      gap: 2px;
     }
 
     /* Simulation wide wrapper — breaks out of .container */
@@ -493,11 +494,11 @@
 
     .sim-buffer {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
       padding: 0 4px;
-      min-width: 20px;
+      min-width: 14px;
       flex-shrink: 0;
     }
     .sim-buf-dot {

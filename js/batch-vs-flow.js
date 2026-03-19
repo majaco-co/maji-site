@@ -611,23 +611,25 @@
       if (i < line.stations.length - 1) {
         if (line.hasBuffers) {
           var buf = line.buffers[i];
-          // Two rows of up to 10
-          var row1 = Math.min(buf, 10);
-          var row2 = Math.max(0, buf - 10);
+          // Two vertical columns of up to 10
+          var col1 = Math.min(buf, 10);
+          var col2 = Math.max(0, buf - 10);
           var cap1 = Math.min(SIM_BUFFER_SIZE, 10);
           var cap2 = Math.max(0, SIM_BUFFER_SIZE - 10);
           var dots1 = '';
           for (var d = 0; d < cap1; d++) {
-            dots1 += '<span class="sim-buf-dot' + (d < row1 ? ' filled' : '') + '"></span>';
+            dots1 += '<span class="sim-buf-dot' + (d < col1 ? ' filled' : '') + '"></span>';
           }
           var dots2 = '';
           if (cap2 > 0) {
             for (var d = 0; d < cap2; d++) {
-              dots2 += '<span class="sim-buf-dot' + (d < row2 ? ' filled' : '') + '"></span>';
+              dots2 += '<span class="sim-buf-dot' + (d < col2 ? ' filled' : '') + '"></span>';
             }
           }
-          html += '<div class="sim-buffer"><div class="sim-buf-row">' + dots1 + '</div>' +
-            (cap2 > 0 ? '<div class="sim-buf-row">' + dots2 + '</div>' : '') + '</div>';
+          html += '<div class="sim-buffer">' +
+            '<div class="sim-buf-col">' + dots1 + '</div>' +
+            (cap2 > 0 ? '<div class="sim-buf-col">' + dots2 + '</div>' : '') +
+            '</div>';
         } else {
           html += '<div class="sim-no-buffer"><span class="sim-arrow">&rarr;</span></div>';
         }
