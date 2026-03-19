@@ -396,6 +396,42 @@
     bufferHistory.push(bufferLine.produced);
   }
 
+  function getBottleneckCycleTicks() {
+    var max = 0;
+    for (var i = 0; i < stationConfigs.length; i++) {
+      if (stationConfigs[i].cycleTicks > max) max = stationConfigs[i].cycleTicks;
+    }
+    return max;
+  }
+
+  function getBottleneckIndices() {
+    var max = getBottleneckCycleTicks();
+    var indices = [];
+    for (var i = 0; i < stationConfigs.length; i++) {
+      if (stationConfigs[i].cycleTicks === max) indices.push(i);
+    }
+    return indices;
+  }
+
+  function calcRollingEfficiency(history) {
+    // Rolling 30 real-seconds window
+    var windowTicks = Math.floor(30 * simSpeed);
+    var n = history.length;
+    if (n < 2) return null;
+
+    var lookback = Math.min(windowTicks, n - 1);
+    if (lookback < 1) return null;
+
+    var produced = history[n - 1] - history[n - 1 - lookback];
+    var bnsTicks = getBottleneckCycleTicks();
+    if (bnsTicks === 0) return null;
+
+    var potential = lookback / bnsTicks;
+    if (potential <= 0) return null;
+
+    return (produced / potential) * 100;
+  }
+
   function renderSim() {
     var flowCount = document.getElementById('sim-flow-count');
     var bufCount = document.getElementById('sim-buf-count');
@@ -412,11 +448,20 @@
       advEl.textContent = '--';
     }
 
-    renderLineVisual('sim-flow-line', flowLine);
-    renderLineVisual('sim-buf-line', bufferLine);
+    // Efficiency
+    var flowEff = calcRollingEfficiency(flowHistory);
+    var bufEff = calcRollingEfficiency(bufferHistory);
+    var flowEffEl = document.getElementById('sim-flow-eff');
+    var bufEffEl = document.getElementById('sim-buf-eff');
+    if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
+    if (bufEffEl) bufEffEl.textContent = bufEff !== null ? bufEff.toFixed(0) + '%' : '--';
+
+    var bnIndices = getBottleneckIndices();
+    renderLineVisual('sim-flow-line', flowLine, bnIndices);
+    renderLineVisual('sim-buf-line', bufferLine, bnIndices);
   }
 
-  function renderLineVisual(containerId, line) {
+  function renderLineVisual(containerId, line, bnIndices) {
     var el = document.getElementById(containerId);
     if (!el) return;
 
@@ -427,6 +472,7 @@
       if (!st.isUp) cls += ' sim-down';
       else if (st.hasUnit) cls += ' sim-active';
       else cls += ' sim-idle';
+      if (bnIndices && bnIndices.indexOf(i) !== -1) cls += ' sim-constraint';
 
       var pct = st.hasUnit ? Math.min(100, (st.progressTicks / st.cycleTicks) * 100) : 0;
 
@@ -440,11 +486,23 @@
       if (i < line.stations.length - 1) {
         if (line.hasBuffers) {
           var buf = line.buffers[i];
-          var dots = '';
-          for (var d = 0; d < SIM_BUFFER_SIZE; d++) {
-            dots += '<span class="sim-buf-dot' + (d < buf ? ' filled' : '') + '"></span>';
+          // Two rows of up to 10
+          var row1 = Math.min(buf, 10);
+          var row2 = Math.max(0, buf - 10);
+          var cap1 = Math.min(SIM_BUFFER_SIZE, 10);
+          var cap2 = Math.max(0, SIM_BUFFER_SIZE - 10);
+          var dots1 = '';
+          for (var d = 0; d < cap1; d++) {
+            dots1 += '<span class="sim-buf-dot' + (d < row1 ? ' filled' : '') + '"></span>';
           }
-          html += '<div class="sim-buffer">' + dots + '</div>';
+          var dots2 = '';
+          if (cap2 > 0) {
+            for (var d = 0; d < cap2; d++) {
+              dots2 += '<span class="sim-buf-dot' + (d < row2 ? ' filled' : '') + '"></span>';
+            }
+          }
+          html += '<div class="sim-buffer"><div class="sim-buf-row">' + dots1 + '</div>' +
+            (cap2 > 0 ? '<div class="sim-buf-row">' + dots2 + '</div>' : '') + '</div>';
         } else {
           html += '<div class="sim-no-buffer"><span class="sim-arrow">&rarr;</span></div>';
         }

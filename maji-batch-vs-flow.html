@@ -276,6 +276,17 @@
       margin-top: 2px;
       letter-spacing: 0.03em;
     }
+    .sim-station.sim-constraint {
+      box-shadow: 0 0 0 2px rgba(218, 241, 27, 0.5), 0 0 12px rgba(218, 241, 27, 0.3);
+      border-color: #DAF11B;
+    }
+    .sim-station.sim-constraint.sim-down {
+      box-shadow: 0 0 0 2px rgba(218, 241, 27, 0.3), 0 0 12px rgba(218, 241, 27, 0.15);
+    }
+    .sim-buf-row {
+      display: flex;
+      gap: 3px;
+    }
 
     /* Simulation wide wrapper — breaks out of .container */
     .sim-wide {
@@ -437,14 +448,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
-      padding: 0 6px;
-      min-width: 24px;
+      gap: 2px;
+      padding: 0 4px;
+      min-width: 20px;
       flex-shrink: 0;
     }
     .sim-buf-dot {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: #e0e0e0;
       transition: background 0.2s;
@@ -778,14 +789,22 @@
 
       <!-- Simulation — full width, outside content-card -->
       <div class="sim-wide">
-        <div class="sim-counters">
+        <div class="sim-counters" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
           <div class="sim-counter">
             <div class="sc-val cr-val-red" id="sim-flow-count">0</div>
             <div class="sc-label">Flow Output</div>
           </div>
           <div class="sim-counter">
+            <div class="sc-val cr-val-red" id="sim-flow-eff">--</div>
+            <div class="sc-label">Flow Efficiency</div>
+          </div>
+          <div class="sim-counter">
             <div class="sc-val cr-val-green" id="sim-buf-count">0</div>
             <div class="sc-label">Buffered Output</div>
+          </div>
+          <div class="sim-counter">
+            <div class="sc-val cr-val-green" id="sim-buf-eff">--</div>
+            <div class="sc-label">Buffered Efficiency</div>
           </div>
           <div class="sim-counter">
             <div class="sc-val" id="sim-advantage">--</div>
@@ -812,7 +831,7 @@
             <p style="font-size:10px;color:#7A7A7A;margin-top:8px;line-height:1.4;">Pause &amp; resume to apply changes mid-run, or reset to start fresh.</p>
             <div class="sim-speed-row">
               <label>Buffer</label>
-              <input type="range" id="sim-buffer-size" min="1" max="10" value="4" step="1">
+              <input type="range" id="sim-buffer-size" min="1" max="20" value="4" step="1">
               <span class="sim-speed-val" id="sim-buffer-val">4</span>
               <span class="sim-speed-unit">units</span>
             </div>
