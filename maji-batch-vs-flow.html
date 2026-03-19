@@ -277,27 +277,132 @@
       letter-spacing: 0.03em;
     }
 
-    .sim-toggle-row {
+    /* Station config panel */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 700px) {
+      .sim-layout { grid-template-columns: 1fr; }
+    }
+
+    .sim-config-panel {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .sim-config-title {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7A7A7A;
+      margin-bottom: 10px;
+    }
+    .ssc-header {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .ssc-header span {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7A7A7A;
+    }
+    .ssc-header .ssc-h-label { width: 28px; }
+    .ssc-header .ssc-h-avail { width: 52px; text-align: center; }
+    .ssc-header .ssc-h-cycle { width: 42px; text-align: center; }
+
+    .ssc-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 6px;
     }
-    .sim-toggle-row label {
-      font-size: 0.82rem;
+    .ssc-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
       font-weight: 500;
       color: #333;
+      width: 28px;
+      flex-shrink: 0;
+    }
+    .ssc-input {
+      width: 52px;
+      padding: 6px 4px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      text-align: center;
+      background: #fff;
+      color: #0a0a0a;
+      -webkit-appearance: none;
+    }
+    .ssc-input:focus { outline: none; border-color: #006458; }
+    .ssc-input-sm { width: 42px; }
+    .ssc-unit {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #7A7A7A;
+      width: 28px;
+      flex-shrink: 0;
+    }
+
+    .ssc-add-remove {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .ssc-add-remove button {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      background: #fff;
+      color: #333;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
       cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .ssc-add-remove button:hover { border-color: #006458; }
+
+    .sim-speed-row {
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e0e0e0;
     }
-    .sim-toggle-row input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+    .sim-speed-row label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+    }
+    .sim-speed-row input[type="range"] {
+      flex: 1;
       accent-color: #006458;
-      cursor: pointer;
+    }
+    .sim-speed-row .sim-speed-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 24px;
+      text-align: right;
+      color: #0a0a0a;
     }
 
     .sim-buffer {
@@ -638,7 +743,7 @@
           This simulation runs two identical production lines side by side. Both have 5 stations, and both experience exactly the same random breakdowns at the same times. The only difference is that one has no buffers (one-piece flow) and the other has small buffers of 4 units between each station.
         </p>
         <p class="bvf-intro">
-          Hit start and watch how the output numbers diverge. The breakdowns are the same &mdash; the only thing that changes is whether the rest of the line has to stop while one station is down. Then tick &ldquo;vary cycle times&rdquo; to see what happens when stations don&rsquo;t all run at the same speed, which is closer to reality on most lines.
+          Set each station&rsquo;s availability and cycle time on the left, then hit start. Both lines experience exactly the same random breakdowns &mdash; the only difference is whether there are buffers between stations. Try reducing availability on one station, or giving them different cycle times, and watch what happens.
         </p>
 
         <div class="sim-counters">
@@ -656,22 +761,41 @@
           </div>
         </div>
 
-        <div id="sim-container" class="sim-wrapper">
-          <div class="sim-panel">
-            <div class="sim-panel-title">One-Piece Flow (no buffers)</div>
-            <div class="sim-line" id="sim-flow-line"></div>
+        <div id="sim-container" class="sim-layout">
+          <!-- Config panel -->
+          <div class="sim-config-panel">
+            <div class="sim-config-title">Station Parameters</div>
+            <div class="ssc-header">
+              <span class="ssc-h-label"></span>
+              <span class="ssc-h-avail">Avail</span>
+              <span></span>
+              <span class="ssc-h-cycle">Cycle</span>
+              <span></span>
+            </div>
+            <div id="sim-station-configs"></div>
+            <div class="ssc-add-remove">
+              <button id="sim-add-station">+ Station</button>
+              <button id="sim-remove-station">&minus; Station</button>
+            </div>
+            <div class="sim-speed-row">
+              <label>Speed</label>
+              <input type="range" id="sim-speed" min="0.5" max="10" value="2" step="0.5">
+              <span class="sim-speed-val" id="sim-speed-val">2</span>
+              <span style="font-size:9px;color:#7A7A7A;">/s</span>
+            </div>
           </div>
-          <div class="sim-panel">
-            <div class="sim-panel-title">Same Line With Small Buffers</div>
-            <div class="sim-line" id="sim-buf-line"></div>
-          </div>
-        </div>
 
-        <div class="sim-toggle-row">
-          <label>
-            <input type="checkbox" id="sim-vary-toggle">
-            Vary cycle times between stations
-          </label>
+          <!-- Simulation lines -->
+          <div>
+            <div class="sim-panel" style="margin-bottom: 16px;">
+              <div class="sim-panel-title">One-Piece Flow (no buffers)</div>
+              <div class="sim-line" id="sim-flow-line"></div>
+            </div>
+            <div class="sim-panel">
+              <div class="sim-panel-title">Same Line With Small Buffers</div>
+              <div class="sim-line" id="sim-buf-line"></div>
+            </div>
+          </div>
         </div>
 
         <div class="sim-controls">
@@ -679,8 +803,7 @@
           <button class="sim-btn sim-btn-outline" id="sim-reset">Reset</button>
         </div>
         <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 12px;">
-          Each station has ~88% uptime per cycle. Breakdowns last 3&ndash;6 cycles. Both lines see the same failures.<br>
-          With varied cycle times, stations take 1&ndash;4 ticks each &mdash; the mismatch causes additional blocking and starvation.
+          Breakdowns last 3&ndash;6 cycles. Both lines see the same failures at the same times.
         </p>
       </div>
 
