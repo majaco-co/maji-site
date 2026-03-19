@@ -433,7 +433,7 @@
     if (bnsTicks === 0) return null;
     var potential = lookback / bnsTicks;
     if (potential <= 0) return null;
-    return Math.min(100, (produced / potential) * 100);
+    return (produced / potential) * 100;
   }
 
   function renderSim() {
