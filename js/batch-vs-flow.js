@@ -367,9 +367,6 @@
   function resetSim() {
     flowLine = new SimLine(false);
     bufferLine = new SimLine(true);
-    for (var i = 0; i < bufferLine.buffers.length; i++) {
-      bufferLine.buffers[i] = 2;
-    }
     tickCount = 0;
     flowHistory = [0];
     bufferHistory = [0];
@@ -425,22 +422,12 @@
     return indices;
   }
 
-  function calcRollingEfficiency(history) {
-    // Rolling 30 real-seconds window
-    var windowTicks = Math.floor(30 * simSpeed);
-    var n = history.length;
-    if (n < 2) return null;
-
-    var lookback = Math.min(windowTicks, n - 1);
-    if (lookback < 1) return null;
-
-    var produced = history[n - 1] - history[n - 1 - lookback];
+  function calcEfficiency(produced) {
+    if (tickCount < 2) return null;
     var bnsTicks = getBottleneckCycleTicks();
     if (bnsTicks === 0) return null;
-
-    var potential = lookback / bnsTicks;
+    var potential = tickCount / bnsTicks;
     if (potential <= 0) return null;
-
     return (produced / potential) * 100;
   }
 
@@ -460,13 +447,13 @@
       advEl.textContent = '--';
     }
 
-    // Efficiency
-    var flowEff = calcRollingEfficiency(flowHistory);
-    var bufEff = calcRollingEfficiency(bufferHistory);
+    // Efficiency — cumulative: actual output / (total ticks / bottleneck cycle ticks)
+    var flowEff = calcEfficiency(flowLine.produced);
+    var bufEff = calcEfficiency(bufferLine.produced);
     var flowEffEl = document.getElementById('sim-flow-eff');
     var bufEffEl = document.getElementById('sim-buf-eff');
-    if (flowEffEl) flowEffEl.textContent = flowEff !== null ? Math.min(100, flowEff).toFixed(0) + '%' : '--';
-    if (bufEffEl) bufEffEl.textContent = bufEff !== null ? Math.min(100, bufEff).toFixed(0) + '%' : '--';
+    if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
+    if (bufEffEl) bufEffEl.textContent = bufEff !== null ? bufEff.toFixed(0) + '%' : '--';
 
     var bnIndices = getBottleneckIndices();
     renderLineVisual('sim-flow-line', flowLine, bnIndices);
