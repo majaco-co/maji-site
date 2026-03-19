@@ -450,8 +450,9 @@
     if (!canvas) return;
 
     var dpr = window.devicePixelRatio || 1;
-    var rect = canvas.parentElement.getBoundingClientRect();
-    var W = rect.width;
+    var wrap = document.getElementById('sim-chart-wrap');
+    var W = (wrap ? wrap.clientWidth : canvas.parentElement.clientWidth) - 32; // subtract padding
+    if (W < 100) W = 400;
     var H = 220;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
