@@ -439,18 +439,13 @@
     return indices;
   }
 
-  function calcRollingEfficiency(history) {
-    var windowTicks = Math.floor(5 * simSpeed);
-    var n = history.length;
-    if (n < 2) return null;
-    var lookback = Math.min(windowTicks, n - 1);
-    if (lookback < 1) return null;
-    var produced = history[n - 1] - history[n - 1 - lookback];
+  function calcEfficiency(totalProduced) {
+    if (tickCount < 2) return null;
     var bnsTicks = getBottleneckCycleTicks();
     if (bnsTicks === 0) return null;
-    var potential = lookback / bnsTicks;
+    var potential = tickCount / bnsTicks;
     if (potential <= 0) return null;
-    return (produced / potential) * 100;
+    return (totalProduced / potential) * 100;
   }
 
   function renderSim() {
@@ -469,9 +464,9 @@
       advEl.textContent = '--';
     }
 
-    // Efficiency — rolling 30s window, capped at 100%
-    var flowEff = calcRollingEfficiency(flowHistory);
-    var bufEff = calcRollingEfficiency(bufferHistory);
+    // Efficiency — cumulative from sim start
+    var flowEff = calcEfficiency(flowLine.produced);
+    var bufEff = calcEfficiency(bufferLine.produced);
     var flowEffEl = document.getElementById('sim-flow-eff');
     var bufEffEl = document.getElementById('sim-buf-eff');
     if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
