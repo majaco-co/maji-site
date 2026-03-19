@@ -2,9 +2,18 @@
  * maji Batch vs Flow — interactive elements
  * 1. System availability calculator
  * 2. Production line simulation (one-piece flow vs buffered)
+ * 3. Cumulative output chart
+ *
+ * Availability model:
+ *   MTTR = 4.5 ticks (mean of uniform 3–6)
+ *   MTBF = A × MTTR / (1 − A)
+ *   P(fail per up-tick) = 1 / MTBF
+ *   This ensures a station set to 90% is actually up ~90% of all ticks.
  */
 (function () {
   'use strict';
+
+  var MTTR = 4.5; // mean of uniform(3,6)
 
   // ─── Availability Calculator ───
 
@@ -69,24 +78,32 @@
   var SIM_BUFFER_SIZE = 4;
   var tickCount = 0;
 
-  // Station configs — array of { uptime: 0-100, cycleTicks: 1-6 }
   var stationConfigs = [
-    { uptime: 88, cycleTicks: 2 },
-    { uptime: 88, cycleTicks: 2 },
-    { uptime: 88, cycleTicks: 2 },
-    { uptime: 88, cycleTicks: 2 },
-    { uptime: 88, cycleTicks: 2 }
+    { uptime: 90, cycleTicks: 2 },
+    { uptime: 90, cycleTicks: 2 },
+    { uptime: 90, cycleTicks: 2 },
+    { uptime: 90, cycleTicks: 2 },
+    { uptime: 90, cycleTicks: 2 }
   ];
 
-  var simSpeed = 2; // cycles per second
+  var simSpeed = 2;
+  var flowHistory = [];
+  var bufferHistory = [];
 
-  function getTickMs() {
-    return Math.round(1000 / simSpeed);
+  function getTickMs() { return Math.round(1000 / simSpeed); }
+
+  function calcFailProb(uptimePct) {
+    var a = uptimePct / 100;
+    if (a >= 1) return 0;
+    if (a <= 0) return 1;
+    var mtbf = a * MTTR / (1 - a);
+    return 1 / mtbf;
   }
 
-  function Station(id, cycleTicks) {
+  function Station(id, cycleTicks, failProb) {
     this.id = id;
     this.cycleTicks = cycleTicks;
+    this.failProb = failProb;
     this.isUp = true;
     this.downTicks = 0;
     this.processing = false;
@@ -98,7 +115,8 @@
     this.hasBuffers = hasBuffers;
     this.stations = [];
     for (var i = 0; i < stationConfigs.length; i++) {
-      this.stations.push(new Station(i, stationConfigs[i].cycleTicks));
+      var cfg = stationConfigs[i];
+      this.stations.push(new Station(i, cfg.cycleTicks, calcFailProb(cfg.uptime)));
     }
     this.buffers = [];
     for (var i = 0; i < stationConfigs.length - 1; i++) {
@@ -109,28 +127,24 @@
     this.starved = 0;
   }
 
-  SimLine.prototype.tick = function (failures) {
+  SimLine.prototype.tick = function (rolls, downDurations) {
     var stations = this.stations;
     var buffers = this.buffers;
     var bufSize = this.hasBuffers ? SIM_BUFFER_SIZE : 0;
 
-    // Apply failures
+    // Failures & recovery
     for (var i = 0; i < stations.length; i++) {
-      if (failures[i]) {
-        stations[i].isUp = false;
-        stations[i].downTicks = 3 + Math.floor(Math.random() * 4);
-        stations[i].processing = false;
-        stations[i].progressTicks = 0;
-      }
-    }
-
-    // Recover
-    for (var i = 0; i < stations.length; i++) {
-      if (!stations[i].isUp) {
-        stations[i].downTicks--;
-        if (stations[i].downTicks <= 0) {
-          stations[i].isUp = true;
+      var st = stations[i];
+      if (st.isUp) {
+        if (rolls[i] < st.failProb) {
+          st.isUp = false;
+          st.downTicks = downDurations[i];
+          st.processing = false;
+          st.progressTicks = 0;
         }
+      } else {
+        st.downTicks--;
+        if (st.downTicks <= 0) st.isUp = true;
       }
     }
 
@@ -215,7 +229,6 @@
     }
     container.innerHTML = html;
 
-    // Attach listeners
     container.querySelectorAll('.ssc-input').forEach(function (input) {
       input.addEventListener('change', function () {
         var idx = parseInt(this.dataset.idx);
@@ -233,7 +246,7 @@
 
   function addStation() {
     if (stationConfigs.length >= 8) return;
-    stationConfigs.push({ uptime: 88, cycleTicks: 2 });
+    stationConfigs.push({ uptime: 90, cycleTicks: 2 });
     renderStationConfigs();
     if (!simRunning) { resetSim(); renderSim(); }
   }
@@ -266,9 +279,7 @@
         pauseSim();
         startBtn.textContent = 'Resume';
       } else {
-        // Re-read configs before starting (in case user changed while paused)
-        resetSim();
-        renderSim();
+        if (tickCount === 0) { resetSim(); renderSim(); }
         startSim();
         startBtn.textContent = 'Pause';
       }
@@ -278,6 +289,7 @@
       pauseSim();
       resetSim();
       renderSim();
+      drawChart();
       if (startBtn) startBtn.textContent = 'Start Simulation';
     });
 
@@ -286,6 +298,7 @@
       addStation();
       resetSim();
       renderSim();
+      drawChart();
       if (startBtn) startBtn.textContent = 'Start Simulation';
     });
 
@@ -294,6 +307,7 @@
       removeStation();
       resetSim();
       renderSim();
+      drawChart();
       if (startBtn) startBtn.textContent = 'Start Simulation';
     });
 
@@ -307,10 +321,13 @@
           simInterval = setInterval(function () {
             simTick();
             renderSim();
+            drawChart();
           }, getTickMs());
         }
       });
     }
+
+    drawChart();
   }
 
   function resetSim() {
@@ -320,6 +337,8 @@
       bufferLine.buffers[i] = 2;
     }
     tickCount = 0;
+    flowHistory = [0];
+    bufferHistory = [0];
   }
 
   function startSim() {
@@ -328,6 +347,7 @@
     simInterval = setInterval(function () {
       simTick();
       renderSim();
+      drawChart();
     }, getTickMs());
   }
 
@@ -339,25 +359,27 @@
   function simTick() {
     tickCount++;
 
-    // Per-station failures using individual uptime
-    var failures = [];
+    // Generate shared random rolls and down-durations
+    var rolls = [];
+    var downDurations = [];
     for (var i = 0; i < stationConfigs.length; i++) {
-      var threshold = stationConfigs[i].uptime / 100;
-      failures.push(Math.random() > threshold);
+      rolls.push(Math.random());
+      downDurations.push(3 + Math.floor(Math.random() * 4)); // 3–6
     }
 
-    flowLine.tick(failures);
-    bufferLine.tick(failures);
+    flowLine.tick(rolls, downDurations);
+    bufferLine.tick(rolls, downDurations);
+
+    flowHistory.push(flowLine.produced);
+    bufferHistory.push(bufferLine.produced);
   }
 
   function renderSim() {
     var flowCount = document.getElementById('sim-flow-count');
     var bufCount = document.getElementById('sim-buf-count');
-    var tickEl = document.getElementById('sim-ticks');
 
     if (flowCount) flowCount.textContent = flowLine.produced;
     if (bufCount) bufCount.textContent = bufferLine.produced;
-    if (tickEl) tickEl.textContent = tickCount;
 
     var advEl = document.getElementById('sim-advantage');
     if (advEl && flowLine.produced > 0) {
@@ -409,11 +431,140 @@
     el.innerHTML = html;
   }
 
+  // ─── Cumulative Output Chart ───
+
+  function drawChart() {
+    var canvas = document.getElementById('sim-chart');
+    if (!canvas) return;
+
+    var dpr = window.devicePixelRatio || 1;
+    var rect = canvas.parentElement.getBoundingClientRect();
+    var W = rect.width;
+    var H = 220;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    var pad = { top: 20, right: 20, bottom: 32, left: 50 };
+    var plotW = W - pad.left - pad.right;
+    var plotH = H - pad.top - pad.bottom;
+
+    // Background
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, W, H);
+
+    var n = flowHistory.length;
+    if (n < 2) {
+      ctx.fillStyle = '#7A7A7A';
+      ctx.font = '12px "TT Hoves Pro", system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Start the simulation to see cumulative output', W / 2, H / 2);
+      return;
+    }
+
+    var maxY = Math.max(bufferHistory[n - 1], flowHistory[n - 1], 1) * 1.1;
+    var maxX = n - 1;
+
+    function xPos(i) { return pad.left + (i / maxX) * plotW; }
+    function yPos(v) { return pad.top + plotH - (v / maxY) * plotH; }
+
+    // Grid
+    ctx.strokeStyle = '#e8e8e8';
+    ctx.lineWidth = 1;
+    for (var g = 0; g <= 4; g++) {
+      var gy = pad.top + plotH * g / 4;
+      ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(W - pad.right, gy); ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, pad.top + plotH);
+    ctx.lineTo(W - pad.right, pad.top + plotH);
+    ctx.stroke();
+
+    // Y labels
+    ctx.fillStyle = '#7A7A7A';
+    ctx.font = '10px "DM Mono", monospace';
+    ctx.textAlign = 'right';
+    for (var yi = 0; yi <= 4; yi++) {
+      var yv = maxY * (4 - yi) / 4;
+      ctx.fillText(Math.round(yv), pad.left - 6, pad.top + plotH * yi / 4 + 4);
+    }
+
+    // X label
+    ctx.textAlign = 'center';
+    ctx.fillText('Cycles', W / 2, H - 4);
+
+    // Tick labels on x axis
+    var xStep = Math.max(1, Math.floor(maxX / 5));
+    for (var xi = 0; xi <= maxX; xi += xStep) {
+      ctx.fillText(xi, xPos(xi), pad.top + plotH + 16);
+    }
+
+    // Draw step: skip points if too many for pixel width
+    var step = Math.max(1, Math.floor(n / plotW));
+
+    // Flow line (red)
+    ctx.strokeStyle = '#b53a1e';
+    ctx.lineWidth = 2;
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    for (var i = 0; i < n; i += step) {
+      var px = xPos(i);
+      var py = yPos(flowHistory[i]);
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    // Always draw last point
+    ctx.lineTo(xPos(n - 1), yPos(flowHistory[n - 1]));
+    ctx.stroke();
+
+    // Buffer line (green)
+    ctx.strokeStyle = '#006458';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (var i = 0; i < n; i += step) {
+      var px = xPos(i);
+      var py = yPos(bufferHistory[i]);
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.lineTo(xPos(n - 1), yPos(bufferHistory[n - 1]));
+    ctx.stroke();
+
+    // Legend
+    var legX = pad.left + 12;
+    var legY = pad.top + 10;
+
+    ctx.fillStyle = 'rgba(250,250,250,0.85)';
+    ctx.fillRect(legX - 4, legY - 10, 130, 36);
+
+    ctx.strokeStyle = '#b53a1e'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(legX, legY); ctx.lineTo(legX + 16, legY); ctx.stroke();
+    ctx.fillStyle = '#333'; ctx.font = '10px "DM Mono", monospace'; ctx.textAlign = 'left';
+    ctx.fillText('Flow', legX + 22, legY + 3);
+
+    ctx.strokeStyle = '#006458'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(legX, legY + 16); ctx.lineTo(legX + 16, legY + 16); ctx.stroke();
+    ctx.fillStyle = '#333';
+    ctx.fillText('Buffered', legX + 22, legY + 19);
+  }
+
   // ─── Init ───
 
   function init() {
     initAvailCalc();
     initSim();
+
+    window.addEventListener('resize', function () {
+      drawChart();
+    });
   }
 
   if (document.readyState === 'loading') {

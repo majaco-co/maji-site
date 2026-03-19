@@ -803,8 +803,16 @@
           <button class="sim-btn sim-btn-outline" id="sim-reset">Reset</button>
         </div>
         <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 12px;">
-          Breakdowns last 3&ndash;6 cycles. Both lines see the same failures at the same times.
+          Availability is modelled correctly: a station set to 90% will be up for ~90% of all cycles over time. Breakdowns last 3&ndash;6 cycles; failure frequency is calculated so the long-run average matches the target availability. Both lines see the same failures.
         </p>
+
+        <!-- Cumulative output chart -->
+        <div style="margin-top: 20px; border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px; background: #fafafa;">
+          <div style="font-size: 0.7rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: #7A7A7A; margin-bottom: 8px; text-align: center;">Cumulative Output Over Time</div>
+          <div class="chart-container">
+            <canvas id="sim-chart"></canvas>
+          </div>
+        </div>
       </div>
 
       <!-- Three Assumptions -->
