@@ -338,7 +338,7 @@
     }
     .ssc-header .ssc-h-label { width: 28px; }
     .ssc-header .ssc-h-avail { width: 52px; text-align: center; }
-    .ssc-header .ssc-h-cycle { width: 42px; text-align: center; }
+    .ssc-header .ssc-h-cycle { min-width: 42px; text-align: center; }
 
     .ssc-row {
       display: flex;
@@ -801,7 +801,7 @@
               <span class="ssc-h-label"></span>
               <span class="ssc-h-avail">Avail</span>
               <span></span>
-              <span class="ssc-h-cycle">Cycle</span>
+              <span class="ssc-h-cycle">Ticks/Cycle</span>
               <span></span>
             </div>
             <div id="sim-station-configs"></div>
@@ -809,7 +809,7 @@
               <button id="sim-add-station">+ Station</button>
               <button id="sim-remove-station">&minus; Station</button>
             </div>
-            <p style="font-size:10px;color:#7A7A7A;margin-top:8px;line-height:1.4;">Cycle = ticks per unit (1 = fastest, 6 = slowest).<br>Pause &amp; resume to apply changes mid-run, or reset to start fresh.</p>
+            <p style="font-size:10px;color:#7A7A7A;margin-top:8px;line-height:1.4;">Pause &amp; resume to apply changes mid-run, or reset to start fresh.</p>
             <div class="sim-speed-row">
               <label>Buffer</label>
               <input type="range" id="sim-buffer-size" min="1" max="10" value="4" step="1">
@@ -817,10 +817,10 @@
               <span class="sim-speed-unit">units</span>
             </div>
             <div class="sim-speed-row" style="border-top:none;margin-top:6px;padding-top:0;">
-              <label>Anim Speed</label>
+              <label>Anim</label>
               <input type="range" id="sim-speed" min="0.5" max="10" value="2" step="0.5">
               <span class="sim-speed-val" id="sim-speed-val">2</span>
-              <span class="sim-speed-unit">/s</span>
+              <span class="sim-speed-unit">ticks/s</span>
             </div>
           </div>
 
