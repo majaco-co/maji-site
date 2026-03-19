@@ -399,14 +399,14 @@
         ]
       },
       'preset-severe': {
-        buffer: 14,
+        buffer: 20,
         configs: [
           { uptime: 90, cycleTicks: 1 },
-          { uptime: 75, cycleTicks: 6 },
-          { uptime: 90, cycleTicks: 2 },
-          { uptime: 75, cycleTicks: 6 },
-          { uptime: 90, cycleTicks: 1 },
           { uptime: 75, cycleTicks: 5 },
+          { uptime: 90, cycleTicks: 2 },
+          { uptime: 75, cycleTicks: 5 },
+          { uptime: 90, cycleTicks: 1 },
+          { uptime: 50, cycleTicks: 5 },
           { uptime: 90, cycleTicks: 2 },
           { uptime: 75, cycleTicks: 6 }
         ]
