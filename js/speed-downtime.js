@@ -1,6 +1,6 @@
 /**
  * maji Speed-Downtime Trade-off Calculator
- * Finds the optimal line speed where PPLH peaks.
+ * Finds the optimal line speed where UPLH peaks.
  * Enhanced with visual slider feedback, smooth chart, animated optimal marker,
  * and user-vs-optimal comparison.
  */
@@ -54,7 +54,7 @@
     var id = slider.id;
     var v = parseFloat(slider.value);
     var text = '';
-    if (id === 'speed') text = v + ' packs/hr';
+    if (id === 'speed') text = v + ' units/hr';
     else if (id === 'availability') text = v + '%';
     else if (id === 'quality') text = v + '%';
     else if (id === 'operators') text = v + ' people';
@@ -85,33 +85,33 @@
 
     if (operators === 0 || shift === 0) return;
 
-    var baselinePPLH = speed * (avail / 100) * (quality / 100) / operators;
+    var baselineUPLH = speed * (avail / 100) * (quality / 100) / operators;
 
-    function calcPPLH(pctIncrease) {
+    function calcUPLH(pctIncrease) {
       var newSpeed = speed * (1 + pctIncrease / 100);
       var newAvail = Math.max(0, avail - (pctIncrease / 10) * availSens);
       var newQual = Math.max(0, quality - (pctIncrease / 10) * qualSens);
       return newSpeed * (newAvail / 100) * (newQual / 100) / operators;
     }
 
-    var scenarioPPLH = calcPPLH(speedIncrease);
-    var changePct = baselinePPLH > 0 ? ((scenarioPPLH - baselinePPLH) / baselinePPLH * 100) : 0;
+    var scenarioUPLH = calcUPLH(speedIncrease);
+    var changePct = baselineUPLH > 0 ? ((scenarioUPLH - baselineUPLH) / baselineUPLH * 100) : 0;
 
-    var optPPLH = baselinePPLH;
+    var optUPLH = baselineUPLH;
     var optIncrease = 0;
     for (var i = 0; i <= 100; i++) {
       var pct = i * 0.5;
-      var p = calcPPLH(pct);
-      if (p > optPPLH) {
-        optPPLH = p;
+      var p = calcUPLH(pct);
+      if (p > optUPLH) {
+        optUPLH = p;
         optIncrease = pct;
       }
     }
     var optSpeed = speed * (1 + optIncrease / 100);
 
     // Update standard displays
-    setText('baseline-pplh', baselinePPLH.toFixed(1) + ' packs/labour-hr');
-    setText('new-pplh', scenarioPPLH.toFixed(1) + ' packs/labour-hr');
+    setText('baseline-pplh', baselineUPLH.toFixed(1) + ' units/labour-hr');
+    setText('new-pplh', scenarioUPLH.toFixed(1) + ' units/labour-hr');
 
     var changeEl = document.getElementById('new-change');
     if (changeEl) {
@@ -120,9 +120,9 @@
       changeEl.style.color = changePct >= 0 ? '#006458' : '#EF4444';
     }
 
-    setText('optimal-speed', Math.round(optSpeed) + ' packs/hr');
+    setText('optimal-speed', Math.round(optSpeed) + ' units/hr');
     setText('optimal-increase', '+' + optIncrease.toFixed(1) + '%');
-    setText('optimal-pplh', optPPLH.toFixed(1) + ' packs/labour-hr');
+    setText('optimal-pplh', optUPLH.toFixed(1) + ' units/labour-hr');
 
     // Update comparison cards if they exist
     var compYou = document.getElementById('sd-comp-you-value');
@@ -130,10 +130,10 @@
     var compYouSub = document.getElementById('sd-comp-you-sub');
     var compOptSub = document.getElementById('sd-comp-opt-sub');
 
-    if (compYou) compYou.textContent = scenarioPPLH.toFixed(1);
-    if (compOpt) compOpt.textContent = optPPLH.toFixed(1);
-    if (compYouSub) compYouSub.textContent = 'At +' + speedIncrease + '% speed (' + Math.round(speed * (1 + speedIncrease / 100)) + ' packs/hr)';
-    if (compOptSub) compOptSub.textContent = 'At +' + optIncrease.toFixed(1) + '% speed (' + Math.round(optSpeed) + ' packs/hr)';
+    if (compYou) compYou.textContent = scenarioUPLH.toFixed(1);
+    if (compOpt) compOpt.textContent = optUPLH.toFixed(1);
+    if (compYouSub) compYouSub.textContent = 'At +' + speedIncrease + '% speed (' + Math.round(speed * (1 + speedIncrease / 100)) + ' units/hr)';
+    if (compOptSub) compOptSub.textContent = 'At +' + optIncrease.toFixed(1) + '% speed (' + Math.round(optSpeed) + ' units/hr)';
 
     // Color the change indicator on result items
     var resultItems = document.querySelectorAll('.result-item');
@@ -141,7 +141,7 @@
       item.classList.remove('result-optimal', 'result-warning', 'result-danger');
     });
 
-    // Highlight optimal PPLH result
+    // Highlight optimal UPLH result
     var optPplhEl = document.getElementById('optimal-pplh');
     if (optPplhEl) {
       var parent = optPplhEl.closest('.result-item');
@@ -157,10 +157,10 @@
       }
     }
 
-    drawChart(speed, avail, quality, operators, availSens, qualSens, speedIncrease, baselinePPLH, scenarioPPLH, optIncrease, optPPLH);
+    drawChart(speed, avail, quality, operators, availSens, qualSens, speedIncrease, baselineUPLH, scenarioUPLH, optIncrease, optUPLH);
   }
 
-  function drawChart(speed, avail, quality, operators, availSens, qualSens, userIncrease, baselinePPLH, scenarioPPLH, optIncrease, optPPLH) {
+  function drawChart(speed, avail, quality, operators, availSens, qualSens, userIncrease, baselineUPLH, scenarioUPLH, optIncrease, optUPLH) {
     if (!canvas) return;
     var dpr = window.devicePixelRatio || 1;
     var rect = canvas.parentElement.getBoundingClientRect();
@@ -188,7 +188,7 @@
 
     // Generate curve data
     var points = [];
-    var maxPPLH = 0;
+    var maxUPLH = 0;
     for (var i = 0; i <= 100; i++) {
       var pct = i * 0.5;
       var newSpeed = speed * (1 + pct / 100);
@@ -196,16 +196,16 @@
       var newQual = Math.max(0, quality - (pct / 10) * qualSens);
       var pplh = newSpeed * (newAvail / 100) * (newQual / 100) / operators;
       points.push({ pct: pct, pplh: pplh });
-      if (pplh > maxPPLH) maxPPLH = pplh;
+      if (pplh > maxUPLH) maxUPLH = pplh;
     }
-    maxPPLH *= 1.15;
-    if (maxPPLH === 0) maxPPLH = 10;
+    maxUPLH *= 1.15;
+    if (maxUPLH === 0) maxUPLH = 10;
 
     // Store for tooltip
-    chartMeta = { points: points, maxPPLH: maxPPLH, pad: pad, plotW: plotW, plotH: plotH, W: W, H: H, userIncrease: userIncrease, scenarioPPLH: scenarioPPLH, optIncrease: optIncrease, optPPLH: optPPLH };
+    chartMeta = { points: points, maxUPLH: maxUPLH, pad: pad, plotW: plotW, plotH: plotH, W: W, H: H, userIncrease: userIncrease, scenarioUPLH: scenarioUPLH, optIncrease: optIncrease, optUPLH: optUPLH };
 
     function xPos(pct) { return pad.left + (pct / 50) * plotW; }
-    function yPos(p) { return pad.top + plotH - (p / maxPPLH) * plotH; }
+    function yPos(p) { return pad.top + plotH - (p / maxUPLH) * plotH; }
 
     // Grid
     ctx.strokeStyle = '#F0F0F0';
@@ -244,7 +244,7 @@
     ctx.fillStyle = '#64748B';
     ctx.textAlign = 'right';
     for (var yi = 0; yi <= 5; yi++) {
-      var yv = maxPPLH * (5 - yi) / 5;
+      var yv = maxUPLH * (5 - yi) / 5;
       ctx.fillText(yv.toFixed(1), pad.left - 10, pad.top + plotH * yi / 5 + 4);
     }
 
@@ -267,7 +267,7 @@
     ctx.fill();
     ctx.globalAlpha = 1;
 
-    // PPLH curve - smooth with gradient stroke
+    // UPLH curve - smooth with gradient stroke
     ctx.strokeStyle = '#006458';
     ctx.lineWidth = 3;
     ctx.lineJoin = 'round';
@@ -298,21 +298,21 @@
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(xPos(0), yPos(points[0].pplh));
-      ctx.lineTo(xPos(userIncrease), yPos(scenarioPPLH));
+      ctx.lineTo(xPos(userIncrease), yPos(scenarioUPLH));
       ctx.stroke();
       ctx.setLineDash([]);
 
       // Dot
       ctx.beginPath();
-      ctx.arc(xPos(userIncrease), yPos(scenarioPPLH), 7, 0, Math.PI * 2);
-      ctx.fillStyle = scenarioPPLH >= points[0].pplh ? '#008577' : '#EF4444';
+      ctx.arc(xPos(userIncrease), yPos(scenarioUPLH), 7, 0, Math.PI * 2);
+      ctx.fillStyle = scenarioUPLH >= points[0].pplh ? '#008577' : '#EF4444';
       ctx.fill();
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // Label
-      ctx.fillStyle = scenarioPPLH >= points[0].pplh ? '#004a40' : '#991B1B';
+      ctx.fillStyle = scenarioUPLH >= points[0].pplh ? '#004a40' : '#991B1B';
       ctx.font = 'bold 11px Inter, sans-serif';
       ctx.textAlign = 'left';
       var labelX = xPos(userIncrease) + 12;
@@ -320,25 +320,25 @@
         ctx.textAlign = 'right';
         labelX = xPos(userIncrease) - 12;
       }
-      ctx.fillText('You: ' + scenarioPPLH.toFixed(1), labelX, yPos(scenarioPPLH) - 6);
+      ctx.fillText('You: ' + scenarioUPLH.toFixed(1), labelX, yPos(scenarioUPLH) - 6);
     }
 
     // Optimal dot with animated glow effect
     if (optIncrease >= 0 && optIncrease <= 50) {
       // Outer glow rings
       ctx.beginPath();
-      ctx.arc(xPos(optIncrease), yPos(optPPLH), 14, 0, Math.PI * 2);
+      ctx.arc(xPos(optIncrease), yPos(optUPLH), 14, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(0, 100, 88, 0.08)';
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(xPos(optIncrease), yPos(optPPLH), 10, 0, Math.PI * 2);
+      ctx.arc(xPos(optIncrease), yPos(optUPLH), 10, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(0, 100, 88, 0.15)';
       ctx.fill();
 
       // Inner dot
       ctx.beginPath();
-      ctx.arc(xPos(optIncrease), yPos(optPPLH), 6, 0, Math.PI * 2);
+      ctx.arc(xPos(optIncrease), yPos(optUPLH), 6, 0, Math.PI * 2);
       ctx.fillStyle = '#006458';
       ctx.fill();
       ctx.strokeStyle = '#fff';
@@ -350,12 +350,12 @@
       ctx.font = 'bold 11px Inter, sans-serif';
       ctx.textAlign = 'left';
       var optLabelX = xPos(optIncrease) + 12;
-      var optLabelY = yPos(optPPLH) + 16;
+      var optLabelY = yPos(optUPLH) + 16;
       if (optLabelX + 100 > W - pad.right) {
         ctx.textAlign = 'right';
         optLabelX = xPos(optIncrease) - 12;
       }
-      ctx.fillText('Optimal: ' + optPPLH.toFixed(1), optLabelX, optLabelY);
+      ctx.fillText('Optimal: ' + optUPLH.toFixed(1), optLabelX, optLabelY);
     }
 
     // Legend
@@ -371,7 +371,7 @@
     ctx.stroke();
 
     var legItems = [
-      { label: 'PPLH Curve', color: '#006458', type: 'line' },
+      { label: 'UPLH Curve', color: '#006458', type: 'line' },
       { label: 'Your Scenario', color: '#008577', type: 'dot' },
       { label: 'Optimal Point', color: '#006458', type: 'dot' }
     ];
@@ -423,7 +423,7 @@
     }, chartMeta.points[0]);
 
     var html = '<div style="font-weight:700;margin-bottom:4px;">+' + closest.pct.toFixed(1) + '% speed</div>';
-    html += '<div>PPLH: <strong>' + closest.pplh.toFixed(1) + '</strong></div>';
+    html += '<div>UPLH: <strong>' + closest.pplh.toFixed(1) + '</strong></div>';
 
     chartTooltipEl.innerHTML = html;
     chartTooltipEl.classList.add('visible');

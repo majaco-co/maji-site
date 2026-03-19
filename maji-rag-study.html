@@ -42,7 +42,7 @@
     background: var(--color-bg, #f5f5f5);
     color: var(--ink);
     min-height: 100dvh;
-    padding-bottom: 60px;
+    padding-bottom: 0;
   }
 
   .page { max-width: 960px; margin: 0 auto; padding: 36px 16px 72px; }
@@ -161,6 +161,13 @@
   .input-row input:focus, .input-row select:focus {
     outline: none;
     border-color: var(--ink);
+  }
+  .input-row input[type="checkbox"] {
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    flex: none;
+    width: 18px;
+    height: 18px;
   }
   .input-row input::placeholder { color: var(--muted); }
   .input-row .unit {
@@ -950,14 +957,30 @@
       <span class="unit">people</span>
     </div>
     <div class="input-row">
-      <label>RPM</label>
+      <label>Line Unit</label>
+      <select id="lineUnitSelect" onchange="onLineUnitChange()" style="flex:1;">
+        <option value="">None</option>
+        <option value="RPM" selected>RPM</option>
+        <option value="Strokes/min">Strokes/min</option>
+        <option value="Cycles/min">Cycles/min</option>
+        <option value="m/min">m/min</option>
+        <option value="ft/min">ft/min</option>
+        <option value="__other">Other...</option>
+      </select>
+    </div>
+    <div class="input-row" id="customUnitRow" style="display:none;">
+      <label>Unit Name</label>
+      <input type="text" id="customUnitInput" placeholder="e.g. bars/min" style="flex:1;" onchange="onCustomUnitChange()">
+    </div>
+    <div class="input-row" id="lineUnitValueRow">
+      <label id="lineUnitLabel">RPM</label>
       <input type="number" id="rpmInput" min="0" step="1" placeholder="0" inputmode="decimal">
-      <span class="unit">rpm</span>
+      <span class="unit" id="lineUnitAbbr">rpm</span>
     </div>
     <div class="input-row">
-      <label>Packs/min</label>
+      <label>Units/min</label>
       <input type="number" id="packsMinInput" min="0" step="0.1" placeholder="0" inputmode="decimal">
-      <span class="unit">packs/min</span>
+      <span class="unit">units/min</span>
     </div>
     <div class="input-row" style="margin-top:8px;">
       <label>Counter</label>
@@ -1126,11 +1149,13 @@
     </div>
     <div class="form-group speed-change-section">
       <label>Speed Change (leave blank if unchanged)</label>
+      <div class="speed-change-row" id="modalLineUnitRow" style="margin-bottom:8px;">
+        <input type="number" id="modalRpmInput" min="0" step="1" placeholder="0" inputmode="decimal">
+        <span class="unit" id="modalLineUnitAbbr">rpm</span>
+      </div>
       <div class="speed-change-row">
-        <input type="number" id="modalRpmInput" min="0" step="1" placeholder="RPM" inputmode="decimal">
-        <span class="unit">rpm</span>
-        <input type="number" id="modalPacksMinInput" min="0" step="0.1" placeholder="Pk/min" inputmode="decimal">
-        <span class="unit">pk/min</span>
+        <input type="number" id="modalPacksMinInput" min="0" step="0.1" placeholder="0" inputmode="decimal">
+        <span class="unit">units/min</span>
       </div>
     </div>
     <div class="btn-row">
@@ -1157,13 +1182,13 @@
   <div class="modal">
     <h2>Log Speed Change</h2>
     <p style="font-size:13px;color:var(--ink2);text-align:center;margin-bottom:16px;">Record a speed change without stopping the line.</p>
-    <div class="form-group">
-      <label>New RPM</label>
-      <input type="number" id="speedModalRpm" min="0" step="1" placeholder="RPM" inputmode="decimal" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:white;color:var(--ink);">
+    <div class="form-group" id="speedModalLineUnitGroup">
+      <label id="speedModalLineUnitLabel">New RPM</label>
+      <input type="number" id="speedModalRpm" min="0" step="1" placeholder="0" inputmode="decimal" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:white;color:var(--ink);">
     </div>
     <div class="form-group">
-      <label>New Packs/min</label>
-      <input type="number" id="speedModalPacks" min="0" step="0.1" placeholder="Packs/min" inputmode="decimal" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:white;color:var(--ink);">
+      <label>New Units/min</label>
+      <input type="number" id="speedModalPacks" min="0" step="0.1" placeholder="0" inputmode="decimal" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:white;color:var(--ink);">
     </div>
     <div class="btn-row">
       <button class="btn-cancel" onclick="closeSpeedModal()">Cancel</button>
@@ -1237,6 +1262,15 @@
 <script>
 const DEFAULT_ASSETS = ['Infeed','Processing','Filling','Sealing','Labelling','Checkweigher','Packing','Palletising'];
 
+const LINE_UNITS = {
+  '': { label: 'None', abbr: '' },
+  'RPM': { label: 'RPM', abbr: 'rpm' },
+  'Strokes/min': { label: 'Strokes/min', abbr: 'strokes/min' },
+  'Cycles/min': { label: 'Cycles/min', abbr: 'cycles/min' },
+  'm/min': { label: 'm/min', abbr: 'm/min' },
+  'ft/min': { label: 'ft/min', abbr: 'ft/min' }
+};
+
 // -- State --
 let assets = [...DEFAULT_ASSETS];
 let state = {
@@ -1251,6 +1285,8 @@ let state = {
   timerInterval: null,
   editingStopIndex: null,
   crew: 4,
+  lineUnit: 'RPM',
+  customUnit: '',
   rpm: 0,
   packsMin: 0,
   sku: '',
@@ -1284,6 +1320,17 @@ try {
       endTime: s.endTime ? new Date(s.endTime) : null
     }));
     document.getElementById('crewInput').value = state.crew;
+    if (state.lineUnit === undefined) state.lineUnit = 'RPM';
+    if (!state.customUnit) state.customUnit = '';
+    // Set dropdown: if it's a known unit, select it; if custom, select __other
+    if (LINE_UNITS[state.lineUnit] || state.lineUnit === '') {
+      document.getElementById('lineUnitSelect').value = state.lineUnit;
+    } else {
+      document.getElementById('lineUnitSelect').value = '__other';
+      document.getElementById('customUnitRow').style.display = 'flex';
+      document.getElementById('customUnitInput').value = state.lineUnit;
+      state.customUnit = state.lineUnit;
+    }
     document.getElementById('rpmInput').value = state.rpm || '';
     document.getElementById('packsMinInput').value = state.packsMin || '';
     document.getElementById('skuInput').value = state.sku || '';
@@ -1295,6 +1342,7 @@ try {
     if (!state.speedChanges) state.speedChanges = [];
     if (state.counterEnabled === undefined) state.counterEnabled = false;
     document.getElementById('counterToggle').checked = state.counterEnabled;
+    updateLineUnitUI();
     renderOutputLog();
   }
 } catch(e) {}
@@ -1346,6 +1394,57 @@ function renderAssetGrid() {
 
 renderAssetTags();
 
+// -- Line Unit --
+function onLineUnitChange() {
+  const sel = document.getElementById('lineUnitSelect').value;
+  if (sel === '__other') {
+    document.getElementById('customUnitRow').style.display = 'flex';
+    document.getElementById('customUnitInput').focus();
+    state.lineUnit = state.customUnit || '';
+  } else {
+    document.getElementById('customUnitRow').style.display = 'none';
+    state.lineUnit = sel;
+    state.customUnit = '';
+  }
+  updateLineUnitUI();
+  saveState();
+}
+
+function onCustomUnitChange() {
+  const val = document.getElementById('customUnitInput').value.trim();
+  state.customUnit = val;
+  state.lineUnit = val;
+  updateLineUnitUI();
+  saveState();
+}
+
+function updateLineUnitUI() {
+  const unit = state.lineUnit;
+  const info = LINE_UNITS[unit];
+  const isCustom = !info && unit !== '';
+  const hasUnit = unit !== '';
+  const label = info ? info.label : unit;
+  const abbr = info ? info.abbr : unit.toLowerCase();
+
+  document.getElementById('lineUnitValueRow').style.display = hasUnit ? 'flex' : 'none';
+  document.getElementById('lineUnitLabel').textContent = label || 'Value';
+  document.getElementById('lineUnitAbbr').textContent = abbr;
+  // Stop modal line unit row
+  document.getElementById('modalLineUnitRow').style.display = hasUnit ? 'flex' : 'none';
+  document.getElementById('modalLineUnitAbbr').textContent = abbr;
+  // Speed change modal
+  document.getElementById('speedModalLineUnitGroup').style.display = hasUnit ? 'block' : 'none';
+  document.getElementById('speedModalLineUnitLabel').textContent = hasUnit ? ('New ' + label) : '';
+}
+
+function getLineUnitAbbr() {
+  const info = LINE_UNITS[state.lineUnit];
+  if (info) return info.abbr;
+  return state.lineUnit ? state.lineUnit.toLowerCase() : '';
+}
+
+updateLineUnitUI();
+
 // -- Counter Toggle --
 function toggleCounter() {
   state.counterEnabled = document.getElementById('counterToggle').checked;
@@ -1389,13 +1488,14 @@ function saveSpeedChange() {
   if (!newRpm && !newPacks) { closeSpeedModal(); return; }
   const now = new Date();
   const oldRpm = state.rpm, oldPacks = state.packsMin;
-  if (newRpm !== '') { state.rpm = parseFloat(newRpm); document.getElementById('rpmInput').value = state.rpm; }
+  if (newRpm !== '' && state.lineUnit) { state.rpm = parseFloat(newRpm); document.getElementById('rpmInput').value = state.rpm; }
   if (newPacks !== '') { state.packsMin = parseFloat(newPacks); document.getElementById('packsMinInput').value = state.packsMin; }
   state.speedChanges.push({
     time: now.toISOString(),
     timeDisplay: now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' }),
     oldRpm: oldRpm, oldPacks: oldPacks,
     newRpm: state.rpm, newPacks: state.packsMin,
+    unitAbbr: getLineUnitAbbr(),
     elapsed: state.sessionStart ? formatMsShort(now - state.sessionStart) : '--'
   });
   closeSpeedModal();
@@ -1407,12 +1507,16 @@ function renderSpeedLog() {
   const list = document.getElementById('speedLogList');
   if (!state.speedChanges || state.speedChanges.length === 0) { card.style.display = 'none'; return; }
   card.style.display = 'block';
-  list.innerHTML = state.speedChanges.map((sc, i) =>
-    `<li class="speed-log-item">
+  list.innerHTML = state.speedChanges.map((sc, i) => {
+    const unitAbbr = sc.unitAbbr || getLineUnitAbbr();
+    const hasLineUnit = unitAbbr !== '';
+    const oldPart = hasLineUnit ? `${sc.oldRpm}${unitAbbr} / ` : '';
+    const newPart = hasLineUnit ? `${sc.newRpm}${unitAbbr} / ` : '';
+    return `<li class="speed-log-item">
       <span class="sl-time">${sc.timeDisplay} (${sc.elapsed})</span>
-      <div class="sl-detail"><strong>${sc.oldRpm}rpm / ${sc.oldPacks}pk/min</strong> &rarr; <strong>${sc.newRpm}rpm / ${sc.newPacks}pk/min</strong></div>
-    </li>`
-  ).reverse().join('');
+      <div class="sl-detail"><strong>${oldPart}${sc.oldPacks} units/min</strong> &rarr; <strong>${newPart}${sc.newPacks} units/min</strong></div>
+    </li>`;
+  }).reverse().join('');
 }
 
 // -- Pareto Chart --
@@ -1469,6 +1573,7 @@ function toggleTimer() {
 function startLine() {
   const now = new Date();
   state.crew = parseInt(document.getElementById('crewInput').value) || 1;
+  state.lineUnit = document.getElementById('lineUnitSelect').value;
   state.rpm = parseFloat(document.getElementById('rpmInput').value) || 0;
   state.packsMin = parseFloat(document.getElementById('packsMinInput').value) || 0;
   state.sku = document.getElementById('skuInput').value.trim();
@@ -1627,11 +1732,14 @@ function renderStops() {
     const dur = stop.endTime ? stop.durationMs : (state.status === 'stopped' && i === state.stops.length - 1 ? new Date() - stop.startTime : stop.durationMs);
     const time = stop.startTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const typeLabel = stop.stopType === 'red' ? '<span style="color:var(--red);font-weight:700;">RED</span>' : stop.stopType === 'amber' ? '<span style="color:var(--amber);font-weight:700;">AMBER</span>' : '<span style="color:var(--muted);">--</span>';
-    const speedChange = (stop.newRpm !== null || stop.newPacksMin !== null) ? ` &rarr; ${stop.newRpm ?? stop.rpm}rpm / ${stop.newPacksMin ?? stop.packsMin}pk/min` : '';
+    const unitAbbr = getLineUnitAbbr();
+    const hasLineUnit = unitAbbr !== '';
+    const lineUnitStr = hasLineUnit ? ` &bull; ${stop.rpm}${unitAbbr}` : '';
+    const speedChange = (stop.newRpm !== null || stop.newPacksMin !== null) ? ` &rarr; ${hasLineUnit ? (stop.newRpm ?? stop.rpm) + unitAbbr + ' / ' : ''}${stop.newPacksMin ?? stop.packsMin} units/min` : '';
     return `<li class="stop-item" onclick="editStop(${i})">
       <span class="stop-num ${stop.needsEdit ? 'needs-edit' : ''}">Stop ${i+1}</span> ${typeLabel}
       <div class="stop-duration">${formatMsShort(dur)}</div>
-      <div class="stop-meta">${time} &bull; Crew: ${stop.crew} &bull; ${stop.rpm}rpm &bull; ${stop.packsMin}pk/min${speedChange}</div>
+      <div class="stop-meta">${time} &bull; Crew: ${stop.crew}${lineUnitStr} &bull; ${stop.packsMin} units/min${speedChange}</div>
       <div class="stop-detail"><strong>${stop.asset || '--'}</strong> -- ${stop.reason || '--'}</div>
       ${stop.needsEdit ? '<div class="edit-hint">Tap to add details</div>' : ''}
     </li>`;
@@ -1743,7 +1851,8 @@ function saveState() {
 // -- Export --
 function exportCSV() {
   if (state.stops.length === 0) { alert('No stops to export.'); return; }
-  const rows = [['Stop #','Time','Duration (s)','Type','Asset','Reason','RPM','Packs/min','New RPM','New Packs/min','Crew','SKU']];
+  const unitLabel = state.lineUnit || 'Line Unit';
+  const rows = [['Stop #','Time','Duration (s)','Type','Asset','Reason',unitLabel,'Units/min','New '+unitLabel,'New Units/min','Crew','SKU']];
   state.stops.forEach((s, i) => {
     const dur = s.endTime ? Math.round(s.durationMs / 1000) : '(ongoing)';
     rows.push([i+1, s.startTime.toLocaleTimeString('en-GB'), dur, s.stopType || '', `"${s.asset}"`, `"${s.reason}"`, s.rpm||0, s.packsMin||0, s.newRpm !== null ? s.newRpm : '', s.newPacksMin !== null ? s.newPacksMin : '', s.crew, `"${s.sku||''}"`]);
@@ -1764,7 +1873,7 @@ function exportCSV() {
   rows.push(['Session Notes', `"${(state.sessionNotes||'').replace(/"/g,'""')}"`]);
   if (state.speedChanges && state.speedChanges.length > 0) {
     rows.push([]);
-    rows.push(['Speed Change #','Time','Old RPM','Old Packs/min','New RPM','New Packs/min','Elapsed']);
+    rows.push(['Speed Change #','Time','Old '+unitLabel,'Old Units/min','New '+unitLabel,'New Units/min','Elapsed']);
     state.speedChanges.forEach((sc, i) => {
       rows.push([i+1, sc.timeDisplay, sc.oldRpm, sc.oldPacks, sc.newRpm, sc.newPacks, sc.elapsed]);
     });
@@ -1781,7 +1890,9 @@ function exportCSV() {
 
 function copyToClipboard() {
   if (state.stops.length === 0) { alert('No stops to copy.'); return; }
-  let text = `Diamond Peak RAG Study\n`;
+  const unitAbbr = getLineUnitAbbr();
+  const hasLU = unitAbbr !== '';
+  let text = `RAG Study\n`;
   text += `Date: ${state.sessionStart ? state.sessionStart.toLocaleDateString('en-GB') : 'N/A'}\n`;
   text += `Line: ${state.line||'N/A'} | Shift: ${state.shift||'N/A'} | SKU: ${state.sku||'N/A'}\n`;
   text += `Run: ${formatMsShort(state.totalRunMs)} | Stop: ${formatMsShort(state.totalStopMs)} | Stops: ${state.stops.length} (R:${state.stops.filter(s=>s.stopType==='red').length} A:${state.stops.filter(s=>s.stopType==='amber').length})\n`;
@@ -1790,13 +1901,16 @@ function copyToClipboard() {
     const dur = s.endTime ? formatMsShort(s.durationMs) : '(ongoing)';
     const time = s.startTime.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
     const type = s.stopType ? s.stopType.toUpperCase() : '?';
-    const sp = (s.newRpm!==null||s.newPacksMin!==null) ? ` -> ${s.newRpm??s.rpm}rpm/${s.newPacksMin??s.packsMin}pk/min` : '';
-    text += `${i+1}. [${type}] ${time} - ${dur} - ${s.asset||'?'} - ${s.reason||'?'} - ${s.rpm}rpm/${s.packsMin}pk/min${sp}\n`;
+    const luPart = hasLU ? `${s.rpm}${unitAbbr}/` : '';
+    const sp = (s.newRpm!==null||s.newPacksMin!==null) ? ` -> ${hasLU ? (s.newRpm??s.rpm)+unitAbbr+'/' : ''}${s.newPacksMin??s.packsMin} units/min` : '';
+    text += `${i+1}. [${type}] ${time} - ${dur} - ${s.asset||'?'} - ${s.reason||'?'} - ${luPart}${s.packsMin} units/min${sp}\n`;
   });
   if (state.speedChanges && state.speedChanges.length > 0) {
     text += `\nSpeed Changes:\n`;
     state.speedChanges.forEach((sc, i) => {
-      text += `${i+1}. ${sc.timeDisplay} (${sc.elapsed}) - ${sc.oldRpm}rpm/${sc.oldPacks}pk/min -> ${sc.newRpm}rpm/${sc.newPacks}pk/min\n`;
+      const scAbbr = sc.unitAbbr || unitAbbr;
+      const scHasLU = scAbbr !== '';
+      text += `${i+1}. ${sc.timeDisplay} (${sc.elapsed}) - ${scHasLU ? sc.oldRpm+scAbbr+'/' : ''}${sc.oldPacks} units/min -> ${scHasLU ? sc.newRpm+scAbbr+'/' : ''}${sc.newPacks} units/min\n`;
     });
   }
   if (state.sessionNotes) text += `\nNotes:\n${state.sessionNotes}\n`;
@@ -1809,10 +1923,14 @@ function resetStudy() {
   showConfirm('Reset Study', 'Reset the entire study? All stop data, speed changes, and counter data will be permanently lost.', 'Reset', function() {
     clearInterval(state.timerInterval);
     const keepCounter = state.counterEnabled;
+    const keepLineUnit = state.lineUnit;
+    const keepCustomUnit = state.customUnit;
     state = {
       status:'idle', sessionStart:null, sessionEnd:null, currentRunStart:null, currentStopStart:null,
       totalRunMs:0, totalStopMs:0, stops:[], timerInterval:null, editingStopIndex:null,
       crew: parseInt(document.getElementById('crewInput').value)||4,
+      lineUnit: keepLineUnit,
+      customUnit: keepCustomUnit,
       rpm: parseFloat(document.getElementById('rpmInput').value)||0,
       packsMin: parseFloat(document.getElementById('packsMinInput').value)||0,
       sku: document.getElementById('skuInput').value.trim(),
@@ -1872,9 +1990,10 @@ function doEndStudy() {
 }
 
 // -- Input listeners --
-['rpmInput','packsMinInput','crewInput','skuInput','lineInput','shiftInput'].forEach(id => {
+['rpmInput','packsMinInput','crewInput','skuInput','lineInput','shiftInput','lineUnitSelect'].forEach(id => {
   document.getElementById(id).addEventListener('change', function() {
     if (id === 'crewInput') state.crew = parseInt(this.value)||1;
+    else if (id === 'lineUnitSelect') { state.lineUnit = this.value; updateLineUnitUI(); }
     else if (id === 'rpmInput') state.rpm = parseFloat(this.value)||0;
     else if (id === 'packsMinInput') state.packsMin = parseFloat(this.value)||0;
     else if (id === 'skuInput') state.sku = this.value.trim();
