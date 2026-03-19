@@ -76,13 +76,17 @@
   var SIM_TICK_MS = 600;
   var SIM_UPTIME = 0.88; // 88% per station per tick
   var SIM_CYCLE_TICKS = 2; // ticks to process one unit
+  var SIM_VARY_CYCLES = false;
+  // When varied: each station gets a different cycle time (1-4 ticks)
+  var SIM_VARIED_CYCLES = [2, 1, 3, 2, 4];
 
   // Shared failure schedule so both lines see the same breakdowns
   var failureSchedule = [];
   var tickCount = 0;
 
-  function Station(id) {
+  function Station(id, cycleTicks) {
     this.id = id;
+    this.cycleTicks = cycleTicks || SIM_CYCLE_TICKS;
     this.isUp = true;
     this.downTicks = 0;
     this.processing = false;
@@ -94,7 +98,8 @@
     this.hasBuffers = hasBuffers;
     this.stations = [];
     for (var i = 0; i < SIM_STATIONS; i++) {
-      this.stations.push(new Station(i));
+      var ct = SIM_VARY_CYCLES ? SIM_VARIED_CYCLES[i] : SIM_CYCLE_TICKS;
+      this.stations.push(new Station(i, ct));
     }
     this.buffers = [];
     for (var i = 0; i < SIM_STATIONS - 1; i++) {
@@ -138,7 +143,7 @@
       // If station has a unit and is processing
       if (st.hasUnit) {
         st.progressTicks++;
-        if (st.progressTicks >= SIM_CYCLE_TICKS) {
+        if (st.progressTicks >= st.cycleTicks) {
           // Try to pass downstream
           if (i === stations.length - 1) {
             // Last station — output
@@ -225,6 +230,15 @@
       renderSim();
       if (startBtn) startBtn.textContent = 'Start Simulation';
     });
+
+    var varyToggle = document.getElementById('sim-vary-toggle');
+    if (varyToggle) varyToggle.addEventListener('change', function () {
+      SIM_VARY_CYCLES = this.checked;
+      pauseSim();
+      resetSim();
+      renderSim();
+      if (startBtn) startBtn.textContent = 'Start Simulation';
+    });
   }
 
   function resetSim() {
@@ -302,11 +316,13 @@
       else if (st.hasUnit) cls += ' sim-active';
       else cls += ' sim-idle';
 
-      var pct = st.hasUnit ? Math.min(100, (st.progressTicks / SIM_CYCLE_TICKS) * 100) : 0;
+      var pct = st.hasUnit ? Math.min(100, (st.progressTicks / st.cycleTicks) * 100) : 0;
+      var ctLabel = SIM_VARY_CYCLES ? '<div class="sim-ct-label">' + st.cycleTicks + 't</div>' : '';
 
       html += '<div class="' + cls + '">' +
         '<div class="sim-station-label">S' + (i + 1) + '</div>' +
         '<div class="sim-progress"><div class="sim-progress-fill" style="width:' + pct + '%"></div></div>' +
+        ctLabel +
         (!st.isUp ? '<div class="sim-down-icon">!</div>' : '') +
         '</div>';
 

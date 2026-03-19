@@ -269,6 +269,36 @@
       justify-content: center;
       line-height: 1;
     }
+    .sim-ct-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      color: #7A7A7A;
+      margin-top: 2px;
+      letter-spacing: 0.03em;
+    }
+
+    .sim-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .sim-toggle-row label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #333;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sim-toggle-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #006458;
+      cursor: pointer;
+    }
 
     .sim-buffer {
       display: flex;
@@ -608,7 +638,7 @@
           This simulation runs two identical production lines side by side. Both have 5 stations, and both experience exactly the same random breakdowns at the same times. The only difference is that one has no buffers (one-piece flow) and the other has small buffers of 4 units between each station.
         </p>
         <p class="bvf-intro">
-          Hit start and watch how the output numbers diverge. The breakdowns are the same &mdash; the only thing that changes is whether the rest of the line has to stop while one station is down.
+          Hit start and watch how the output numbers diverge. The breakdowns are the same &mdash; the only thing that changes is whether the rest of the line has to stop while one station is down. Then tick &ldquo;vary cycle times&rdquo; to see what happens when stations don&rsquo;t all run at the same speed, which is closer to reality on most lines.
         </p>
 
         <div class="sim-counters">
@@ -637,12 +667,20 @@
           </div>
         </div>
 
+        <div class="sim-toggle-row">
+          <label>
+            <input type="checkbox" id="sim-vary-toggle">
+            Vary cycle times between stations
+          </label>
+        </div>
+
         <div class="sim-controls">
           <button class="sim-btn" id="sim-start">Start Simulation</button>
           <button class="sim-btn sim-btn-outline" id="sim-reset">Reset</button>
         </div>
         <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 12px;">
-          Each station has ~88% uptime per cycle. Breakdowns last 3&ndash;6 cycles. Both lines see the same failures.
+          Each station has ~88% uptime per cycle. Breakdowns last 3&ndash;6 cycles. Both lines see the same failures.<br>
+          With varied cycle times, stations take 1&ndash;4 ticks each &mdash; the mismatch causes additional blocking and starvation.
         </p>
       </div>
 
