@@ -149,6 +149,15 @@
       }
     }
 
+    // One-piece flow: if ANY station is down, entire line stops
+    if (!this.hasBuffers) {
+      var anyDown = false;
+      for (var i = 0; i < stations.length; i++) {
+        if (!stations[i].isUp) { anyDown = true; break; }
+      }
+      if (anyDown) return;
+    }
+
     // Process right to left (pull system)
     for (var i = stations.length - 1; i >= 0; i--) {
       var st = stations[i];
