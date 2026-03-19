@@ -45,8 +45,8 @@
     padding-bottom: 0;
   }
 
-  .page { max-width: 960px; margin: 0 auto; padding: 36px 16px 72px; }
-  @media(min-width:600px) { .page { padding: 56px 24px 80px; } }
+  .page { max-width: 960px; margin: 0 auto; padding: 36px 16px 16px; }
+  @media(min-width:600px) { .page { padding: 56px 24px 24px; } }
 
   .study-date {
     font-family: 'TT Hoves Pro', system-ui, sans-serif;
@@ -957,7 +957,7 @@
       <span class="unit">people</span>
     </div>
     <div class="input-row">
-      <label>Line Unit</label>
+      <label>Speed Unit</label>
       <select id="lineUnitSelect" onchange="onLineUnitChange()" style="flex:1;">
         <option value="">None</option>
         <option value="RPM" selected>RPM</option>
@@ -978,7 +978,7 @@
       <span class="unit" id="lineUnitAbbr">rpm</span>
     </div>
     <div class="input-row">
-      <label>Units/min</label>
+      <label>Output</label>
       <input type="number" id="packsMinInput" min="0" step="0.1" placeholder="0" inputmode="decimal">
       <span class="unit">units/min</span>
     </div>
@@ -1155,7 +1155,7 @@
       </div>
       <div class="speed-change-row">
         <input type="number" id="modalPacksMinInput" min="0" step="0.1" placeholder="0" inputmode="decimal">
-        <span class="unit">units/min</span>
+        <span class="unit">output/min</span>
       </div>
     </div>
     <div class="btn-row">
@@ -1187,7 +1187,7 @@
       <input type="number" id="speedModalRpm" min="0" step="1" placeholder="0" inputmode="decimal" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:white;color:var(--ink);">
     </div>
     <div class="form-group">
-      <label>New Units/min</label>
+      <label>New Output (units/min)</label>
       <input type="number" id="speedModalPacks" min="0" step="0.1" placeholder="0" inputmode="decimal" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:white;color:var(--ink);">
     </div>
     <div class="btn-row">
@@ -1514,7 +1514,7 @@ function renderSpeedLog() {
     const newPart = hasLineUnit ? `${sc.newRpm}${unitAbbr} / ` : '';
     return `<li class="speed-log-item">
       <span class="sl-time">${sc.timeDisplay} (${sc.elapsed})</span>
-      <div class="sl-detail"><strong>${oldPart}${sc.oldPacks} units/min</strong> &rarr; <strong>${newPart}${sc.newPacks} units/min</strong></div>
+      <div class="sl-detail"><strong>${oldPart}${sc.oldPacks} output/min</strong> &rarr; <strong>${newPart}${sc.newPacks} output/min</strong></div>
     </li>`;
   }).reverse().join('');
 }
@@ -1735,11 +1735,11 @@ function renderStops() {
     const unitAbbr = getLineUnitAbbr();
     const hasLineUnit = unitAbbr !== '';
     const lineUnitStr = hasLineUnit ? ` &bull; ${stop.rpm}${unitAbbr}` : '';
-    const speedChange = (stop.newRpm !== null || stop.newPacksMin !== null) ? ` &rarr; ${hasLineUnit ? (stop.newRpm ?? stop.rpm) + unitAbbr + ' / ' : ''}${stop.newPacksMin ?? stop.packsMin} units/min` : '';
+    const speedChange = (stop.newRpm !== null || stop.newPacksMin !== null) ? ` &rarr; ${hasLineUnit ? (stop.newRpm ?? stop.rpm) + unitAbbr + ' / ' : ''}${stop.newPacksMin ?? stop.packsMin} output/min` : '';
     return `<li class="stop-item" onclick="editStop(${i})">
       <span class="stop-num ${stop.needsEdit ? 'needs-edit' : ''}">Stop ${i+1}</span> ${typeLabel}
       <div class="stop-duration">${formatMsShort(dur)}</div>
-      <div class="stop-meta">${time} &bull; Crew: ${stop.crew}${lineUnitStr} &bull; ${stop.packsMin} units/min${speedChange}</div>
+      <div class="stop-meta">${time} &bull; Crew: ${stop.crew}${lineUnitStr} &bull; ${stop.packsMin} output/min${speedChange}</div>
       <div class="stop-detail"><strong>${stop.asset || '--'}</strong> -- ${stop.reason || '--'}</div>
       ${stop.needsEdit ? '<div class="edit-hint">Tap to add details</div>' : ''}
     </li>`;
@@ -1851,8 +1851,8 @@ function saveState() {
 // -- Export --
 function exportCSV() {
   if (state.stops.length === 0) { alert('No stops to export.'); return; }
-  const unitLabel = state.lineUnit || 'Line Unit';
-  const rows = [['Stop #','Time','Duration (s)','Type','Asset','Reason',unitLabel,'Units/min','New '+unitLabel,'New Units/min','Crew','SKU']];
+  const unitLabel = state.lineUnit || 'Speed Unit';
+  const rows = [['Stop #','Time','Duration (s)','Type','Asset','Reason',unitLabel,'Output/min','New '+unitLabel,'New Output/min','Crew','SKU']];
   state.stops.forEach((s, i) => {
     const dur = s.endTime ? Math.round(s.durationMs / 1000) : '(ongoing)';
     rows.push([i+1, s.startTime.toLocaleTimeString('en-GB'), dur, s.stopType || '', `"${s.asset}"`, `"${s.reason}"`, s.rpm||0, s.packsMin||0, s.newRpm !== null ? s.newRpm : '', s.newPacksMin !== null ? s.newPacksMin : '', s.crew, `"${s.sku||''}"`]);
@@ -1873,7 +1873,7 @@ function exportCSV() {
   rows.push(['Session Notes', `"${(state.sessionNotes||'').replace(/"/g,'""')}"`]);
   if (state.speedChanges && state.speedChanges.length > 0) {
     rows.push([]);
-    rows.push(['Speed Change #','Time','Old '+unitLabel,'Old Units/min','New '+unitLabel,'New Units/min','Elapsed']);
+    rows.push(['Speed Change #','Time','Old '+unitLabel,'Old Output/min','New '+unitLabel,'New Output/min','Elapsed']);
     state.speedChanges.forEach((sc, i) => {
       rows.push([i+1, sc.timeDisplay, sc.oldRpm, sc.oldPacks, sc.newRpm, sc.newPacks, sc.elapsed]);
     });
@@ -1902,15 +1902,15 @@ function copyToClipboard() {
     const time = s.startTime.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
     const type = s.stopType ? s.stopType.toUpperCase() : '?';
     const luPart = hasLU ? `${s.rpm}${unitAbbr}/` : '';
-    const sp = (s.newRpm!==null||s.newPacksMin!==null) ? ` -> ${hasLU ? (s.newRpm??s.rpm)+unitAbbr+'/' : ''}${s.newPacksMin??s.packsMin} units/min` : '';
-    text += `${i+1}. [${type}] ${time} - ${dur} - ${s.asset||'?'} - ${s.reason||'?'} - ${luPart}${s.packsMin} units/min${sp}\n`;
+    const sp = (s.newRpm!==null||s.newPacksMin!==null) ? ` -> ${hasLU ? (s.newRpm??s.rpm)+unitAbbr+'/' : ''}${s.newPacksMin??s.packsMin} output/min` : '';
+    text += `${i+1}. [${type}] ${time} - ${dur} - ${s.asset||'?'} - ${s.reason||'?'} - ${luPart}${s.packsMin} output/min${sp}\n`;
   });
   if (state.speedChanges && state.speedChanges.length > 0) {
     text += `\nSpeed Changes:\n`;
     state.speedChanges.forEach((sc, i) => {
       const scAbbr = sc.unitAbbr || unitAbbr;
       const scHasLU = scAbbr !== '';
-      text += `${i+1}. ${sc.timeDisplay} (${sc.elapsed}) - ${scHasLU ? sc.oldRpm+scAbbr+'/' : ''}${sc.oldPacks} units/min -> ${scHasLU ? sc.newRpm+scAbbr+'/' : ''}${sc.newPacks} units/min\n`;
+      text += `${i+1}. ${sc.timeDisplay} (${sc.elapsed}) - ${scHasLU ? sc.oldRpm+scAbbr+'/' : ''}${sc.oldPacks} output/min -> ${scHasLU ? sc.newRpm+scAbbr+'/' : ''}${sc.newPacks} output/min\n`;
     });
   }
   if (state.sessionNotes) text += `\nNotes:\n${state.sessionNotes}\n`;

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batch vs Flow: The Maths Nobody Shows You | maji by majaco</title>
+  <meta name="description" content="One-piece flow sounds great in theory, but the maths of coupled systems tells a different story. Interactive calculator and simulation showing why context matters.">
+  <meta property="og:title" content="Batch vs Flow: The Maths Nobody Shows You | maji by majaco">
+  <meta property="og:description" content="One-piece flow sounds great in theory, but the maths of coupled systems tells a different story.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/maji-batch-vs-flow">
+  <meta property="og:image" content="https://majiai.co/assets/og-image.png">
+  <link rel="canonical" href="https://majiai.co/maji-batch-vs-flow">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    /* ── Page-specific styles ── */
+    .bvf-intro {
+      font-size: 1rem;
+      font-weight: 300;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .bvf-intro + .bvf-intro { margin-bottom: 2rem; }
+
+    .claim-box {
+      background: #fdf4e3;
+      border: 1px solid #e2d0a8;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #333;
+    }
+    .claim-box strong { color: #0a0a0a; }
+
+    /* Calculator */
+    .calc-sliders { margin-bottom: 1.5rem; }
+    .calc-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .calc-slider-row label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 120px;
+      color: #333;
+    }
+    .calc-slider-row input[type="range"] {
+      flex: 1;
+      accent-color: #006458;
+    }
+    .calc-slider-row .calc-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      min-width: 48px;
+      text-align: right;
+      color: #0a0a0a;
+    }
+
+    .calc-chain {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(14px, 3vw, 18px);
+      text-align: center;
+      padding: 16px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      color: #333;
+      line-height: 1.8;
+      word-break: break-word;
+    }
+    .chain-op { color: #7A7A7A; margin: 0 2px; }
+    .chain-result { color: #b53a1e; font-size: 1.1em; }
+
+    .calc-results {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 520px) { .calc-results { grid-template-columns: 1fr; } }
+    .calc-result-item {
+      text-align: center;
+      padding: 16px;
+      background: #fafafa;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+    }
+    .calc-result-item .cr-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .calc-result-item .cr-label {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7A7A7A;
+    }
+    .cr-val-green { color: #006458; }
+    .cr-val-red { color: #b53a1e; }
+    .cr-val-amber { color: #b87c20; }
+
+    .avail-bars { margin-bottom: 1.5rem; }
+    .avail-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .avail-bar-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      min-width: 100px;
+      color: #333;
+    }
+    .avail-bar-track {
+      flex: 1;
+      height: 24px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .avail-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease, background 0.4s;
+    }
+    .bar-ok { background: #006458; }
+    .bar-warn { background: #b87c20; }
+    .bar-bad { background: #b53a1e; }
+    .bar-individual { background: #006458; }
+
+    /* Reference table */
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+    .calc-table th {
+      text-align: left;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-bottom: 2px solid #e0e0e0;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #7A7A7A;
+    }
+    .calc-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+    }
+    .tbl-ok { color: #006458; font-weight: 600; }
+    .tbl-warn { color: #b87c20; font-weight: 600; }
+    .tbl-bad { color: #b53a1e; font-weight: 700; }
+
+    /* Simulation */
+    .sim-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 1.5rem;
+    }
+
+    .sim-panel {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px 16px;
+    }
+    .sim-panel-title {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7A7A7A;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .sim-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+
+    .sim-station {
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .sim-station.sim-active {
+      border-color: #006458;
+      background: #e0f2ef;
+    }
+    .sim-station.sim-down {
+      border-color: #b53a1e;
+      background: #fdeee9;
+    }
+    .sim-station.sim-idle {
+      border-color: #e0e0e0;
+      background: #f8f8f8;
+    }
+    .sim-station-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: #7A7A7A;
+      margin-bottom: 2px;
+    }
+    .sim-down .sim-station-label { color: #b53a1e; }
+    .sim-active .sim-station-label { color: #006458; }
+
+    .sim-progress {
+      width: 32px;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .sim-progress-fill {
+      height: 100%;
+      background: #006458;
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+    .sim-down .sim-progress-fill { background: #b53a1e; }
+
+    .sim-down-icon {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #b53a1e;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .sim-buffer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 0 6px;
+      min-width: 24px;
+      flex-shrink: 0;
+    }
+    .sim-buf-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      transition: background 0.2s;
+    }
+    .sim-buf-dot.filled {
+      background: #006458;
+    }
+
+    .sim-no-buffer {
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+    .sim-arrow {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .sim-counters {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .sim-counter .sc-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .sim-counter .sc-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7A7A7A;
+    }
+
+    .sim-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .sim-btn {
+      padding: 10px 24px;
+      border: 2px solid #006458;
+      border-radius: 6px;
+      background: #006458;
+      color: #fff;
+      font-family: 'TT Hoves Pro', system-ui, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .sim-btn:hover { opacity: 0.85; }
+    .sim-btn-outline {
+      background: #fff;
+      color: #006458;
+    }
+
+    /* Assumptions cards */
+    .assumption-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 1.5rem 0;
+    }
+    @media (min-width: 640px) { .assumption-cards { grid-template-columns: 1fr 1fr 1fr; } }
+    .assumption-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      background: #fff;
+      transition: box-shadow 0.3s ease;
+    }
+    .assumption-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06); }
+    .assumption-card .ac-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: #fff;
+      background: #b53a1e;
+      border-radius: 3px;
+      padding: 2px 8px;
+      display: inline-block;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+    .assumption-card h4 {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: #0a0a0a;
+    }
+    .assumption-card p {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Context list */
+    .context-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 520px) { .context-grid { grid-template-columns: 1fr; } }
+    .context-item {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.5;
+      color: #333;
+    }
+    .context-item strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #0a0a0a;
+    }
+    .context-item.ctx-yes {
+      background: #e0f2ef;
+      border-color: #b0d8d0;
+    }
+    .context-item.ctx-no {
+      background: #fdeee9;
+      border-color: #e8c4ba;
+    }
+
+    /* Video embed area */
+    .video-callout {
+      background: linear-gradient(135deg, #001412, #006458);
+      border-radius: 8px;
+      padding: 28px 24px;
+      text-align: center;
+      color: #fff;
+      margin: 2rem 0;
+    }
+    .video-callout h3 {
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .video-callout p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      opacity: 0.85;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .video-callout a {
+      display: inline-block;
+      padding: 10px 24px;
+      background: #DAF11B;
+      color: #001412;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .video-callout a:hover { opacity: 0.9; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="about-maji.html">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener">Get started &rarr;</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="about-maji.html">About maji</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Batch vs Flow</span>
+      </nav>
+      <p class="page-hero__eyebrow">maji Insight</p>
+      <h1 class="page-hero__title">Batch vs Flow: <span class="text-green">the maths nobody shows you</span></h1>
+      <p class="page-hero__subtitle">
+        One-piece flow is presented as universally better than batching. The reality is more nuanced, and the maths is not on the side of the people making that claim.
+      </p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <main class="tool-page" id="main">
+    <div class="container">
+
+      <div class="tool-disclaimer">
+        This page was created by <strong>maji</strong>, majaco&rsquo;s AI operational excellence tool. maji is in active development, so occasional inaccuracies may appear as the system continues to learn.
+      </div>
+
+      <!-- The Popular Claim -->
+      <div class="content-card reveal">
+        <h2>The argument you keep seeing</h2>
+        <p class="bvf-intro">
+          If you spend any time on manufacturing LinkedIn, you&rsquo;ll have seen posts arguing that batch production is outdated and one-piece flow is the way forward. The argument usually goes something like this:
+        </p>
+        <div class="claim-box">
+          <strong>&ldquo;Batch production causes overproduction, excess WIP, long lead times, and makes it harder to detect defects. One-piece flow eliminates all of this &mdash; products move through each process step one at a time, WIP is minimal, quality issues are caught immediately, and you become far more responsive to customers.&rdquo;</strong>
+        </div>
+        <p class="bvf-intro">
+          On the surface this sounds compelling. And in certain conditions, one-piece flow genuinely is the right approach. But there&rsquo;s a problem: the people making this argument almost never mention the assumptions their model depends on. When you look at the maths of what actually happens when you connect stations directly together with no buffer between them, the picture changes quite a lot.
+        </p>
+      </div>
+
+      <!-- The Coupling Problem -->
+      <div class="content-card reveal" data-delay="80">
+        <h2>The coupling problem</h2>
+        <p class="bvf-intro">
+          When you run one-piece flow, each station is directly coupled to the stations either side of it. There is no buffer, no decoupling stock, nothing to absorb the impact when something goes wrong at any point in the line.
+        </p>
+        <p class="bvf-intro">
+          This means that if any single station stops &mdash; whether that&rsquo;s a breakdown, a quality issue, a material shortage, or just someone needing the toilet &mdash; every station upstream is immediately blocked and every station downstream is immediately starved. The whole line stops.
+        </p>
+        <p class="bvf-intro">
+          The maths for this is straightforward. If each station runs independently at, say, 90% availability, the overall system availability is not 90%. It&rsquo;s 90% multiplied by itself for every station in the line:
+        </p>
+
+        <div class="calc-chain" id="calc-chain">
+          90% <span class="chain-op">&times;</span> 90% <span class="chain-op">&times;</span> 90% <span class="chain-op">&times;</span> 90% <span class="chain-op">=</span> <strong class="chain-result">65.6%</strong>
+        </div>
+
+        <p class="bvf-intro">
+          Four stations at 90% each gives you a system that runs at 65.6%. You&rsquo;ve lost almost a quarter of your throughput to the coupling effect alone. The more stations you add, the worse it gets.
+        </p>
+      </div>
+
+      <!-- Interactive Calculator -->
+      <div class="content-card reveal" data-delay="160">
+        <h2>Try the numbers yourself</h2>
+        <p class="bvf-intro">
+          Adjust the sliders to see how system availability degrades as you add more stations or reduce individual uptime. These numbers assume one-piece flow with no buffers between stations.
+        </p>
+
+        <div class="calc-sliders">
+          <div class="calc-slider-row">
+            <label for="calc-stations">Stations</label>
+            <input type="range" id="calc-stations" min="2" max="8" value="4" step="1">
+            <span class="calc-val" id="calc-stations-val">4</span>
+          </div>
+          <div class="calc-slider-row">
+            <label for="calc-uptime">Uptime per station</label>
+            <input type="range" id="calc-uptime" min="60" max="99" value="90" step="1">
+            <span class="calc-val" id="calc-uptime-val">90%</span>
+          </div>
+        </div>
+
+        <div class="calc-results">
+          <div class="calc-result-item">
+            <div class="cr-val cr-val-green" id="calc-individual">90%</div>
+            <div class="cr-label">Individual Station</div>
+          </div>
+          <div class="calc-result-item">
+            <div class="cr-val cr-val-red" id="calc-system">65.6%</div>
+            <div class="cr-label">System (One-Piece Flow)</div>
+          </div>
+          <div class="calc-result-item">
+            <div class="cr-val cr-val-amber" id="calc-lost">24.4%</div>
+            <div class="cr-label">Throughput Lost</div>
+          </div>
+        </div>
+
+        <div class="avail-bars">
+          <div class="avail-bar-row">
+            <span class="avail-bar-label">Individual</span>
+            <div class="avail-bar-track">
+              <div class="avail-bar-fill bar-individual" id="calc-bar-individual" style="width: 90%;"></div>
+            </div>
+          </div>
+          <div class="avail-bar-row">
+            <span class="avail-bar-label">System</span>
+            <div class="avail-bar-track">
+              <div class="avail-bar-fill bar-bad" id="calc-bar-system" style="width: 65.6%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <details style="margin-top: 1rem;">
+          <summary style="cursor: pointer; font-size: 0.85rem; font-weight: 600; color: #006458;">Show reference table</summary>
+          <table class="calc-table">
+            <thead>
+              <tr><th>Stations</th><th>Individual</th><th>System</th><th>Lost</th></tr>
+            </thead>
+            <tbody id="calc-table-body"></tbody>
+          </table>
+        </details>
+      </div>
+
+      <!-- Simulation -->
+      <div class="content-card reveal" data-delay="200">
+        <h2>Watch it happen</h2>
+        <p class="bvf-intro">
+          This simulation runs two identical production lines side by side. Both have 5 stations, and both experience exactly the same random breakdowns at the same times. The only difference is that one has no buffers (one-piece flow) and the other has small buffers of 4 units between each station.
+        </p>
+        <p class="bvf-intro">
+          Hit start and watch how the output numbers diverge. The breakdowns are the same &mdash; the only thing that changes is whether the rest of the line has to stop while one station is down.
+        </p>
+
+        <div class="sim-counters">
+          <div class="sim-counter">
+            <div class="sc-val cr-val-red" id="sim-flow-count">0</div>
+            <div class="sc-label">Flow Output</div>
+          </div>
+          <div class="sim-counter">
+            <div class="sc-val cr-val-green" id="sim-buf-count">0</div>
+            <div class="sc-label">Buffered Output</div>
+          </div>
+          <div class="sim-counter">
+            <div class="sc-val" id="sim-advantage">--</div>
+            <div class="sc-label">Buffer Advantage</div>
+          </div>
+        </div>
+
+        <div id="sim-container" class="sim-wrapper">
+          <div class="sim-panel">
+            <div class="sim-panel-title">One-Piece Flow (no buffers)</div>
+            <div class="sim-line" id="sim-flow-line"></div>
+          </div>
+          <div class="sim-panel">
+            <div class="sim-panel-title">Same Line With Small Buffers</div>
+            <div class="sim-line" id="sim-buf-line"></div>
+          </div>
+        </div>
+
+        <div class="sim-controls">
+          <button class="sim-btn" id="sim-start">Start Simulation</button>
+          <button class="sim-btn sim-btn-outline" id="sim-reset">Reset</button>
+        </div>
+        <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 12px;">
+          Each station has ~88% uptime per cycle. Breakdowns last 3&ndash;6 cycles. Both lines see the same failures.
+        </p>
+      </div>
+
+      <!-- Three Assumptions -->
+      <div class="content-card reveal" data-delay="240">
+        <h2>Three assumptions that don&rsquo;t hold up</h2>
+        <p class="bvf-intro">
+          The one-piece flow argument depends on a set of assumptions that are rarely stated, and even more rarely true in real manufacturing environments.
+        </p>
+
+        <div class="assumption-cards">
+          <div class="assumption-card">
+            <span class="ac-number">Assumption 1</span>
+            <h4>Perfect uptime</h4>
+            <p>
+              One-piece flow only delivers its theoretical benefits if every station runs at or very close to 100% availability. As soon as any station has meaningful downtime &mdash; and they all do &mdash; the coupling effect destroys system throughput. You saw the maths above: even 90% per station falls apart quickly.
+            </p>
+          </div>
+          <div class="assumption-card">
+            <span class="ac-number">Assumption 2</span>
+            <h4>Identical cycle times</h4>
+            <p>
+              The model assumes every station takes exactly the same amount of time to process a unit. In practice, cycle times vary &mdash; both between stations and within the same station over time. Without buffers to absorb this natural variation, the slowest station at any given moment becomes the bottleneck and everything else waits.
+            </p>
+          </div>
+          <div class="assumption-card">
+            <span class="ac-number">Assumption 3</span>
+            <h4>You can&rsquo;t start downstream early</h4>
+            <p>
+              The argument against batching assumes you have to wait for an entire batch to complete before the next step can begin. But transfer batches &mdash; moving smaller sub-batches through the line &mdash; give you most of the lead time benefits of flow without the coupling penalty. This option is almost never mentioned.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- What Actually Works -->
+      <div class="content-card reveal" data-delay="280">
+        <h2>What actually works</h2>
+        <p class="bvf-intro">
+          The answer is not to go back to massive batches with weeks of WIP sitting between stations. Nobody is arguing for that. The answer is strategic decoupling &mdash; small, carefully sized buffers between stations that allow each part of the line to keep running when something goes wrong elsewhere.
+        </p>
+        <p class="bvf-intro">
+          This is not a complicated idea. You size your buffers based on the reliability of the stations either side and the cycle time variation you actually observe. A buffer of 5&ndash;15 minutes of work between stations is often enough to absorb the vast majority of short stops and minor breakdowns without requiring large inventories.
+        </p>
+        <p class="bvf-intro">
+          The result is a system that is dramatically more robust than one-piece flow while keeping WIP low, lead times short, and quality feedback fast. You get most of the benefits the flow advocates promise, without the catastrophic coupling penalty.
+        </p>
+      </div>
+
+      <!-- When One-Piece Flow Does Work -->
+      <div class="content-card reveal" data-delay="320">
+        <h2>When one-piece flow does make sense</h2>
+        <p class="bvf-intro">
+          None of this means one-piece flow is always wrong. There are conditions where it genuinely is the right approach:
+        </p>
+
+        <div class="context-grid">
+          <div class="context-item ctx-yes">
+            <strong>Very high uptime (&gt;98% per station)</strong>
+            When your equipment is that reliable, the coupling penalty is small enough that the simplicity benefits of flow outweigh it.
+          </div>
+          <div class="context-item ctx-yes">
+            <strong>Naturally synchronised cycle times</strong>
+            When every station already runs at roughly the same speed, the variation penalty is minimal.
+          </div>
+          <div class="context-item ctx-yes">
+            <strong>Perishable products or strict FIFO</strong>
+            When WIP has a shelf life or contamination risk, you need to minimise time between stages regardless of the throughput cost.
+          </div>
+          <div class="context-item ctx-yes">
+            <strong>Genuine space constraints</strong>
+            When there is physically no room for buffer stock between stations, flow may be your only option.
+          </div>
+        </div>
+
+        <p class="bvf-intro">
+          The point is not that one-piece flow is bad. The point is that it is a tool with specific conditions of use, not a universal improvement. Presenting it as always better than batching is not science &mdash; it&rsquo;s dogma.
+        </p>
+      </div>
+
+      <!-- Video Callout -->
+      <div class="video-callout reveal" data-delay="360">
+        <h3>We made a video walking through all of this</h3>
+        <p>If you prefer watching to reading, we covered the coupling maths, the hidden assumptions, and the buffer solution in a short video.</p>
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7407721296156958720" target="_blank" rel="noopener">Watch on LinkedIn</a>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align: center; padding: 3rem 0;">
+        <h2 style="font-size: 2.4375rem; font-weight: 400; margin-bottom: 1rem;">Need help getting this right for your lines?</h2>
+        <p style="color: var(--color-text-muted); margin-bottom: 2rem; max-width: 560px; margin-inline: auto;">
+          majaco helps manufacturers work out the right balance of flow and buffering for their specific equipment, products and reliability profile. We use data, not ideology.
+        </p>
+        <a href="https://majaco.co" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+          Talk to majaco
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <img src="assets/images/logo-mark-full-colour.svg" alt="maji by majaco">
+          </a>
+          <p class="footer__tagline">Operational Excellence, On Demand.<br>Made possible by majaco.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="majaco on LinkedIn"><img src="assets/images/linkedin-grey.svg" alt="LinkedIn"></a>
+            <a href="#" aria-label="majaco on Facebook"><img src="assets/images/facebook-grey.svg" alt="Facebook"></a>
+            <a href="#" aria-label="majaco on Twitter"><img src="assets/images/twitter-grey.svg" alt="Twitter"></a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__col-title">Navigate</p>
+          <nav class="footer__links" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="about-maji.html">About maji</a>
+            <a href="https://www.majaco.co" target="_blank" rel="noopener">Contact</a>
+            <a href="maji-sitemap.html">Site map</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Tools</p>
+          <nav class="footer__links" aria-label="Tools navigation">
+            <a href="maji-speed-downtime.html">Speed-Downtime</a>
+            <a href="maji-splitsolver.html">Split Solve</a>
+            <a href="maji-psychology-v1.html">Psychology</a>
+            <a href="maji-pcm-v1.html">Process Control</a>
+            <a href="maji-stock-calculator-v1.html">Stock Calculator</a>
+            <a href="maji-time-hierarchy.html">Time Hierarchy</a>
+            <a href="maji-efficiency-formulas.html">Efficiency Formulas</a>
+            <a href="maji-toc-subordination.html">TOC Subordination</a>
+            <a href="maji-fee-visualiser.html">Fee Visualiser</a>
+            <a href="maji-giveaway-calculator.html">Giveaway Calculator</a>
+            <a href="maji-rag-study.html">RAG Study</a>
+            <a href="maji-batch-vs-flow.html">Batch vs Flow</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <address class="footer__address" style="font-style:normal;">
+            <strong>London</strong>
+            6th Floor, 9 Appold Street<br>London, EC2A 2AP<br>
+            <a href="tel:02036338437">020 3633 8437</a>
+          </address>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="#">Modern Slavery Statement</a>
+          <a href="maji-sitemap.html">Site map</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">&uarr;</button>
+  <script src="js/main.js"></script>
+  <script src="js/batch-vs-flow.js"></script>
+</body>
+</html>
