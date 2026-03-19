@@ -277,12 +277,23 @@
       letter-spacing: 0.03em;
     }
 
+    /* Simulation wide wrapper — breaks out of .container */
+    .sim-wide {
+      width: 90vw;
+      max-width: 1600px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+
     /* Station config panel */
     .sim-layout {
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 220px 1fr 1fr;
       gap: 20px;
       margin-bottom: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .sim-layout { grid-template-columns: 220px 1fr; }
     }
     @media (max-width: 700px) {
       .sim-layout { grid-template-columns: 1fr; }
@@ -293,6 +304,7 @@
       border: 1px solid #e0e0e0;
       border-radius: 10px;
       padding: 16px;
+      min-width: 0;
     }
     .sim-config-title {
       font-size: 0.7rem;
@@ -381,28 +393,38 @@
     .sim-speed-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-top: 12px;
       padding-top: 12px;
       border-top: 1px solid #e0e0e0;
+      min-width: 0;
+      overflow: hidden;
     }
     .sim-speed-row label {
       font-size: 0.75rem;
       font-weight: 500;
       color: #333;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .sim-speed-row input[type="range"] {
       flex: 1;
+      min-width: 0;
       accent-color: #006458;
     }
     .sim-speed-row .sim-speed-val {
       font-family: 'DM Mono', monospace;
       font-size: 12px;
       font-weight: 500;
-      min-width: 24px;
+      min-width: 20px;
+      flex-shrink: 0;
       text-align: right;
       color: #0a0a0a;
+    }
+    .sim-speed-row .sim-speed-unit {
+      font-size: 9px;
+      color: #7A7A7A;
+      flex-shrink: 0;
     }
 
     .sim-buffer {
@@ -761,6 +783,7 @@
           </div>
         </div>
 
+        <div class="sim-wide">
         <div id="sim-container" class="sim-layout">
           <!-- Config panel -->
           <div class="sim-config-panel">
@@ -779,10 +802,16 @@
             </div>
             <p style="font-size:10px;color:#7A7A7A;margin-top:8px;line-height:1.4;">Pause &amp; resume to apply changes mid-run, or reset to start fresh.</p>
             <div class="sim-speed-row">
+              <label>Buffer</label>
+              <input type="range" id="sim-buffer-size" min="1" max="10" value="4" step="1">
+              <span class="sim-speed-val" id="sim-buffer-val">4</span>
+              <span class="sim-speed-unit">units</span>
+            </div>
+            <div class="sim-speed-row" style="border-top:none;margin-top:6px;padding-top:0;">
               <label>Speed</label>
               <input type="range" id="sim-speed" min="0.5" max="10" value="2" step="0.5">
               <span class="sim-speed-val" id="sim-speed-val">2</span>
-              <span style="font-size:9px;color:#7A7A7A;">/s</span>
+              <span class="sim-speed-unit">/s</span>
             </div>
           </div>
 
@@ -797,20 +826,21 @@
               <div class="sim-line" id="sim-buf-line"></div>
             </div>
           </div>
+
+          <!-- Cumulative output chart -->
+          <div id="sim-chart-wrap" style="background: #fafafa; border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px; min-width: 0;">
+            <div style="font-size: 0.7rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: #7A7A7A; margin-bottom: 8px; text-align: center;">Cumulative Output</div>
+            <canvas id="sim-chart" style="width:100%;height:100%;display:block;"></canvas>
+          </div>
         </div>
 
-        <div class="sim-controls">
+        <div class="sim-controls" style="margin-top: 16px;">
           <button class="sim-btn" id="sim-start">Start Simulation</button>
           <button class="sim-btn sim-btn-outline" id="sim-reset">Reset</button>
         </div>
         <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 12px;">
           Availability is modelled correctly: a station set to 90% will be up for ~90% of all cycles over time. Breakdowns last 3&ndash;6 cycles; failure frequency is calculated so the long-run average matches the target availability. Both lines see the same failures.
         </p>
-
-        <!-- Cumulative output chart -->
-        <div id="sim-chart-wrap" style="margin-top: 20px; border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px; background: #fafafa;">
-          <div style="font-size: 0.7rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: #7A7A7A; margin-bottom: 8px; text-align: center;">Cumulative Output Over Time</div>
-          <canvas id="sim-chart" style="width:100%;height:220px;display:block;"></canvas>
         </div>
       </div>
 

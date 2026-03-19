@@ -75,7 +75,7 @@
 
   var simRunning = false;
   var simInterval = null;
-  var SIM_BUFFER_SIZE = 4;
+  var SIM_BUFFER_SIZE = 4; // user-configurable
   var tickCount = 0;
 
   var stationConfigs = [
@@ -328,6 +328,15 @@
       });
     }
 
+    var bufferSlider = document.getElementById('sim-buffer-size');
+    if (bufferSlider) {
+      document.getElementById('sim-buffer-val').textContent = SIM_BUFFER_SIZE;
+      bufferSlider.addEventListener('input', function () {
+        SIM_BUFFER_SIZE = parseInt(this.value);
+        document.getElementById('sim-buffer-val').textContent = SIM_BUFFER_SIZE;
+      });
+    }
+
     drawChart();
   }
 
@@ -451,9 +460,9 @@
 
     var dpr = window.devicePixelRatio || 1;
     var wrap = document.getElementById('sim-chart-wrap');
-    var W = (wrap ? wrap.clientWidth : canvas.parentElement.clientWidth) - 32; // subtract padding
+    var W = (wrap ? wrap.clientWidth : canvas.parentElement.clientWidth) - 32;
     if (W < 100) W = 400;
-    var H = 220;
+    var H = wrap ? Math.max(220, wrap.clientHeight - 40) : 220;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     canvas.style.width = W + 'px';
