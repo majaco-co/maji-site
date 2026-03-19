@@ -231,16 +231,19 @@
     container.innerHTML = html;
 
     container.querySelectorAll('.ssc-input').forEach(function (input) {
-      input.addEventListener('change', function () {
+      input.addEventListener('input', function () {
         var idx = parseInt(this.dataset.idx);
         var field = this.dataset.field;
         var val = parseInt(this.value);
         if (isNaN(val)) return;
         if (field === 'uptime') val = Math.max(50, Math.min(99, val));
         if (field === 'cycleTicks') val = Math.max(1, Math.min(6, val));
-        this.value = val;
         stationConfigs[idx][field] = val;
-        if (!simRunning) { resetSim(); renderSim(); }
+        if (simRunning) {
+          applyConfigsToRunning();
+        } else {
+          resetSim(); renderSim(); drawChart();
+        }
       });
     });
   }
