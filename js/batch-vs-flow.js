@@ -141,7 +141,7 @@
           st.isUp = false;
           st.downTicks = downDurations[i];
           st.processing = false;
-          st.progressTicks = 0;
+          // Progress preserved — unit stays in station, resumes on recovery
         }
       } else {
         st.downTicks--;
