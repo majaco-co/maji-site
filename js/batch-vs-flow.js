@@ -115,7 +115,7 @@
     { uptime: 90, cycleTicks: 5 }
   ];
 
-  var simSpeed = 2;
+  var simSpeed = 5;
   var flowHistory = [];
   var bufferHistory = [];
 
