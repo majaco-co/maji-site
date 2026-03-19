@@ -245,7 +245,7 @@
         var field = this.dataset.field;
         var val = parseInt(this.value);
         if (isNaN(val)) return;
-        if (field === 'uptime') val = Math.max(50, Math.min(99, val));
+        if (field === 'uptime') val = Math.max(50, Math.min(100, val));
         if (field === 'cycleTicks') val = Math.max(1, Math.min(6, val));
         stationConfigs[idx][field] = val;
         if (simRunning) {
@@ -440,7 +440,7 @@
   }
 
   function calcRollingEfficiency(history) {
-    var windowTicks = Math.floor(30 * simSpeed);
+    var windowTicks = Math.floor(5 * simSpeed);
     var n = history.length;
     if (n < 2) return null;
     var lookback = Math.min(windowTicks, n - 1);
