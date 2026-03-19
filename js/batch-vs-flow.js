@@ -422,13 +422,18 @@
     return indices;
   }
 
-  function calcEfficiency(produced) {
-    if (tickCount < 2) return null;
+  function calcRollingEfficiency(history) {
+    var windowTicks = Math.floor(30 * simSpeed);
+    var n = history.length;
+    if (n < 2) return null;
+    var lookback = Math.min(windowTicks, n - 1);
+    if (lookback < 1) return null;
+    var produced = history[n - 1] - history[n - 1 - lookback];
     var bnsTicks = getBottleneckCycleTicks();
     if (bnsTicks === 0) return null;
-    var potential = tickCount / bnsTicks;
+    var potential = lookback / bnsTicks;
     if (potential <= 0) return null;
-    return (produced / potential) * 100;
+    return Math.min(100, (produced / potential) * 100);
   }
 
   function renderSim() {
@@ -447,9 +452,9 @@
       advEl.textContent = '--';
     }
 
-    // Efficiency — cumulative: actual output / (total ticks / bottleneck cycle ticks)
-    var flowEff = calcEfficiency(flowLine.produced);
-    var bufEff = calcEfficiency(bufferLine.produced);
+    // Efficiency — rolling 30s window, capped at 100%
+    var flowEff = calcRollingEfficiency(flowHistory);
+    var bufEff = calcRollingEfficiency(bufferHistory);
     var flowEffEl = document.getElementById('sim-flow-eff');
     var bufEffEl = document.getElementById('sim-buf-eff');
     if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
