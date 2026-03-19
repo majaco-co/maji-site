@@ -413,11 +413,28 @@
     return max;
   }
 
-  function getBottleneckIndices() {
+  function getSpeedBottleneckIndices() {
     var max = getBottleneckCycleTicks();
     var indices = [];
     for (var i = 0; i < stationConfigs.length; i++) {
       if (stationConfigs[i].cycleTicks === max) indices.push(i);
+    }
+    return indices;
+  }
+
+  function getThroughputBottleneckIndices() {
+    // Throughput = availability × rate = (uptime/100) / cycleTicks
+    var minThroughput = Infinity;
+    for (var i = 0; i < stationConfigs.length; i++) {
+      var cfg = stationConfigs[i];
+      var tp = (cfg.uptime / 100) / cfg.cycleTicks;
+      if (tp < minThroughput) minThroughput = tp;
+    }
+    var indices = [];
+    for (var i = 0; i < stationConfigs.length; i++) {
+      var cfg = stationConfigs[i];
+      var tp = (cfg.uptime / 100) / cfg.cycleTicks;
+      if (Math.abs(tp - minThroughput) < 0.0001) indices.push(i);
     }
     return indices;
   }
@@ -460,12 +477,13 @@
     if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
     if (bufEffEl) bufEffEl.textContent = bufEff !== null ? bufEff.toFixed(0) + '%' : '--';
 
-    var bnIndices = getBottleneckIndices();
-    renderLineVisual('sim-flow-line', flowLine, bnIndices);
-    renderLineVisual('sim-buf-line', bufferLine, bnIndices);
+    var speedBn = getSpeedBottleneckIndices();
+    var tpBn = getThroughputBottleneckIndices();
+    renderLineVisual('sim-flow-line', flowLine, speedBn, tpBn);
+    renderLineVisual('sim-buf-line', bufferLine, speedBn, tpBn);
   }
 
-  function renderLineVisual(containerId, line, bnIndices) {
+  function renderLineVisual(containerId, line, speedBn, tpBn) {
     var el = document.getElementById(containerId);
     if (!el) return;
 
@@ -476,7 +494,8 @@
       if (!st.isUp) cls += ' sim-down';
       else if (st.hasUnit) cls += ' sim-active';
       else cls += ' sim-idle';
-      if (bnIndices && bnIndices.indexOf(i) !== -1) cls += ' sim-constraint';
+      if (speedBn && speedBn.indexOf(i) !== -1) cls += ' sim-speed-bn';
+      if (tpBn && tpBn.indexOf(i) !== -1) cls += ' sim-tp-bn';
 
       var pct = st.hasUnit ? Math.min(100, (st.progressTicks / st.cycleTicks) * 100) : 0;
 

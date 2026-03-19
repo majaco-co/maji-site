@@ -276,12 +276,59 @@
       margin-top: 2px;
       letter-spacing: 0.03em;
     }
-    .sim-station.sim-constraint {
+    /* Speed bottleneck — longest cycle time (lime glow) */
+    .sim-station.sim-speed-bn {
       box-shadow: 0 0 0 2px rgba(218, 241, 27, 0.5), 0 0 12px rgba(218, 241, 27, 0.3);
       border-color: #DAF11B;
     }
-    .sim-station.sim-constraint.sim-down {
+    .sim-station.sim-speed-bn.sim-down {
       box-shadow: 0 0 0 2px rgba(218, 241, 27, 0.3), 0 0 12px rgba(218, 241, 27, 0.15);
+    }
+    /* Throughput bottleneck — lowest avail × rate (red glow) */
+    .sim-station.sim-tp-bn {
+      box-shadow: 0 0 0 2px rgba(181, 58, 30, 0.4), 0 0 12px rgba(181, 58, 30, 0.25);
+      border-color: #b53a1e;
+    }
+    .sim-station.sim-tp-bn.sim-down {
+      box-shadow: 0 0 0 2px rgba(181, 58, 30, 0.3), 0 0 12px rgba(181, 58, 30, 0.15);
+    }
+    /* Both on same station — red takes priority but show both rings */
+    .sim-station.sim-speed-bn.sim-tp-bn {
+      box-shadow: 0 0 0 2px rgba(181, 58, 30, 0.4), 0 0 12px rgba(181, 58, 30, 0.25), 0 0 20px rgba(218, 241, 27, 0.2);
+    }
+
+    .sim-key {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .sim-key-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #333;
+      font-weight: 300;
+    }
+    .sim-key-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 2px solid;
+      flex-shrink: 0;
+    }
+    .sim-key-swatch.swatch-speed {
+      border-color: #DAF11B;
+      box-shadow: 0 0 6px rgba(218, 241, 27, 0.4);
+      background: #fefff0;
+    }
+    .sim-key-swatch.swatch-tp {
+      border-color: #b53a1e;
+      box-shadow: 0 0 6px rgba(181, 58, 30, 0.3);
+      background: #fef0ec;
     }
     .sim-buf-row {
       display: flex;
@@ -866,7 +913,11 @@
           <button class="sim-btn" id="sim-start">Start Simulation</button>
           <button class="sim-btn sim-btn-outline" id="sim-reset">Reset</button>
         </div>
-        <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 12px;">
+        <div class="sim-key">
+          <div class="sim-key-item"><span class="sim-key-swatch swatch-speed"></span> Speed bottleneck (longest cycle time)</div>
+          <div class="sim-key-item"><span class="sim-key-swatch swatch-tp"></span> Throughput bottleneck (lowest avail &times; rate)</div>
+        </div>
+        <p style="text-align: center; font-size: 0.75rem; color: #7A7A7A; margin-top: 8px;">
           Availability is modelled correctly: a station set to 90% will be up for ~90% of all cycles over time. Breakdowns last 3&ndash;6 cycles; failure frequency is calculated so the long-run average matches the target availability. Both lines see the same failures.
         </p>
       </div>
