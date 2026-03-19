@@ -836,14 +836,18 @@
 
       <!-- Simulation — full width, outside content-card -->
       <div class="sim-wide">
-        <div class="sim-counters" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+        <div class="sim-counters" style="grid-template-columns: repeat(7, 1fr);">
           <div class="sim-counter">
             <div class="sc-val cr-val-red" id="sim-flow-count">0</div>
             <div class="sc-label">Flow Output</div>
           </div>
           <div class="sim-counter">
             <div class="sc-val cr-val-red" id="sim-flow-eff">--</div>
-            <div class="sc-label">Flow Efficiency</div>
+            <div class="sc-label">Flow Eff (cumul)</div>
+          </div>
+          <div class="sim-counter">
+            <div class="sc-val cr-val-red" style="font-size:18px;" id="sim-flow-eff-roll">--</div>
+            <div class="sc-label">Flow Eff (30s)</div>
           </div>
           <div class="sim-counter">
             <div class="sc-val cr-val-green" id="sim-buf-count">0</div>
@@ -851,7 +855,11 @@
           </div>
           <div class="sim-counter">
             <div class="sc-val cr-val-green" id="sim-buf-eff">--</div>
-            <div class="sc-label">Buffered Efficiency</div>
+            <div class="sc-label">Buffered Eff (cumul)</div>
+          </div>
+          <div class="sim-counter">
+            <div class="sc-val cr-val-green" style="font-size:18px;" id="sim-buf-eff-roll">--</div>
+            <div class="sc-label">Buffered Eff (30s)</div>
           </div>
           <div class="sim-counter">
             <div class="sc-val" id="sim-advantage">--</div>

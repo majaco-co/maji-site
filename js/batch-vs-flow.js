@@ -448,6 +448,20 @@
     return (totalProduced / potential) * 100;
   }
 
+  function calcRollingEfficiency(history) {
+    var windowTicks = Math.floor(30 * simSpeed);
+    var n = history.length;
+    if (n < 2) return null;
+    var lookback = Math.min(windowTicks, n - 1);
+    if (lookback < 1) return null;
+    var produced = history[n - 1] - history[n - 1 - lookback];
+    var bnsTicks = getBottleneckCycleTicks();
+    if (bnsTicks === 0) return null;
+    var potential = lookback / bnsTicks;
+    if (potential <= 0) return null;
+    return (produced / potential) * 100;
+  }
+
   function renderSim() {
     var flowCount = document.getElementById('sim-flow-count');
     var bufCount = document.getElementById('sim-buf-count');
@@ -464,13 +478,21 @@
       advEl.textContent = '--';
     }
 
-    // Efficiency — cumulative from sim start
+    // Efficiency — cumulative
     var flowEff = calcEfficiency(flowLine.produced);
     var bufEff = calcEfficiency(bufferLine.produced);
     var flowEffEl = document.getElementById('sim-flow-eff');
     var bufEffEl = document.getElementById('sim-buf-eff');
     if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
     if (bufEffEl) bufEffEl.textContent = bufEff !== null ? bufEff.toFixed(0) + '%' : '--';
+
+    // Efficiency — rolling 30s
+    var flowRoll = calcRollingEfficiency(flowHistory);
+    var bufRoll = calcRollingEfficiency(bufferHistory);
+    var flowRollEl = document.getElementById('sim-flow-eff-roll');
+    var bufRollEl = document.getElementById('sim-buf-eff-roll');
+    if (flowRollEl) flowRollEl.textContent = flowRoll !== null ? flowRoll.toFixed(0) + '%' : '--';
+    if (bufRollEl) bufRollEl.textContent = bufRoll !== null ? bufRoll.toFixed(0) + '%' : '--';
 
     var speedBn = getSpeedBottleneckIndices();
     var tpBn = getThroughputBottleneckIndices();
