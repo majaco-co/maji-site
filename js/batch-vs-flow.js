@@ -456,8 +456,8 @@
     var bufEff = calcRollingEfficiency(bufferHistory);
     var flowEffEl = document.getElementById('sim-flow-eff');
     var bufEffEl = document.getElementById('sim-buf-eff');
-    if (flowEffEl) flowEffEl.textContent = flowEff !== null ? flowEff.toFixed(0) + '%' : '--';
-    if (bufEffEl) bufEffEl.textContent = bufEff !== null ? bufEff.toFixed(0) + '%' : '--';
+    if (flowEffEl) flowEffEl.textContent = flowEff !== null ? Math.min(100, flowEff).toFixed(0) + '%' : '--';
+    if (bufEffEl) bufEffEl.textContent = bufEff !== null ? Math.min(100, bufEff).toFixed(0) + '%' : '--';
 
     var bnIndices = getBottleneckIndices();
     renderLineVisual('sim-flow-line', flowLine, bnIndices);
