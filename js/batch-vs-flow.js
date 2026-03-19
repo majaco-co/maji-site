@@ -463,9 +463,7 @@
     var wrap = document.getElementById('sim-chart-wrap');
     var W = wrap ? (wrap.clientWidth - 32) : 400;
     if (W < 100) W = 400;
-    // Match the height of the sim lines column next to it
-    var siblingSim = wrap ? wrap.previousElementSibling : null;
-    var H = siblingSim ? Math.max(260, siblingSim.offsetHeight - 40) : 300;
+    var H = 300;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     canvas.style.width = W + 'px';
