@@ -15,6 +15,23 @@
 
   var MTTR = 4.5; // mean of uniform(3,6)
 
+  // ─── Helpers ───
+
+  function lossFraction(ratio) {
+    if (ratio < 0.03) return 'virtually none';
+    if (ratio < 0.08) return 'a small fraction';
+    if (ratio < 0.14) return 'about a tenth';
+    if (ratio < 0.18) return 'about a sixth';
+    if (ratio < 0.22) return 'about a fifth';
+    if (ratio < 0.29) return 'almost a quarter';
+    if (ratio < 0.37) return 'about a third';
+    if (ratio < 0.45) return 'over a third';
+    if (ratio < 0.55) return 'almost half';
+    if (ratio < 0.65) return 'more than half';
+    if (ratio < 0.8) return 'about three quarters';
+    return 'nearly all';
+  }
+
   // ─── Availability Calculator ───
 
   function initAvailCalc() {
@@ -41,6 +58,17 @@
       for (var i = 0; i < n; i++) parts.push(u + '%');
       chain.innerHTML = parts.join(' <span class="chain-op">&times;</span> ') +
         ' <span class="chain-op">=</span> <strong class="chain-result">' + systemAvail.toFixed(1) + '%</strong>';
+
+      // Update the summary paragraph
+      var numWords = ['Two','Three','Four','Five','Six','Seven','Eight'];
+      var numEl = document.getElementById('chain-num-stations');
+      var uptimeEl = document.getElementById('chain-uptime');
+      var sysPctEl = document.getElementById('chain-system-pct');
+      var fracEl = document.getElementById('chain-fraction');
+      if (numEl) numEl.textContent = numWords[n - 2] || n;
+      if (uptimeEl) uptimeEl.textContent = u + '%';
+      if (sysPctEl) sysPctEl.textContent = systemAvail.toFixed(1) + '%';
+      if (fracEl) fracEl.textContent = lossFraction(lostPct / u);
 
       var indBar = document.getElementById('calc-bar-individual');
       var sysBar = document.getElementById('calc-bar-system');
@@ -349,6 +377,63 @@
         document.getElementById('sim-buffer-val').textContent = SIM_BUFFER_SIZE;
       });
     }
+
+    // Presets — per-station configs with cycle time variability
+    var presets = {
+      'preset-mild': {
+        buffer: 4,
+        configs: [
+          { uptime: 95, cycleTicks: 4 },
+          { uptime: 95, cycleTicks: 5 },
+          { uptime: 95, cycleTicks: 4 }
+        ]
+      },
+      'preset-moderate': {
+        buffer: 8,
+        configs: [
+          { uptime: 90, cycleTicks: 2 },
+          { uptime: 80, cycleTicks: 5 },
+          { uptime: 90, cycleTicks: 3 },
+          { uptime: 80, cycleTicks: 6 },
+          { uptime: 90, cycleTicks: 2 }
+        ]
+      },
+      'preset-severe': {
+        buffer: 14,
+        configs: [
+          { uptime: 90, cycleTicks: 1 },
+          { uptime: 75, cycleTicks: 6 },
+          { uptime: 90, cycleTicks: 2 },
+          { uptime: 75, cycleTicks: 6 },
+          { uptime: 90, cycleTicks: 1 },
+          { uptime: 75, cycleTicks: 5 },
+          { uptime: 90, cycleTicks: 2 },
+          { uptime: 75, cycleTicks: 6 }
+        ]
+      }
+    };
+
+    Object.keys(presets).forEach(function (id) {
+      var btn = document.getElementById(id);
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var p = presets[id];
+        pauseSim();
+        stationConfigs.length = 0;
+        for (var i = 0; i < p.configs.length; i++) {
+          stationConfigs.push({ uptime: p.configs[i].uptime, cycleTicks: p.configs[i].cycleTicks });
+        }
+        SIM_BUFFER_SIZE = p.buffer;
+        if (bufferSlider) bufferSlider.value = p.buffer;
+        var bufferValEl = document.getElementById('sim-buffer-val');
+        if (bufferValEl) bufferValEl.textContent = p.buffer;
+        renderStationConfigs();
+        resetSim();
+        renderSim();
+        drawChart();
+        if (startBtn) startBtn.textContent = 'Start Simulation';
+      });
+    });
 
     drawChart();
   }
