@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweat Rate Calculator — Diamond Peak Consulting — majaco</title>
+<script src="../js/auth-gate.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<style>
+  /* ---- Layout ---- */
+  .calc-layout { max-width:1200px; margin:0 auto; padding:0 var(--container-padding); }
+  .calc-grid { display:grid; grid-template-columns:380px 1fr; gap:2rem; align-items:start; }
+  @media (max-width:960px) { .calc-grid { grid-template-columns:1fr; } }
+
+  /* ---- Card ---- */
+  .card { background:var(--color-bg); border:1px solid var(--color-border); border-radius:12px; padding:1.75rem; margin-bottom:1.5rem; }
+  .card h2 { font-size:.8rem; font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:.05em; color:var(--color-primary); margin-bottom:1rem; padding-bottom:.5rem; border-bottom:2px solid var(--color-accent); }
+
+  /* ---- Inputs ---- */
+  .input-row { margin-bottom:1.25rem; }
+  .input-row label { display:block; font-size:.75rem; font-weight:600; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:.03em; margin-bottom:.35rem; }
+  .input-row .input-pair { display:flex; align-items:center; gap:.75rem; }
+  .input-row input[type=range] { flex:1; accent-color:var(--color-primary); height:6px; cursor:pointer; }
+  .input-row input[type=number] { width:80px; padding:.4rem .5rem; border:1.5px solid var(--color-border); border-radius:6px; font-size:.92rem; font-weight:600; color:var(--color-text); background:var(--color-bg-alt); font-family:inherit; text-align:center; }
+  .input-row input[type=number]:focus { outline:none; border-color:var(--color-primary); background:var(--color-bg); }
+  .input-unit { font-size:.7rem; color:var(--color-text-muted); min-width:30px; }
+
+  /* ---- Hero Result ---- */
+  .result-hero { background:var(--color-bg-dark); border-radius:12px; padding:1.5rem 2rem; color:white; margin-bottom:1.5rem; }
+  .result-hero__grid { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:1rem; text-align:center; }
+  @media (max-width:640px) { .result-hero__grid { grid-template-columns:1fr 1fr; gap:.75rem; } }
+  @media (max-width:400px) { .result-hero__grid { grid-template-columns:1fr; gap:.75rem; } }
+  .result-hero__metric { padding:.5rem 0; }
+  .result-hero__metric:not(:last-child) { border-right:1px solid rgba(255,255,255,.12); }
+  @media (max-width:640px) { .result-hero__metric:not(:last-child) { border-right:none; } }
+  @media (max-width:400px) { .result-hero__metric:not(:last-child) { border-bottom:1px solid rgba(255,255,255,.12); padding-bottom:.75rem; } }
+  .result-hero__label { font-size:.65rem; text-transform:uppercase; letter-spacing:.08em; opacity:.55; }
+  .result-hero__value { font-size:2.2rem; font-weight:700; line-height:1.2; }
+  .result-hero__value.primary { color:var(--color-accent); font-size:2.8rem; }
+  .result-hero__unit { font-size:.7rem; opacity:.45; margin-top:.1rem; }
+
+  /* ---- Hydration Status Table ---- */
+  .status-table { width:100%; border-collapse:collapse; font-size:.82rem; margin-bottom:1.5rem; }
+  .status-table th { text-align:left; font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; color:var(--color-text-muted); padding:.5rem .6rem; border-bottom:2px solid var(--color-border); }
+  .status-table td { padding:.6rem; border-bottom:1px solid var(--color-border); vertical-align:middle; }
+  .status-table tr:last-child td { border-bottom:none; }
+  .status-table tr.active-row { background:rgba(0,100,88,.08); }
+  .status-table tr.active-row td { font-weight:600; }
+  .status-badge { display:inline-block; padding:.2rem .6rem; border-radius:4px; font-size:.72rem; font-weight:700; color:white; }
+  .status-green { background:#22C55E; }
+  .status-blue { background:#3B82F6; }
+  .status-yellow { background:#EAB308; }
+  .status-orange { background:#F97316; }
+  .status-red { background:#EF4444; }
+
+  /* ---- Recommendation ---- */
+  .rec-card { background:rgba(0,100,88,.06); border-left:3px solid var(--color-primary); border-radius:0 8px 8px 0; padding:1rem 1.25rem; margin-bottom:1.5rem; }
+  .rec-card__title { font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; font-weight:700; color:var(--color-primary); margin-bottom:.5rem; }
+  .rec-card__line { font-size:.88rem; color:var(--color-text); line-height:1.6; margin-bottom:.25rem; }
+  .rec-card__line strong { color:var(--color-primary); }
+</style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html">Diamond Peak</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Sweat Rate Calculator</span>
+      </nav>
+      <p class="page-hero__eyebrow">Hydration &amp; Performance</p>
+      <h1 class="page-hero__title">
+        Sweat Rate <strong class="text-green">Calculator</strong>
+      </h1>
+      <p class="page-hero__subtitle">
+        Calculate your sweat rate and hydration needs from pre- and post-exercise body weight.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section class="section">
+    <div class="calc-layout">
+      <div class="calc-grid">
+
+        <!-- LEFT: Inputs -->
+        <div>
+          <div class="card">
+            <h2>Session Data</h2>
+
+            <div class="input-row">
+              <label>Pre-Exercise Weight</label>
+              <div class="input-pair">
+                <input type="range" id="preWeight" min="40" max="120" value="70.0" step="0.1" oninput="sync('preWeight'); recalc();">
+                <input type="number" id="preWeightNum" min="40" max="120" value="70.0" step="0.1" oninput="syncNum('preWeight'); recalc();">
+                <span class="input-unit">kg</span>
+              </div>
+            </div>
+
+            <div class="input-row">
+              <label>Post-Exercise Weight</label>
+              <div class="input-pair">
+                <input type="range" id="postWeight" min="40" max="120" value="69.2" step="0.1" oninput="sync('postWeight'); recalc();">
+                <input type="number" id="postWeightNum" min="40" max="120" value="69.2" step="0.1" oninput="syncNum('postWeight'); recalc();">
+                <span class="input-unit">kg</span>
+              </div>
+            </div>
+
+            <div class="input-row">
+              <label>Fluid Consumed During Exercise</label>
+              <div class="input-pair">
+                <input type="range" id="fluidIn" min="0" max="3000" value="500" step="1" oninput="sync('fluidIn'); recalc();">
+                <input type="number" id="fluidInNum" min="0" max="3000" value="500" step="1" oninput="syncNum('fluidIn'); recalc();">
+                <span class="input-unit">ml</span>
+              </div>
+            </div>
+
+            <div class="input-row">
+              <label>Exercise Duration</label>
+              <div class="input-pair">
+                <input type="range" id="duration" min="10" max="300" value="60" step="1" oninput="sync('duration'); recalc();">
+                <input type="number" id="durationNum" min="10" max="300" value="60" step="1" oninput="syncNum('duration'); recalc();">
+                <span class="input-unit">min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results -->
+        <div>
+          <!-- Sweat Rate Result Hero -->
+          <div class="result-hero">
+            <div class="result-hero__grid">
+              <div class="result-hero__metric">
+                <div class="result-hero__label">Sweat Rate</div>
+                <div class="result-hero__value primary" id="resSweatRate">&mdash;</div>
+                <div class="result-hero__unit">ml/hr</div>
+              </div>
+              <div class="result-hero__metric">
+                <div class="result-hero__label">Total Fluid Lost</div>
+                <div class="result-hero__value" id="resTotalLoss">&mdash;</div>
+                <div class="result-hero__unit">ml</div>
+              </div>
+              <div class="result-hero__metric">
+                <div class="result-hero__label">Body Weight Lost</div>
+                <div class="result-hero__value" id="resPctLoss">&mdash;</div>
+                <div class="result-hero__unit">%</div>
+              </div>
+              <div class="result-hero__metric">
+                <div class="result-hero__label">Status</div>
+                <div class="result-hero__value" id="resStatus">&mdash;</div>
+                <div class="result-hero__unit" id="resStatusDesc">&nbsp;</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hydration Status Reference -->
+          <div class="card">
+            <h2>Hydration Status Reference</h2>
+            <table class="status-table">
+              <thead>
+                <tr>
+                  <th>% Weight Loss</th>
+                  <th>Status</th>
+                  <th>Impact</th>
+                </tr>
+              </thead>
+              <tbody id="statusTableBody">
+                <tr data-row="0">
+                  <td>&lt; 1%</td>
+                  <td><span class="status-badge status-green">Well hydrated</span></td>
+                  <td>No performance impact</td>
+                </tr>
+                <tr data-row="1">
+                  <td>1 &ndash; 2%</td>
+                  <td><span class="status-badge status-blue">Mild dehydration</span></td>
+                  <td>Slight decline</td>
+                </tr>
+                <tr data-row="2">
+                  <td>2 &ndash; 3%</td>
+                  <td><span class="status-badge status-yellow">Moderate</span></td>
+                  <td>Noticeable performance drop</td>
+                </tr>
+                <tr data-row="3">
+                  <td>3 &ndash; 4%</td>
+                  <td><span class="status-badge status-orange">Significant</span></td>
+                  <td>Impaired thermoregulation</td>
+                </tr>
+                <tr data-row="4">
+                  <td>&gt; 4%</td>
+                  <td><span class="status-badge status-red">Severe</span></td>
+                  <td>Medical risk</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Recommendation -->
+          <div class="rec-card">
+            <div class="rec-card__title">Hydration Recommendation</div>
+            <div class="rec-card__line" id="recPer15">Aim to drink <strong id="recPer15Val">&mdash;</strong> ml every 15 minutes during exercise</div>
+            <div class="rec-card__line" id="recPerHour">Your hourly fluid target: <strong id="recPerHourVal">&mdash;</strong> ml/hr</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco" class="footer__logo">
+          <p class="footer__tagline">Empowering endurance athletes with data-driven tools.</p>
+        </div>
+        <div class="footer__links">
+          <a href="../about-maji.html">About</a>
+          <a href="https://majaco.co" target="_blank" rel="noopener">Contact</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2025 majaco. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    // ---- Slider / Number sync ----
+    window.sync = function(id) {
+      var v = document.getElementById(id).value;
+      document.getElementById(id + 'Num').value = v;
+    };
+    window.syncNum = function(id) {
+      var v = document.getElementById(id + 'Num').value;
+      document.getElementById(id).value = v;
+    };
+
+    // ---- Recalculate ----
+    window.recalc = function() {
+      var preWeight  = parseFloat(document.getElementById('preWeight').value);
+      var postWeight = parseFloat(document.getElementById('postWeight').value);
+      var fluidIn    = parseFloat(document.getElementById('fluidIn').value);
+      var duration   = parseFloat(document.getElementById('duration').value);
+
+      // Formulas
+      var totalSweatLoss = (preWeight - postWeight) * 1000 + fluidIn;
+      var sweatRate      = totalSweatLoss / (duration / 60);
+      var pctLoss        = ((preWeight - postWeight) / preWeight) * 100;
+
+      // Clamp negative values
+      if (totalSweatLoss < 0) totalSweatLoss = 0;
+      if (sweatRate < 0) sweatRate = 0;
+      if (pctLoss < 0) pctLoss = 0;
+
+      // Update hero
+      document.getElementById('resSweatRate').textContent = Math.round(sweatRate);
+      document.getElementById('resTotalLoss').textContent = Math.round(totalSweatLoss);
+      document.getElementById('resPctLoss').textContent   = pctLoss.toFixed(1);
+
+      // Determine status
+      var statusText, statusDesc, activeRow;
+      if (pctLoss < 1) {
+        statusText = 'Good';
+        statusDesc = 'Well hydrated';
+        activeRow  = 0;
+      } else if (pctLoss < 2) {
+        statusText = 'Mild';
+        statusDesc = 'Slight decline';
+        activeRow  = 1;
+      } else if (pctLoss < 3) {
+        statusText = 'Mod.';
+        statusDesc = 'Performance drop';
+        activeRow  = 2;
+      } else if (pctLoss < 4) {
+        statusText = 'High';
+        statusDesc = 'Thermoreg. impaired';
+        activeRow  = 3;
+      } else {
+        statusText = 'Severe';
+        statusDesc = 'Medical risk';
+        activeRow  = 4;
+      }
+
+      document.getElementById('resStatus').textContent     = statusText;
+      document.getElementById('resStatusDesc').textContent  = statusDesc;
+
+      // Highlight matching table row
+      var rows = document.querySelectorAll('#statusTableBody tr');
+      rows.forEach(function(row) {
+        row.classList.remove('active-row');
+      });
+      if (rows[activeRow]) rows[activeRow].classList.add('active-row');
+
+      // Recommendations
+      var per15 = Math.round(sweatRate / 4);
+      var perHour = Math.round(sweatRate);
+      document.getElementById('recPer15Val').textContent   = per15;
+      document.getElementById('recPerHourVal').textContent  = perHour;
+    };
+
+    // Initial calc
+    recalc();
+  })();
+  </script>
+</body>
+</html>
