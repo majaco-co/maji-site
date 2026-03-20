@@ -164,7 +164,7 @@
     .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:last-child {
       display: flex !important;
       flex-direction: column !important;
-      gap: 24px !important;
+      gap: 20px !important;
     }
 
     /* Each chart section fills half the right column */
@@ -172,13 +172,19 @@
       flex: 1 !important;
       display: flex !important;
       flex-direction: column !important;
+      min-height: 0 !important;
     }
 
-    /* Charts expand to fill their section */
+    /* Force ResponsiveContainer to fill remaining flex space */
     .fee-visualiser-wrap .recharts-responsive-container {
-      flex: 1 !important;
-      height: auto !important;
-      min-height: 140px;
+      flex: 1 1 0% !important;
+      height: 0 !important;
+      min-height: 0 !important;
+    }
+
+    /* Legend row beneath chart: don't flex-grow */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:last-child > div > div:last-child:not(.recharts-responsive-container) {
+      flex: none !important;
     }
 
     /* Remove hard margin between chart 1 and chart 2 */
