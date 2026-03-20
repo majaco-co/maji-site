@@ -4,6 +4,8 @@
 
    Usage: add to any protected tool page's <head>:
      <script src="js/auth-redirect.js"></script>
+     — or from a subfolder —
+     <script src="../js/auth-redirect.js"></script>
 
    Works with auth-gate.js session — once a user
    has authenticated on protected-tools.html they
@@ -19,6 +21,15 @@
 
   if (sessionStorage.getItem(SESSION_KEY) === HASH) return;
 
-  // Not authenticated — redirect to the portal page
-  window.location.replace('protected-tools.html');
+  // Build path to protected-tools.html relative to the current page
+  var depth = window.location.pathname.replace(/\/[^/]*$/, '').split('/').length - 1;
+  var base = window.location.pathname.split('/').slice(0, -1);
+  // Find how many levels deep we are from the site root
+  var scriptEl = document.currentScript;
+  var prefix = '';
+  if (scriptEl && scriptEl.getAttribute('src').indexOf('../') === 0) {
+    prefix = '../';
+  }
+
+  window.location.replace(prefix + 'protected-tools.html');
 })();
