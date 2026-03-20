@@ -21,7 +21,6 @@
       position: relative;
       border-radius: var(--radius-xl);
       overflow: hidden;
-      min-height: 600px;
 
       /* Dark theme (default) */
       --fv-bg: #001412;
@@ -41,7 +40,7 @@
       --fv-header-grad: linear-gradient(135deg, #001412 0%, #006458 100%);
       background: var(--fv-bg);
     }
-    .fee-visualiser-wrap #root { min-height: 600px; }
+    .fee-visualiser-wrap #root { min-height: auto; }
 
     /* Light theme */
     .fee-visualiser-wrap.fv-light {
@@ -144,6 +143,14 @@
     .fee-visualiser-wrap.fv-light .fv-toggle-btn.active {
       background: rgba(0,100,88,0.15);
       color: #006458;
+    }
+
+    /* Kill 100vh min-height on the React app root — content should size itself */
+    .fee-visualiser-wrap #root > div {
+      min-height: auto !important;
+    }
+    .fee-visualiser-wrap #root {
+      min-height: auto !important;
     }
 
     /* ── Layout alignment: controls bottom ↔ chart bottom ── */
