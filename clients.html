@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Portals | majaco</title>
+  <title>Client Portal | majaco</title>
   <script src="js/auth-redirect.js"></script>
-  <script src="js/auth-gate.js" data-password-hash="09f7d4950e1a66ddc69342971c94c5ce4a99ff9e3bbc61d061bfb97b7041cd7f"></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <meta name="robots" content="noindex, nofollow">
   <style>
-    .cl-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.25rem; margin-top:2rem; }
-    .cl-card { display:block; background:var(--color-bg-alt); border:1px solid var(--color-border); border-radius:12px; padding:1.75rem; text-decoration:none; color:inherit; transition:border-color .2s, box-shadow .2s; }
-    .cl-card:hover { border-color:var(--color-primary); box-shadow:0 4px 20px rgba(45,106,79,.1); }
-    .cl-card h3 { font-size:var(--font-size-lg); font-weight:var(--font-weight-semibold); margin-bottom:.25rem; color:var(--color-text); }
-    .cl-card .cl-path { font-size:var(--font-size-xs); color:var(--color-text-muted); font-family:var(--font-mono); }
-    .cl-card .cl-arrow { display:inline-block; margin-top:.75rem; font-size:var(--font-size-sm); color:var(--color-primary); font-weight:var(--font-weight-medium); }
-    .cl-count { font-size:var(--font-size-sm); color:var(--color-text-muted); margin-top:.5rem; }
+    .gate-wrap { max-width: 420px; margin: 0 auto; text-align: center; }
+    .gate-form { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
+    .gate-input { flex: 1; padding: 0.75rem 1rem; background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 8px; font-size: 1rem; font-family: inherit; color: var(--color-text); outline: none; transition: border-color 0.2s; }
+    .gate-input:focus { border-color: var(--color-primary); }
+    .gate-input::placeholder { color: var(--color-text-muted); }
+    .gate-btn { padding: 0.75rem 1.5rem; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .gate-btn:hover { background: #008577; }
+    .gate-error { min-height: 1.25rem; margin-top: 0.75rem; font-size: 0.8125rem; color: #EF4444; }
+    .gate-hint { margin-top: 1rem; font-size: 0.8125rem; color: var(--color-text-muted); }
   </style>
 </head>
 <body>
@@ -50,18 +51,26 @@
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="index.html">Home</a>
         <span class="breadcrumb__sep" aria-hidden="true">/</span>
-        <span aria-current="page">Clients</span>
+        <a href="protected-tools.html">Protected Tools</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Client Portal</span>
       </nav>
-      <p class="page-hero__eyebrow">Internal</p>
-      <h1 class="page-hero__title">Client <span class="text-green">Portals</span></h1>
-      <p class="page-hero__subtitle">All active client resource areas.</p>
+      <p class="page-hero__eyebrow">Client Portal</p>
+      <h1 class="page-hero__title">Enter your <span class="text-green">password</span></h1>
+      <p class="page-hero__subtitle">Each client has a unique password. Enter the one provided by your majaco contact to go directly to your portal.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <p class="cl-count" id="count"></p>
-      <div class="cl-grid" id="grid"></div>
+      <div class="gate-wrap">
+        <form class="gate-form" id="gate-form" autocomplete="off">
+          <input class="gate-input" type="password" placeholder="Client password" autocomplete="off" autofocus id="gate-input">
+          <button class="gate-btn" type="submit">Unlock</button>
+        </form>
+        <p class="gate-error" id="gate-error"></p>
+        <p class="gate-hint">If you don't have a password, contact <a href="mailto:makeitpossible@majaco.co" style="color: var(--color-primary);">makeitpossible@majaco.co</a></p>
+      </div>
     </div>
   </section>
 
@@ -75,26 +84,43 @@
 
   <script src="js/main.js"></script>
   <script>
-    // Add new client folders here
-    var CLIENTS = [
-      { name: 'Becketts', folder: 'becketts' },
-      { name: 'Nine/Ten', folder: 'nineten' },
-      { name: 'Pukka', folder: 'pukka' },
+    // Map each client password hash to their portal URL
+    var PORTALS = [
+      { hash: '40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84', url: 'becketts/index.html' },
+      { hash: '16d21c3746628074269f846458618ac01b89a76ef62ae7557dc09ec899dc698d', url: 'nineten/index.html' },
+      { hash: '224bc3170cc2a53db4772c58f5d0cc5858be314b683155d5f8c22eb0455de962', url: 'pukka/index.html' },
     ];
 
-    var grid = document.getElementById('grid');
-    var count = document.getElementById('count');
-
-    if (grid && count) {
-      count.textContent = CLIENTS.length + ' client portal' + (CLIENTS.length !== 1 ? 's' : '');
-      CLIENTS.forEach(function(c) {
-        var a = document.createElement('a');
-        a.href = c.folder + '/index.html';
-        a.className = 'cl-card';
-        a.innerHTML = '<h3>' + c.name + '</h3><span class="cl-path">/' + c.folder + '/</span><span class="cl-arrow">Open portal &rarr;</span>';
-        grid.appendChild(a);
-      });
+    async function sha256(str) {
+      var buf = new TextEncoder().encode(str);
+      var hash = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(hash)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
     }
+
+    var form = document.getElementById('gate-form');
+    var input = document.getElementById('gate-input');
+    var errEl = document.getElementById('gate-error');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var val = input.value;
+      if (!val) return;
+
+      var h = await sha256(val);
+
+      for (var i = 0; i < PORTALS.length; i++) {
+        if (h === PORTALS[i].hash) {
+          // Store the client auth so their portal pages don't re-prompt
+          sessionStorage.setItem('maji_client_auth', h);
+          window.location.href = PORTALS[i].url;
+          return;
+        }
+      }
+
+      errEl.textContent = 'Password not recognised — try a new browser session if issues persist';
+      input.value = '';
+      input.focus();
+    });
   </script>
 </body>
 </html>
