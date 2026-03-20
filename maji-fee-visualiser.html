@@ -75,6 +75,13 @@
     .fee-visualiser-wrap.fv-light #root > div > div:first-child {
       border-bottom-color: var(--fv-accent) !important;
     }
+    /* Keep header titles white in light mode (green gradient bg) */
+    .fee-visualiser-wrap.fv-light #root > div > div:first-child h1,
+    .fee-visualiser-wrap.fv-light #root > div > div:first-child h2,
+    .fee-visualiser-wrap.fv-light #root > div > div:first-child h3,
+    .fee-visualiser-wrap.fv-light #root > div > div:first-child p {
+      color: white !important;
+    }
 
     /* SVG overrides for light theme — grid lines */
     .fee-visualiser-wrap svg line[stroke-dasharray="3 3"] {
@@ -98,7 +105,7 @@
     .fv-toggle-wrap {
       position: absolute;
       top: 34px;
-      right: 160px;
+      right: 240px;
       z-index: 10;
       display: flex;
       background: rgba(0,0,0,0.25);
