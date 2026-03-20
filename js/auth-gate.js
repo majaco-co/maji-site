@@ -97,7 +97,7 @@
           document.documentElement.style.overflow = '';
         }, 260);
       } else {
-        errEl.textContent = 'Incorrect password';
+        errEl.textContent = 'Incorrect password — try a new browser session if issues persist';
         input.value = '';
         input.focus();
         card.classList.remove('mag-shake');
