@@ -21,15 +21,6 @@
 
   if (sessionStorage.getItem(SESSION_KEY) === HASH) return;
 
-  // Build path to protected-tools.html relative to the current page
-  var depth = window.location.pathname.replace(/\/[^/]*$/, '').split('/').length - 1;
-  var base = window.location.pathname.split('/').slice(0, -1);
-  // Find how many levels deep we are from the site root
-  var scriptEl = document.currentScript;
-  var prefix = '';
-  if (scriptEl && scriptEl.getAttribute('src').indexOf('../') === 0) {
-    prefix = '../';
-  }
-
-  window.location.replace(prefix + 'protected-tools.html');
+  // Redirect to the portal page at the site root
+  window.location.replace('/protected-tools.html');
 })();
