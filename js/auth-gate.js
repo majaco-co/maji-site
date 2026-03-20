@@ -48,6 +48,7 @@
       '    <button class="mag-btn" type="submit">Unlock</button>',
       '  </form>',
       '  <p class="mag-error"></p>',
+      '  <p class="mag-hint">Clients will be prompted for their own portal password after entering.</p>',
       '  <p class="mag-footer">maji by majaco</p>',
       '</div>',
     ].join('\n');
@@ -69,6 +70,7 @@
       '.mag-btn:hover { background:#008577; }',
       '.mag-btn:active { transform:scale(.97); }',
       '.mag-error { min-height:1.25rem; margin-top:.75rem; font-size:.8125rem; color:#EF4444; transition:opacity .2s; }',
+      '.mag-hint { margin-top:1rem; font-size:.75rem; color:rgba(116,166,141,.5); line-height:1.4; }',
       '.mag-footer { margin-top:1.5rem; font-size:.6875rem; color:rgba(116,166,141,.4); letter-spacing:.04em; text-transform:uppercase; }',
       '.mag-shake { animation:magShake .4s ease; }',
       '@keyframes magShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }',
