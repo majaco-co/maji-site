@@ -160,14 +160,28 @@
       justify-content: space-between !important;
     }
 
-    /* Right wrapper: spread chart sections top-to-bottom */
+    /* Right wrapper: charts each take 50% of height */
     .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:last-child {
       display: flex !important;
       flex-direction: column !important;
-      justify-content: space-between !important;
+      gap: 24px !important;
     }
 
-    /* Remove hard margin between chart 1 and chart 2 — space-between handles gap */
+    /* Each chart section fills half the right column */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:last-child > div {
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    /* Charts expand to fill their section */
+    .fee-visualiser-wrap .recharts-responsive-container {
+      flex: 1 !important;
+      height: auto !important;
+      min-height: 140px;
+    }
+
+    /* Remove hard margin between chart 1 and chart 2 */
     .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:last-child > div:first-child {
       margin-bottom: 0 !important;
     }
@@ -177,14 +191,37 @@
       margin-bottom: 0 !important;
     }
 
-    /* Kicker section (2nd option): tighter slider spacing */
-    .fee-visualiser-wrap #root > div > div:nth-child(2) > div:last-child > div > div:first-child > div:nth-child(2) > div {
-      padding-top: 8px !important;
-      padding-bottom: 8px !important;
+    /* ── Compact controls: tighter padding on all sliders ── */
+
+    /* Control panel box: reduce internal padding */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:first-child > div:nth-child(2) {
+      padding: 12px 16px !important;
+      margin-bottom: 14px !important;
     }
-    /* Keep first slider in kicker with no top padding */
+
+    /* All sliders: tighter vertical spacing */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:first-child > div:nth-child(2) > div {
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+    /* First slider: no top padding */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:first-child > div:nth-child(2) > div:first-child {
+      padding-top: 0 !important;
+    }
+
+    /* Kicker section (2nd option): even tighter slider spacing for 4 sliders */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div:last-child > div > div:first-child > div:nth-child(2) > div {
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+    }
     .fee-visualiser-wrap #root > div > div:nth-child(2) > div:last-child > div > div:first-child > div:nth-child(2) > div:first-child {
       padding-top: 0 !important;
+    }
+
+    /* Summary bar: compact */
+    .fee-visualiser-wrap #root > div > div:nth-child(2) > div > div > div:first-child > div:last-child {
+      padding: 10px 16px !important;
+      margin-bottom: 0 !important;
     }
   </style>
 </head>
