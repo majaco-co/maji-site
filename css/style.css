@@ -866,12 +866,21 @@ h5, h6 {
   }
 }
 
-.tool-card--locked {
+a.tool-card--locked {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   margin-top: var(--space-xl);
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-lg) var(--space-xl);
+  transition: box-shadow 0.3s ease, border-color 0.2s ease;
+}
+
+a.tool-card--locked:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
 }
 
 .tool-card--locked__inner {

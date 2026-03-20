@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pukka — majaco</title>
+  <script src="../js/auth-gate.js" data-password-hash="224bc3170cc2a53db4772c58f5d0cc5858be314b683155d5f8c22eb0455de962"></script>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    .portal-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:2rem; }
+    .portal-card { background:var(--color-bg-alt); border:1px solid var(--color-border); border-radius:12px; padding:2rem; text-decoration:none; color:inherit; transition:border-color .2s, box-shadow .2s; }
+    .portal-card:hover { border-color:var(--color-primary); box-shadow:0 4px 20px rgba(45,106,79,.1); }
+    .portal-card h3 { font-size:var(--font-size-lg); font-weight:var(--font-weight-semibold); margin-bottom:.375rem; color:var(--color-text); }
+    .portal-card p { font-size:var(--font-size-sm); color:var(--color-text-muted); line-height:var(--line-height-normal); }
+    .portal-card .arrow { display:inline-block; margin-top:.75rem; font-size:var(--font-size-sm); color:var(--color-primary); font-weight:var(--font-weight-medium); }
+    .empty-state { text-align:center; padding:4rem 1rem; color:var(--color-text-muted); }
+    .empty-state p { font-size:var(--font-size-base); line-height:var(--line-height-relaxed); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Pukka</span>
+      </nav>
+      <p class="page-hero__eyebrow">Client Portal</p>
+      <h1 class="page-hero__title">
+        Pukka <span class="text-green">Resources</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        Tools and analysis built for your operation.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="portal-grid">
+      </div>
+      <div class="empty-state">
+        <p>Resources for Pukka will appear here as they are added.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
