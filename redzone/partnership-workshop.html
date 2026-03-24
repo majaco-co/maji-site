@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partnership Workshop Output — Redzone x majaco</title>
+  <script src="../js/auth-redirect.js"></script>
+  <script src="../js/client-redirect.js" data-password-hash="0e772dc5f875aeb537a79f565c33f7b95e875fe44438bfbdac9368895f5dba5b"></script>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    /* Report-specific styles */
+    .report { max-width: 800px; margin: 0 auto; }
+
+    .report h2 {
+      font-size: 1.8em;
+      font-weight: 400;
+      margin: 40px 0 15px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-grey, #7A7A7A);
+    }
+
+    .report h3 {
+      font-size: 1.4em;
+      font-weight: 400;
+      margin: 30px 0 12px;
+    }
+
+    .report p { margin-bottom: 15px; }
+    .report ul, .report ol { margin: 0 0 15px 30px; }
+    .report li { margin-bottom: 8px; }
+
+    .callout-lime, .callout-grey {
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .callout-lime p:last-child, .callout-grey p:last-child { margin-bottom: 0; }
+
+    .callout-lime {
+      background: #DAF11B;
+      color: #0a0a0a;
+      border-radius: 8px;
+    }
+
+    .callout-grey {
+      background: #f5f5f5;
+      border-left: 4px solid #DAF11B;
+      padding-left: 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 25px 0;
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+    .report th, .report td { padding: 12px; }
+    .report th {
+      background: #006458;
+      color: white;
+      text-align: left;
+      font-weight: 700;
+    }
+    .report td { border-bottom: 1px solid #e0e0e0; }
+    .report tr:last-child td { border-bottom: none; }
+
+    .highlight {
+      background: linear-gradient(to bottom, transparent 50%, rgba(218, 241, 27, 0.4) 50%);
+      padding: 0 2px;
+    }
+
+    .report code {
+      background: #001412;
+      color: #DAF11B;
+      font-family: 'Courier New', monospace;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    .report blockquote {
+      border-left: 4px solid #DAF11B;
+      padding-left: 16px;
+      margin: 25px 0;
+      font-style: italic;
+    }
+
+    .report hr {
+      border: none;
+      border-bottom: 1px solid #7A7A7A;
+      margin: 40px 0;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: 700;
+    }
+    .tag-active { background: #d4edda; color: #155724; }
+    .tag-closed { background: #f8d7da; color: #721c24; }
+    .tag-new { background: #fff3cd; color: #856404; }
+    .tag-rock { background: #DAF11B; color: #001412; }
+
+    .win-banner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0;
+    }
+    .win-card {
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      border-top: 4px solid #006458;
+    }
+    .win-card:nth-child(2) { border-top-color: #c0392b; }
+    .win-card:nth-child(3) { border-top-color: #DAF11B; }
+    .win-card h4 { font-size: 1em; font-weight: 700; color: #001412; margin-bottom: 8px; }
+    .win-card p { font-size: 0.88em; color: #7A7A7A; margin: 0; line-height: 1.5; }
+
+    .track-record {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 25px 0;
+    }
+    .track-item {
+      text-align: center;
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 10px;
+    }
+    .track-item .stat { font-size: 2rem; font-weight: 700; color: #006458; }
+    .track-item .label { font-size: 0.82em; color: #7A7A7A; margin-top: 4px; }
+
+    .fee-bar-container { margin: 20px 0; }
+    .fee-bar-label { font-size: 0.88em; font-weight: 700; margin-bottom: 8px; }
+    .fee-bar {
+      height: 40px;
+      border-radius: 6px;
+      display: flex;
+      overflow: hidden;
+      font-size: 0.75em;
+      font-weight: 700;
+      color: #fff;
+    }
+    .fee-bar .segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      white-space: nowrap;
+    }
+    .seg-redzone { background: #c0392b; }
+    .seg-majaco { background: #001412; }
+    .seg-client { background: #006458; }
+
+    .action-list { list-style: none; margin: 20px 0; padding: 0; }
+    .action-list li {
+      padding: 14px 16px 14px 44px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      position: relative;
+      font-size: 0.92em;
+      border-left: 4px solid #006458;
+    }
+    .action-list li::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 12px;
+      top: 14px;
+      width: 22px;
+      height: 22px;
+      background: #006458;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.7em;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .action-list li .owner { font-size: 0.8em; color: #7A7A7A; display: block; margin-top: 4px; }
+
+    @media (max-width: 700px) {
+      .win-banner { grid-template-columns: 1fr; }
+      .track-record { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html">Redzone</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Partnership Workshop</span>
+      </nav>
+      <p class="page-hero__eyebrow">Redzone x majaco</p>
+      <h1 class="page-hero__title">
+        Partnership <span class="text-green">Workshop Output</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        Accelerating win-win-win outcomes for Redzone, majaco and their shared clients. This document captures the strategic rationale, commercial model, target pipeline and next steps agreed during the March 2026 partnership workshop with Ryan Marshall (Senior Director, Global Accounts, QAD Redzone).
+      </p>
+    </div>
+  </section>
+
+  <!-- Report Content -->
+  <section class="section">
+    <div class="container">
+      <div class="report">
+
+        <h2>Partnership Context</h2>
+
+        <p>majaco and QAD Redzone formalised a Professional Services Agreement in December 2025. Under this agreement, majaco delivers productivity module coaching for Redzone customers — typically four-week deployments covering system setup, huddle structures, change management and operator training. majaco consultants complete a two-week QAD boot camp and shadow existing Redzone coaches before deploying independently.</p>
+
+        <p>This workshop explored how the partnership can go further: beyond coaching deployments into <span class="highlight">joint commercial propositions</span> that combine Redzone's connected workforce platform with majaco's operational improvement methodology and results guarantee.</p>
+
+        <h3>Why This Partnership Works</h3>
+
+        <p>Redzone want to accelerate their penetration into the £500M–£1Bn turnover segment — precisely majaco's target client profile. majaco's challenge is capacity: the team plans to scale from its current size to approximately 30 people over the next three to four years, so this is a long-term partnership to nurture, not a short-term volume play.</p>
+
+        <p>The two businesses are complementary, not competitive. Redzone provides the connected workforce platform (real-time downtime tracking, PPLH measurement, huddle facilitation, workforce engagement). majaco provides the analytical methodology (Lost Time decomposition, Split Solving, labour planning science) and the commercial guarantee that ensures identified savings are actually realised. Neither can fully deliver the other's value.</p>
+
+        <div class="win-banner">
+          <div class="win-card">
+            <h4>Win for Clients</h4>
+            <p>A guaranteed return on their Connected Workforce System spend. A single programme combining Redzone's real-time visibility with majaco's analytical rigour in planning, labour control and OEE improvement — de-risked by a joint fee guarantee. Redzone properly configured and embedded from day one.</p>
+          </div>
+          <div class="win-card">
+            <h4>Win for Redzone</h4>
+            <p>Accelerated access to £500M–£1Bn FMCG clients through majaco's trusted relationships and senior-level network. Deeper adoption and proven ROI through majaco's delivery guarantee. Help closing accounts where adoption has been patchy or where coaching cost is an objection.</p>
+          </div>
+          <div class="win-card">
+            <h4>Win for majaco</h4>
+            <p>Strengthened pipeline through Redzone's brand advocacy and network introductions. A technology-integrated offering that embeds sustainability. Ongoing licence revenue share. Coaching revenue from boot-camp-trained consultants. Long-term funnel development as majaco scales to 30 people.</p>
+          </div>
+        </div>
+
+        <div class="callout-lime">
+          <p><strong>The core insight:</strong> Redzone enables the data capture and frontline engagement that underpins sustainable improvement. majaco ensures that the productivity gains identified through Redzone data are converted into real cost reductions through planning rate changes, shift restructuring and headcount adjustments. Without this second step, OEE improvements remain theoretical.</p>
+        </div>
+
+        <h2>How majaco Delivers Results</h2>
+
+        <h3>The Productivity Equation</h3>
+
+        <p>majaco guarantees labour productivity improvements of 10–50%, translating to approximately 10–33% cost reduction per unit. Results are measured using a <strong>variance-to-standard</strong> methodology that normalises for product mix, ensuring improvements reflect genuine efficiency gains rather than favourable mix shifts.</p>
+
+        <div class="callout-grey">
+          <p><strong>Worked example (baseline):</strong> A site produces 1,000 units in 400 labour hours (300 direct + 100 indirect), against a direct standard of 250 hours. Baseline productivity = 1,000 / 400 = <strong>2.5 units per labour hour</strong>.</p>
+          <p><strong>After improvement:</strong> 1,200 units in 385 hours (280 direct + 105 indirect), against 300 direct standard hours (same mix). Improved productivity = 1,200 / 385 = <strong>3.12 units per labour hour</strong>. That is a <strong>24% productivity increase</strong>, equating to a <strong>20% reduction in spend per unit</strong>.</p>
+        </div>
+
+        <p>These improvements are signed off by the client's site finance team. The measurement methodology strips out the impact of cost-per-hour changes and accounts for mix variation through accurate standards.</p>
+
+        <h3>Where the Gains Come From</h3>
+
+        <p>Typically, total productivity improvement is split roughly 50/50 between two pillars:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Pillar</th>
+              <th>What It Covers</th>
+              <th>Redzone Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>OEE / Equipment Efficiency</strong></td>
+              <td>Lost Time reduction (LTSR, LTMW, UPDT), speed optimisation, downtime Pareto resolution via Split Solving</td>
+              <td>Primary data source for downtime tracking, run segments, stop reasons. Enables Pareto analysis and trend monitoring.</td>
+            </tr>
+            <tr>
+              <td><strong>Planning &amp; Labour Control</strong></td>
+              <td>Crewing to the correct planning standard, shift utilisation, indirect workforce planning, planning rate increases to realise OEE benefits</td>
+              <td>PPLH data from run segments supports planning rate calibration. Huddle structures embed daily labour accountability.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout-grey">
+          <p><strong>The critical gap Redzone cannot close alone:</strong> To realise the benefits of OEE improvement, planned rates must be increased, shifts must be planned with more work, and changes to headcount or shift patterns may be necessary. Redzone's primary incentive is platform adoption and licence expansion — not ensuring operational benefits are converted into financial results. For majaco, this conversion <em>is</em> the product: we only get paid if we demonstrate results.</p>
+        </div>
+
+        <h3>Track Record</h3>
+
+        <div class="track-record">
+          <div class="track-item">
+            <div class="stat">+50%</div>
+            <div class="label">Cases/man-hour at WARP Snacks<br>(⅓ direct labour cost removed)</div>
+          </div>
+          <div class="track-item">
+            <div class="stat">+30%</div>
+            <div class="label">Packs/man-hour at Vibrant Foods<br>(sustained 2–3 years on)</div>
+          </div>
+          <div class="track-item">
+            <div class="stat">+65%</div>
+            <div class="label">Throughput at Halo Foods<br>(70→115 bags/min vs. 100 design)</div>
+          </div>
+          <div class="track-item">
+            <div class="stat">2–3x</div>
+            <div class="label">Typical ROI on majaco fees<br>(finance-verified)</div>
+          </div>
+        </div>
+
+        <h2>Joint Commercial Model</h2>
+
+        <h3>The Client Proposition: Guaranteed CWS Return</h3>
+
+        <p>The headline for the client is simple: <span class="highlight">a guaranteed return on their Connected Workforce System spend</span>. Clients considering Redzone often face internal resistance around the licence cost and uncertainty of ROI. The joint proposition eliminates that risk entirely — the combined majaco + Redzone fee is covered by the guarantee, so the client only pays in full if the results materialise.</p>
+
+        <p>majaco's existing model guarantees a minimum 1:1 return on fees before full payment is triggered, with a 2–3x ROI target. The joint proposition extends this to cover Redzone's costs, creating a single risk-sharing package for the client.</p>
+
+        <div class="callout-lime">
+          <p><strong>Example scenario:</strong></p>
+          <p>majaco identifies £2M labour productivity savings. majaco fee = £1M. Redzone costs = £150k licence + £50k coaching + £50k hardware (capex, excluded from guarantee).</p>
+          <p><strong>Joint guarantee = £1.1M</strong> (majaco fee + Redzone licence). The first £100k of delivered savings covers Redzone's licence risk. At £1.1M delivered, both parties receive their full fee. If only £500k is delivered, majaco would only charge £500k (or continue working at own cost until £1.1M run rate is achieved).</p>
+          <p>majaco could also absorb £15k of Redzone's coaching cost (raising majaco's fee to £1.035M, reducing the £50k coaching charge to £35k for the client) — passing the benefit to the client whilst majaco provides the coaching resource directly. majaco already has two boot-camp-trained consultants with more planned.</p>
+        </div>
+
+        <div class="fee-bar-container">
+          <div class="fee-bar-label">How the guarantee waterfall works (first £2M of savings delivered):</div>
+          <div class="fee-bar" style="width:100%;">
+            <div class="segment seg-redzone" style="width:5%;">RZ £100k</div>
+            <div class="segment seg-majaco" style="width:50%;">majaco £1,000k</div>
+            <div class="segment seg-client" style="width:45%;">Client net benefit £900k</div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.88em; color: #7A7A7A; margin-top: 8px;">The first £100k of savings covers Redzone's licence (lowest risk — but still contingent on the joint solution working). At £1.1M, both majaco and Redzone have earned their full fee. Hardware (£50k capex) sits outside the guarantee. If savings fall short — e.g. £500k delivered — majaco only charges £500k and continues at own cost until the full run-rate is demonstrated.</p>
+
+        <p>This structure means Redzone takes the least risk (first £100k tranche) but is still dependent on majaco's delivery and the joint solution working. It is <strong>not</strong> a 90-day money-back trial — if we recommend Redzone, we believe it is the right solution and commit to achieving the target productivity gain outlined in the assessment.</p>
+
+        <h3>What majaco Delivers for Redzone</h3>
+
+        <p>majaco will provide coaching resource directly (using boot-camp-trained consultants), passing on a portion of the coaching cost saving to the client. majaco will also ensure that Redzone is configured correctly for the site — so that the platform delivers value from day one rather than requiring a separate, costly coaching engagement.</p>
+
+        <p>Critically, for clients where Redzone is struggling to close or where adoption has been patchy (IPL is a live example), majaco's guarantee-backed approach removes the objection. This helps Redzone sell into accounts they would otherwise lose, which is a significant short-term win for their licence revenue.</p>
+
+        <h3>Ensuring a World-Class Implementation</h3>
+
+        <p>A key part of the client sell is that majaco doesn't just recommend Redzone — <span class="highlight">we ensure it is properly installed and configured</span> so the client gets the most out of it. majaco led the Redzone implementation at Vibrant Foods, which was described by Redzone coach Neil West as <em>"a benchmark for us to compare future rollouts to"</em>, and has since led follow-on implementations at two further sites. This experience, combined with prior development of an award-winning IoT factory line monitoring system, means majaco understands what good looks like — and what goes wrong.</p>
+
+        <p>Through our implementation experience, we consistently see the same pitfalls derailing CWS rollouts. majaco's role is to prevent these from the outset:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Common Pitfall</th>
+              <th>What Goes Wrong</th>
+              <th>How majaco Prevents It</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Poor reference data setup</strong></td>
+              <td>Products lack clear groupings, planning rate alignment and true bottleneck speeds. Downtime codes are inconsistent across sites, not mutually exclusive, or missing "planned" duration agreements. This only worsens over time and is difficult to fix retrospectively.</td>
+              <td>majaco builds the product hierarchy and downtime tree as part of the assessment, aligned to the Lost Time framework (LTSR, LTMW, UPDT). Codes are designed to be mutually exclusive, completely exhaustive, and consistent across lines and sites from day one.</td>
+            </tr>
+            <tr>
+              <td><strong>Poor automation setup</strong></td>
+              <td>Wrong locations automated, sub-optimal signals chosen, or too many locations left manual — leading to inaccurate data that operators stop trusting.</td>
+              <td>majaco specifies automation requirements during the assessment, ensuring signals are validated against observed performance before go-live.</td>
+            </tr>
+            <tr>
+              <td><strong>Not engaging the whole team</strong></td>
+              <td>If the system includes meetings, actions and messaging functionality but certain departments aren't included or enabled, those individuals disengage. Digital transformation requires whole-team buy-in from well before go-live.</td>
+              <td>majaco's change management programme identifies all affected team members and engages them from day one. Huddle structures, shift reviews and town halls are designed to include every level of the organisation.</td>
+            </tr>
+            <tr>
+              <td><strong>Insufficient buy-in to meetings and reporting</strong></td>
+              <td>Legacy reporting methods persist alongside the new system, creating duplication and undermining adoption. The system is "installed but not embedded".</td>
+              <td>majaco builds a bespoke analytics layer on top of Redzone data (typically Power BI), tailored to each level of the organisation. This replaces legacy reporting entirely and sets the tone for review meetings and action setting — ensuring long-term sustainability.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout-grey">
+          <p><strong>The client message:</strong> With majaco, you don't just get a Redzone licence and a coaching manual. You get a team that has delivered the best Redzone rollout in the UK, who will configure the system properly, build the reporting you actually need, embed the behaviours that make it stick, and guarantee the financial results. That is what de-risks your CWS investment.</p>
+        </div>
+
+        <h3>Ongoing Commercial Terms</h3>
+
+        <p>A Referral Partner Agreement is already in place (signed 26 June 2025, term to 25 July 2026) under which QAD pays majaco <strong>15% of net subscription fees in year 1</strong> and <strong>10% in year 2</strong> for any new customer majaco refers into Redzone. Donnelly Fresh Foods is the first client this applies to. The agreement covers Europe, applies to new customers only, and requires QAD to accept the lead and close within 180 days.</p>
+
+        <p>For the broader joint proposition described in this document, majaco would seek to formalise an <strong>ongoing share of Redzone licensing fees (indicatively 15%)</strong> for any client where the joint guarantee model is deployed. This goes beyond simple referral — it reflects the role majaco plays in both selling the platform and ensuring it delivers sustained value. For majaco, this creates a recurring revenue stream that complements programme fees. For Redzone, it aligns incentives — majaco is motivated to ensure the platform sticks, not just to complete and walk away.</p>
+
+        <div class="callout-grey">
+          <p><strong>Longer-term strategic value for majaco:</strong> Beyond programme fees and licence shares, this partnership develops majaco's sales funnel and de-risks new work generation. Each successful Redzone deployment becomes a reference site, a proof point, and a route to further work (yield, waste, supply chain) within the same client. As majaco scales towards 30 people over the next 3–4 years, the Redzone channel could become a meaningful contributor to pipeline.</p>
+        </div>
+
+        <h3>What Redzone Brings to the Partnership</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Contribution</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Brand advocacy</strong></td>
+              <td>Outward promotion of the partnership on Redzone's website and LinkedIn, lending credibility with enterprise prospects.</td>
+            </tr>
+            <tr>
+              <td><strong>Network introductions</strong></td>
+              <td>Use non-exec and senior contacts in Redzone's network to introduce majaco to potential clients (chairmen, CEOs, CFOs). majaco has most success selling when a senior advocate refers them to senior decision-makers.</td>
+            </tr>
+            <tr>
+              <td><strong>Direct selling</strong></td>
+              <td>Explain the joint offering directly to potential clients. Ryan has indicated he may be able to do this with SHS as a first test case.</td>
+            </tr>
+            <tr>
+              <td><strong>Joint fee guarantee</strong></td>
+              <td>Participate in the shared guarantee structure described above, de-risking the proposition for clients.</td>
+            </tr>
+            <tr>
+              <td><strong>Referral fees</strong></td>
+              <td>Existing Referral Partner Agreement (June 2025) pays majaco 15% year 1 / 10% year 2 on net subscription fees for referred customers (first client: Donnelly Fresh Foods). The joint guarantee model would extend this into a broader ongoing licence share arrangement.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Target Pipeline</h2>
+
+        <p>Three initial targets have been identified. A key constraint is majaco's current capacity — not all can be mobilised simultaneously. Sequencing will be managed as the team scales.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Target</th>
+              <th>Sponsor / Route</th>
+              <th>Status</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Meadow Foods</strong></td>
+              <td>Via Exponent (minority PE) / Alex Brittain</td>
+              <td><span class="status-tag tag-closed">Closed — Reopening</span></td>
+              <td>UK dairy processor, multi-site, £500–600M turnover. Previously identified as a £2M cost-out opportunity with Ryan Marshall as lead gen. Exponent hold a minority stake in Meadow Foods; collaboration with Ryan remains the route in. Next step: ask Alex Brittain to reach out to CEO Rajesh Tugnait.</td>
+            </tr>
+            <tr>
+              <td><strong>IPL — Spade Lane</strong></td>
+              <td>Direct (Gary McIlwaine, Head of Ops)</td>
+              <td><span class="status-tag tag-rock">Rock — Active</span></td>
+              <td>Fresh produce, 1,500 people across 5 sites. Discovery call completed 16 Mar 2026. Spade Lane (Kent) is the flagship opportunity. IPL already have Redzone at two sites (mixed results). majaco positioned to manage a single contract coordinating both majaco delivery and Redzone deployment. Site visit targeted June–July 2026. Assessment fee: £50k.</td>
+            </tr>
+            <tr>
+              <td><strong>SHS Group</strong></td>
+              <td>Redzone intro (Ryan Marshall)</td>
+              <td><span class="status-tag tag-new">New — Redzone Intro</span></td>
+              <td>Ryan has indicated he may be able to introduce majaco directly and explain the joint offering to SHS. This would be the first test of Redzone acting as a direct sales channel for majaco. No CRM record yet — to be created once introduction is made.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>IPL Spade Lane — Deep Dive</h2>
+
+        <p>IPL is the most advanced opportunity and serves as the template for how the joint proposition works in practice. Key details from the 16 March discovery call:</p>
+
+        <ul>
+          <li><strong>Scale:</strong> 1,500 people across five sites (Spade Lane, Telford, Normanton, Whittlesea, Interstat). Spade Lane is the biggest and most complex.</li>
+          <li><strong>History:</strong> Previously worked with Newton Europe (~20-person team) with positive results, but sustainability was the core challenge. Several ex-Newton staff still at IPL maintain an improvement mindset.</li>
+          <li><strong>Redzone experience:</strong> Deployed at Interstat (good) and Whittlesea (described as "a car crash"). Coaching cost is a key concern. LineView at Normanton.</li>
+          <li><strong>Key pain points:</strong> Sustainability of improvements when key people leave; data consolidation ("more data than sense"); raw material variability in fresh produce; high cost of Redzone coaching.</li>
+          <li><strong>majaco differentiator:</strong> Single contract coordinating both majaco and Redzone. Boot-camp-trained consultants can provide coaching without duplicating Redzone's charges. Guarantee-based pricing.</li>
+          <li><strong>Evidence shared:</strong> WARP Snacks (50% uplift in cases per man-hour), Vibrant Foods (30% uplift in PPLH, sustained 2–3 years later with integrated Redzone + Power BI system).</li>
+        </ul>
+
+        <h2>Next Steps</h2>
+
+        <ol class="action-list">
+          <li data-step="1">
+            <strong>SHS Group Introduction</strong> — Ryan to make initial approach to SHS, positioning the joint majaco + Redzone offering. First test case for Redzone's direct selling support role.
+            <span class="owner">Owner: Ryan Marshall · Target: TBC</span>
+          </li>
+          <li data-step="2">
+            <strong>Meadow Foods — Reopen</strong> — Ask Alex Brittain to reach out to CEO Rajesh Tugnait. Explore dual-path intro via Exponent (minority) and Ryan's Redzone relationship.
+            <span class="owner">Owner: Toby Parnell + Ryan Marshall · Target: TBC</span>
+          </li>
+          <li data-step="3">
+            <strong>IPL Spade Lane — Evidence Pack</strong> — Share WARP and Vibrant labour productivity / OEE evidence graphs with Gary McIlwaine ahead of site visit.
+            <span class="owner">Owner: Toby Parnell · Due: Before site visit</span>
+          </li>
+          <li data-step="4">
+            <strong>IPL Spade Lane — Site Visit</strong> — Schedule site visit to Kent. Attendees: John Hornby, Andy Cox, Kayleigh, DJ. Prepare Redzone demo materials and commercial overview.
+            <span class="owner">Owner: Toby Parnell · Target: June–July 2026</span>
+          </li>
+          <li data-step="5">
+            <strong>Joint Fee Guarantee Template</strong> — Draft standard commercial terms for the joint guarantee model. Agree waterfall mechanics, Redzone's risk position, and coaching cost treatment.
+            <span class="owner">Owner: Toby Parnell · Due: Before first joint proposal</span>
+          </li>
+          <li data-step="6">
+            <strong>Brand Advocacy</strong> — Redzone to publish partnership branding on website and LinkedIn. Explore co-branded case study or thought-leadership piece.
+            <span class="owner">Owner: Ryan Marshall + Toby Parnell · Target: Ongoing</span>
+          </li>
+          <li data-step="7">
+            <strong>Network Introductions</strong> — Ryan to identify 2–3 non-exec contacts who could introduce majaco to CEOs/CFOs in the £500M–£1Bn FMCG segment.
+            <span class="owner">Owner: Ryan Marshall · Target: Ongoing</span>
+          </li>
+          <li data-step="8">
+            <strong>CRM &amp; Admin</strong> — Create SHS opportunity record once intro is made. Renew Referral Partner Agreement before July 2026 expiry.
+            <span class="owner">Owner: Toby Parnell · Due: Post-intro / before 25 July 2026</span>
+          </li>
+          <li data-step="9">
+            <strong>Coaching Capability Build</strong> — Continue Redzone boot-camp training (2 complete, more planned). Confirm with Redzone that majaco-delivered coaching is commercially acceptable within joint engagements.
+            <span class="owner">Owner: Toby Parnell · Target: Ongoing through 2026</span>
+          </li>
+          <li data-step="10">
+            <strong>Partnership Review</strong> — Schedule quarterly check-in between Toby and Ryan to review pipeline, refine commercial model, and identify new joint opportunities.
+            <span class="owner">Owner: Toby Parnell + Ryan Marshall · Cadence: Quarterly from Q2 2026</span>
+          </li>
+        </ol>
+
+        <hr>
+
+        <h2>Key Contact</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Organisation</th>
+              <th>Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ryan Marshall</td>
+              <td>Senior Director, Global Accounts</td>
+              <td>QAD Redzone</td>
+              <td>rvu@qad.com</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="margin-top: 30px; color: #7A7A7A; font-size: 0.9em;">Workshop date: March 2026 · Document generated: 24 March 2026 · Classification: Internal — majaco</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
