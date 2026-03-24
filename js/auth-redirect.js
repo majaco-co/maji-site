@@ -15,7 +15,7 @@
 (function () {
   'use strict';
 
-  // Must match the hash used by auth-gate.js (sha256 of "maji2024")
+  // Must match the hash used by auth-gate.js
   var HASH = '5966b4dd75d2433be589e3875cb7cc36025b8b9f9307a08be600b2bb173e4773';
   var SESSION_KEY = 'maji_auth';
 

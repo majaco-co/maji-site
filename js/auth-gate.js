@@ -5,13 +5,11 @@
      <script src="js/auth-gate.js" data-password-hash="YOUR_SHA256_HASH"></script>
 
    Generate a hash:  echo -n "yourpassword" | shasum -a 256
-   Default password: maji2024
    ============================================= */
 
 (function () {
   'use strict';
 
-  // Default hash = sha256("maji2024")
   var scriptTag = document.currentScript;
   var HASH = scriptTag?.getAttribute('data-password-hash')
     || '5966b4dd75d2433be589e3875cb7cc36025b8b9f9307a08be600b2bb173e4773';
