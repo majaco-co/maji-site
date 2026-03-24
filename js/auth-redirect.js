@@ -21,6 +21,9 @@
 
   if (sessionStorage.getItem(SESSION_KEY) === HASH) return;
 
+  // Also allow visitors who authenticated via the client portal
+  if (sessionStorage.getItem('maji_client_auth')) return;
+
   // Redirect to the portal page at the site root
   window.location.replace('/protected-tools.html');
 })();
