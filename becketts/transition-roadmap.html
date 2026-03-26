@@ -1409,7 +1409,7 @@ const DATA = {
   },
   governance: [
     { id: 'sic-meeting', name: 'SIC', cadence: 'Per shift', description: 'Shift handover — what happened, what\'s running, immediate actions' },
-    { id: 'daily-ops', name: 'Daily Ops Review', cadence: 'Daily', description: 'Cross-shift performance review, escalate recurring issues' },
+    { id: 'daily-ops', name: 'Daily Ops Review', cadence: 'Daily', description: 'Cross-shift performance review — currently reviews OEE, yield and crewing from Feedback' },
     { id: 'weekly-review', name: 'Weekly Review', cadence: 'Weekly', description: 'Operational steering — are we on track, what needs intervention' },
     { id: 'weekly-planning', name: 'Weekly Planning', cadence: 'Weekly', description: 'Forward-looking — next week\'s schedule, crewing, line allocation' },
     { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in £, yield losses in £, labour cost vs plan' },
@@ -1482,7 +1482,7 @@ const DATA = {
   },
   // Which KPIs are active per phase
   kpisByPhase: {
-    now:    ['efficiency', 'crew-ratio'],
+    now:    ['efficiency', 'crew-ratio', 'ga-pct'],
     phase1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'var-to-std'],
     phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio'],
     phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std'],
