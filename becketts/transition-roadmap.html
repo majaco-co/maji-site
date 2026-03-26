@@ -1839,6 +1839,8 @@ function applyHighlight() {
 }
 
 /* ───── Event listeners ───── */
+let locked = null; // { type: 'metric'|'system'|'reporting'|'governance'|'metricChip', id: string }
+
 function clearHoverState() {
   hoveredMetric = null;
   hoveredSystem = null;
@@ -1847,103 +1849,90 @@ function clearHoverState() {
   hoveredMetricChip = null;
 }
 
+function isLocked() { return locked !== null; }
+
+function toggleLock(type, id) {
+  if (locked && locked.type === type && locked.id === id) {
+    // Unlock
+    locked = null;
+    focusedMetric = null;
+    document.querySelectorAll('.card.focused').forEach(c => c.classList.remove('focused'));
+  } else {
+    // Lock to this card
+    locked = { type, id };
+    focusedMetric = type === 'metric' ? id : null;
+    document.querySelectorAll('.card.focused').forEach(c => c.classList.remove('focused'));
+    if (type === 'metric') {
+      const el = document.getElementById('metric-' + id);
+      if (el) el.classList.add('focused');
+    }
+  }
+  clearHoverState();
+  // Re-set the appropriate hover var to match lock
+  if (locked) {
+    if (locked.type === 'metric') hoveredMetric = locked.id;
+    else if (locked.type === 'system') hoveredSystem = locked.id;
+    else if (locked.type === 'reporting') hoveredReporting = locked.id;
+    else if (locked.type === 'governance') hoveredGovernance = locked.id;
+    else if (locked.type === 'metricChip') hoveredMetricChip = locked.id;
+  }
+  applyHighlight();
+}
+
+function setHover(type, id) {
+  if (isLocked()) return;
+  clearHoverState();
+  if (type === 'metric') hoveredMetric = id;
+  else if (type === 'system') hoveredSystem = id;
+  else if (type === 'reporting') hoveredReporting = id;
+  else if (type === 'governance') hoveredGovernance = id;
+  else if (type === 'metricChip') hoveredMetricChip = id;
+  applyHighlight();
+}
+
+function clearHover() {
+  if (isLocked()) return;
+  clearHoverState();
+  applyHighlight();
+}
+
 function attachMetricListeners() {
   document.querySelectorAll('.card[data-metric]').forEach(card => {
-    card.addEventListener('click', () => {
-      const mId = card.dataset.metric;
-      if (focusedMetric === mId) {
-        focusedMetric = null;
-        card.classList.remove('focused');
-      } else {
-        document.querySelectorAll('.card.focused').forEach(c => c.classList.remove('focused'));
-        focusedMetric = mId;
-        card.classList.add('focused');
-      }
-      clearHoverState();
-      applyHighlight();
-    });
-
-    card.addEventListener('mouseenter', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      hoveredMetric = card.dataset.metric;
-      applyHighlight();
-    });
-
-    card.addEventListener('mouseleave', () => {
-      if (focusedMetric) return;
-      hoveredMetric = null;
-      clearHoverState();
-      applyHighlight();
-    });
+    card.addEventListener('click', () => toggleLock('metric', card.dataset.metric));
+    card.addEventListener('mouseenter', () => setHover('metric', card.dataset.metric));
+    card.addEventListener('mouseleave', clearHover);
   });
 }
 
 function attachSystemListeners() {
   document.querySelectorAll('.system-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      hoveredSystem = card.dataset.system;
-      applyHighlight();
-    });
-
-    card.addEventListener('mouseleave', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      applyHighlight();
-    });
+    card.addEventListener('click', () => toggleLock('system', card.dataset.system));
+    card.addEventListener('mouseenter', () => setHover('system', card.dataset.system));
+    card.addEventListener('mouseleave', clearHover);
   });
 }
 
 function attachReportingListeners() {
   document.querySelectorAll('.reporting-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      hoveredReporting = card.dataset.reporting;
-      applyHighlight();
-    });
-
-    card.addEventListener('mouseleave', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      applyHighlight();
-    });
+    card.addEventListener('click', () => toggleLock('reporting', card.dataset.reporting));
+    card.addEventListener('mouseenter', () => setHover('reporting', card.dataset.reporting));
+    card.addEventListener('mouseleave', clearHover);
   });
 }
 
 function attachGovernanceListeners() {
   document.querySelectorAll('.gov-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      hoveredGovernance = card.dataset.governance;
-      applyHighlight();
-    });
-
-    card.addEventListener('mouseleave', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      applyHighlight();
-    });
+    card.addEventListener('click', () => toggleLock('governance', card.dataset.governance));
+    card.addEventListener('mouseenter', () => setHover('governance', card.dataset.governance));
+    card.addEventListener('mouseleave', clearHover);
   });
 }
 
 function attachMetricChipListeners() {
   document.querySelectorAll('.metric-chip').forEach(chip => {
-    chip.addEventListener('mouseenter', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      hoveredMetricChip = chip.dataset.metricChip;
-      applyHighlight();
-    });
-
-    chip.addEventListener('mouseleave', () => {
-      if (focusedMetric) return;
-      clearHoverState();
-      applyHighlight();
-    });
+    chip.addEventListener('click', () => toggleLock('metricChip', chip.dataset.metricChip));
+    chip.addEventListener('mouseenter', () => setHover('metricChip', chip.dataset.metricChip));
+    chip.addEventListener('mouseleave', clearHover);
   });
 }
 
@@ -1957,11 +1946,13 @@ function attachPhaseListeners() {
       card.classList.add('active');
 
       currentPhase = newPhase;
+      locked = null;
       focusedMetric = null;
       hoveredMetric = null;
       hoveredSystem = null;
       hoveredReporting = null;
       hoveredGovernance = null;
+      hoveredMetricChip = null;
 
       renderMetricCards();
       renderSystemCards();
