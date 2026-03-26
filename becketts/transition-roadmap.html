@@ -1249,13 +1249,27 @@ const DATA = {
     phase1: ['sic-meeting', 'daily-ops', 'monthly-finance'],
     phase2: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance']
   },
-  // Which metrics each governance meeting reviews
+  // KPIs — the calculated metrics that governance meetings actually review
+  kpis: {
+    'lost-time':       { name: 'Lost Time',          area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'good-output', 'downtime', 'speed'] },
+    'dt-pareto':       { name: 'Downtime Pareto',    area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
+    'speed-variance':  { name: 'Speed Variance',     area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
+    'nct':             { name: 'Net Case Throughput', area: 'efficiency', color: '#6B7280', inputs: ['good-output', 'start-stop'] },
+    'crew-ratio':      { name: 'Crew per Line',      area: 'efficiency', color: '#6B7280', inputs: ['crew'] },
+    'yield-waterfall': { name: 'Yield Waterfall',     area: 'yield',      color: '#22C55E', inputs: ['giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value'] },
+    'ga-pct':          { name: 'Giveaway %',          area: 'yield',      color: '#22C55E', inputs: ['giveaway'] },
+    'var-to-std':      { name: 'Variance to Std',     area: 'yield',      color: '#22C55E', inputs: ['good-output', 'waste', 'giveaway'] },
+    'ctp-metric':      { name: 'Conformance to Plan', area: 'labour',     color: '#EAB308', inputs: ['plan-sequence', 'ctp'] },
+    'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'planned-hours', 'crew'] },
+    'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours'] }
+  },
+  // Which KPIs each governance meeting reviews
   governanceMetrics: {
-    'sic-meeting': ['start-stop', 'good-output', 'downtime', 'speed', 'crew'],
-    'daily-ops': ['start-stop', 'good-output', 'downtime', 'speed', 'waste', 'crew', 'giveaway'],
-    'weekly-review': ['good-output', 'downtime', 'speed', 'waste', 'crew', 'giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value'],
-    'weekly-planning': ['plan-sequence', 'ctp', 'paid-hours', 'planned-hours'],
-    'monthly-finance': ['good-output', 'downtime', 'waste', 'giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value', 'paid-hours']
+    'sic-meeting':    ['lost-time', 'dt-pareto', 'nct', 'crew-ratio', 'ga-pct'],
+    'daily-ops':      ['lost-time', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std'],
+    'weekly-review':  ['lost-time', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost'],
+    'weekly-planning':['ctp-metric', 'labour-cost', 'crew-ratio'],
+    'monthly-finance':['lost-time', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case']
   }
 };
 
@@ -1448,38 +1462,33 @@ function renderReportingCards() {
   attachReportingListeners();
 }
 
-/* ───── METRICS COLUMN: metric chips ───── */
+/* ───── METRICS COLUMN: KPI chips ───── */
 function renderMetricsColumn() {
   const container = document.getElementById('metricsColumn');
-  // Build a lookup: metricId → { name, areaColor }
-  const metricLookup = {};
-  DATA.areas.forEach(area => {
-    area.metrics.forEach(m => {
-      metricLookup[m.id] = { name: m.name, color: area.color, areaName: area.name };
-    });
-  });
 
-  // Collect unique metrics used across all governance meetings
-  const allMetricIds = new Set();
-  Object.values(DATA.governanceMetrics).forEach(ids => ids.forEach(id => allMetricIds.add(id)));
+  // Group KPIs by area
+  const areaOrder = ['efficiency', 'yield', 'labour'];
+  const areaLabels = { efficiency: 'Efficiency', yield: 'Yield', labour: 'Labour' };
+  const areaColors = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308' };
 
-  // Group by area for visual grouping
   let html = '';
-  DATA.areas.forEach(area => {
-    const areaMetrics = area.metrics.filter(m => allMetricIds.has(m.id));
-    if (!areaMetrics.length) return;
+  areaOrder.forEach(areaId => {
+    const kpisInArea = Object.entries(DATA.kpis).filter(([, kpi]) => kpi.area === areaId);
+    if (!kpisInArea.length) return;
 
-    html += '<div class="area-group-label"><span class="area-dot" style="background:' + area.color + ';"></span> ' + area.name + '</div>';
+    html += '<div class="area-group-label"><span class="area-dot" style="background:' + areaColors[areaId] + ';"></span> ' + areaLabels[areaId] + '</div>';
 
-    areaMetrics.forEach(m => {
-      // Check if this metric has data in the current phase
-      const pd = m[currentPhase];
-      const hasSystems = pd && pd.systems && pd.systems.length > 0;
-      const dataClass = hasSystems ? '' : ' style="opacity:0.4;"';
+    kpisInArea.forEach(([kpiId, kpi]) => {
+      // Check if any of the input data points have systems in the current phase
+      const hasData = kpi.inputs.some(inputId => {
+        const sys = getMetricSystems(inputId);
+        return sys.length > 0;
+      });
+      const dimStyle = hasData ? '' : ' style="opacity:0.4;"';
 
-      html += '<div class="metric-chip" id="mc-' + m.id + '" data-metric-chip="' + m.id + '"' + dataClass + '>';
-      html += '<div class="dot" style="background:' + area.color + ';"></div>';
-      html += '<h4>' + m.name + '</h4>';
+      html += '<div class="metric-chip" id="mc-' + kpiId + '" data-metric-chip="' + kpiId + '"' + dimStyle + '>';
+      html += '<div class="dot" style="background:' + kpi.color + ';"></div>';
+      html += '<h4>' + kpi.name + '</h4>';
       html += '</div>';
     });
   });
@@ -1564,12 +1573,12 @@ function drawLines() {
         drawBezier(svg, edgeOf(gCard, 'right'), edgeOf(mc, 'left'), 'rgba(218,241,27,0.5)', 1, 0.08);
       });
     });
-    // Metric chips → Reporting (via systems — just draw metric chip to reporting)
+    // Metric chips → Reporting (via KPI inputs → systems → reporting)
     document.querySelectorAll('.metric-chip').forEach(mc => {
-      const mId = mc.dataset.metricChip;
-      const metricSystems = getMetricSystems(mId);
+      const kpiId = mc.dataset.metricChip;
+      const inputSystems = getSystemsForInputs(getKpiInputs(kpiId));
       const rptIds = new Set();
-      metricSystems.forEach(sId => (sysToRptMap[sId] || []).forEach(rId => rptIds.add(rId)));
+      inputSystems.forEach(sId => (sysToRptMap[sId] || []).forEach(rId => rptIds.add(rId)));
       rptIds.forEach(rId => {
         const rCard = document.getElementById('rpt-' + rId);
         if (!rCard || rCard.classList.contains('inactive-rpt')) return;
@@ -1614,12 +1623,12 @@ function drawLines() {
     });
   });
   // Metric chips → Reporting
-  hl.metricChips.forEach(mId => {
-    const mc = document.getElementById('mc-' + mId);
+  hl.metricChips.forEach(kpiId => {
+    const mc = document.getElementById('mc-' + kpiId);
     if (!mc) return;
-    const metricSystems = getMetricSystems(mId);
+    const inputSystems = getSystemsForInputs(getKpiInputs(kpiId));
     const rptIds = new Set();
-    metricSystems.forEach(sId => { if (hl.systems.has(sId)) (sysToRptMap[sId] || []).forEach(rId => rptIds.add(rId)); });
+    inputSystems.forEach(sId => { if (hl.systems.has(sId)) (sysToRptMap[sId] || []).forEach(rId => rptIds.add(rId)); });
     rptIds.forEach(rId => {
       if (!hl.reporting.has(rId)) return;
       const rCard = document.getElementById('rpt-' + rId);
@@ -1669,6 +1678,30 @@ function getMetricSystems(metricId) {
   return systems;
 }
 
+/* Helper: get data input IDs that feed a KPI */
+function getKpiInputs(kpiId) {
+  const kpi = DATA.kpis[kpiId];
+  return kpi ? kpi.inputs : [];
+}
+
+/* Helper: find which KPIs a data input feeds into */
+function getKpisForInput(inputId) {
+  const result = [];
+  Object.entries(DATA.kpis).forEach(([kpiId, kpi]) => {
+    if (kpi.inputs.includes(inputId)) result.push(kpiId);
+  });
+  return result;
+}
+
+/* Helper: collect all systems for a set of data input IDs */
+function getSystemsForInputs(inputIds) {
+  const systems = new Set();
+  inputIds.forEach(inputId => {
+    getMetricSystems(inputId).forEach(s => systems.add(s));
+  });
+  return systems;
+}
+
 /* Build highlight sets from current hover/focus state, or null if nothing active */
 function buildHighlightSets() {
   const activeMetric = focusedMetric || hoveredMetric;
@@ -1681,50 +1714,45 @@ function buildHighlightSets() {
   const hl = { governance: new Set(), metricChips: new Set(), reporting: new Set(), systems: new Set(), dataInputs: new Set() };
 
   if (hoveredGovernance) {
-    // Governance → trace right
     hl.governance.add(hoveredGovernance);
-    (govMetricsMap[hoveredGovernance] || []).forEach(mId => {
-      hl.metricChips.add(mId);
-      const mSys = getMetricSystems(mId);
-      mSys.forEach(sId => {
+    // KPIs this meeting reviews
+    (govMetricsMap[hoveredGovernance] || []).forEach(kpiId => {
+      hl.metricChips.add(kpiId);
+      // Data inputs that feed this KPI
+      getKpiInputs(kpiId).forEach(inputId => {
+        hl.dataInputs.add(inputId);
+        getMetricSystems(inputId).forEach(sId => hl.systems.add(sId));
+      });
+    });
+    // Reporting from govToRpt
+    (govToRptMap[hoveredGovernance] || []).forEach(rId => hl.reporting.add(rId));
+    // Also add reporting for highlighted systems
+    hl.systems.forEach(sId => {
+      (sysToRptMap[sId] || []).forEach(rId => hl.reporting.add(rId));
+    });
+
+  } else if (hoveredMetricChip) {
+    hl.metricChips.add(hoveredMetricChip);
+    // Left: governance meetings that review this KPI
+    Object.keys(govMetricsMap).forEach(gId => {
+      if (govMetricsMap[gId].includes(hoveredMetricChip)) hl.governance.add(gId);
+    });
+    // Right: data inputs → systems → reporting
+    getKpiInputs(hoveredMetricChip).forEach(inputId => {
+      hl.dataInputs.add(inputId);
+      getMetricSystems(inputId).forEach(sId => {
         hl.systems.add(sId);
         (sysToRptMap[sId] || []).forEach(rId => hl.reporting.add(rId));
       });
     });
-    // Also add reporting from govToRpt
-    (govToRptMap[hoveredGovernance] || []).forEach(rId => hl.reporting.add(rId));
-    // Data inputs that use highlighted systems
-    DATA.areas.forEach(area => {
-      area.metrics.forEach(m => {
-        const pd = m[currentPhase];
-        if (pd && pd.systems && pd.systems.some(s => hl.systems.has(s))) hl.dataInputs.add(m.id);
-      });
-    });
-  } else if (hoveredMetricChip) {
-    // Metric chip → trace both directions
-    hl.metricChips.add(hoveredMetricChip);
-    // Left: which governance meetings use this metric
-    Object.keys(govMetricsMap).forEach(gId => {
-      if (govMetricsMap[gId].includes(hoveredMetricChip)) hl.governance.add(gId);
-    });
-    // Right: systems, reporting, data inputs
-    const mSys = getMetricSystems(hoveredMetricChip);
-    mSys.forEach(sId => {
-      hl.systems.add(sId);
-      (sysToRptMap[sId] || []).forEach(rId => hl.reporting.add(rId));
-    });
-    DATA.areas.forEach(area => {
-      area.metrics.forEach(m => {
-        if (m.id === hoveredMetricChip) hl.dataInputs.add(m.id);
-      });
-    });
+
   } else if (hoveredReporting) {
     hl.reporting.add(hoveredReporting);
-    // Left: metric chips and governance
+    // Left: governance
     Object.keys(govToRptMap).forEach(gId => {
       if (govToRptMap[gId].includes(hoveredReporting)) hl.governance.add(gId);
     });
-    // Right: systems
+    // Right: systems → data inputs → KPIs
     Object.keys(sysToRptMap).forEach(sId => {
       if (sysToRptMap[sId].includes(hoveredReporting)) {
         hl.systems.add(sId);
@@ -1733,12 +1761,13 @@ function buildHighlightSets() {
             const pd = m[currentPhase];
             if (pd && pd.systems && pd.systems.includes(sId)) {
               hl.dataInputs.add(m.id);
-              hl.metricChips.add(m.id);
+              getKpisForInput(m.id).forEach(kId => hl.metricChips.add(kId));
             }
           });
         });
       }
     });
+
   } else if (hoveredSystem) {
     hl.systems.add(hoveredSystem);
     // Right: data inputs
@@ -1747,23 +1776,30 @@ function buildHighlightSets() {
         const pd = m[currentPhase];
         if (pd && pd.systems && pd.systems.includes(hoveredSystem)) {
           hl.dataInputs.add(m.id);
-          hl.metricChips.add(m.id);
+          getKpisForInput(m.id).forEach(kId => hl.metricChips.add(kId));
         }
       });
     });
-    // Left: reporting, governance
+    // Left: reporting → governance
     (sysToRptMap[hoveredSystem] || []).forEach(rId => {
       hl.reporting.add(rId);
       Object.keys(govToRptMap).forEach(gId => {
         if (govToRptMap[gId].includes(rId)) hl.governance.add(gId);
       });
     });
+
   } else if (activeMetric) {
-    // Data input hover/focus → trace left
+    // Data input hover/focus → trace left through KPIs
     hl.dataInputs.add(activeMetric);
-    hl.metricChips.add(activeMetric);
-    const mSys = getMetricSystems(activeMetric);
-    mSys.forEach(sId => {
+    // Which KPIs use this data input
+    getKpisForInput(activeMetric).forEach(kId => {
+      hl.metricChips.add(kId);
+      Object.keys(govMetricsMap).forEach(gId => {
+        if (govMetricsMap[gId].includes(kId)) hl.governance.add(gId);
+      });
+    });
+    // Systems and reporting
+    getMetricSystems(activeMetric).forEach(sId => {
       hl.systems.add(sId);
       (sysToRptMap[sId] || []).forEach(rId => {
         hl.reporting.add(rId);
@@ -1771,9 +1807,6 @@ function buildHighlightSets() {
           if (govToRptMap[gId].includes(rId)) hl.governance.add(gId);
         });
       });
-    });
-    Object.keys(govMetricsMap).forEach(gId => {
-      if (govMetricsMap[gId].includes(activeMetric)) hl.governance.add(gId);
     });
   }
 
