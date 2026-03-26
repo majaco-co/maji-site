@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transition Roadmap — Becketts — majaco</title>
+<script src="../js/auth-redirect.js"></script>
+<script src="../js/client-redirect.js" data-password-hash="40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84"></script>
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<style>
+body {
+  background-color: #001412;
+  color: #ffffff;
+}
+
+.section {
+  background-color: #001412;
+}
+
+.section .container {
+  max-width: 90vw;
+}
+
+/* DISCLAIMER BANNER */
+.disclaimer-banner {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+}
+
+.disclaimer-banner strong {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* PHASE SELECTOR */
+.phase-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.phase-card {
+  padding: 1.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 300ms ease;
+  position: relative;
+}
+
+.phase-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.phase-card.active {
+  border-color: #DAF11B;
+  background: rgba(218, 241, 27, 0.08);
+  box-shadow: 0 0 20px rgba(218, 241, 27, 0.2);
+}
+
+.phase-card__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.phase-card__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.phase-card.active .phase-card__title {
+  color: #DAF11B;
+}
+
+.phase-card__subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.phase-card__systems {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.phase-card__system-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 2px;
+}
+
+.phase-transition-arrow {
+  position: absolute;
+  top: 50%;
+  right: -1.5rem;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 2px;
+  background: #DAF11B;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.phase-card:not(:last-child).showing-transition .phase-transition-arrow {
+  opacity: 0.6;
+}
+
+/* SYSTEM LEGEND */
+.system-legend {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+}
+
+.system-legend__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+  align-self: center;
+  margin-right: 1rem;
+}
+
+.system-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.system-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.system-pill.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(218, 241, 27, 0.15);
+}
+
+.system-pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* AREA SECTIONS */
+.area-section {
+  margin-bottom: 3rem;
+}
+
+.area-header {
+  border-left: 4px solid;
+  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.area-header__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.area-header__description {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.area-section.efficiency .area-header {
+  border-left-color: #6B7280;
+}
+
+.area-section.yield .area-header {
+  border-left-color: #22C55E;
+}
+
+.area-section.labour .area-header {
+  border-left-color: #EAB308;
+}
+
+/* LABOUR SCOPING OVERLAY */
+.area-section.labour {
+  position: relative;
+  opacity: 0.5;
+}
+
+.labour-scoping-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.labour-scoping-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  padding: 3rem;
+  border-radius: 8px;
+}
+
+/* METRIC CARDS */
+.metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metric-card {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.metric-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.metric-card.dimmed {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.metric-card.expanded {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.metric-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.metric-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  flex: 1;
+}
+
+.metric-card__systems {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.metric-card__system-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  transition: all 200ms ease;
+}
+
+.metric-card__system-pill .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.metric-card__notes {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.metric-card__issues {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.metric-card__issues-icon {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.metric-card__issues-list {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.5);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.metric-card__issues-list li {
+  margin-bottom: 0.25rem;
+}
+
+.metric-card__issues-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* EXPANDED METRIC VIEW */
+.metric-card.expanded .metric-card__content {
+  display: none;
+}
+
+.metric-expansion {
+  display: none;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.metric-card.expanded .metric-expansion {
+  display: block;
+  animation: fadeIn 300ms ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.phase-journey {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.phase-journey__column {
+  position: relative;
+}
+
+.phase-journey__column:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -1.5rem;
+  top: 1.5rem;
+  font-size: 1.25rem;
+  color: #DAF11B;
+  font-weight: 300;
+}
+
+.phase-journey__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.75rem;
+}
+
+.phase-journey__systems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.phase-journey__system-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  width: fit-content;
+  transition: all 200ms ease;
+}
+
+.phase-journey__system-pill .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.phase-journey__notes {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.phase-journey__timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.phase-journey__timeline-item {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.phase-journey__timeline-item strong {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+/* GOVERNANCE SECTION */
+.governance-section {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.governance-header {
+  margin-bottom: 2rem;
+}
+
+.governance-header__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.governance-header__note {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.governance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.governance-card {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  transition: all 200ms ease;
+}
+
+.governance-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.governance-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.governance-card__cadence {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.75rem;
+  background: rgba(218, 241, 27, 0.15);
+  color: #DAF11B;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.governance-card__description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .phase-selector {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .phase-transition-arrow {
+    display: none;
+  }
+
+  .metrics-list {
+    gap: 0.75rem;
+  }
+
+  .phase-journey {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .phase-journey__column:not(:last-child)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .section .container {
+    max-width: 95vw;
+  }
+
+  .phase-card__subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .system-legend {
+    flex-direction: column;
+  }
+
+  .system-legend__label {
+    margin-right: 0;
+    margin-bottom: 0.75rem;
+    width: 100%;
+  }
+
+  .metric-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .metric-card__systems {
+    margin-left: 0;
+    margin-top: 0.75rem;
+    width: 100%;
+  }
+
+  .governance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .area-header__title {
+    font-size: 1.375rem;
+  }
+
+  .phase-card__title {
+    font-size: 1.25rem;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+        <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="../about-maji.html">About maji</a></li>
+        <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+      </ul>
+      <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">Get started</a>
+      <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="nav__mobile" id="mobile-menu" role="menu">
+    <a href="../about-maji.html" role="menuitem">About maji</a>
+    <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+    <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="breadcrumb__sep" aria-hidden="true">/</span>
+      <a href="index.html">Becketts</a>
+      <span class="breadcrumb__sep" aria-hidden="true">/</span>
+      <span aria-current="page">Transition Roadmap</span>
+    </nav>
+    <p class="page-hero__eyebrow">Data Architecture</p>
+    <h1 class="page-hero__title">Transition <span class="text-green">Roadmap</span></h1>
+    <p class="page-hero__subtitle">Phased migration from Feedback &amp; SIC to SFDC — system by system, metric by metric.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="disclaimer-banner">
+      <strong>Roadmap note:</strong> This transition is a multi-month programme. Phases shown are indicative — timings and scope subject to resource availability and learning from earlier phases. Data dependencies and integration points are documented below the roadmap.
+    </div>
+
+    <!-- PHASE SELECTOR -->
+    <div class="phase-selector" id="phaseSelector" role="tablist">
+      <div class="phase-card active" data-phase="now" role="tab" aria-selected="true">
+        <div class="phase-card__label">Current</div>
+        <div class="phase-card__title">Now</div>
+        <div class="phase-card__subtitle">Three systems, fragmented data</div>
+        <div class="phase-card__systems" id="systemsNow"></div>
+      </div>
+      <div class="phase-card showing-transition" data-phase="phase1" role="tab" aria-selected="false">
+        <div class="phase-card__label">Transition</div>
+        <div class="phase-card__title">Phase 1</div>
+        <div class="phase-card__subtitle">Making do — supplementing existing systems</div>
+        <div class="phase-card__systems" id="systemsPhase1"></div>
+        <div class="phase-transition-arrow"></div>
+      </div>
+      <div class="phase-card" data-phase="phase2" role="tab" aria-selected="false">
+        <div class="phase-card__label">Target</div>
+        <div class="phase-card__title">Phase 2</div>
+        <div class="phase-card__subtitle">New world — SFDC drives everything</div>
+        <div class="phase-card__systems" id="systemsPhase2"></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM LEGEND -->
+    <div class="system-legend" role="group" aria-label="System filters">
+      <span class="system-legend__label">Systems:</span>
+      <div id="systemLegend"></div>
+    </div>
+
+    <!-- AREAS & METRICS -->
+    <div id="areasContainer"></div>
+
+    <!-- GOVERNANCE -->
+    <div class="governance-section">
+      <div class="governance-header">
+        <h2 class="governance-header__title">Governance Structure</h2>
+        <p class="governance-header__note">Data dependencies and integration points coming soon</p>
+      </div>
+      <div class="governance-grid" id="governanceGrid"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__bottom">
+      <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+      <nav class="footer__legal" aria-label="Legal links">
+        <a href="../privacy-policy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+const DATA = {
+  areas: [
+    {
+      id: 'efficiency',
+      name: 'Efficiency',
+      color: '#6B7280',
+      description: {
+        now: 'Three systems capturing efficiency data in parallel — significant duplication and accuracy gaps.',
+        phase1: 'Feedback drives efficiency. XL Vorne supplements on 2 lines. Slicer provides automated downtime and speed.',
+        phase2: 'SFDC drives efficiency. All metrics captured automatically at bottleneck. Legacy systems switched off.'
+      },
+      metrics: [
+        {
+          id: 'start-stop',
+          name: 'Start / Stop Time',
+          now: {
+            systems: ['feedback', 'sfdc'],
+            notes: 'Manual entry in both Feedback and SFDC. Not accurate — recorded within the hour, not to the minute.',
+            issues: ['Dual entry across systems', 'Accuracy — within hour, not minute', 'No automated capture']
+          },
+          phase1: {
+            months: [
+              { month: 1, action: 'Audit current accuracy across both systems' },
+              { month: 2, action: 'XL Vorne installed on 2 lines — supplements existing recording' },
+              { month: 3, action: 'XL Vorne data validated against Feedback/SFDC entries' }
+            ],
+            systems: ['feedback', 'sfdc', 'xl-vorne'],
+            notes: 'XL Vorne added to 2 lines only — deliberate duplication to validate automated capture vs manual entry. Remaining lines stay on Feedback + SFDC.',
+            issues: ['Duplication on 2 lines (by design)', 'Rest of lines still manual']
+          },
+          phase2: {
+            systems: ['sfdc'],
+            notes: 'Auto — shift start time and run start time captured directly in SFDC. No manual entry required.',
+            requirements: ['SFDC auto-capture proven reliable on Vorne lines', 'Accuracy validated against manual baseline']
+          }
+        },
+        {
+          id: 'good-output',
+          name: 'Good Output',
+          now: {
+            systems: ['sfdc'],
+            notes: 'Cases manually entered against works orders in SFDC. Accurate but late — not available in real-time.',
+            issues: ['Data arrives late', 'Manual entry against W.O.']
+          },
+          phase1: {
+            months: [
+              { month: 1, action: 'Explore hourly output updates via XL' },
+              { month: 2, action: 'NCT (Net Case Throughput) captured' },
+              { month: 3, action: 'NCT reporting validated' }
+            ],
+            systems: ['sfdc', 'xl-vorne'],
+            notes: 'W.O. data remains in SFDC. XL Vorne supplements with near-real-time output counts on 2 lines. NCT captured from Month 2.',
+            issues: ['Hourly granularity needed', 'Only 2 lines have real-time data']
+          },
+          phase2: {
+            systems: ['sfdc', 'checkweigher'],
+            notes: 'Good output from checkweigher (C/W) — accurate, real-time, per-unit. Feeds directly to SFDC.',
+            requirements: ['Checkweigher integration to SFDC', 'Reconciliation with W.O. confirmed quantities']
+          }
+        },
+        {
+          id: 'downtime',
+          name: 'Downtime',
+          now: {
+            systems: ['feedback', 'sic'],
+            notes: 'Manually entered in Feedback. Also manually entered in SIC but data not used.',
+            issues: ['Dual entry — SIC data wasted', 'No structured reason codes', 'Manual = incomplete capture']
+          },
+          phase1: {
+            months: [
+              { month: 1, action: 'Slicer downtime with reasons captured' },
+              { month: 2, action: 'Slicer reason coding refined' },
+              { month: 3, action: 'Full slicer downtime Pareto available' }
+            ],
+            systems: ['feedback', 'slicer'],
+            notes: 'Slicer provides automated downtime capture with reason codes alongside Feedback manual entry.',
+            issues: ['Slicer only — other equipment still manual', 'Reason code taxonomy needs defining']
+          },
+          phase2: {
+            systems: ['sfdc'],
+            notes: 'Recorded at bottleneck (BN). MECE reason capture. Decision needed: plan vs allow distinction.',
+            requirements: ['MECE reason code taxonomy agreed', 'Bottleneck sensors deployed', 'Plan vs allow categories defined']
+          }
+        },
+        {
+          id: 'speed',
+          name: 'Speed',
+          now: {
+            systems: ['sic'],
+            notes: 'Slicer shows settings entry. When is speed actually set/recorded? BN Feedback inconsistent.',
+            issues: ['Unclear when speed is captured', 'Settings vs actual speed not distinguished']
+          },
+          phase1: {
+            months: [
+              { month: 2, action: 'Speed data captured from Slicer' },
+              { month: 3, action: 'Slicer speed validated and reported' }
+            ],
+            systems: ['slicer'],
+            notes: 'Slicer provides actual speed data.',
+            issues: ['Only slicer lines covered', 'Settings vs actual distinction needed']
+          },
+          phase2: {
+            systems: ['sfdc'],
+            notes: 'Recorded at bottleneck (BN) in SFDC. Automated, continuous speed capture.',
+            requirements: ['BN speed sensors deployed', 'Speed targets configured per SKU per line']
+          }
+        },
+        {
+          id: 'waste',
+          name: 'Waste',
+          now: {
+            systems: [],
+            notes: 'No structured waste capture.',
+            issues: ['No systematic recording']
+          },
+          phase1: {
+            months: [{ month: 1, action: 'Yield captured by W.O. in SFDC' }],
+            systems: ['sfdc'],
+            notes: 'Waste captured as part of yield tracking against works orders.',
+            issues: []
+          },
+          phase2: {
+            systems: ['sfdc'],
+            notes: 'See Yield — waste is a component of overall yield tracking.',
+            requirements: ['Yield framework fully operational in SFDC']
+          }
+        },
+        {
+          id: 'crew',
+          name: 'Crew',
+          now: {
+            systems: ['feedback'],
+            notes: 'Crewing entered into Feedback system.',
+            issues: ['Feedback only — not linked to W.O.']
+          },
+          phase1: {
+            months: [
+              { month: 1, action: 'Crewing linked to W.O. in SFDC' },
+              { month: 2, action: 'Crew reporting active' },
+              { month: 3, action: 'Crew data reported alongside production' }
+            ],
+            systems: ['sfdc'],
+            notes: 'Crewing moved to W.O. in SFDC.',
+            issues: []
+          },
+          phase2: {
+            systems: ['sfdc'],
+            notes: 'Crew on Line — real-time crew assignment and tracking in SFDC.',
+            requirements: ['Crew assignment workflow in SFDC', 'Integration with labour planning']
+          }
+        },
+        {
+          id: 'reporting-eff',
+          name: 'Reporting',
+          now: {
+            systems: ['feedback', 'sic'],
+            notes: 'Ad hoc — whatever has been asked for and/or entered. Needs checking.',
+            issues: ['Ad hoc', 'No standard report pack', 'Data quality uncertain']
+          },
+          phase1: {
+            months: [
+              { month: 1, action: 'Efficiency + Yield report scope defined' },
+              { month: 2, action: 'Modify Feedback at SIC as required' },
+              { month: 3, action: 'XL reporting alongside Feedback/SIC' }
+            ],
+            systems: ['feedback', 'sic', 'xl-vorne'],
+            notes: 'Hybrid reporting — XL supplements alongside existing Feedback/SIC.',
+            issues: ['Multiple report sources', 'Manual consolidation needed']
+          },
+          phase2: {
+            systems: ['sfdc'],
+            notes: 'All real-time reports and dashboards driven from SFDC.',
+            requirements: ['All efficiency metrics flowing to SFDC', 'Dashboard/report design agreed']
+          }
+        }
+      ]
+    },
+    {
+      id: 'yield',
+      name: 'Yield',
+      color: '#22C55E',
+      description: {
+        now: 'Yield metrics largely untracked. No structured capture or reporting.',
+        phase1: 'Most yield data booked against W.O. in SFDC. Manual giveaway capture via whiteboard → Feedback.',
+        phase2: 'Aggregation, calculation and reporting all in SFDC. Auto-capture from multihead weighers.'
+      },
+      metrics: [
+        {
+          id: 'giveaway',
+          name: 'Giveaway (G.A.)',
+          now: { systems: [], notes: 'No structured giveaway capture.', issues: ['No systematic recording'] },
+          phase1: {
+            months: [{ month: 1, action: 'Whiteboard capture at line level' }, { month: 2, action: 'Giveaway data entered into Feedback' }],
+            systems: ['manual', 'feedback'],
+            notes: 'Starts on whiteboard, then into Feedback. Manual process.',
+            issues: ['Manual capture', 'Whiteboard → system lag']
+          },
+          phase2: { systems: ['sfdc'], notes: 'Auto into SFDC against W.O. — multihead weigher data feeds directly.', requirements: ['Multihead weigher integration to SFDC', 'Auto-booking against W.O.'] }
+        },
+        {
+          id: 'grading-waste',
+          name: 'Grading Waste',
+          now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
+          phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }], systems: ['sfdc'], notes: 'Booked against works orders in SFDC. Raw data capture done.', issues: [] },
+          phase2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] }
+        },
+        {
+          id: 'gripper-ends',
+          name: 'Gripper Ends',
+          now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
+          phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }], systems: ['sfdc'], notes: 'Booked against works orders in SFDC.', issues: [] },
+          phase2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] }
+        },
+        {
+          id: 'pressing-loss',
+          name: 'Pressing Loss',
+          now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
+          phase1: { months: [], systems: [], notes: 'No Phase 1 action — deferred to Phase 2.', issues: ['No capture mechanism yet'] },
+          phase2: { systems: ['sfdc'], notes: 'Calculated against W.O. in SFDC.', requirements: ['Pressing loss methodology defined', 'Data capture mechanism in place'] }
+        },
+        {
+          id: 'high-value',
+          name: 'High Value Cuts (Prime / Rib)',
+          now: { systems: [], notes: 'Not tracked separately.', issues: ['No recording'] },
+          phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }, { month: 2, action: 'Prime and Rib reported separately' }], systems: ['sfdc'], notes: 'Booked against W.O. Each reported separately.', issues: [] },
+          phase2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] }
+        },
+        {
+          id: 'reporting-yield',
+          name: 'Reporting',
+          now: { systems: [], notes: 'No structured yield reporting.', issues: ['No reporting'] },
+          phase1: { months: [{ month: 2, action: 'Waterfall by W.O. — report location TBC' }], systems: ['sfdc'], notes: 'Waterfall yield report by works order. Location TBC.', issues: ['Report location undecided'] },
+          phase2: { systems: ['sfdc'], notes: 'All yield reporting in SFDC — complete waterfall.', requirements: ['All yield components flowing to SFDC', 'Waterfall report design agreed'] }
+        }
+      ]
+    },
+    {
+      id: 'labour',
+      name: 'Labour Planning & Control',
+      color: '#EAB308',
+      description: {
+        now: 'Scoping in progress — detail to follow.',
+        phase1: 'Scoping in progress — detail to follow.',
+        phase2: 'Scoping in progress — detail to follow.'
+      },
+      tbc: true,
+      metrics: [
+        { id: 'paid-hours', name: 'Paid Hours', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } },
+        { id: 'planned-hours', name: 'Planned Hours', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } },
+        { id: 'plan-sequence', name: 'Plan Sequence', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } },
+        { id: 'ctp', name: 'Capacity to Promise (CTP)', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } }
+      ]
+    }
+  ],
+  systems: {
+    'sfdc': { name: 'SFDC', color: '#3B82F6' },
+    'feedback': { name: 'Feedback', color: '#F97316' },
+    'sic': { name: 'SIC', color: '#8B5CF6' },
+    'xl-vorne': { name: 'XL Vorne', color: '#06B6D4' },
+    'checkweigher': { name: 'C/W', color: '#10B981' },
+    'slicer': { name: 'Slicer', color: '#EC4899' },
+    'manual': { name: 'Manual', color: '#78716C' }
+  },
+  governance: [
+    { id: 'sic-meeting', name: 'SIC', cadence: 'Per shift', description: 'Shift handover — what happened, what\'s running, immediate actions' },
+    { id: 'daily-ops', name: 'Daily Ops Review', cadence: 'Daily', description: 'Cross-shift performance review, escalate recurring issues' },
+    { id: 'weekly-review', name: 'Weekly Review', cadence: 'Weekly', description: 'Operational steering — are we on track, what needs intervention' },
+    { id: 'weekly-planning', name: 'Weekly Planning', cadence: 'Weekly', description: 'Forward-looking — next week\'s schedule, crewing, line allocation' },
+    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in £, yield losses in £, labour cost vs plan' }
+  ]
+};
+
+let currentPhase = 'now';
+let currentFilter = null;
+
+function getSystemsForPhaseArea(phase, area) {
+  const systemsUsed = new Set();
+  area.metrics.forEach(metric => {
+    if (metric[phase] && metric[phase].systems) {
+      metric[phase].systems.forEach(s => systemsUsed.add(s));
+    }
+  });
+  return Array.from(systemsUsed);
+}
+
+function renderPhaseSystemsDots() {
+  const areas = DATA.areas;
+
+  const nowSystems = new Set();
+  const phase1Systems = new Set();
+  const phase2Systems = new Set();
+
+  areas.forEach(area => {
+    area.metrics.forEach(metric => {
+      if (metric.now && metric.now.systems) metric.now.systems.forEach(s => nowSystems.add(s));
+      if (metric.phase1 && metric.phase1.systems) metric.phase1.systems.forEach(s => phase1Systems.add(s));
+      if (metric.phase2 && metric.phase2.systems) metric.phase2.systems.forEach(s => phase2Systems.add(s));
+    });
+  });
+
+  const renderDots = (container, systems) => {
+    container.innerHTML = Array.from(systems).map(sysId => {
+      const sys = DATA.systems[sysId];
+      return `<div class="phase-card__system-dot" style="background-color: ${sys.color};" title="${sys.name}"></div>`;
+    }).join('');
+  };
+
+  renderDots(document.getElementById('systemsNow'), nowSystems);
+  renderDots(document.getElementById('systemsPhase1'), phase1Systems);
+  renderDots(document.getElementById('systemsPhase2'), phase2Systems);
+}
+
+function renderSystemLegend() {
+  const legend = document.getElementById('systemLegend');
+  const allSystems = Object.keys(DATA.systems);
+  legend.innerHTML = allSystems.map(sysId => {
+    const sys = DATA.systems[sysId];
+    return `
+      <button class="system-pill" data-system="${sysId}" title="Filter by ${sys.name}">
+        <div class="system-pill__dot" style="background-color: ${sys.color};"></div>
+        <span>${sys.name}</span>
+      </button>
+    `;
+  }).join('');
+
+  document.querySelectorAll('.system-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const sysId = pill.dataset.system;
+      if (currentFilter === sysId) {
+        currentFilter = null;
+        pill.classList.remove('active');
+      } else {
+        document.querySelectorAll('.system-pill.active').forEach(p => p.classList.remove('active'));
+        currentFilter = sysId;
+        pill.classList.add('active');
+      }
+      updateMetricVisibility();
+    });
+  });
+}
+
+function updateMetricVisibility() {
+  document.querySelectorAll('.metric-card').forEach(card => {
+    if (!currentFilter) {
+      card.classList.remove('dimmed');
+      return;
+    }
+    const systems = card.dataset.systems ? card.dataset.systems.split(',') : [];
+    if (systems.includes(currentFilter)) {
+      card.classList.remove('dimmed');
+    } else {
+      card.classList.add('dimmed');
+    }
+  });
+}
+
+function renderMetricCard(metric, phase, areaId) {
+  const phaseData = metric[phase];
+  if (!phaseData) return '';
+
+  const systemsList = phaseData.systems || [];
+  const systemsStr = systemsList.join(',');
+  const issuesCount = phaseData.issues ? phaseData.issues.length : 0;
+
+  let html = `
+    <div class="metric-card" data-metric="${metric.id}" data-phase="${phase}" data-area="${areaId}" data-systems="${systemsStr}">
+      <div class="metric-card__header">
+        <div class="metric-card__title">${metric.name}</div>
+        <div class="metric-card__systems">
+  `;
+
+  systemsList.forEach(sysId => {
+    const sys = DATA.systems[sysId];
+    html += `
+      <div class="metric-card__system-pill">
+        <div class="dot" style="background-color: ${sys.color};"></div>
+        <span>${sys.name}</span>
+      </div>
+    `;
+  });
+
+  html += `
+        </div>
+      </div>
+      <div class="metric-card__content">
+        <div class="metric-card__notes">${phaseData.notes}</div>
+  `;
+
+  if (issuesCount > 0) {
+    html += `
+      <div class="metric-card__issues">
+        <div class="metric-card__issues-icon">⚠</div>
+        <ul class="metric-card__issues-list">
+    `;
+    phaseData.issues.forEach(issue => {
+      html += `<li>${issue}</li>`;
+    });
+    html += `
+        </ul>
+      </div>
+    `;
+  }
+
+  html += `
+      </div>
+      <div class="metric-expansion">
+        <div class="phase-journey">
+  `;
+
+  ['now', 'phase1', 'phase2'].forEach((p, idx) => {
+    const pData = metric[p];
+    const pLabel = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : 'Phase 2';
+    html += `
+      <div class="phase-journey__column">
+        <div class="phase-journey__label">${pLabel}</div>
+        <div class="phase-journey__systems">
+    `;
+
+    (pData.systems || []).forEach(sysId => {
+      const sys = DATA.systems[sysId];
+      html += `
+        <div class="phase-journey__system-pill">
+          <div class="dot" style="background-color: ${sys.color};"></div>
+          <span>${sys.name}</span>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+        <div class="phase-journey__notes">${pData.notes}</div>
+    `;
+
+    if (pData.months && pData.months.length > 0) {
+      html += `<div class="phase-journey__timeline">`;
+      pData.months.forEach(m => {
+        html += `<div class="phase-journey__timeline-item"><strong>Month ${m.month}:</strong> ${m.action}</div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (pData.requirements && pData.requirements.length > 0) {
+      html += `<div class="phase-journey__timeline">`;
+      pData.requirements.forEach(req => {
+        html += `<div class="phase-journey__timeline-item"><strong>Requirement:</strong> ${req}</div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `
+      </div>
+    `;
+  });
+
+  html += `
+        </div>
+      </div>
+    </div>
+  `;
+
+  return html;
+}
+
+function renderAreas() {
+  const container = document.getElementById('areasContainer');
+  let html = '';
+
+  DATA.areas.forEach(area => {
+    html += `
+      <div class="area-section ${area.id}" id="area-${area.id}">
+        <div class="area-header" style="border-left-color: ${area.color};">
+          <h2 class="area-header__title">${area.name}</h2>
+          <p class="area-header__description">${area.description[currentPhase]}</p>
+        </div>
+        <div class="metrics-list">
+    `;
+
+    area.metrics.forEach(metric => {
+      html += renderMetricCard(metric, currentPhase, area.id);
+    });
+
+    html += `
+        </div>
+    `;
+
+    if (area.tbc) {
+      html += `
+        <div class="labour-scoping-overlay">
+          <div class="labour-scoping-text">Scoping in progress</div>
+        </div>
+      `;
+    }
+
+    html += `
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  attachMetricListeners();
+  updateMetricVisibility();
+}
+
+function attachMetricListeners() {
+  document.querySelectorAll('.metric-card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('expanded');
+    });
+  });
+}
+
+function renderGovernance() {
+  const grid = document.getElementById('governanceGrid');
+  grid.innerHTML = DATA.governance.map(meeting => `
+    <div class="governance-card">
+      <div class="governance-card__title">${meeting.name}</div>
+      <div class="governance-card__cadence">${meeting.cadence}</div>
+      <p class="governance-card__description">${meeting.description}</p>
+    </div>
+  `).join('');
+}
+
+function attachPhaseListeners() {
+  document.querySelectorAll('.phase-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const newPhase = card.dataset.phase;
+      if (currentPhase === newPhase) return;
+
+      document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      currentPhase = newPhase;
+      renderAreas();
+      renderPhaseSystemsDots();
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderPhaseSystemsDots();
+  renderSystemLegend();
+  renderAreas();
+  renderGovernance();
+  attachPhaseListeners();
+});
+</script>
+</body>
+</html>
