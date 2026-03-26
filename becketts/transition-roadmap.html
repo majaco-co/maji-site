@@ -1380,7 +1380,7 @@ const DATA = {
     phase1: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'xl-vorne': ['feedback-rpt', 'sfdc-rpt'],
+      'xl-vorne': ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
       'manual': ['feedback-rpt', 'sfdc-rpt'],
       'checkweigher': ['sic-rpt']
     },
@@ -1422,7 +1422,8 @@ const DATA = {
       'daily-ops': ['feedback-rpt', 'sic-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
-      'monthly-finance': ['sfdc-rpt']
+      'monthly-finance': ['sfdc-rpt'],
+      'plan-rates': ['feedback-rpt', 'sfdc-rpt']
     },
     phase2s1: {
       'sic-meeting': ['sfdc-rpt'],
@@ -1452,7 +1453,7 @@ const DATA = {
   // Which governance meetings are active per phase
   governanceByPhase: {
     now: ['sic-meeting', 'daily-ops', 'monthly-finance'],
-    phase1: ['sic-meeting', 'daily-ops', 'monthly-finance'],
+    phase1: ['sic-meeting', 'daily-ops', 'monthly-finance', 'plan-rates'],
     phase2s1: ['sic-meeting', 'daily-ops', 'monthly-finance', 'plan-rates'],
     phase2s2: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
     phase2s3: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance', 'plan-rates']
