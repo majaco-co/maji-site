@@ -1629,7 +1629,13 @@ function renderSystemCards() {
   const active = getActiveSystemIds();
   let html = '';
 
-  Object.keys(DATA.systems).forEach(sysId => {
+  const sysIds = Object.keys(DATA.systems).sort((a, b) => {
+    const aActive = active.has(a) ? 0 : 1;
+    const bActive = active.has(b) ? 0 : 1;
+    return aActive - bActive;
+  });
+
+  sysIds.forEach(sysId => {
     const sys = DATA.systems[sysId];
     const isActive = active.has(sysId);
     const stateClass = isActive ? 'active-sys' : 'inactive-sys';
@@ -1663,7 +1669,13 @@ function renderReportingCards() {
   const activeRpts = new Set(DATA.reportingByPhase[currentPhase] || []);
   let html = '';
 
-  Object.keys(DATA.reporting).forEach(rptId => {
+  const rptIds = Object.keys(DATA.reporting).sort((a, b) => {
+    const aActive = activeRpts.has(a) ? 0 : 1;
+    const bActive = activeRpts.has(b) ? 0 : 1;
+    return aActive - bActive;
+  });
+
+  rptIds.forEach(rptId => {
     const rpt = DATA.reporting[rptId];
     const isActive = activeRpts.has(rptId);
     const stateClass = isActive ? 'active-rpt' : 'inactive-rpt';
@@ -1707,6 +1719,12 @@ function renderMetricsColumn() {
 
     const activeKpis = new Set(DATA.kpisByPhase[currentPhase] || []);
 
+    kpisInArea.sort((a, b) => {
+      const aActive = activeKpis.has(a[0]) ? 0 : 1;
+      const bActive = activeKpis.has(b[0]) ? 0 : 1;
+      return aActive - bActive;
+    });
+
     kpisInArea.forEach(([kpiId, kpi]) => {
       const isActive = activeKpis.has(kpiId);
       const inactiveClass = isActive ? '' : ' inactive-kpi';
@@ -1728,7 +1746,13 @@ function renderGovernanceCards() {
   const activeGov = new Set(DATA.governanceByPhase[currentPhase] || []);
   const govRptMap = DATA.governanceToReporting[currentPhase] || {};
 
-  container.innerHTML = DATA.governance.map(meeting => {
+  const sorted = [...DATA.governance].sort((a, b) => {
+    const aActive = activeGov.has(a.id) ? 0 : 1;
+    const bActive = activeGov.has(b.id) ? 0 : 1;
+    return aActive - bActive;
+  });
+
+  container.innerHTML = sorted.map(meeting => {
     const isActive = activeGov.has(meeting.id);
     const stateClass = isActive ? 'active-gov' : 'inactive-gov';
     const rptIds = govRptMap[meeting.id] || [];
