@@ -50,7 +50,7 @@ body {
 
 .gantt-timeline__header {
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
   gap: 0;
   margin-bottom: 10px;
 }
@@ -69,7 +69,7 @@ body {
 
 .gantt-row {
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
   gap: 0;
   margin-bottom: 4px;
   align-items: center;
@@ -131,7 +131,7 @@ body {
 
 .sprint-selector {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 0.375rem;
   max-height: 0;
   overflow: hidden;
@@ -263,7 +263,7 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-columns: 240px 140px 160px 160px 1fr;
-  gap: 28px;
+  gap: 40px;
   align-items: start;
   position: relative;
 }
@@ -436,7 +436,7 @@ body {
 
 .phase-journey-mini {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
@@ -929,14 +929,12 @@ body {
         <span>Phase 1</span>
         <span>P2.1</span>
         <span>P2.2</span>
-        <span>P2.3</span>
         <span>P3</span>
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#F97316;"></span> Feedback</div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.3);"><span class="gantt-bar__text">Active</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.45);"><span class="gantt-bar__text">Enhanced</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.2);"><span class="gantt-bar__text">Parallel</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.1);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Wind down</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
@@ -945,8 +943,7 @@ body {
         <div class="gantt-row__label"><span class="dot" style="background:#8B5CF6;"></span> SIC</div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.3);"><span class="gantt-bar__text">Active</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.45);"><span class="gantt-bar__text">Enhanced</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.2);"><span class="gantt-bar__text">Parallel</span></div>
-        <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.1);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Wind down</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
       </div>
@@ -954,14 +951,12 @@ body {
         <div class="gantt-row__label"><span class="dot" style="background:#3B82F6;"></span> SFDC</div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.2);"><span class="gantt-bar__text">Partial</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.3);"><span class="gantt-bar__text">Building</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.4);"><span class="gantt-bar__text">Efficiency</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.5);"><span class="gantt-bar__text">+ Yield</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.5);"><span class="gantt-bar__text">Eff + Yield</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.6);"><span class="gantt-bar__text">+ Labour</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.7);"><span class="gantt-bar__text">Full</span></div>
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#14B8A6;"></span> Relex</div>
-        <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
@@ -985,26 +980,22 @@ body {
         <div class="phase-card__systems" id="systemsPhase1"></div>
       </div>
       <div class="phase-card--p2-wrapper">
-        <div class="phase-card" data-phase="phase2s3" data-parent="phase2" role="tab" aria-selected="false">
+        <div class="phase-card" data-phase="phase2s2" data-parent="phase2" role="tab" aria-selected="false">
           <div class="phase-card__label">Target</div>
           <div class="phase-card__title">Phase 2</div>
           <div class="phase-card__subtitle">New world — SFDC drives everything</div>
-          <div class="phase-card__systems" id="systemsPhase2s3"></div>
+          <div class="phase-card__systems" id="systemsPhase2s2"></div>
         </div>
         <div class="sprint-selector" id="sprintSelector">
           <div class="sprint-card" data-phase="phase2s1">
             <div class="sprint-card__label">Sprint 1</div>
-            <div class="sprint-card__title">Efficiency</div>
+            <div class="sprint-card__title">Efficiency + Yield</div>
             <div class="sprint-card__systems" id="systemsPhase2s1"></div>
           </div>
-          <div class="sprint-card" data-phase="phase2s2">
+          <div class="sprint-card active" data-phase="phase2s2">
             <div class="sprint-card__label">Sprint 2</div>
-            <div class="sprint-card__title">Yield</div>
-            <div class="sprint-card__systems" id="systemsPhase2s2"></div>
-          </div>
-          <div class="sprint-card active" data-phase="phase2s3">
-            <div class="sprint-card__label">Sprint 3</div>
             <div class="sprint-card__title">Labour</div>
+            <div class="sprint-card__systems" id="systemsPhase2s2b"></div>
           </div>
         </div>
       </div>
@@ -1090,9 +1081,8 @@ const DATA = {
       description: {
         now: 'Three systems capturing efficiency data in parallel — significant duplication and accuracy gaps.',
         phase1: 'Feedback drives efficiency. XL Vorne supplements on 2 lines. OEE sensors supplement downtime and speed capture.',
-        phase2s1: 'SFDC drives efficiency — core metrics captured at bottleneck.',
-        phase2s2: 'Efficiency established. SFDC downtime integration adds Pareto.',
-        phase2s3: 'Efficiency fully operational in SFDC.',
+        phase2s1: 'Efficiency established. SFDC downtime integration adds Pareto.',
+        phase2s2: 'Efficiency fully operational in SFDC.',
         phase3: 'Efficiency continues from P2.'
       },
       metrics: [
@@ -1116,15 +1106,10 @@ const DATA = {
           },
           phase2s1: {
             systems: ['oee-system'],
-            notes: 'Auto — shift start time and run start time captured in SFDC. No manual entry required.',
-            requirements: ['SFDC auto-capture proven reliable on Vorne lines', 'Accuracy validated against manual baseline']
-          },
-          phase2s2: {
-            systems: ['oee-system'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
-          phase2s3: {
+          phase2s2: {
             systems: ['oee-system'],
             notes: 'Established — running in SFDC',
             requirements: []
@@ -1155,15 +1140,10 @@ const DATA = {
           },
           phase2s1: {
             systems: ['checkweigher'],
-            notes: 'Good output from check weigher data — accurate, real-time, per-unit. Check Weigher Cloud data feeds directly.',
-            requirements: ['Check Weigher integration', 'Reconciliation with W.O. confirmed quantities']
-          },
-          phase2s2: {
-            systems: ['checkweigher'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
-          phase2s3: {
+          phase2s2: {
             systems: ['checkweigher'],
             notes: 'Established — check weigher running',
             requirements: []
@@ -1194,15 +1174,10 @@ const DATA = {
           },
           phase2s1: {
             systems: ['oee-system', 'manual'],
-            notes: 'Downtime automatically recorded via OEE system. Reason codes entered manually. Basic reason codes initially.',
-            requirements: ['Bottleneck sensors deployed', 'Reason code entry workflow']
-          },
-          phase2s2: {
-            systems: ['oee-system', 'manual'],
             notes: 'Downtime auto-captured, MECE reason codes entered manually. Downtime Pareto reporting live.',
             requirements: ['MECE reason code taxonomy agreed', 'Plan vs allow categories defined']
           },
-          phase2s3: {
+          phase2s2: {
             systems: ['oee-system', 'manual'],
             notes: 'Established — running in SFDC',
             requirements: []
@@ -1233,15 +1208,10 @@ const DATA = {
           },
           phase2s1: {
             systems: ['oee-system'],
-            notes: 'Recorded at bottleneck (BN) in SFDC. Automated, continuous speed capture.',
-            requirements: ['BN speed sensors deployed', 'Speed targets configured per SKU per line']
-          },
-          phase2s2: {
-            systems: ['oee-system'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
-          phase2s3: {
+          phase2s2: {
             systems: ['oee-system'],
             notes: 'Established — running in SFDC',
             requirements: []
@@ -1264,15 +1234,10 @@ const DATA = {
           },
           phase2s1: {
             systems: ['oee-system'],
-            notes: 'Count at bottleneck captured by OEE system. Used with good product count to calculate waste (A\u2013B).',
-            requirements: ['Bottleneck counter deployed']
-          },
-          phase2s2: {
-            systems: ['oee-system'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
-          phase2s3: {
+          phase2s2: {
             systems: ['oee-system'],
             notes: 'Established — running in SFDC',
             requirements: []
@@ -1295,15 +1260,10 @@ const DATA = {
           },
           phase2s1: {
             systems: ['manual'],
-            notes: 'Crew on Line — real-time crew assignment and tracking.',
-            requirements: ['Crew assignment workflow defined']
-          },
-          phase2s2: {
-            systems: ['manual'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
-          phase2s3: {
+          phase2s2: {
             systems: ['manual'],
             notes: 'Crew assignment integrated with labour planning.',
             requirements: ['Integration with labour planning']
@@ -1319,9 +1279,8 @@ const DATA = {
       description: {
         now: 'Yield metrics largely untracked. No structured capture or reporting.',
         phase1: 'Most yield data booked against W.O. Manual giveaway capture via whiteboard → Feedback.',
-        phase2s1: 'Yield sprint not started.',
-        phase2s2: 'Aggregation, calculation and reporting live. Auto-capture from check weighers.',
-        phase2s3: 'Yield fully operational.',
+        phase2s1: 'Aggregation, calculation and reporting live. Auto-capture from check weighers.',
+        phase2s2: 'Yield fully operational.',
         phase3: 'Yield continues from P2.'
       },
       metrics: [
@@ -1335,9 +1294,8 @@ const DATA = {
             notes: 'Moved from whiteboard into Feedback. Digital capture enables trending.',
             issues: ['Still manual entry from whiteboard']
           },
-          phase2s1: { systems: ['feedback'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['checkweigher'], notes: 'Auto against W.O. — Check Weigher Cloud data feeds directly.', requirements: ['Check Weigher Cloud integration', 'Auto-booking against W.O.'] },
-          phase2s3: { systems: ['checkweigher'], notes: 'Established — check weigher running', requirements: [] },
+          phase2s1: { systems: ['checkweigher'], notes: 'Auto against W.O. — Check Weigher Cloud data feeds directly.', requirements: ['Check Weigher Cloud integration', 'Auto-booking against W.O.'] },
+          phase2s2: { systems: ['checkweigher'], notes: 'Established — check weigher running', requirements: [] },
           phase3: { systems: ['checkweigher'], notes: 'Continues from P2.', requirements: [] }
         },
         {
@@ -1345,9 +1303,8 @@ const DATA = {
           name: 'Grading Waste',
           now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
           phase1: { months: [{ month: 1, action: 'Booked against W.O.' }], systems: ['manual'], notes: 'Booked against works orders. Raw data capture done.', issues: [] },
-          phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase2s1: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
+          phase2s2: { systems: ['manual'], notes: 'Established', requirements: [] },
           phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
         {
@@ -1355,9 +1312,8 @@ const DATA = {
           name: 'Gripper Ends',
           now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
           phase1: { months: [{ month: 1, action: 'Booked against W.O.' }], systems: ['manual'], notes: 'Booked against works orders.', issues: [] },
-          phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase2s1: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
+          phase2s2: { systems: ['manual'], notes: 'Established', requirements: [] },
           phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
         {
@@ -1365,9 +1321,8 @@ const DATA = {
           name: 'Pressing Loss',
           now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
           phase1: { months: [], systems: [], notes: 'No Phase 1 action — deferred to Phase 2.', issues: ['No capture mechanism yet'] },
-          phase2s1: { systems: [], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['manual'], notes: 'Calculated against W.O.', requirements: ['Pressing loss methodology defined', 'Data capture mechanism in place'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase2s1: { systems: ['manual'], notes: 'Calculated against W.O.', requirements: ['Pressing loss methodology defined', 'Data capture mechanism in place'] },
+          phase2s2: { systems: ['manual'], notes: 'Established', requirements: [] },
           phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
         {
@@ -1375,9 +1330,8 @@ const DATA = {
           name: 'High Value Cuts (Prime / Rib)',
           now: { systems: [], notes: 'Not tracked separately.', issues: ['No recording'] },
           phase1: { months: [{ month: 1, action: 'Booked against W.O.' }, { month: 2, action: 'Prime and Rib reported separately' }], systems: ['manual'], notes: 'Booked against W.O. Each reported separately.', issues: [] },
-          phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase2s1: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
+          phase2s2: { systems: ['manual'], notes: 'Established', requirements: [] },
           phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
       ]
@@ -1389,9 +1343,8 @@ const DATA = {
       description: {
         now: 'T&A captures permanent staff hours. Agency costs tracked via Purchase Orders. Labour register manages crew allocation. No consolidated view.',
         phase1: 'T&A and PO systems continue. Labour data not yet integrated with operational metrics.',
-        phase2s1: 'Labour sprint not started. T&A and PO data available but not operationally reviewed.',
-        phase2s2: 'Labour sprint not started. T&A and PO data available.',
-        phase2s3: 'Labour actuals consolidated — T&A (permanent), POs (agency), crew tracking live. Productivity metrics operational.',
+        phase2s1: 'Labour sprint not started. T&A and PO data available.',
+        phase2s2: 'Labour actuals consolidated — T&A (permanent), POs (agency), crew tracking live. Productivity metrics operational.',
         phase3: 'Labour actuals feed planning conformance. Actual hours compared against Relex plan.'
       },
       metrics: [
@@ -1401,8 +1354,7 @@ const DATA = {
           now: { systems: ['ta'], notes: 'Clock in/out times from T&A system. Used for monthly financial review.', issues: [] },
           phase1: { months: [], systems: ['ta'], notes: 'T&A continues to capture clock in/out. Labour planning TBC.', issues: [] },
           phase2s1: { systems: ['ta'], notes: 'T&A provides paid hours. Labour sprint not started yet.', requirements: [] },
-          phase2s2: { systems: ['ta'], notes: 'T&A provides paid hours. Labour sprint not started yet.', requirements: [] },
-          phase2s3: { systems: ['ta'], notes: 'T&A provides paid hours. Integrated with productivity metrics.', requirements: ['Integration with SFDC reporting'] },
+          phase2s2: { systems: ['ta'], notes: 'T&A provides paid hours. Integrated with productivity metrics.', requirements: ['Integration with SFDC reporting'] },
           phase3: { systems: ['ta'], notes: 'T&A paid hours feed labour cost vs plan calculation.', requirements: [] }
         },
         {
@@ -1411,8 +1363,7 @@ const DATA = {
           now: { systems: ['po-system'], notes: 'Agency staff hours and cost tracked via Purchase Orders. Not integrated with operational data.', issues: ['Separate from T&A', 'No operational visibility'] },
           phase1: { months: [], systems: ['po-system'], notes: 'PO system continues. Agency data not integrated.', issues: ['Still separate from permanent staff data'] },
           phase2s1: { systems: ['po-system'], notes: 'PO data available. Labour sprint not started.', requirements: [] },
-          phase2s2: { systems: ['po-system'], notes: 'PO data available. Labour sprint not started.', requirements: [] },
-          phase2s3: { systems: ['po-system'], notes: 'Agency hours consolidated with T&A for total labour cost view.', requirements: ['PO data integration with SFDC'] },
+          phase2s2: { systems: ['po-system'], notes: 'Agency hours consolidated with T&A for total labour cost view.', requirements: ['PO data integration with SFDC'] },
           phase3: { systems: ['po-system'], notes: 'Agency hours feed total labour cost vs plan.', requirements: [] }
         },
         {
@@ -1421,8 +1372,7 @@ const DATA = {
           now: { systems: ['labour-register'], notes: 'Planned crew allocation per line/shift. Standalone spreadsheet.', issues: ['Not integrated with T&A or operations', 'No planned vs actual comparison'] },
           phase1: { months: [], systems: ['labour-register'], notes: 'Labour register continues standalone.', issues: ['Still not integrated'] },
           phase2s1: { systems: ['labour-register'], notes: 'Labour sprint not started.', requirements: [] },
-          phase2s2: { systems: ['labour-register'], notes: 'Labour sprint not started.', requirements: [] },
-          phase2s3: { systems: ['labour-register'], notes: 'Labour register used for planned crew. Compared against actual crew on line.', requirements: ['Crew allocation workflow defined'] },
+          phase2s2: { systems: ['labour-register'], notes: 'Labour register used for planned crew. Compared against actual crew on line.', requirements: ['Crew allocation workflow defined'] },
           phase3: { systems: ['labour-register'], notes: 'Labour register feeds planned crew into Relex labour model.', requirements: [] }
         }
       ]
@@ -1434,9 +1384,8 @@ const DATA = {
       description: {
         now: 'Production plan exists as a spreadsheet. No formal conformance tracking. Stock data in ERP.',
         phase1: 'Planning spreadsheet continues. No conformance metrics yet.',
-        phase2s1: 'Planning spreadsheet continues. Operational data improving but planning conformance not yet measured.',
-        phase2s2: 'Planning spreadsheet continues. Operational data now reliable enough to compare against plan.',
-        phase2s3: 'Planning spreadsheet continues. Labour actuals now available for cost comparison.',
+        phase2s1: 'Planning spreadsheet continues. Operational data now reliable enough to compare against plan.',
+        phase2s2: 'Planning spreadsheet continues. Labour actuals now available for cost comparison.',
         phase3: 'Relex live — full planning and control loop. CTP, run length, sequence adherence, stock vs safety all formally tracked.'
       },
       metrics: [
@@ -1447,7 +1396,6 @@ const DATA = {
           phase1: { months: [], systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', issues: [] },
           phase2s1: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
           phase2s2: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
-          phase2s3: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
           phase3: { systems: ['relex'], notes: 'Production sequence managed in Relex. Digital integration with SFDC for conformance tracking.', requirements: ['Relex implementation', 'SFDC integration'] }
         },
         {
@@ -1457,7 +1405,6 @@ const DATA = {
           phase1: { months: [], systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', issues: [] },
           phase2s1: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
           phase2s2: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
-          phase2s3: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
           phase3: { systems: ['relex'], notes: 'Batch sizes in Relex. Auto-compared against actual good output for CTP.', requirements: ['Relex implementation'] }
         },
         {
@@ -1467,7 +1414,6 @@ const DATA = {
           phase1: { months: [], systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', issues: [] },
           phase2s1: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
           phase2s2: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
-          phase2s3: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
           phase3: { systems: ['relex'], notes: 'Planned run length from Relex. Compared against actual start/stop for variance.', requirements: ['Relex implementation', 'Accurate start/stop from OEE'] }
         },
         {
@@ -1477,7 +1423,6 @@ const DATA = {
           phase1: { months: [], systems: ['erp'], notes: 'ERP continues.', issues: [] },
           phase2s1: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
           phase2s2: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
-          phase2s3: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
           phase3: { systems: ['erp'], notes: 'ERP stock data feeds Relex for stock vs safety comparison.', requirements: ['ERP-Relex integration'] }
         },
         {
@@ -1487,7 +1432,6 @@ const DATA = {
           phase1: { months: [], systems: ['erp'], notes: 'ERP continues.', issues: [] },
           phase2s1: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
           phase2s2: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
-          phase2s3: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
           phase3: { systems: ['erp'], notes: 'Safety stock thresholds in ERP. Compared against actual stock to assess overproduction impact.', requirements: ['ERP-Relex integration'] }
         }
       ]
@@ -1522,7 +1466,6 @@ const DATA = {
     phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
     phase2s1: ['sfdc-rpt'],
     phase2s2: ['sfdc-rpt'],
-    phase2s3: ['sfdc-rpt'],
     phase3: ['sfdc-rpt']
   },
   // Which systems feed into which reporting destinations per phase
@@ -1557,15 +1500,6 @@ const DATA = {
       'labour-register': ['sfdc-rpt']
     },
     phase2s2: {
-      'oee-system': ['sfdc-rpt'],
-      'checkweigher': ['sfdc-rpt'],
-      'manual': ['sfdc-rpt'],
-      'ta': ['sfdc-rpt'],
-      'planning-xl': ['sfdc-rpt'],
-      'po-system': ['sfdc-rpt'],
-      'labour-register': ['sfdc-rpt']
-    },
-    phase2s3: {
       'oee-system': ['sfdc-rpt'],
       'checkweigher': ['sfdc-rpt'],
       'manual': ['sfdc-rpt'],
@@ -1624,14 +1558,6 @@ const DATA = {
       'monthly-finance': ['sfdc-rpt'],
       'plan-rates': ['sfdc-rpt']
     },
-    phase2s3: {
-      'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt'],
-      'weekly-review': ['sfdc-rpt'],
-      'weekly-planning': ['sfdc-rpt'],
-      'monthly-finance': ['sfdc-rpt'],
-      'plan-rates': ['sfdc-rpt']
-    },
     phase3: {
       'sic-meeting': ['sfdc-rpt'],
       'daily-ops': ['sfdc-rpt'],
@@ -1647,7 +1573,6 @@ const DATA = {
     phase1: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
     phase2s1: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
     phase2s2: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
-    phase2s3: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
     phase3: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance', 'plan-rates']
   },
   // KPIs — the calculated metrics that governance meetings actually review
@@ -1675,9 +1600,8 @@ const DATA = {
   kpisByPhase: {
     now:      ['efficiency', 'downtime', 'crew-ratio', 'ga-pct'],
     phase1:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct'],
-    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'cost-per-case', 'kgplh'],
-    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh'],
-    phase2s3: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh'],
+    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh'],
+    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh'],
     phase3:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety']
   },
   // Which KPIs each governance meeting reviews
@@ -1706,7 +1630,6 @@ function renderPhaseSystemsDots() {
   const phase1Systems = new Set();
   const phase2s1Systems = new Set();
   const phase2s2Systems = new Set();
-  const phase2s3Systems = new Set();
   const phase3Systems = new Set();
 
   areas.forEach(area => {
@@ -1715,7 +1638,6 @@ function renderPhaseSystemsDots() {
       if (metric.phase1 && metric.phase1.systems) metric.phase1.systems.forEach(s => phase1Systems.add(s));
       if (metric.phase2s1 && metric.phase2s1.systems) metric.phase2s1.systems.forEach(s => phase2s1Systems.add(s));
       if (metric.phase2s2 && metric.phase2s2.systems) metric.phase2s2.systems.forEach(s => phase2s2Systems.add(s));
-      if (metric.phase2s3 && metric.phase2s3.systems) metric.phase2s3.systems.forEach(s => phase2s3Systems.add(s));
       if (metric.phase3 && metric.phase3.systems) metric.phase3.systems.forEach(s => phase3Systems.add(s));
     });
   });
@@ -1732,7 +1654,6 @@ function renderPhaseSystemsDots() {
   renderDots(document.getElementById('systemsPhase1'), phase1Systems);
   renderDots(document.getElementById('systemsPhase2s1'), phase2s1Systems);
   renderDots(document.getElementById('systemsPhase2s2'), phase2s2Systems);
-  renderDots(document.getElementById('systemsPhase2s3'), phase2s3Systems);
   renderDots(document.getElementById('systemsPhase3'), phase3Systems);
 }
 
@@ -1791,10 +1712,10 @@ function renderMetricCards() {
       // Expandable phase journey
       html += '<div class="details">';
       html += '<div class="phase-journey-mini">';
-      ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase2s3', 'phase3'].forEach(p => {
+      ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase3'].forEach(p => {
         const d = metric[p];
         if (!d) return;
-        const label = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : p === 'phase2s1' ? 'P2.1' : p === 'phase2s2' ? 'P2.2' : p === 'phase2s3' ? 'P2.3' : 'P3';
+        const label = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : p === 'phase2s1' ? 'P2.1' : p === 'phase2s2' ? 'P2.2' : 'P3';
         html += '<div class="pj-col"><div class="pj-col__label">' + label + '</div>';
         html += '<div class="pj-col__systems">';
         (d.systems || []).forEach(sId => {
@@ -2480,8 +2401,8 @@ function attachPhaseListeners() {
         // If already on a P2 sprint, stay; otherwise go to s3 (complete view)
         if (!currentPhase.startsWith('phase2s')) {
           document.querySelectorAll('.sprint-card').forEach(c => c.classList.remove('active'));
-          document.querySelector('.sprint-card[data-phase="phase2s3"]').classList.add('active');
-          switchToPhase('phase2s3');
+          document.querySelector('.sprint-card[data-phase="phase2s2"]').classList.add('active');
+          switchToPhase('phase2s2');
         }
       } else {
         // Close sprint selector for Now / P1 / P3
