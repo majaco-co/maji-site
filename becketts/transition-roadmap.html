@@ -147,9 +147,16 @@ body {
   display: grid;
   grid-template-columns: 200px repeat(5, 1fr);
   gap: 0;
-  align-items: center;
+  align-items: stretch;
   min-height: 32px;
   margin-bottom: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.dg__row:hover {
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .dg__row-label {
@@ -177,7 +184,7 @@ body {
 /* Gantt bar cell */
 .dg__cell {
   padding: 2px 2px;
-  height: 28px;
+  min-height: 28px;
 }
 
 .dg__bar {
@@ -344,34 +351,115 @@ body {
 
 /* Phase objective strip */
 .dg__objective {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   margin: 8px 0 0;
-  background: rgba(218, 241, 27, 0.03);
-  border-left: 3px solid rgba(218, 241, 27, 0.2);
+  background: rgba(218, 241, 27, 0.02);
+  border-left: 3px solid rgba(218, 241, 27, 0.15);
   border-radius: 0 6px 6px 0;
-  animation: fadeIn 0.2s ease;
 }
 
-.dg__objective-badge {
-  flex-shrink: 0;
-  padding: 3px 10px;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #001412;
-  background: #DAF11B;
-  border-radius: 4px;
-  margin-top: 1px;
-}
-
-.dg__objective-text {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.55);
+.dg__objective-phase {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
   line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.dg__objective-phase:last-child {
+  margin-bottom: 0;
+}
+
+.dg__objective-phase strong {
+  color: rgba(218, 241, 27, 0.6);
+  font-weight: 700;
+}
+
+/* Cell stack for multiple systems */
+.dg__cell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+}
+
+.dg__cell-stack .dg__bar {
+  flex: 1;
+  min-height: 12px;
+}
+
+/* Selected row highlight */
+.dg__row--selected {
+  background: rgba(218, 241, 27, 0.04);
+  border-radius: 4px;
+}
+
+.dg__row--selected .dg__row-label {
+  color: #DAF11B;
+}
+
+/* Phase gates container */
+.dg__gates {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Detail phase blocks */
+.dg__detail-phases {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.dg__detail-phase-block {
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.dg__detail-notes {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.dg__detail-issues {
+  margin-top: 4px;
+}
+
+.dg__detail-issue {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.dg__detail-issue::before {
+  content: '\26A0';
+  position: absolute;
+  left: 0;
+  font-size: 8px;
+}
+
+.dg__detail-reqs {
+  margin-top: 4px;
+}
+
+.dg__detail-req {
+  font-size: 9px;
+  color: rgba(218, 241, 27, 0.45);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.dg__detail-req::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
 }
 
 /* Phase gate */
@@ -1474,6 +1562,7 @@ body {
   <div class="container">
     <div class="view-tabs">
       <button class="view-tab active" data-tab="roadmap">Data, Systems &amp; Governance</button>
+      <button class="view-tab" data-tab="delivery">Delivery Plan</button>
       <button class="view-tab" data-tab="deep-dive">Data Input Deep Dive</button>
     </div>
 
@@ -1543,10 +1632,11 @@ body {
       </div>
     </div>
 
-    <!-- DELIVERY GANTT (below framework) -->
-    <div id="deliveryGantt"></div>
-
     </div><!-- /tab-roadmap -->
+
+    <div class="tab-panel" id="tab-delivery">
+      <div id="deliveryGantt"></div>
+    </div><!-- /tab-delivery -->
 
     <div class="tab-panel" id="tab-deep-dive">
       <div class="dd-container">
@@ -2909,7 +2999,6 @@ function switchToPhase(newPhase) {
   hoveredGovernance = null;
   hoveredMetricChip = null;
 
-  renderDeliveryGantt();
   renderMetricCards();
   renderSystemCards();
   renderReportingCards();
@@ -2984,6 +3073,9 @@ function initTabs() {
 
       if (tab.dataset.tab === 'roadmap') {
         requestAnimationFrame(() => { drawLines(); });
+      }
+      if (tab.dataset.tab === 'delivery') {
+        renderDeliveryGantt();
       }
       if (tab.dataset.tab === 'deep-dive') {
         renderDeepDive();
@@ -3132,141 +3224,9 @@ const GANTT_PHASE_META = {
 };
 
 // Each row: { id, label, area (for grouping color), systems[], phases: { phaseId: { text, color, opacity, tasks[], deps? } | null } }
-const GANTT_ROWS = [
-  // ── Efficiency ──
-  { area: 'efficiency', areaLabel: 'Efficiency' },
-  {
-    id: 'feedback-eff', label: 'Feedback Enhancement', systems: ['feedback'],
-    phases: {
-      now:      { text: 'Active', color: '#F97316', opacity: 0.3 },
-      phase1:   { text: 'Enhanced', color: '#F97316', opacity: 0.5, tasks: ['Audit start/stop, downtime, speed gaps', 'Add speed field per line per shift', 'Build daily ops report', 'Train shift managers'] },
-      phase2s1: { text: 'Wind down', color: '#F97316', opacity: 0.12 },
-      phase2s2: null, phase3: null
-    }
-  },
-  {
-    id: 'vorne-pilot', label: 'XL Vorne Pilot', systems: ['xl-vorne'],
-    phases: {
-      now: null,
-      phase1:   { text: 'Install + Validate', color: '#06B6D4', opacity: 0.5, tasks: ['Install on Notts & Yorks lines', 'Configure start/stop, downtime, speed, crewing', 'Run parallel vs Feedback for 4+ weeks', 'Validate automated vs manual accuracy'], deps: 'Feedback enhancement live first' },
-      phase2s1: { text: 'Retired', color: '#06B6D4', opacity: 0.08 },
-      phase2s2: null, phase3: null
-    }
-  },
-  {
-    id: 'oee-rollout', label: 'OEE / SFDC Rollout', systems: ['oee-system'],
-    phases: {
-      now: null, phase1: null,
-      phase2s1: { text: 'All lines live', color: '#3B82F6', opacity: 0.55, tasks: ['Roll out OEE sensors to all lines', 'MECE downtime reason codes', 'Downtime Pareto in SFDC', 'Speed Variance reporting', 'NCT calculation', 'Retire Feedback + Vorne'], deps: 'Vorne pilot validates sensor approach' },
-      phase2s2: { text: 'Established', color: '#3B82F6', opacity: 0.6 },
-      phase3:   { text: 'Continues', color: '#3B82F6', opacity: 0.65 }
-    }
-  },
-  {
-    id: 'cw-integration', label: 'Check Weigher', systems: ['checkweigher'],
-    phases: {
-      now: null,
-      phase1:   { text: 'Pilot', color: '#10B981', opacity: 0.4, tasks: ['Confirm C/W count availability', 'Feed good output into SIC', 'Validate C/W vs W.O. qty'] },
-      phase2s1: { text: 'Auto yield', color: '#10B981', opacity: 0.55, tasks: ['C/W Cloud integration for giveaway', 'Auto-booking against W.O.'], deps: 'C/W validated in Phase 1' },
-      phase2s2: { text: 'Established', color: '#10B981', opacity: 0.6 },
-      phase3:   { text: 'Continues', color: '#10B981', opacity: 0.65 }
-    }
-  },
-  // ── Yield ──
-  { area: 'yield', areaLabel: 'Yield' },
-  {
-    id: 'yield-manual', label: 'Yield Capture (Manual)', systems: ['manual'],
-    phases: {
-      now: null,
-      phase1:   { text: 'W.O. booking', color: '#78716C', opacity: 0.4, tasks: ['Book grading waste, gripper ends, HVC against W.O.', 'Giveaway: whiteboard → Feedback', 'Yield trending in Feedback'] },
-      phase2s1: { text: 'Aggregation live', color: '#78716C', opacity: 0.5, tasks: ['Yield Waterfall calculation', 'Variance to Standard', 'Pressing loss methodology'] },
-      phase2s2: { text: 'Established', color: '#78716C', opacity: 0.5 },
-      phase3:   { text: 'Continues', color: '#78716C', opacity: 0.5 }
-    }
-  },
-  // ── Labour ──
-  { area: 'labour', areaLabel: 'Labour' },
-  {
-    id: 'labour-consolidation', label: 'Labour Consolidation', systems: ['ta', 'po-system', 'labour-register'],
-    phases: {
-      now:      { text: 'Siloed', color: '#EAB308', opacity: 0.15 },
-      phase1:   { text: 'Siloed', color: '#EAB308', opacity: 0.15 },
-      phase2s1: { text: 'Available', color: '#EAB308', opacity: 0.2 },
-      phase2s2: { text: 'Consolidated', color: '#EAB308', opacity: 0.55, tasks: ['Integrate T&A with SFDC', 'Integrate PO agency hours', 'Crew allocation workflow', 'Planned vs actual crew', 'Total labour cost view'] },
-      phase3:   { text: 'Feeds Relex', color: '#EAB308', opacity: 0.6 }
-    }
-  },
-  {
-    id: 'labour-kpis', label: 'Labour KPIs', systems: ['ta', 'po-system'],
-    phases: {
-      now: null, phase1: null, phase2s1: null,
-      phase2s2: { text: 'Live', color: '#EAB308', opacity: 0.55, tasks: ['£/Case calculation', 'KG/Labour Hour', 'Labour Cost vs Plan'], deps: 'Labour consolidation first' },
-      phase3:   { text: 'Continues', color: '#EAB308', opacity: 0.6 }
-    }
-  },
-  {
-    id: 'labour-control-ws', label: 'Labour Control', systems: ['planning-system', 'ta', 'po-system'],
-    phases: {
-      now:      { text: 'Plan + Actual', color: '#F59E0B', opacity: 0.3, tasks: ['Planned labour by area/role in Planning system', 'Actual labour recorded post-shift', 'Paid labour from T&A + agency POs'] },
-      phase1:   { text: 'Continues', color: '#F59E0B', opacity: 0.35 },
-      phase2s1: { text: 'Continues', color: '#F59E0B', opacity: 0.4 },
-      phase2s2: { text: 'Reconciled', color: '#F59E0B', opacity: 0.55, tasks: ['Plan vs actual vs paid reconciliation', 'Full labour control loop in daily ops'] },
-      phase3:   { text: 'Feeds Relex', color: '#F59E0B', opacity: 0.6 }
-    }
-  },
-  // ── Planning & Control ──
-  { area: 'planning', areaLabel: 'Planning & Control' },
-  {
-    id: 'planning-xl', label: 'Planning Spreadsheet', systems: ['planning-xl'],
-    phases: {
-      now:      { text: 'Active', color: '#94A3B8', opacity: 0.25 },
-      phase1:   { text: 'Continues', color: '#94A3B8', opacity: 0.25 },
-      phase2s1: { text: 'Continues', color: '#94A3B8', opacity: 0.25 },
-      phase2s2: { text: 'Continues', color: '#94A3B8', opacity: 0.25 },
-      phase3:   { text: 'Retired', color: '#94A3B8', opacity: 0.08 }
-    }
-  },
-  {
-    id: 'relex-impl', label: 'Relex Implementation', systems: ['relex'],
-    phases: {
-      now: null, phase1: null, phase2s1: null, phase2s2: null,
-      phase3: { text: 'Live', color: '#14B8A6', opacity: 0.55, tasks: ['Implement Relex for production planning', 'Migrate from spreadsheet', 'Configure sequence, batch sizes, run lengths', 'Integrate with SFDC for plan vs actual'] }
-    }
-  },
-  {
-    id: 'erp-integration', label: 'ERP Integration', systems: ['erp'],
-    phases: {
-      now:      { text: 'Stock data', color: '#E879F9', opacity: 0.15 },
-      phase1:   { text: 'Continues', color: '#E879F9', opacity: 0.15 },
-      phase2s1: { text: 'Continues', color: '#E879F9', opacity: 0.15 },
-      phase2s2: { text: 'Continues', color: '#E879F9', opacity: 0.15 },
-      phase3:   { text: 'Relex link', color: '#E879F9', opacity: 0.55, tasks: ['Integrate stock levels with Relex', 'Safety stock thresholds', 'Stock vs Safety comparison'] }
-    }
-  },
-  {
-    id: 'planning-kpis', label: 'Planning KPIs', systems: ['relex', 'oee-system'],
-    phases: {
-      now: null, phase1: null, phase2s1: null, phase2s2: null,
-      phase3: { text: 'Live', color: '#F472B6', opacity: 0.55, tasks: ['Conformance to Plan', 'Run Length Variance', 'Sequence Adherence', 'Stock vs Safety'], deps: 'Relex + OEE required' }
-    }
-  },
-  // ── Governance ──
-  { area: 'governance', areaLabel: 'Governance', areaColor: '#DAF11B' },
-  {
-    id: 'gov-rollout', label: 'Governance Cadence', systems: [],
-    phases: {
-      now:      { text: 'SIC + Daily + Monthly', color: '#DAF11B', opacity: 0.2 },
-      phase1:   { text: '+ Weekly + Plan Rates', color: '#DAF11B', opacity: 0.35, tasks: ['Establish Weekly Review', 'Establish Plan Rates Review', 'Enhance SIC with Vorne + C/W', 'Enhance Daily Ops with G.A.'] },
-      phase2s1: { text: 'SFDC transition', color: '#DAF11B', opacity: 0.45, tasks: ['All meetings → SFDC reporting', 'Retire SIC.xls', 'Add yield to Weekly Review'] },
-      phase2s2: { text: '+ Labour metrics', color: '#DAF11B', opacity: 0.55, tasks: ['Labour KPIs to Daily Ops', 'Labour Cost to Weekly Review', 'Labour to Monthly Finance'] },
-      phase3:   { text: 'Full suite', color: '#DAF11B', opacity: 0.65, tasks: ['Launch Weekly Planning', 'Planning KPIs to Weekly Review', 'Stock vs Safety to Monthly Finance'] }
-    }
-  }
-];
+const areaColorMap = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308', planning: '#F472B6' };
 
-const areaColorMap = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308', planning: '#F472B6', governance: '#DAF11B' };
-
-let selectedGanttBar = null; // { rowId, phase }
+let selectedGanttMetric = null; // metric id
 
 function renderDeliveryGantt() {
   const container = document.getElementById('deliveryGantt');
@@ -3274,11 +3234,10 @@ function renderDeliveryGantt() {
 
   // Phase header row
   html += '<div class="dg__phases">';
-  html += '<div class="dg__phase-head"><div class="dg__phase-label">Workstream</div></div>';
+  html += '<div class="dg__phase-head"><div class="dg__phase-label">Data Input</div></div>';
   GANTT_PHASES.forEach(p => {
     const meta = GANTT_PHASE_META[p];
-    const active = currentPhase === p ? ' dg-active' : '';
-    html += '<div class="dg__phase-head' + active + '" data-gantt-phase="' + p + '">';
+    html += '<div class="dg__phase-head" data-gantt-phase="' + p + '">';
     html += '<div class="dg__phase-label">' + meta.label + '</div>';
     html += '<div class="dg__phase-title">' + meta.title + '</div>';
     html += '<div class="dg__phase-sub">' + meta.sub + '</div>';
@@ -3287,97 +3246,113 @@ function renderDeliveryGantt() {
   html += '</div>';
 
   // Phase objective strip
-  const currentMeta = GANTT_PHASE_META[currentPhase];
-  if (currentMeta.objective) {
-    html += '<div class="dg__objective">';
-    html += '<div class="dg__objective-badge">' + currentMeta.title + '</div>';
-    html += '<div class="dg__objective-text">' + currentMeta.objective + '</div>';
-    html += '</div>';
-  }
+  html += '<div class="dg__objective">';
+  GANTT_PHASES.forEach(p => {
+    const meta = GANTT_PHASE_META[p];
+    if (meta.objective) {
+      html += '<div class="dg__objective-phase"><strong>' + meta.title + ':</strong> ' + meta.objective + '</div>';
+    }
+  });
+  html += '</div>';
 
   html += '<div class="dg__divider"></div>';
 
-  // Rows
-  GANTT_ROWS.forEach(row => {
-    if (row.area && !row.id) {
-      // Area group header
-      const color = row.areaColor || areaColorMap[row.area] || '#fff';
-      html += '<div class="dg__area">';
-      html += '<div class="dg__area-label"><span class="area-dot" style="background:' + color + ';"></span>' + row.areaLabel + '</div>';
-      // Empty cells for phase columns
-      GANTT_PHASES.forEach(() => { html += '<div></div>'; });
-      html += '</div>';
-      return;
-    }
-
-    html += '<div class="dg__row">';
-    // Label
-    html += '<div class="dg__row-label">';
-    html += '<span class="sys-dots">';
-    (row.systems || []).forEach(sId => {
-      const s = DATA.systems[sId];
-      if (s) html += '<span class="sys-dot" style="background:' + s.color + ';" title="' + s.name + '"></span>';
-    });
-    html += '</span>';
-    html += row.label;
+  // Data input rows — generated from DATA.areas
+  DATA.areas.forEach(area => {
+    const color = areaColorMap[area.id] || '#fff';
+    html += '<div class="dg__area">';
+    html += '<div class="dg__area-label"><span class="area-dot" style="background:' + color + ';"></span>' + area.name + '</div>';
+    GANTT_PHASES.forEach(() => { html += '<div></div>'; });
     html += '</div>';
 
-    // Phase cells
-    GANTT_PHASES.forEach(p => {
-      const pd = row.phases[p];
-      html += '<div class="dg__cell">';
-      if (!pd) {
-        html += '<div class="dg__bar dg__bar--empty"></div>';
-      } else if (pd.opacity <= 0.15) {
-        html += '<div class="dg__bar dg__bar--faded" style="background:' + pd.color + '; opacity:' + pd.opacity + ';"><span class="dg__bar-text">' + pd.text + '</span></div>';
-      } else {
-        const selected = selectedGanttBar && selectedGanttBar.rowId === row.id && selectedGanttBar.phase === p ? ' dg-bar-selected' : '';
-        html += '<div class="dg__bar' + selected + '" data-gantt-row="' + row.id + '" data-gantt-phase="' + p + '" style="background:rgba(' + hexToRgb(pd.color) + ',' + pd.opacity + ');"><span class="dg__bar-text">' + pd.text + '</span></div>';
-      }
-      html += '</div>';
-    });
+    area.metrics.forEach(metric => {
+      const isSelected = selectedGanttMetric === metric.id;
+      const rowClass = isSelected ? ' dg__row--selected' : '';
 
-    html += '</div>';
-  });
+      html += '<div class="dg__row' + rowClass + '" data-gantt-metric="' + metric.id + '">';
+      // Label
+      html += '<div class="dg__row-label">' + metric.name + '</div>';
 
-  // Phase gate
-  if (currentMeta.gate) {
-    html += '<div class="dg__gate">';
-    html += '<span class="dg__gate-icon">&#9873;</span>';
-    html += '<div class="dg__gate-text"><strong>' + currentMeta.title + ' Gate:</strong> ' + currentMeta.gate + '</div>';
-    html += '</div>';
-  }
+      // Phase cells — each system gets a sub-bar
+      GANTT_PHASES.forEach(p => {
+        const pd = metric[p];
+        html += '<div class="dg__cell">';
 
-  // Detail panel for selected bar
-  if (selectedGanttBar) {
-    const row = GANTT_ROWS.find(r => r.id === selectedGanttBar.rowId);
-    const pd = row && row.phases[selectedGanttBar.phase];
-    if (row && pd && pd.tasks && pd.tasks.length) {
-      const phaseMeta = GANTT_PHASE_META[selectedGanttBar.phase];
-      html += '<div class="dg__detail">';
-      html += '<div class="dg__detail-head">';
-      html += '<div class="dg__detail-title">' + row.label + '</div>';
-      html += '<div class="dg__detail-phase">' + phaseMeta.title + '</div>';
-      html += '<button class="dg__detail-close" id="dgDetailClose">&times;</button>';
+        if (!pd || !pd.systems || !pd.systems.length) {
+          html += '<div class="dg__bar dg__bar--empty"><span class="dg__bar-text" style="color:rgba(255,255,255,0.15);">—</span></div>';
+        } else {
+          html += '<div class="dg__cell-stack">';
+          pd.systems.forEach(sId => {
+            const sys = DATA.systems[sId];
+            if (!sys) return;
+            html += '<div class="dg__bar" style="background:rgba(' + hexToRgb(sys.color) + ',0.45);">';
+            html += '<span class="dg__bar-text">' + sys.name + '</span>';
+            html += '</div>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+      });
+
       html += '</div>';
-      html += '<div class="dg__detail-tasks">';
-      pd.tasks.forEach(t => { html += '<div class="dg__detail-task">' + t + '</div>'; });
-      html += '</div>';
-      if (row.systems && row.systems.length) {
-        html += '<div class="dg__detail-systems">';
-        row.systems.forEach(sId => {
-          const s = DATA.systems[sId];
-          if (!s) return;
-          html += '<span class="dg__detail-sys"><span class="pip" style="background:' + s.color + ';"></span>' + s.name + '</span>';
+
+      // Detail panel for selected metric
+      if (isSelected) {
+        html += '<div class="dg__detail">';
+        html += '<div class="dg__detail-head">';
+        html += '<div class="dg__detail-title">' + metric.name + '</div>';
+        html += '<button class="dg__detail-close" id="dgDetailClose">&times;</button>';
+        html += '</div>';
+
+        // Show notes per phase
+        html += '<div class="dg__detail-phases">';
+        GANTT_PHASES.forEach(p => {
+          const pd = metric[p];
+          if (!pd) return;
+          const meta = GANTT_PHASE_META[p];
+          html += '<div class="dg__detail-phase-block">';
+          html += '<div class="dg__detail-phase">' + meta.title + '</div>';
+          if (pd.notes) html += '<div class="dg__detail-notes">' + pd.notes + '</div>';
+          if (pd.issues && pd.issues.length) {
+            html += '<div class="dg__detail-issues">';
+            pd.issues.forEach(i => { html += '<div class="dg__detail-issue">' + i + '</div>'; });
+            html += '</div>';
+          }
+          if (pd.requirements && pd.requirements.length) {
+            html += '<div class="dg__detail-reqs">';
+            pd.requirements.forEach(r => { html += '<div class="dg__detail-req">' + r + '</div>'; });
+            html += '</div>';
+          }
+          if (pd.systems && pd.systems.length) {
+            html += '<div class="dg__detail-systems">';
+            pd.systems.forEach(sId => {
+              const s = DATA.systems[sId];
+              if (!s) return;
+              html += '<span class="dg__detail-sys"><span class="pip" style="background:' + s.color + ';"></span>' + s.name + '</span>';
+            });
+            html += '</div>';
+          }
+          html += '</div>';
         });
         html += '</div>';
+        html += '</div>';
       }
-      if (pd.deps) {
-        html += '<div class="dg__detail-deps"><strong>Depends on:</strong> ' + pd.deps + '</div>';
-      }
+    });
+  });
+
+  // Phase gates
+  html += '<div class="dg__divider"></div>';
+  html += '<div class="dg__gates">';
+  GANTT_PHASES.forEach(p => {
+    const meta = GANTT_PHASE_META[p];
+    if (meta.gate) {
+      html += '<div class="dg__gate">';
+      html += '<span class="dg__gate-icon">&#9873;</span>';
+      html += '<div class="dg__gate-text"><strong>' + meta.title + ' Gate:</strong> ' + meta.gate + '</div>';
       html += '</div>';
     }
-  }
+  });
+  html += '</div>';
 
   html += '</div>';
   container.innerHTML = html;
@@ -3392,52 +3367,15 @@ function hexToRgb(hex) {
 }
 
 function attachGanttListeners() {
-  // Phase header clicks — switch phase
-  document.querySelectorAll('.dg__phase-head[data-gantt-phase]').forEach(el => {
+  // Row clicks — toggle detail expansion
+  document.querySelectorAll('.dg__row[data-gantt-metric]').forEach(el => {
     el.addEventListener('click', () => {
-      const phase = el.dataset.ganttPhase;
-      selectedGanttBar = null;
-      switchToPhase(phase);
-      renderDeliveryGantt();
-    });
-  });
-
-  // Bar clicks — select bar + switch to that phase
-  document.querySelectorAll('.dg__bar[data-gantt-row]').forEach(el => {
-    el.addEventListener('click', () => {
-      const rowId = el.dataset.ganttRow;
-      const phase = el.dataset.ganttPhase;
-
-      if (selectedGanttBar && selectedGanttBar.rowId === rowId && selectedGanttBar.phase === phase) {
-        selectedGanttBar = null;
+      const metricId = el.dataset.ganttMetric;
+      if (selectedGanttMetric === metricId) {
+        selectedGanttMetric = null;
       } else {
-        selectedGanttBar = { rowId, phase };
+        selectedGanttMetric = metricId;
       }
-
-      // Switch framework to that phase
-      if (selectedGanttBar) {
-        switchToPhase(phase);
-
-        // Highlight the systems used by this workstream
-        const row = GANTT_ROWS.find(r => r.id === rowId);
-        if (row && row.systems && row.systems.length) {
-          locked = null;
-          clearHoverState();
-          // Find a system to hover — pick the first one to trigger the highlight chain
-          if (row.systems.length === 1) {
-            hoveredSystem = row.systems[0];
-          } else {
-            // For multi-system rows, highlight all by setting up a custom highlight
-            hoveredSystem = row.systems[0];
-          }
-          applyHighlight();
-        }
-      } else {
-        locked = null;
-        clearHoverState();
-        applyHighlight();
-      }
-
       renderDeliveryGantt();
     });
   });
@@ -3447,10 +3385,7 @@ function attachGanttListeners() {
   if (closeBtn) {
     closeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      selectedGanttBar = null;
-      locked = null;
-      clearHoverState();
-      applyHighlight();
+      selectedGanttMetric = null;
       renderDeliveryGantt();
     });
   }
