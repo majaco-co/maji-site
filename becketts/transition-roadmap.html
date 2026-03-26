@@ -874,6 +874,270 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* ── TAB BAR ── */
+.view-tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0;
+  padding: 0 2rem;
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
+.view-tab {
+  padding: 0.625rem 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.view-tab:hover {
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.view-tab.active {
+  color: #DAF11B;
+  background: rgba(218, 241, 27, 0.06);
+  border-color: rgba(218, 241, 27, 0.15);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* ── DEEP DIVE TABLE ── */
+.dd-container {
+  max-width: 95vw;
+  margin: 0 auto;
+  overflow-x: auto;
+  padding-bottom: 2rem;
+}
+
+.dd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 11px;
+}
+
+.dd-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 10px 12px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  background: #001412;
+  border-bottom: 2px solid rgba(218, 241, 27, 0.15);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dd-table th.phase-col {
+  min-width: 180px;
+}
+
+.dd-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: top;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+.dd-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dd-table .dd-area-row td {
+  padding: 14px 12px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.dd-table .dd-area-row .area-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.dd-var-name {
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.dd-cell {
+  min-width: 160px;
+}
+
+.dd-cell__systems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.dd-cell__sys {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.dd-cell__sys .pip {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dd-cell__notes {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+}
+
+.dd-cell__issues {
+  margin-top: 4px;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.dd-cell__issues li {
+  list-style: none;
+  padding-left: 12px;
+  position: relative;
+}
+
+.dd-cell__issues li::before {
+  content: '\26A0';
+  position: absolute;
+  left: 0;
+  font-size: 8px;
+}
+
+.dd-cell__reqs {
+  margin-top: 4px;
+  font-size: 9px;
+  color: rgba(218, 241, 27, 0.5);
+}
+
+.dd-cell__reqs li {
+  list-style: none;
+  padding-left: 12px;
+  position: relative;
+}
+
+.dd-cell__reqs li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+}
+
+.dd-cell--empty {
+  color: rgba(255, 255, 255, 0.15);
+  font-style: italic;
+  font-size: 10px;
+}
+
+.dd-cell--active {
+  background: rgba(218, 241, 27, 0.02);
+}
+
+/* Phase highlight stripe on current phase column */
+.dd-table th.dd-current {
+  color: #DAF11B;
+  border-bottom-color: #DAF11B;
+}
+
+.dd-phase-selector {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.dd-phase-btn {
+  padding: 5px 14px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.dd-phase-btn:hover {
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dd-phase-btn.active {
+  color: #DAF11B;
+  background: rgba(218, 241, 27, 0.08);
+  border-color: rgba(218, 241, 27, 0.25);
+}
+
+.dd-legend {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.dd-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dd-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -917,6 +1181,12 @@ body {
 
 <section class="section">
   <div class="container">
+    <div class="view-tabs">
+      <button class="view-tab active" data-tab="roadmap">Roadmap</button>
+      <button class="view-tab" data-tab="deep-dive">Data Input Deep Dive</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-roadmap">
     <div class="disclaimer-banner">
       <strong>Roadmap note:</strong> This transition is a multi-month programme. Phases shown are indicative — timings and scope subject to resource availability and learning from earlier phases. Data dependencies and integration points are documented below the roadmap.
     </div>
@@ -1056,6 +1326,16 @@ body {
         <div id="metricCards"></div>
       </div>
     </div>
+    </div><!-- /tab-roadmap -->
+
+    <div class="tab-panel" id="tab-deep-dive">
+      <div class="dd-container">
+        <div class="dd-phase-selector" id="ddPhaseSelector"></div>
+        <div class="dd-legend" id="ddLegend"></div>
+        <div id="ddTableWrap"></div>
+      </div>
+    </div><!-- /tab-deep-dive -->
+
   </div>
 </section>
 
@@ -1607,7 +1887,7 @@ const DATA = {
   // Which KPIs each governance meeting reviews
   governanceMetrics: {
     'sic-meeting':     ['efficiency', 'lost-time', 'slow-running', 'downtime', 'nct', 'ga-pct'],
-    'daily-ops':       ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'var-to-std', 'kgplh'],
+    'daily-ops':       ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh'],
     'weekly-review':   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'labour-cost', 'kgplh'],
     'weekly-planning': ['ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'labour-cost', 'crew-ratio', 'kgplh'],
     'monthly-finance': ['efficiency', 'lost-time', 'yield-waterfall', 'cost-per-case', 'labour-cost', 'kgplh', 'stock-vs-safety'],
@@ -2434,6 +2714,143 @@ window.addEventListener('scroll', () => {
   // But we need to redraw if the framework position changes
 });
 
+/* ═══════════════════════════════════════════
+   TAB SWITCHING
+   ═══════════════════════════════════════════ */
+function initTabs() {
+  document.querySelectorAll('.view-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const panelId = 'tab-' + tab.dataset.tab;
+      document.getElementById(panelId).classList.add('active');
+
+      if (tab.dataset.tab === 'roadmap') {
+        requestAnimationFrame(() => { drawLines(); });
+      }
+      if (tab.dataset.tab === 'deep-dive') {
+        renderDeepDive();
+      }
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════
+   DEEP DIVE TABLE
+   ═══════════════════════════════════════════ */
+let ddHighlightPhase = null; // null = show all equally
+
+function renderDeepDive() {
+  renderDDPhaseSelector();
+  renderDDLegend();
+  renderDDTable();
+}
+
+function renderDDPhaseSelector() {
+  const container = document.getElementById('ddPhaseSelector');
+  const phases = [
+    { id: null, label: 'All Phases' },
+    { id: 'now', label: 'Now' },
+    { id: 'phase1', label: 'Phase 1' },
+    { id: 'phase2s1', label: 'P2.1' },
+    { id: 'phase2s2', label: 'P2.2' },
+    { id: 'phase3', label: 'Phase 3' }
+  ];
+
+  container.innerHTML = phases.map(p => {
+    const active = ddHighlightPhase === p.id ? ' active' : '';
+    return '<button class="dd-phase-btn' + active + '" data-dd-phase="' + (p.id || '') + '">' + p.label + '</button>';
+  }).join('');
+
+  container.querySelectorAll('.dd-phase-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      ddHighlightPhase = btn.dataset.ddPhase || null;
+      renderDeepDive();
+    });
+  });
+}
+
+function renderDDLegend() {
+  const container = document.getElementById('ddLegend');
+  container.innerHTML = Object.entries(DATA.systems).map(([id, sys]) => {
+    return '<div class="dd-legend__item"><div class="dd-legend__dot" style="background:' + sys.color + ';"></div>' + sys.name + '</div>';
+  }).join('');
+}
+
+function renderDDTable() {
+  const wrap = document.getElementById('ddTableWrap');
+  const phases = ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase3'];
+  const phaseLabels = { now: 'Now', phase1: 'Phase 1', phase2s1: 'P2.1', phase2s2: 'P2.2', phase3: 'Phase 3' };
+
+  let html = '<table class="dd-table">';
+  html += '<thead><tr>';
+  html += '<th>Variable</th>';
+  phases.forEach(p => {
+    const isCurrent = ddHighlightPhase === p ? ' dd-current' : '';
+    html += '<th class="phase-col' + isCurrent + '">' + phaseLabels[p] + '</th>';
+  });
+  html += '</tr></thead><tbody>';
+
+  DATA.areas.forEach(area => {
+    // Area header row
+    html += '<tr class="dd-area-row"><td colspan="' + (phases.length + 1) + '"><span class="area-dot" style="background:' + area.color + ';"></span>' + area.name + '</td></tr>';
+
+    area.metrics.forEach(metric => {
+      html += '<tr>';
+      html += '<td class="dd-var-name">' + metric.name + '</td>';
+
+      phases.forEach(p => {
+        const d = metric[p];
+        const isHighlighted = ddHighlightPhase === p;
+        const isDimmed = ddHighlightPhase && ddHighlightPhase !== p;
+        const cellClass = isHighlighted ? ' dd-cell--active' : '';
+        const dimStyle = isDimmed ? ' style="opacity:0.35;"' : '';
+
+        html += '<td class="dd-cell' + cellClass + '"' + dimStyle + '>';
+
+        if (!d || (!d.systems.length && !d.notes)) {
+          html += '<span class="dd-cell--empty">—</span>';
+        } else {
+          // System pills
+          if (d.systems && d.systems.length) {
+            html += '<div class="dd-cell__systems">';
+            d.systems.forEach(sId => {
+              const s = DATA.systems[sId];
+              if (!s) return;
+              html += '<span class="dd-cell__sys"><span class="pip" style="background:' + s.color + ';"></span>' + s.name + '</span>';
+            });
+            html += '</div>';
+          }
+          // Notes
+          if (d.notes) {
+            html += '<div class="dd-cell__notes">' + d.notes + '</div>';
+          }
+          // Issues
+          if (d.issues && d.issues.length) {
+            html += '<ul class="dd-cell__issues">';
+            d.issues.forEach(issue => { html += '<li>' + issue + '</li>'; });
+            html += '</ul>';
+          }
+          // Requirements
+          if (d.requirements && d.requirements.length) {
+            html += '<ul class="dd-cell__reqs">';
+            d.requirements.forEach(req => { html += '<li>' + req + '</li>'; });
+            html += '</ul>';
+          }
+        }
+
+        html += '</td>';
+      });
+
+      html += '</tr>';
+    });
+  });
+
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
 /* ───── Init ───── */
 document.addEventListener('DOMContentLoaded', () => {
   renderPhaseSystemsDots();
@@ -2443,6 +2860,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMetricsColumn();
   renderGovernanceCards();
   attachPhaseListeners();
+  initTabs();
 
   // Initial line draw after layout settles
   requestAnimationFrame(() => {
