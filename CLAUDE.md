@@ -1,6 +1,30 @@
 # maji by majaco — Agent Reference
 
-Static site hosted on GitHub Pages. All pages are self-contained HTML with inline CSS/JS. No build step, no framework.
+## About majaco & maji
+
+- **majaco** (https://majaco.co) is an operational improvement consultancy, previously Newton Europe
+- **maji** is majaco's AI operational analyst — the tools on this site are maji's public and client-facing outputs
+- Use **UK English** throughout (colour not color, optimise not optimize, analyse not analyze)
+
+## Proprietary Frameworks — Use These, Not Alternatives
+
+When building or modifying tool pages, use majaco's terminology and frameworks:
+
+| majaco Framework | NEVER Use Instead |
+|---|---|
+| **Lost Time** (LTSR, LTMW, Good Output) | OEE = Availability × Performance × Quality |
+| **EPA** (Efficiency, Pareto, Action) | Generic problem-solving frameworks |
+| **Split Solving** | Fishbone diagrams, 5 Whys |
+| **Valuation of Opportunities** (production vs sales-constrained) | Generic ROI approaches |
+
+If building a tool that touches these concepts, use majaco's approach. If unsure whether majaco has a proprietary method, flag it rather than defaulting to textbook approaches.
+
+## External Knowledge
+
+majaco's Knowledge Base lives in Notion. When context is needed beyond what's in this repo:
+- **Knowledge Base Index**: Notion page `id="2924f4a74df081a89b8af9fc8725405b"`
+- **Notion Changelog**: database `id="2924f4a74df0807cbc85fd151bdc5445"`
+- Use Notion tools to fetch if available; otherwise ask the user
 
 ## Repository
 
@@ -34,7 +58,7 @@ maji-site/
 ├── maji-*.html                 # Public tools (speed-downtime, splitsolver, etc.)
 ├── mhw-simulator.html          # Multihead weigher simulator
 │
-├── becketts/                   # Becketts client portal (password-protected)
+├── becketts/                   # Becketts Foods client portal (password-protected)
 │   ├── index.html
 │   ├── run-rate-calculator.html
 │   ├── performance-framework.html
@@ -91,6 +115,7 @@ Two-layer auth system using SHA-256 hashes stored in sessionStorage.
 - **Colours**: dark green `#001412`, pine `#006458`, lime `#DAF11B`
 - **Background**: dark (`#001412`)
 - **Shared CSS**: `css/variables.css` + `css/style.css`
+- **Webflow-compatible pages**: pine `#006458`, lime `#DAF11B`, dark-green `#001412`, Roboto typography, self-contained inline CSS, no external dependencies, fully responsive
 
 ## Page Template (client portal pages)
 
@@ -120,12 +145,14 @@ All client portal pages follow this pattern:
 
 ## Key Conventions
 
+- **UK English** — all copy, labels, tooltips, and comments
 - **No build step** — all pages are static HTML, edit and push
 - **Inline CSS/JS** — tool pages are self-contained; shared styles only in `css/`
 - **Auth scripts go in `<head>`** — they must run before page renders
 - **Google Fonts** are NOT used on maji pages (TT Hoves Pro is self-hosted)
 - **Disclaimers** — maji client pages should include a disclaimer banner after the breadcrumb
 - **base64-encoded content** — `nineten/operational-roadmap.html` encodes its HTML content in base64, decoded client-side after auth check. This is a content-protection pattern.
+- **majaco terminology** — use proprietary frameworks (see table above), not textbook alternatives
 
 ## Git Workflow
 
