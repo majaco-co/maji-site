@@ -1012,9 +1012,9 @@ const DATA = {
           id: 'downtime',
           name: 'Downtime',
           now: {
-            systems: ['feedback', 'sic'],
-            notes: 'Manually recorded in Feedback. Also manually entered in SIC but data not used.',
-            issues: ['Dual entry — SIC data wasted', 'No structured reason codes', 'Manual = incomplete capture']
+            systems: ['sic', 'feedback', 'sfdc'],
+            notes: 'SIC: verbal — discussed but not recorded digitally. Feedback: recorded in Excel, accuracy needs verification. SFDC: recorded but poor reason codes and durations.',
+            issues: ['SIC verbal only — no digital record', 'Feedback in Excel — accuracy unverified', 'SFDC reason codes and durations poor quality', 'Three systems, none reliable']
           },
           phase1: {
             months: [
