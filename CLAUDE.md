@@ -19,12 +19,14 @@ When building or modifying tool pages, use majaco's terminology and frameworks:
 
 If building a tool that touches these concepts, use majaco's approach. If unsure whether majaco has a proprietary method, flag it rather than defaulting to textbook approaches.
 
-## External Knowledge
+## External Knowledge — Notion
 
-majaco's Knowledge Base lives in Notion. When context is needed beyond what's in this repo:
-- **Knowledge Base Index**: Notion page `id="2924f4a74df081a89b8af9fc8725405b"`
+majaco's Knowledge Base is a living system in Notion. **Fetch it on every query where domain context is needed** — do not rely on cached or stale knowledge.
+
+- **Knowledge Base Index**: Notion page `id="2924f4a74df081a89b8af9fc8725405b"` — start here, it indexes everything
 - **Notion Changelog**: database `id="2924f4a74df0807cbc85fd151bdc5445"`
 - Use Notion tools to fetch if available; otherwise ask the user
+- For client context, active engagements, or CRM data — ask the user, this repo is not the source of truth
 
 ## Repository
 
@@ -91,13 +93,8 @@ Two-layer auth system using SHA-256 hashes stored in sessionStorage.
 - `client-redirect.js` checks `maji_client_auth` matches the page's `data-password-hash` attribute — redirects to `/clients.html` if not
 - Used on all client portal pages
 
-### Client passwords & hashes
-| Client | Password | Hash |
-|--------|----------|------|
-| Becketts | `beckettsbacon` | `40570a1de4739c73856e21e11c279357b7bb3472be26ad967f7262a812b84f84` |
-| Nine/Ten | `fasteners2026` | `827069375159a2ea97b000ce0d3bdbee6854444600df29e9562ad7db7b8e5a54` |
-| Pukka | *(unknown)* | `224bc3170cc2a53db4772c58f5d0cc5858be314b683155d5f8c22eb0455de962` |
-| RedZone | *(unknown)* | `0e772dc5f875aeb537a79f565c33f7b95e875fe44438bfbdac9368895f5dba5b` |
+### Client password hashes
+Passwords are NOT stored in this repo. Hashes are in each page's `data-password-hash` attribute and in `clients.html`. If you need a password, ask the user.
 
 ### Adding a new client portal
 1. Generate hash: `echo -n "thepassword" | shasum -a 256`
