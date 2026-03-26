@@ -621,6 +621,11 @@ body {
   opacity: 0.2;
 }
 
+.column-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 6px 0;
+}
+
 .metric-chip .dot {
   width: 6px;
   height: 6px;
@@ -1629,15 +1634,20 @@ function renderSystemCards() {
   const active = getActiveSystemIds();
   let html = '';
 
-  const sysIds = Object.keys(DATA.systems).sort((a, b) => {
-    const aActive = active.has(a) ? 0 : 1;
-    const bActive = active.has(b) ? 0 : 1;
-    return aActive - bActive;
-  });
+  const allSysIds = Object.keys(DATA.systems);
+  const activeSysIds = allSysIds.filter(id => active.has(id));
+  const inactiveSysIds = allSysIds.filter(id => !active.has(id));
+  const sysIds = [...activeSysIds, ...inactiveSysIds];
+  let sysDividerDone = false;
 
   sysIds.forEach(sysId => {
     const sys = DATA.systems[sysId];
     const isActive = active.has(sysId);
+
+    if (!isActive && !sysDividerDone && inactiveSysIds.length) {
+      html += '<div class="column-divider"></div>';
+      sysDividerDone = true;
+    }
     const stateClass = isActive ? 'active-sys' : 'inactive-sys';
 
     // Count metrics using this system in current phase
@@ -1669,15 +1679,20 @@ function renderReportingCards() {
   const activeRpts = new Set(DATA.reportingByPhase[currentPhase] || []);
   let html = '';
 
-  const rptIds = Object.keys(DATA.reporting).sort((a, b) => {
-    const aActive = activeRpts.has(a) ? 0 : 1;
-    const bActive = activeRpts.has(b) ? 0 : 1;
-    return aActive - bActive;
-  });
+  const allRptIds = Object.keys(DATA.reporting);
+  const activeRptIds = allRptIds.filter(id => activeRpts.has(id));
+  const inactiveRptIds = allRptIds.filter(id => !activeRpts.has(id));
+  const rptIds = [...activeRptIds, ...inactiveRptIds];
+  let rptDividerDone = false;
 
   rptIds.forEach(rptId => {
     const rpt = DATA.reporting[rptId];
     const isActive = activeRpts.has(rptId);
+
+    if (!isActive && !rptDividerDone && inactiveRptIds.length) {
+      html += '<div class="column-divider"></div>';
+      rptDividerDone = true;
+    }
     const stateClass = isActive ? 'active-rpt' : 'inactive-rpt';
 
     // Count how many systems feed this reporting destination
@@ -1705,36 +1720,26 @@ function renderReportingCards() {
 function renderMetricsColumn() {
   const container = document.getElementById('metricsColumn');
 
-  // Group KPIs by area
-  const areaOrder = ['efficiency', 'yield', 'labour'];
-  const areaLabels = { efficiency: 'Efficiency', yield: 'Yield', labour: 'Labour' };
   const areaColors = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308' };
+  const activeKpis = new Set(DATA.kpisByPhase[currentPhase] || []);
+  const allKpis = Object.entries(DATA.kpis);
+  const activeList = allKpis.filter(([id]) => activeKpis.has(id));
+  const inactiveList = allKpis.filter(([id]) => !activeKpis.has(id));
 
   let html = '';
-  areaOrder.forEach(areaId => {
-    const kpisInArea = Object.entries(DATA.kpis).filter(([, kpi]) => kpi.area === areaId);
-    if (!kpisInArea.length) return;
+  function renderChip(kpiId, kpi, inactive) {
+    const cls = inactive ? ' inactive-kpi' : '';
+    html += '<div class="metric-chip' + cls + '" id="mc-' + kpiId + '" data-metric-chip="' + kpiId + '">';
+    html += '<div class="dot" style="background:' + (areaColors[kpi.area] || kpi.color) + ';"></div>';
+    html += '<h4>' + kpi.name + '</h4>';
+    html += '</div>';
+  }
 
-    html += '<div class="area-group-label"><span class="area-dot" style="background:' + areaColors[areaId] + ';"></span> ' + areaLabels[areaId] + '</div>';
-
-    const activeKpis = new Set(DATA.kpisByPhase[currentPhase] || []);
-
-    kpisInArea.sort((a, b) => {
-      const aActive = activeKpis.has(a[0]) ? 0 : 1;
-      const bActive = activeKpis.has(b[0]) ? 0 : 1;
-      return aActive - bActive;
-    });
-
-    kpisInArea.forEach(([kpiId, kpi]) => {
-      const isActive = activeKpis.has(kpiId);
-      const inactiveClass = isActive ? '' : ' inactive-kpi';
-
-      html += '<div class="metric-chip' + inactiveClass + '" id="mc-' + kpiId + '" data-metric-chip="' + kpiId + '">';
-      html += '<div class="dot" style="background:' + kpi.color + ';"></div>';
-      html += '<h4>' + kpi.name + '</h4>';
-      html += '</div>';
-    });
-  });
+  activeList.forEach(([id, kpi]) => renderChip(id, kpi, false));
+  if (inactiveList.length) {
+    html += '<div class="column-divider"></div>';
+    inactiveList.forEach(([id, kpi]) => renderChip(id, kpi, true));
+  }
 
   container.innerHTML = html;
   attachMetricChipListeners();
@@ -1746,14 +1751,14 @@ function renderGovernanceCards() {
   const activeGov = new Set(DATA.governanceByPhase[currentPhase] || []);
   const govRptMap = DATA.governanceToReporting[currentPhase] || {};
 
-  const sorted = [...DATA.governance].sort((a, b) => {
-    const aActive = activeGov.has(a.id) ? 0 : 1;
-    const bActive = activeGov.has(b.id) ? 0 : 1;
-    return aActive - bActive;
-  });
+  const activeMeetings = DATA.governance.filter(m => activeGov.has(m.id));
+  const inactiveMeetings = DATA.governance.filter(m => !activeGov.has(m.id));
+  const ordered = [...activeMeetings, ...inactiveMeetings];
+  const dividerIdx = activeMeetings.length;
 
-  container.innerHTML = sorted.map(meeting => {
+  container.innerHTML = ordered.map((meeting, idx) => {
     const isActive = activeGov.has(meeting.id);
+    const divider = (idx === dividerIdx && inactiveMeetings.length) ? '<div class="column-divider"></div>' : '';
     const stateClass = isActive ? 'active-gov' : 'inactive-gov';
     const rptIds = govRptMap[meeting.id] || [];
 
@@ -1772,7 +1777,7 @@ function renderGovernanceCards() {
       notRunning = '<div class="not-running">Not running this phase</div>';
     }
 
-    return '<div class="gov-card ' + stateClass + '" id="gov-' + meeting.id + '" data-governance="' + meeting.id + '" data-reporting="' + rptIds.join(',') + '">' +
+    return divider + '<div class="gov-card ' + stateClass + '" id="gov-' + meeting.id + '" data-governance="' + meeting.id + '" data-reporting="' + rptIds.join(',') + '">' +
       '<h3>' + meeting.name + '</h3>' +
       '<div class="cadence-badge">' + meeting.cadence + '</div>' +
       '<div class="description">' + meeting.description + '</div>' +
