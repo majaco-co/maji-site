@@ -1142,7 +1142,7 @@ const DATA = {
           id: 'downtime',
           name: 'Downtime',
           now: {
-            systems: ['feedback', 'verbal'],
+            systems: ['feedback', 'whiteboard'],
             notes: 'Manually captured then verbally brought to SIC meeting. Feedback: recorded in Excel, accuracy needs verification. SFDC: recorded but poor reason codes and durations.',
             issues: ['SIC is verbal only — no digital record', 'Feedback in Excel — accuracy unverified', 'SFDC reason codes and durations poor quality']
           },
@@ -1359,8 +1359,7 @@ const DATA = {
     'oee-system': { name: 'OEE / SFDC', color: '#EC4899' },
     'checkweigher': { name: 'Check Weigher', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' },
-    'whiteboard': { name: 'Whiteboard', color: '#A3A3A3' },
-    'verbal': { name: 'Verbal', color: '#9CA3AF' },
+    'whiteboard': { name: 'Whiteboard / Verbal', color: '#A3A3A3' },
     'thinktrax': { name: 'ThinkTrax', color: '#A855F7' }
   },
   reporting: {
@@ -1383,7 +1382,6 @@ const DATA = {
       'sic': ['sic-rpt'],
       'manual': ['sic-rpt', 'sfdc-rpt'],
       'whiteboard': ['sic-rpt'],
-      'verbal': ['sic-rpt'],
       'checkweigher': ['sic-rpt']
     },
     phase1: {
