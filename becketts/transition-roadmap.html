@@ -1283,7 +1283,7 @@ const DATA = {
         {
           id: 'giveaway',
           name: 'Giveaway (G.A.)',
-          now: { systems: ['manual'], notes: 'Recorded on whiteboard at line level. Not in any system.', issues: ['Whiteboard only — no digital capture', 'No trending or reporting'] },
+          now: { systems: ['whiteboard'], notes: 'Recorded on whiteboard at line level. Not in any system.', issues: ['Whiteboard only — no digital capture', 'No trending or reporting'] },
           phase1: {
             months: [{ month: 1, action: 'Whiteboard data entered into Feedback' }, { month: 2, action: 'Giveaway trending and reporting in Feedback' }],
             systems: ['feedback'],
@@ -1359,6 +1359,7 @@ const DATA = {
     'oee-system': { name: 'OEE / SFDC', color: '#EC4899' },
     'checkweigher': { name: 'Check Weigher', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' },
+    'whiteboard': { name: 'Whiteboard', color: '#A3A3A3' },
     'thinktrax': { name: 'ThinkTrax', color: '#A855F7' }
   },
   reporting: {
@@ -1380,7 +1381,8 @@ const DATA = {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
       'manual': ['sic-rpt', 'sfdc-rpt'],
-      'checkweigher': ['sic-rpt']
+      'checkweigher': ['sic-rpt'],
+      'whiteboard': ['sic-rpt']
     },
     phase1: {
       'feedback': ['feedback-rpt'],
@@ -1482,7 +1484,7 @@ const DATA = {
   },
   // Which KPIs are active per phase
   kpisByPhase: {
-    now:    ['efficiency', 'crew-ratio', 'ga-pct'],
+    now:    ['efficiency', 'downtime', 'crew-ratio', 'ga-pct'],
     phase1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'var-to-std'],
     phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio'],
     phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std'],
