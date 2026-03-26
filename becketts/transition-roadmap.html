@@ -184,13 +184,13 @@ body {
   margin-top: 1px;
 }
 
-/* 4-COLUMN FRAMEWORK GRID */
+/* 5-COLUMN FRAMEWORK GRID (flipped: governance → metrics → reporting → systems → data inputs) */
 .framework {
   max-width: 95vw;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 180px 180px 260px;
-  gap: 16px;
+  grid-template-columns: 240px 160px 160px 160px 1fr;
+  gap: 14px;
   align-items: start;
   position: relative;
 }
@@ -515,6 +515,56 @@ body {
   padding-left: 18px;
 }
 
+/* METRIC CHIPS (metrics column) */
+.metric-chip {
+  border-radius: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 4px;
+  transition: all 0.25s ease;
+  cursor: default;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metric-chip:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.metric-chip.active-mc {
+  border-color: #DAF11B;
+  background: rgba(218, 241, 27, 0.06);
+}
+
+.metric-chip.dimmed {
+  opacity: 0.25;
+}
+
+.metric-chip .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.metric-chip h4 {
+  font-size: 10px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.metric-chip .chip-sub {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+}
+
 /* REPORTING CARDS (centre-right column) */
 .reporting-card {
   border-radius: 10px;
@@ -685,24 +735,17 @@ body {
 }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
-  .phase-selector {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
+@media (max-width: 1200px) {
   .framework {
     grid-template-columns: 1fr;
     gap: 24px;
   }
 
-  .col-reporting {
-    order: 3;
-  }
-
-  .col-right {
-    order: 4;
-  }
+  .col-governance { order: 1; }
+  .col-metrics { order: 2; }
+  .col-reporting { order: 3; }
+  .col-systems { order: 4; }
+  .col-data { order: 5; }
 
   #conn-svg {
     display: none;
@@ -715,6 +758,13 @@ body {
 
   .phase-journey-mini .pj-col:not(:last-child)::after {
     display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .phase-selector {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
@@ -793,21 +843,21 @@ body {
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#F97316;"></span> Feedback</div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.35);"><span class="gantt-bar__text">Active</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.25);"><span class="gantt-bar__text">Winding down</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.3);"><span class="gantt-bar__text">Active</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.45);"><span class="gantt-bar__text">Enhanced</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.08);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Off</span></div>
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#8B5CF6;"></span> SIC</div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.35);"><span class="gantt-bar__text">Active</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.25);"><span class="gantt-bar__text">Winding down</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.3);"><span class="gantt-bar__text">Active</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.45);"><span class="gantt-bar__text">Enhanced</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.08);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Off</span></div>
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#3B82F6;"></span> SFDC</div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.2);"><span class="gantt-bar__text">Partial</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.3);"><span class="gantt-bar__text">Expanding</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.45);"><span class="gantt-bar__text">Primary</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.3);"><span class="gantt-bar__text">Building</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.5);"><span class="gantt-bar__text">Primary</span></div>
       </div>
     </div>
 
@@ -833,21 +883,39 @@ body {
       </div>
     </div>
 
-    <!-- 3-COLUMN FRAMEWORK -->
+    <!-- 5-COLUMN FRAMEWORK (demand-pull: governance → metrics → reporting → systems → data inputs) -->
     <div class="framework" id="framework">
       <svg id="conn-svg"></svg>
 
-      <!-- LEFT: Data Inputs -->
-      <div class="col-left" id="colLeft">
+      <!-- COL 1: Governance -->
+      <div class="col-governance" id="colGovernance">
         <div class="column-header">
-          <div class="icon">&#9671;</div>
-          <span>Data Inputs</span>
+          <div class="icon">&#9878;</div>
+          <span>Governance</span>
         </div>
-        <div id="metricCards"></div>
+        <div id="governanceCards"></div>
       </div>
 
-      <!-- CENTRE-LEFT: Systems -->
-      <div class="col-centre" id="colCentre">
+      <!-- COL 2: Metrics -->
+      <div class="col-metrics" id="colMetrics">
+        <div class="column-header">
+          <div class="icon">&#9673;</div>
+          <span>Metrics</span>
+        </div>
+        <div id="metricsColumn"></div>
+      </div>
+
+      <!-- COL 3: Reporting -->
+      <div class="col-reporting" id="colReporting">
+        <div class="column-header">
+          <div class="icon">&#128202;</div>
+          <span>Reporting</span>
+        </div>
+        <div id="reportingCards"></div>
+      </div>
+
+      <!-- COL 4: Systems -->
+      <div class="col-systems" id="colSystems">
         <div class="column-header">
           <div class="icon">&#9881;</div>
           <span>Systems</span>
@@ -855,22 +923,13 @@ body {
         <div id="systemCards"></div>
       </div>
 
-      <!-- CENTRE-RIGHT: Storage & Reporting -->
-      <div class="col-reporting" id="colReporting">
+      <!-- COL 5: Data Inputs -->
+      <div class="col-data" id="colData">
         <div class="column-header">
-          <div class="icon">&#128202;</div>
-          <span>Storage &amp; Reporting</span>
+          <div class="icon">&#9671;</div>
+          <span>Data Inputs</span>
         </div>
-        <div id="reportingCards"></div>
-      </div>
-
-      <!-- RIGHT: Governance -->
-      <div class="col-right" id="colRight">
-        <div class="column-header">
-          <div class="icon">&#9878;</div>
-          <span>Governance</span>
-        </div>
-        <div id="governanceCards"></div>
+        <div id="metricCards"></div>
       </div>
     </div>
   </div>
@@ -929,9 +988,9 @@ const DATA = {
           id: 'good-output',
           name: 'Good Output',
           now: {
-            systems: ['sfdc'],
-            notes: 'Cases manually entered against works orders in SFDC. Accurate but late — not available in real-time.',
-            issues: ['Data arrives late', 'Manual entry against W.O.']
+            systems: ['sic', 'sfdc', 'feedback'],
+            notes: 'SIC uses estimated current cases completed. SFDC gets QTY confirmed against W.O. Feedback pulls from SFDC data via SQL.',
+            issues: ['SIC estimate vs SFDC confirmed mismatch', 'Feedback is derivative of SFDC', 'Not real-time']
           },
           phase1: {
             months: [
@@ -954,23 +1013,23 @@ const DATA = {
           name: 'Downtime',
           now: {
             systems: ['feedback', 'sic'],
-            notes: 'Manually entered in Feedback. Also manually entered in SIC but data not used.',
+            notes: 'Manually recorded in Feedback. Also manually entered in SIC but data not used.',
             issues: ['Dual entry — SIC data wasted', 'No structured reason codes', 'Manual = incomplete capture']
           },
           phase1: {
             months: [
-              { month: 1, action: 'Slicer downtime with reasons captured' },
-              { month: 2, action: 'Slicer reason coding refined' },
-              { month: 3, action: 'Full slicer downtime Pareto available' }
+              { month: 1, action: 'XL Vorne captures downtime on Notts & Yorks lines' },
+              { month: 2, action: 'Vorne downtime validated against manual Feedback entries' },
+              { month: 3, action: 'Vorne downtime reporting live for 2 lines' }
             ],
-            systems: ['feedback', 'slicer'],
-            notes: 'Slicer provides automated downtime capture with reason codes alongside Feedback manual entry.',
-            issues: ['Slicer only — other equipment still manual', 'Reason code taxonomy needs defining']
+            systems: ['feedback', 'xl-vorne'],
+            notes: 'Manually recorded in Feedback for all lines. XL Vorne supplements on Notts & Yorks lines only. Slicer downtime deferred to Phase 2.',
+            issues: ['Only 2 lines have automated capture', 'Rest of lines still manual via Feedback']
           },
           phase2: {
-            systems: ['sfdc'],
-            notes: 'Recorded at bottleneck (BN). MECE reason capture. Decision needed: plan vs allow distinction.',
-            requirements: ['MECE reason code taxonomy agreed', 'Bottleneck sensors deployed', 'Plan vs allow categories defined']
+            systems: ['sfdc', 'slicer'],
+            notes: 'Recorded at bottleneck (BN). Slicer downtime with reason codes. MECE reason capture. Decision needed: plan vs allow distinction.',
+            requirements: ['MECE reason code taxonomy agreed', 'Slicer integration to SFDC', 'Bottleneck sensors deployed', 'Plan vs allow categories defined']
           }
         },
         {
@@ -983,12 +1042,13 @@ const DATA = {
           },
           phase1: {
             months: [
-              { month: 2, action: 'Speed data captured from Slicer' },
-              { month: 3, action: 'Slicer speed validated and reported' }
+              { month: 1, action: 'Speed manually reported in Feedback' },
+              { month: 2, action: 'XL Vorne speed captured on Notts & Yorks lines' },
+              { month: 3, action: 'Vorne speed validated against manual entries' }
             ],
-            systems: ['slicer'],
-            notes: 'Slicer provides actual speed data.',
-            issues: ['Only slicer lines covered', 'Settings vs actual distinction needed']
+            systems: ['feedback', 'xl-vorne'],
+            notes: 'Manually reported in Feedback for all lines. XL Vorne supplements on Notts & Yorks lines only.',
+            issues: ['Most lines still manual', 'Settings vs actual distinction needed']
           },
           phase2: {
             systems: ['sfdc'],
@@ -1025,14 +1085,10 @@ const DATA = {
             issues: ['Feedback only — not linked to W.O.']
           },
           phase1: {
-            months: [
-              { month: 1, action: 'Crewing linked to W.O. in SFDC' },
-              { month: 2, action: 'Crew reporting active' },
-              { month: 3, action: 'Crew data reported alongside production' }
-            ],
-            systems: ['sfdc'],
-            notes: 'Crewing moved to W.O. in SFDC.',
-            issues: []
+            months: [],
+            systems: ['feedback'],
+            notes: 'No change — crewing remains in Feedback.',
+            issues: ['Still not linked to W.O.']
           },
           phase2: {
             systems: ['sfdc'],
@@ -1055,12 +1111,12 @@ const DATA = {
         {
           id: 'giveaway',
           name: 'Giveaway (G.A.)',
-          now: { systems: [], notes: 'No structured giveaway capture.', issues: ['No systematic recording'] },
+          now: { systems: ['manual'], notes: 'Recorded on whiteboard at line level. Not in any system.', issues: ['Whiteboard only — no digital capture', 'No trending or reporting'] },
           phase1: {
-            months: [{ month: 1, action: 'Whiteboard capture at line level' }, { month: 2, action: 'Giveaway data entered into Feedback' }],
-            systems: ['manual', 'feedback'],
-            notes: 'Starts on whiteboard, then into Feedback. Manual process.',
-            issues: ['Manual capture', 'Whiteboard \u2192 system lag']
+            months: [{ month: 1, action: 'Whiteboard data entered into Feedback' }, { month: 2, action: 'Giveaway trending and reporting in Feedback' }],
+            systems: ['feedback'],
+            notes: 'Moved from whiteboard into Feedback. Digital capture enables trending.',
+            issues: ['Still manual entry from whiteboard']
           },
           phase2: { systems: ['sfdc', 'checkweigher'], notes: 'Auto into SFDC against W.O. — C/W Cloud data feeds directly.', requirements: ['Checkweigher Cloud integration to SFDC', 'Auto-booking against W.O.'] }
         },
@@ -1119,7 +1175,8 @@ const DATA = {
     'xl-vorne': { name: 'XL Vorne', color: '#06B6D4' },
     'slicer': { name: 'Slicer', color: '#EC4899' },
     'checkweigher': { name: 'C/W', color: '#10B981' },
-    'manual': { name: 'Manual', color: '#78716C' }
+    'manual': { name: 'Manual', color: '#78716C' },
+    'thinktrax': { name: 'ThinkTrax', color: '#A855F7' }
   },
   reporting: {
     'sic-rpt': { name: 'SIC', color: '#8B5CF6' },
@@ -1128,7 +1185,7 @@ const DATA = {
   },
   // Which reporting destinations are active per phase
   reportingByPhase: {
-    now: ['sic-rpt', 'feedback-rpt'],
+    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
     phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
     phase2: ['sfdc-rpt']
   },
@@ -1137,7 +1194,7 @@ const DATA = {
     now: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'sfdc': ['sic-rpt'],
+      'sfdc': ['sfdc-rpt', 'sic-rpt'],
       'checkweigher': ['sic-rpt'],
       'manual': ['sic-rpt']
     },
@@ -1191,6 +1248,14 @@ const DATA = {
     now: ['sic-meeting', 'daily-ops', 'monthly-finance'],
     phase1: ['sic-meeting', 'daily-ops', 'monthly-finance'],
     phase2: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance']
+  },
+  // Which metrics each governance meeting reviews
+  governanceMetrics: {
+    'sic-meeting': ['start-stop', 'good-output', 'downtime', 'speed', 'crew'],
+    'daily-ops': ['start-stop', 'good-output', 'downtime', 'speed', 'waste', 'crew', 'giveaway'],
+    'weekly-review': ['good-output', 'downtime', 'speed', 'waste', 'crew', 'giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value'],
+    'weekly-planning': ['plan-sequence', 'ctp', 'paid-hours', 'planned-hours'],
+    'monthly-finance': ['good-output', 'downtime', 'waste', 'giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value', 'paid-hours']
   }
 };
 
@@ -1200,6 +1265,7 @@ let hoveredMetric = null;
 let hoveredSystem = null;
 let hoveredReporting = null;
 let hoveredGovernance = null;
+let hoveredMetricChip = null;
 
 /* ───── Phase selector dots ───── */
 function renderPhaseSystemsDots() {
@@ -1382,7 +1448,47 @@ function renderReportingCards() {
   attachReportingListeners();
 }
 
-/* ───── RIGHT COLUMN: Governance cards ───── */
+/* ───── METRICS COLUMN: metric chips ───── */
+function renderMetricsColumn() {
+  const container = document.getElementById('metricsColumn');
+  // Build a lookup: metricId → { name, areaColor }
+  const metricLookup = {};
+  DATA.areas.forEach(area => {
+    area.metrics.forEach(m => {
+      metricLookup[m.id] = { name: m.name, color: area.color, areaName: area.name };
+    });
+  });
+
+  // Collect unique metrics used across all governance meetings
+  const allMetricIds = new Set();
+  Object.values(DATA.governanceMetrics).forEach(ids => ids.forEach(id => allMetricIds.add(id)));
+
+  // Group by area for visual grouping
+  let html = '';
+  DATA.areas.forEach(area => {
+    const areaMetrics = area.metrics.filter(m => allMetricIds.has(m.id));
+    if (!areaMetrics.length) return;
+
+    html += '<div class="area-group-label"><span class="area-dot" style="background:' + area.color + ';"></span> ' + area.name + '</div>';
+
+    areaMetrics.forEach(m => {
+      // Check if this metric has data in the current phase
+      const pd = m[currentPhase];
+      const hasSystems = pd && pd.systems && pd.systems.length > 0;
+      const dataClass = hasSystems ? '' : ' style="opacity:0.4;"';
+
+      html += '<div class="metric-chip" id="mc-' + m.id + '" data-metric-chip="' + m.id + '"' + dataClass + '>';
+      html += '<div class="dot" style="background:' + area.color + ';"></div>';
+      html += '<h4>' + m.name + '</h4>';
+      html += '</div>';
+    });
+  });
+
+  container.innerHTML = html;
+  attachMetricChipListeners();
+}
+
+/* ───── GOVERNANCE COLUMN: Governance cards ───── */
 function renderGovernanceCards() {
   const container = document.getElementById('governanceCards');
   const activeGov = new Set(DATA.governanceByPhase[currentPhase] || []);
@@ -1419,7 +1525,7 @@ function renderGovernanceCards() {
   attachGovernanceListeners();
 }
 
-/* ───── SVG Connection Lines ───── */
+/* ───── SVG Connection Lines (flipped: Gov → Metrics → Reporting → Systems → Data) ───── */
 function drawLines() {
   const svg = document.getElementById('conn-svg');
   const fw = document.getElementById('framework');
@@ -1428,7 +1534,7 @@ function drawLines() {
   svg.innerHTML = '';
 
   const fwRect = fw.getBoundingClientRect();
-  if (fwRect.width < 700) return;
+  if (fwRect.width < 800) return;
 
   const fwLeft = fwRect.left;
   const fwTop = fwRect.top + window.scrollY;
@@ -1442,154 +1548,236 @@ function drawLines() {
 
   const sysToRptMap = DATA.systemToReporting[currentPhase] || {};
   const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
+  const govMetricsMap = DATA.governanceMetrics;
 
-  const activeMetric = focusedMetric || hoveredMetric;
+  const hl = buildHighlightSets();
 
-  // If nothing focused/hovered, draw all connections lightly
-  if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance) {
-    // Metric → System
-    document.querySelectorAll('.card[data-metric]').forEach(mCard => {
-      const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
-      sysList.forEach(sId => {
-        const sCard = document.getElementById('sys-' + sId);
-        if (!sCard || sCard.classList.contains('inactive-sys')) return;
-        const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
-        drawBezier(svg, edgeOf(mCard, 'right'), edgeOf(sCard, 'left'), color, 1.2, 0.1);
+  // If nothing highlighted, draw all connections lightly
+  if (!hl) {
+    // Gov → Metric chips
+    Object.keys(govMetricsMap).forEach(gId => {
+      const gCard = document.getElementById('gov-' + gId);
+      if (!gCard || gCard.classList.contains('inactive-gov')) return;
+      govMetricsMap[gId].forEach(mId => {
+        const mc = document.getElementById('mc-' + mId);
+        if (!mc) return;
+        drawBezier(svg, edgeOf(gCard, 'right'), edgeOf(mc, 'left'), 'rgba(218,241,27,0.5)', 1, 0.08);
       });
     });
-    // System → Reporting
+    // Metric chips → Reporting (via systems — just draw metric chip to reporting)
+    document.querySelectorAll('.metric-chip').forEach(mc => {
+      const mId = mc.dataset.metricChip;
+      const metricSystems = getMetricSystems(mId);
+      const rptIds = new Set();
+      metricSystems.forEach(sId => (sysToRptMap[sId] || []).forEach(rId => rptIds.add(rId)));
+      rptIds.forEach(rId => {
+        const rCard = document.getElementById('rpt-' + rId);
+        if (!rCard || rCard.classList.contains('inactive-rpt')) return;
+        const color = DATA.reporting[rId] ? DATA.reporting[rId].color : '#DAF11B';
+        drawBezier(svg, edgeOf(mc, 'right'), edgeOf(rCard, 'left'), color, 1, 0.08);
+      });
+    });
+    // Reporting → Systems
     Object.keys(sysToRptMap).forEach(sId => {
       const sCard = document.getElementById('sys-' + sId);
-      if (!sCard) return;
+      if (!sCard || sCard.classList.contains('inactive-sys')) return;
       sysToRptMap[sId].forEach(rId => {
         const rCard = document.getElementById('rpt-' + rId);
         if (!rCard) return;
         const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
-        drawBezier(svg, edgeOf(sCard, 'right'), edgeOf(rCard, 'left'), color, 1.2, 0.1);
+        drawBezier(svg, edgeOf(rCard, 'right'), edgeOf(sCard, 'left'), color, 1, 0.08);
       });
     });
-    // Reporting → Governance
-    Object.keys(govToRptMap).forEach(gId => {
-      const gCard = document.getElementById('gov-' + gId);
-      if (!gCard || gCard.classList.contains('inactive-gov')) return;
-      govToRptMap[gId].forEach(rId => {
-        const rCard = document.getElementById('rpt-' + rId);
-        if (!rCard) return;
-        const color = DATA.reporting[rId] ? DATA.reporting[rId].color : '#DAF11B';
-        drawBezier(svg, edgeOf(rCard, 'right'), edgeOf(gCard, 'left'), color, 1.2, 0.1);
+    // Systems → Data Inputs
+    document.querySelectorAll('.card[data-metric]').forEach(dCard => {
+      const sysList = (dCard.dataset.systems || '').split(',').filter(Boolean);
+      sysList.forEach(sId => {
+        const sCard = document.getElementById('sys-' + sId);
+        if (!sCard || sCard.classList.contains('inactive-sys')) return;
+        const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+        drawBezier(svg, edgeOf(sCard, 'right'), edgeOf(dCard, 'left'), color, 1, 0.08);
       });
     });
     return;
   }
 
-  // Collect highlighted elements
-  let highlightedSystems = new Set();
-  let highlightedReporting = new Set();
-  let highlightedGovernance = new Set();
-  let highlightedMetrics = new Set();
+  // Draw highlighted lines
+  // Gov → Metric chips
+  hl.governance.forEach(gId => {
+    const gCard = document.getElementById('gov-' + gId);
+    if (!gCard) return;
+    (govMetricsMap[gId] || []).forEach(mId => {
+      if (!hl.metricChips.has(mId)) return;
+      const mc = document.getElementById('mc-' + mId);
+      if (!mc) return;
+      drawBezier(svg, edgeOf(gCard, 'right'), edgeOf(mc, 'left'), '#DAF11B', 1.5, 0.5);
+    });
+  });
+  // Metric chips → Reporting
+  hl.metricChips.forEach(mId => {
+    const mc = document.getElementById('mc-' + mId);
+    if (!mc) return;
+    const metricSystems = getMetricSystems(mId);
+    const rptIds = new Set();
+    metricSystems.forEach(sId => { if (hl.systems.has(sId)) (sysToRptMap[sId] || []).forEach(rId => rptIds.add(rId)); });
+    rptIds.forEach(rId => {
+      if (!hl.reporting.has(rId)) return;
+      const rCard = document.getElementById('rpt-' + rId);
+      if (!rCard) return;
+      const color = DATA.reporting[rId] ? DATA.reporting[rId].color : '#DAF11B';
+      drawBezier(svg, edgeOf(mc, 'right'), edgeOf(rCard, 'left'), color, 2, 0.6);
+    });
+  });
+  // Reporting → Systems
+  hl.systems.forEach(sId => {
+    const sCard = document.getElementById('sys-' + sId);
+    if (!sCard) return;
+    (sysToRptMap[sId] || []).forEach(rId => {
+      if (!hl.reporting.has(rId)) return;
+      const rCard = document.getElementById('rpt-' + rId);
+      if (!rCard) return;
+      const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+      drawBezier(svg, edgeOf(rCard, 'right'), edgeOf(sCard, 'left'), color, 2, 0.6);
+    });
+  });
+  // Systems → Data Inputs
+  hl.dataInputs.forEach(dId => {
+    const dCard = document.getElementById('metric-' + dId);
+    if (!dCard) return;
+    const sysList = (dCard.dataset.systems || '').split(',').filter(Boolean);
+    sysList.forEach(sId => {
+      if (!hl.systems.has(sId)) return;
+      const sCard = document.getElementById('sys-' + sId);
+      if (!sCard) return;
+      const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+      drawBezier(svg, edgeOf(sCard, 'right'), edgeOf(dCard, 'left'), color, 2, 0.6);
+    });
+  });
+}
 
-  if (activeMetric) {
-    const mCard = document.getElementById('metric-' + activeMetric);
-    if (mCard) {
-      highlightedMetrics.add(activeMetric);
-      const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
-      sysList.forEach(sId => {
-        highlightedSystems.add(sId);
-        (sysToRptMap[sId] || []).forEach(rId => {
-          highlightedReporting.add(rId);
-          Object.keys(govToRptMap).forEach(gId => {
-            if (govToRptMap[gId].includes(rId)) highlightedGovernance.add(gId);
-          });
-        });
+/* Helper: get systems for a metric in current phase */
+function getMetricSystems(metricId) {
+  const systems = [];
+  DATA.areas.forEach(area => {
+    area.metrics.forEach(m => {
+      if (m.id === metricId) {
+        const pd = m[currentPhase];
+        if (pd && pd.systems) systems.push(...pd.systems);
+      }
+    });
+  });
+  return systems;
+}
+
+/* Build highlight sets from current hover/focus state, or null if nothing active */
+function buildHighlightSets() {
+  const activeMetric = focusedMetric || hoveredMetric;
+  const sysToRptMap = DATA.systemToReporting[currentPhase] || {};
+  const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
+  const govMetricsMap = DATA.governanceMetrics;
+
+  if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance && !hoveredMetricChip) return null;
+
+  const hl = { governance: new Set(), metricChips: new Set(), reporting: new Set(), systems: new Set(), dataInputs: new Set() };
+
+  if (hoveredGovernance) {
+    // Governance → trace right
+    hl.governance.add(hoveredGovernance);
+    (govMetricsMap[hoveredGovernance] || []).forEach(mId => {
+      hl.metricChips.add(mId);
+      const mSys = getMetricSystems(mId);
+      mSys.forEach(sId => {
+        hl.systems.add(sId);
+        (sysToRptMap[sId] || []).forEach(rId => hl.reporting.add(rId));
       });
-    }
-  } else if (hoveredSystem) {
-    highlightedSystems.add(hoveredSystem);
+    });
+    // Also add reporting from govToRpt
+    (govToRptMap[hoveredGovernance] || []).forEach(rId => hl.reporting.add(rId));
+    // Data inputs that use highlighted systems
     DATA.areas.forEach(area => {
       area.metrics.forEach(m => {
         const pd = m[currentPhase];
-        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) highlightedMetrics.add(m.id);
+        if (pd && pd.systems && pd.systems.some(s => hl.systems.has(s))) hl.dataInputs.add(m.id);
       });
     });
-    (sysToRptMap[hoveredSystem] || []).forEach(rId => {
-      highlightedReporting.add(rId);
-      Object.keys(govToRptMap).forEach(gId => {
-        if (govToRptMap[gId].includes(rId)) highlightedGovernance.add(gId);
+  } else if (hoveredMetricChip) {
+    // Metric chip → trace both directions
+    hl.metricChips.add(hoveredMetricChip);
+    // Left: which governance meetings use this metric
+    Object.keys(govMetricsMap).forEach(gId => {
+      if (govMetricsMap[gId].includes(hoveredMetricChip)) hl.governance.add(gId);
+    });
+    // Right: systems, reporting, data inputs
+    const mSys = getMetricSystems(hoveredMetricChip);
+    mSys.forEach(sId => {
+      hl.systems.add(sId);
+      (sysToRptMap[sId] || []).forEach(rId => hl.reporting.add(rId));
+    });
+    DATA.areas.forEach(area => {
+      area.metrics.forEach(m => {
+        if (m.id === hoveredMetricChip) hl.dataInputs.add(m.id);
       });
     });
   } else if (hoveredReporting) {
-    highlightedReporting.add(hoveredReporting);
+    hl.reporting.add(hoveredReporting);
+    // Left: metric chips and governance
+    Object.keys(govToRptMap).forEach(gId => {
+      if (govToRptMap[gId].includes(hoveredReporting)) hl.governance.add(gId);
+    });
+    // Right: systems
     Object.keys(sysToRptMap).forEach(sId => {
       if (sysToRptMap[sId].includes(hoveredReporting)) {
-        highlightedSystems.add(sId);
+        hl.systems.add(sId);
         DATA.areas.forEach(area => {
           area.metrics.forEach(m => {
             const pd = m[currentPhase];
-            if (pd && pd.systems && pd.systems.includes(sId)) highlightedMetrics.add(m.id);
+            if (pd && pd.systems && pd.systems.includes(sId)) {
+              hl.dataInputs.add(m.id);
+              hl.metricChips.add(m.id);
+            }
           });
         });
       }
     });
-    Object.keys(govToRptMap).forEach(gId => {
-      if (govToRptMap[gId].includes(hoveredReporting)) highlightedGovernance.add(gId);
-    });
-  } else if (hoveredGovernance) {
-    highlightedGovernance.add(hoveredGovernance);
-    (govToRptMap[hoveredGovernance] || []).forEach(rId => {
-      highlightedReporting.add(rId);
-      Object.keys(sysToRptMap).forEach(sId => {
-        if (sysToRptMap[sId].includes(rId)) {
-          highlightedSystems.add(sId);
-          DATA.areas.forEach(area => {
-            area.metrics.forEach(m => {
-              const pd = m[currentPhase];
-              if (pd && pd.systems && pd.systems.includes(sId)) highlightedMetrics.add(m.id);
-            });
-          });
+  } else if (hoveredSystem) {
+    hl.systems.add(hoveredSystem);
+    // Right: data inputs
+    DATA.areas.forEach(area => {
+      area.metrics.forEach(m => {
+        const pd = m[currentPhase];
+        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) {
+          hl.dataInputs.add(m.id);
+          hl.metricChips.add(m.id);
         }
       });
     });
+    // Left: reporting, governance
+    (sysToRptMap[hoveredSystem] || []).forEach(rId => {
+      hl.reporting.add(rId);
+      Object.keys(govToRptMap).forEach(gId => {
+        if (govToRptMap[gId].includes(rId)) hl.governance.add(gId);
+      });
+    });
+  } else if (activeMetric) {
+    // Data input hover/focus → trace left
+    hl.dataInputs.add(activeMetric);
+    hl.metricChips.add(activeMetric);
+    const mSys = getMetricSystems(activeMetric);
+    mSys.forEach(sId => {
+      hl.systems.add(sId);
+      (sysToRptMap[sId] || []).forEach(rId => {
+        hl.reporting.add(rId);
+        Object.keys(govToRptMap).forEach(gId => {
+          if (govToRptMap[gId].includes(rId)) hl.governance.add(gId);
+        });
+      });
+    });
+    Object.keys(govMetricsMap).forEach(gId => {
+      if (govMetricsMap[gId].includes(activeMetric)) hl.governance.add(gId);
+    });
   }
 
-  // Draw highlighted metric→system lines
-  highlightedMetrics.forEach(mId => {
-    const mCard = document.getElementById('metric-' + mId);
-    if (!mCard) return;
-    const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
-    sysList.forEach(sId => {
-      if (!highlightedSystems.has(sId)) return;
-      const sCard = document.getElementById('sys-' + sId);
-      if (!sCard) return;
-      const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
-      drawBezier(svg, edgeOf(mCard, 'right'), edgeOf(sCard, 'left'), color, 2, 0.7);
-    });
-  });
-
-  // Draw highlighted system→reporting lines
-  highlightedSystems.forEach(sId => {
-    const sCard = document.getElementById('sys-' + sId);
-    if (!sCard) return;
-    (sysToRptMap[sId] || []).forEach(rId => {
-      if (!highlightedReporting.has(rId)) return;
-      const rCard = document.getElementById('rpt-' + rId);
-      if (!rCard) return;
-      const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
-      drawBezier(svg, edgeOf(sCard, 'right'), edgeOf(rCard, 'left'), color, 2, 0.7);
-    });
-  });
-
-  // Draw highlighted reporting→governance lines
-  highlightedGovernance.forEach(gId => {
-    const gCard = document.getElementById('gov-' + gId);
-    if (!gCard) return;
-    (govToRptMap[gId] || []).forEach(rId => {
-      if (!highlightedReporting.has(rId)) return;
-      const rCard = document.getElementById('rpt-' + rId);
-      if (!rCard) return;
-      const color = DATA.reporting[rId] ? DATA.reporting[rId].color : '#DAF11B';
-      drawBezier(svg, edgeOf(rCard, 'right'), edgeOf(gCard, 'left'), color, 2, 0.7);
-    });
-  });
+  return hl;
 }
 
 function drawBezier(svg, from, to, color, width, opacity) {
@@ -1606,107 +1794,45 @@ function drawBezier(svg, from, to, color, width, opacity) {
 
 /* ───── Highlight / dim logic ───── */
 function applyHighlight() {
-  const allMetrics = document.querySelectorAll('.card[data-metric]');
+  const allDataInputs = document.querySelectorAll('.card[data-metric]');
   const allSystems = document.querySelectorAll('.system-card');
   const allReporting = document.querySelectorAll('.reporting-card');
+  const allMetricChips = document.querySelectorAll('.metric-chip');
   const allGovernance = document.querySelectorAll('.gov-card');
-  const sysToRptMap = DATA.systemToReporting[currentPhase] || {};
-  const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
 
-  const activeMetric = focusedMetric || hoveredMetric;
+  const hl = buildHighlightSets();
 
-  if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance) {
-    allMetrics.forEach(c => c.classList.remove('dimmed', 'active'));
+  if (!hl) {
+    allDataInputs.forEach(c => c.classList.remove('dimmed', 'active'));
     allSystems.forEach(c => c.classList.remove('dimmed'));
     allReporting.forEach(c => c.classList.remove('dimmed'));
+    allMetricChips.forEach(c => c.classList.remove('dimmed', 'active-mc'));
     allGovernance.forEach(c => c.classList.remove('dimmed'));
     drawLines();
     return;
   }
 
-  // Build sets of what should be highlighted
-  let hlMetrics = new Set();
-  let hlSystems = new Set();
-  let hlReporting = new Set();
-  let hlGovernance = new Set();
+  const activeMetric = focusedMetric || hoveredMetric;
 
-  if (activeMetric) {
-    hlMetrics.add(activeMetric);
-    const card = document.getElementById('metric-' + activeMetric);
-    const sysList = card ? (card.dataset.systems || '').split(',').filter(Boolean) : [];
-    sysList.forEach(sId => {
-      hlSystems.add(sId);
-      (sysToRptMap[sId] || []).forEach(rId => {
-        hlReporting.add(rId);
-        Object.keys(govToRptMap).forEach(gId => {
-          if (govToRptMap[gId].includes(rId)) hlGovernance.add(gId);
-        });
-      });
-    });
-  } else if (hoveredSystem) {
-    hlSystems.add(hoveredSystem);
-    DATA.areas.forEach(area => {
-      area.metrics.forEach(m => {
-        const pd = m[currentPhase];
-        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) hlMetrics.add(m.id);
-      });
-    });
-    (sysToRptMap[hoveredSystem] || []).forEach(rId => {
-      hlReporting.add(rId);
-      Object.keys(govToRptMap).forEach(gId => {
-        if (govToRptMap[gId].includes(rId)) hlGovernance.add(gId);
-      });
-    });
-  } else if (hoveredReporting) {
-    hlReporting.add(hoveredReporting);
-    Object.keys(sysToRptMap).forEach(sId => {
-      if (sysToRptMap[sId].includes(hoveredReporting)) {
-        hlSystems.add(sId);
-        DATA.areas.forEach(area => {
-          area.metrics.forEach(m => {
-            const pd = m[currentPhase];
-            if (pd && pd.systems && pd.systems.includes(sId)) hlMetrics.add(m.id);
-          });
-        });
-      }
-    });
-    Object.keys(govToRptMap).forEach(gId => {
-      if (govToRptMap[gId].includes(hoveredReporting)) hlGovernance.add(gId);
-    });
-  } else if (hoveredGovernance) {
-    hlGovernance.add(hoveredGovernance);
-    (govToRptMap[hoveredGovernance] || []).forEach(rId => {
-      hlReporting.add(rId);
-      Object.keys(sysToRptMap).forEach(sId => {
-        if (sysToRptMap[sId].includes(rId)) {
-          hlSystems.add(sId);
-          DATA.areas.forEach(area => {
-            area.metrics.forEach(m => {
-              const pd = m[currentPhase];
-              if (pd && pd.systems && pd.systems.includes(sId)) hlMetrics.add(m.id);
-            });
-          });
-        }
-      });
-    });
-  }
-
-  // Apply dim/active states
-  allMetrics.forEach(c => {
-    if (hlMetrics.has(c.dataset.metric)) { c.classList.remove('dimmed'); if (activeMetric === c.dataset.metric) c.classList.add('active'); }
-    else { c.classList.add('dimmed'); c.classList.remove('active'); }
-  });
-  allSystems.forEach(c => {
-    if (hlSystems.has(c.dataset.system)) c.classList.remove('dimmed');
+  allGovernance.forEach(c => {
+    if (hl.governance.has(c.dataset.governance)) c.classList.remove('dimmed');
     else c.classList.add('dimmed');
+  });
+  allMetricChips.forEach(c => {
+    if (hl.metricChips.has(c.dataset.metricChip)) { c.classList.remove('dimmed'); c.classList.add('active-mc'); }
+    else { c.classList.add('dimmed'); c.classList.remove('active-mc'); }
   });
   allReporting.forEach(c => {
-    if (hlReporting.has(c.dataset.reporting)) c.classList.remove('dimmed');
+    if (hl.reporting.has(c.dataset.reporting)) c.classList.remove('dimmed');
     else c.classList.add('dimmed');
   });
-  allGovernance.forEach(c => {
-    if (hlGovernance.has(c.dataset.governance)) c.classList.remove('dimmed');
+  allSystems.forEach(c => {
+    if (hl.systems.has(c.dataset.system)) c.classList.remove('dimmed');
     else c.classList.add('dimmed');
+  });
+  allDataInputs.forEach(c => {
+    if (hl.dataInputs.has(c.dataset.metric)) { c.classList.remove('dimmed'); if (activeMetric === c.dataset.metric) c.classList.add('active'); }
+    else { c.classList.add('dimmed'); c.classList.remove('active'); }
   });
 
   drawLines();
@@ -1714,9 +1840,11 @@ function applyHighlight() {
 
 /* ───── Event listeners ───── */
 function clearHoverState() {
+  hoveredMetric = null;
   hoveredSystem = null;
   hoveredReporting = null;
   hoveredGovernance = null;
+  hoveredMetricChip = null;
 }
 
 function attachMetricListeners() {
@@ -1802,6 +1930,23 @@ function attachGovernanceListeners() {
   });
 }
 
+function attachMetricChipListeners() {
+  document.querySelectorAll('.metric-chip').forEach(chip => {
+    chip.addEventListener('mouseenter', () => {
+      if (focusedMetric) return;
+      clearHoverState();
+      hoveredMetricChip = chip.dataset.metricChip;
+      applyHighlight();
+    });
+
+    chip.addEventListener('mouseleave', () => {
+      if (focusedMetric) return;
+      clearHoverState();
+      applyHighlight();
+    });
+  });
+}
+
 function attachPhaseListeners() {
   document.querySelectorAll('.phase-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -1821,6 +1966,7 @@ function attachPhaseListeners() {
       renderMetricCards();
       renderSystemCards();
       renderReportingCards();
+      renderMetricsColumn();
       renderGovernanceCards();
       renderPhaseSystemsDots();
 
@@ -1848,6 +1994,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMetricCards();
   renderSystemCards();
   renderReportingCards();
+  renderMetricsColumn();
   renderGovernanceCards();
   attachPhaseListeners();
 
