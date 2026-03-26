@@ -145,7 +145,7 @@ body {
 }
 
 .sprint-card {
-  padding: 0.625rem 0.875rem;
+  padding: 0.375rem 0.75rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1.5px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
@@ -197,7 +197,7 @@ body {
 }
 
 .phase-card {
-  padding: 0.875rem 1rem;
+  padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.04);
   border: 2px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
@@ -223,13 +223,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.125rem;
 }
 
 .phase-card__title {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.125rem;
   color: #ffffff;
 }
 
@@ -238,10 +238,10 @@ body {
 }
 
 .phase-card__subtitle {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
 }
 
 .phase-card__systems {
@@ -262,7 +262,7 @@ body {
   max-width: 95vw;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 240px 160px 160px 160px 1fr;
+  grid-template-columns: 240px 140px 160px 160px 1fr;
   gap: 28px;
   align-items: start;
   position: relative;
@@ -617,6 +617,10 @@ body {
   opacity: 0.25;
 }
 
+.metric-chip.inactive-kpi {
+  opacity: 0.2;
+}
+
 .metric-chip .dot {
   width: 6px;
   height: 6px;
@@ -896,7 +900,7 @@ body {
     </nav>
     <p class="page-hero__eyebrow">Data Architecture</p>
     <h1 class="page-hero__title">Transition <span class="text-green">Roadmap</span></h1>
-    <p class="page-hero__subtitle">Phased migration from Feedback &amp; SIC to SFDC — system by system, metric by metric.</p>
+    <p class="page-hero__subtitle">Phased migration from manual capture to automated systems — metric by metric.</p>
   </div>
 </section>
 
@@ -933,12 +937,12 @@ body {
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
       </div>
       <div class="gantt-row">
-        <div class="gantt-row__label"><span class="dot" style="background:#3B82F6;"></span> SFDC</div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.2);"><span class="gantt-bar__text">Partial</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.3);"><span class="gantt-bar__text">Building</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.4);"><span class="gantt-bar__text">Efficiency</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.5);"><span class="gantt-bar__text">+ Yield</span></div>
-        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.6);"><span class="gantt-bar__text">+ Labour</span></div>
+        <div class="gantt-row__label"><span class="dot" style="background:#EC4899;"></span> OEE / SFDC</div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(236,72,153,0.1);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">—</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(236,72,153,0.3);"><span class="gantt-bar__text">Building</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(236,72,153,0.4);"><span class="gantt-bar__text">Efficiency</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(236,72,153,0.5);"><span class="gantt-bar__text">+ Yield</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(236,72,153,0.6);"><span class="gantt-bar__text">+ Labour</span></div>
       </div>
     </div>
 
@@ -960,7 +964,7 @@ body {
         <div class="phase-card" data-phase="phase2s3" data-parent="phase2" role="tab" aria-selected="false">
           <div class="phase-card__label">Target</div>
           <div class="phase-card__title">Phase 2</div>
-          <div class="phase-card__subtitle">New world — SFDC drives everything</div>
+          <div class="phase-card__subtitle">New world — OEE / SFDC drives everything</div>
           <div class="phase-card__systems" id="systemsPhase2s3"></div>
         </div>
         <div class="sprint-selector" id="sprintSelector">
@@ -1056,16 +1060,16 @@ const DATA = {
       description: {
         now: 'Three systems capturing efficiency data in parallel — significant duplication and accuracy gaps.',
         phase1: 'Feedback drives efficiency. XL Vorne supplements on 2 lines. Slicer provides automated downtime and speed.',
-        phase2s1: 'SFDC drives efficiency — core metrics captured at bottleneck.',
-        phase2s2: 'Efficiency established. Slicer downtime integration adds Pareto.',
-        phase2s3: 'Efficiency fully operational in SFDC.'
+        phase2s1: 'OEE / SFDC drives efficiency — core metrics captured at bottleneck.',
+        phase2s2: 'Efficiency established. OEE / SFDC downtime integration adds Pareto.',
+        phase2s3: 'Efficiency fully operational via OEE / SFDC.'
       },
       metrics: [
         {
           id: 'start-stop',
           name: 'Start / Stop Time',
           now: {
-            systems: ['feedback', 'sfdc'],
+            systems: ['feedback', 'manual'],
             notes: 'Manual entry in both Feedback and SFDC. Not accurate — recorded within the hour, not to the minute.',
             issues: ['Dual entry across systems', 'Accuracy — within hour, not minute', 'No automated capture']
           },
@@ -1073,25 +1077,25 @@ const DATA = {
             months: [
               { month: 1, action: 'Audit current accuracy across both systems' },
               { month: 2, action: 'XL Vorne installed on 2 lines — supplements existing recording' },
-              { month: 3, action: 'XL Vorne data validated against Feedback/SFDC entries' }
+              { month: 3, action: 'XL Vorne data validated against Feedback entries' }
             ],
-            systems: ['feedback', 'sfdc', 'xl-vorne'],
-            notes: 'XL Vorne added to 2 lines only — deliberate duplication to validate automated capture vs manual entry. Remaining lines stay on Feedback + SFDC.',
+            systems: ['feedback', 'xl-vorne'],
+            notes: 'XL Vorne added to 2 lines only — deliberate duplication to validate automated capture vs manual entry. Remaining lines stay on Feedback.',
             issues: ['Duplication on 2 lines (by design)', 'Rest of lines still manual']
           },
           phase2s1: {
-            systems: ['sfdc'],
-            notes: 'Auto — shift start time and run start time captured directly in SFDC. No manual entry required.',
-            requirements: ['SFDC auto-capture proven reliable on Vorne lines', 'Accuracy validated against manual baseline']
+            systems: ['oee-system'],
+            notes: 'Auto — shift start time and run start time captured by OEE / SFDC. No manual entry required.',
+            requirements: ['OEE / SFDC auto-capture proven reliable on Vorne lines', 'Accuracy validated against manual baseline']
           },
           phase2s2: {
-            systems: ['sfdc'],
+            systems: ['oee-system'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
           phase2s3: {
-            systems: ['sfdc'],
-            notes: 'Established — running in SFDC',
+            systems: ['oee-system'],
+            notes: 'Established — running via OEE / SFDC',
             requirements: []
           }
         },
@@ -1099,7 +1103,7 @@ const DATA = {
           id: 'good-output',
           name: 'Good Output',
           now: {
-            systems: ['sic', 'sfdc', 'feedback'],
+            systems: ['sic', 'feedback', 'manual'],
             notes: 'SIC uses estimated current cases completed. SFDC gets QTY confirmed against W.O. Feedback pulls from SFDC data via SQL.',
             issues: ['SIC estimate vs SFDC confirmed mismatch', 'Feedback is derivative of SFDC', 'Not real-time']
           },
@@ -1109,23 +1113,23 @@ const DATA = {
               { month: 2, action: 'NCT (Net Case Throughput) captured' },
               { month: 3, action: 'NCT reporting validated' }
             ],
-            systems: ['sfdc', 'xl-vorne'],
-            notes: 'W.O. data remains in SFDC. XL Vorne supplements with near-real-time output counts on 2 lines. NCT captured from Month 2.',
+            systems: ['xl-vorne', 'manual'],
+            notes: 'W.O. data entered manually. XL Vorne supplements with near-real-time output counts on 2 lines. NCT captured from Month 2.',
             issues: ['Hourly granularity needed', 'Only 2 lines have real-time data']
           },
           phase2s1: {
-            systems: ['sfdc', 'checkweigher'],
-            notes: 'Good output from checkweigher data — accurate, real-time, per-unit. C/W Cloud data feeds directly to SFDC.',
-            requirements: ['Checkweigher integration to SFDC', 'Reconciliation with W.O. confirmed quantities']
+            systems: ['checkweigher'],
+            notes: 'Good output from check weigher data — accurate, real-time, per-unit. Check Weigher Cloud data feeds directly.',
+            requirements: ['Check Weigher integration', 'Reconciliation with W.O. confirmed quantities']
           },
           phase2s2: {
-            systems: ['sfdc', 'checkweigher'],
+            systems: ['checkweigher'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
           phase2s3: {
-            systems: ['sfdc', 'checkweigher'],
-            notes: 'Established — running in SFDC',
+            systems: ['checkweigher'],
+            notes: 'Established — check weigher running',
             requirements: []
           }
         },
@@ -1133,7 +1137,7 @@ const DATA = {
           id: 'downtime',
           name: 'Downtime',
           now: {
-            systems: ['sic', 'feedback', 'sfdc'],
+            systems: ['sic', 'feedback', 'manual'],
             notes: 'SIC: verbal — discussed but not recorded digitally. Feedback: recorded in Excel, accuracy needs verification. SFDC: recorded but poor reason codes and durations.',
             issues: ['SIC verbal only — no digital record', 'Feedback in Excel — accuracy unverified', 'SFDC reason codes and durations poor quality', 'Three systems, none reliable']
           },
@@ -1148,18 +1152,18 @@ const DATA = {
             issues: ['Only 2 lines have automated capture', 'Rest of lines still manual via Feedback']
           },
           phase2s1: {
-            systems: ['sfdc'],
-            notes: 'Downtime recorded at bottleneck (BN) in SFDC. Basic reason codes.',
+            systems: ['oee-system'],
+            notes: 'Downtime recorded at bottleneck (BN) via OEE / SFDC. Basic reason codes.',
             requirements: ['Bottleneck sensors deployed']
           },
           phase2s2: {
-            systems: ['sfdc', 'slicer'],
-            notes: 'Slicer downtime integrated. MECE reason codes. Downtime Pareto reporting live.',
-            requirements: ['MECE reason code taxonomy agreed', 'Slicer integration to SFDC', 'Plan vs allow categories defined']
+            systems: ['oee-system'],
+            notes: 'OEE / SFDC downtime fully integrated. MECE reason codes. Downtime Pareto reporting live.',
+            requirements: ['MECE reason code taxonomy agreed', 'OEE / SFDC integration complete', 'Plan vs allow categories defined']
           },
           phase2s3: {
-            systems: ['sfdc', 'slicer'],
-            notes: 'Established — running in SFDC',
+            systems: ['oee-system'],
+            notes: 'Established — running via OEE / SFDC',
             requirements: []
           }
         },
@@ -1182,18 +1186,18 @@ const DATA = {
             issues: ['Most lines still manual', 'Settings vs actual distinction needed']
           },
           phase2s1: {
-            systems: ['sfdc'],
-            notes: 'Recorded at bottleneck (BN) in SFDC. Automated, continuous speed capture.',
+            systems: ['oee-system'],
+            notes: 'Recorded at bottleneck (BN) via OEE / SFDC. Automated, continuous speed capture.',
             requirements: ['BN speed sensors deployed', 'Speed targets configured per SKU per line']
           },
           phase2s2: {
-            systems: ['sfdc'],
+            systems: ['oee-system'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
           phase2s3: {
-            systems: ['sfdc'],
-            notes: 'Established — running in SFDC',
+            systems: ['oee-system'],
+            notes: 'Established — running via OEE / SFDC',
             requirements: []
           }
         },
@@ -1206,24 +1210,24 @@ const DATA = {
             issues: ['No systematic recording']
           },
           phase1: {
-            months: [{ month: 1, action: 'Yield captured by W.O. in SFDC' }],
-            systems: ['sfdc'],
+            months: [{ month: 1, action: 'Yield captured by W.O.' }],
+            systems: ['manual'],
             notes: 'Waste captured as part of yield tracking against works orders.',
             issues: []
           },
           phase2s1: {
-            systems: ['sfdc'],
+            systems: ['manual'],
             notes: 'See Yield — waste is a component of overall yield tracking.',
-            requirements: ['Yield framework fully operational in SFDC']
+            requirements: ['Yield framework fully operational']
           },
           phase2s2: {
-            systems: ['sfdc'],
-            notes: 'Continues from Sprint 1',
+            systems: ['checkweigher'],
+            notes: 'Check weigher data drives waste tracking.',
             requirements: []
           },
           phase2s3: {
-            systems: ['sfdc'],
-            notes: 'Established — running in SFDC',
+            systems: ['checkweigher'],
+            notes: 'Established — check weigher running',
             requirements: []
           }
         },
@@ -1242,18 +1246,18 @@ const DATA = {
             issues: ['Still not linked to W.O.']
           },
           phase2s1: {
-            systems: ['sfdc'],
-            notes: 'Crew on Line — real-time crew assignment and tracking in SFDC.',
-            requirements: ['Crew assignment workflow in SFDC']
+            systems: ['manual'],
+            notes: 'Crew on Line — real-time crew assignment and tracking.',
+            requirements: ['Crew assignment workflow defined']
           },
           phase2s2: {
-            systems: ['sfdc'],
+            systems: ['manual'],
             notes: 'Continues from Sprint 1',
             requirements: []
           },
           phase2s3: {
-            systems: ['sfdc'],
-            notes: 'Full SFDC workflow — crew assignment integrated with labour planning.',
+            systems: ['manual'],
+            notes: 'Crew assignment integrated with labour planning.',
             requirements: ['Integration with labour planning']
           }
         },
@@ -1265,10 +1269,10 @@ const DATA = {
       color: '#22C55E',
       description: {
         now: 'Yield metrics largely untracked. No structured capture or reporting.',
-        phase1: 'Most yield data booked against W.O. in SFDC. Manual giveaway capture via whiteboard → Feedback.',
+        phase1: 'Most yield data booked against W.O. Manual giveaway capture via whiteboard → Feedback.',
         phase2s1: 'Yield sprint not started.',
-        phase2s2: 'Aggregation, calculation and reporting all in SFDC. Auto-capture from multihead weighers.',
-        phase2s3: 'Yield fully operational in SFDC.'
+        phase2s2: 'Aggregation, calculation and reporting live. Auto-capture from check weighers.',
+        phase2s3: 'Yield fully operational.'
       },
       metrics: [
         {
@@ -1282,26 +1286,26 @@ const DATA = {
             issues: ['Still manual entry from whiteboard']
           },
           phase2s1: { systems: ['feedback'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['sfdc', 'checkweigher'], notes: 'Auto into SFDC against W.O. — C/W Cloud data feeds directly.', requirements: ['Checkweigher Cloud integration to SFDC', 'Auto-booking against W.O.'] },
-          phase2s3: { systems: ['sfdc', 'checkweigher'], notes: 'Established — running in SFDC', requirements: [] }
+          phase2s2: { systems: ['checkweigher'], notes: 'Auto against W.O. — Check Weigher Cloud data feeds directly.', requirements: ['Check Weigher Cloud integration', 'Auto-booking against W.O.'] },
+          phase2s3: { systems: ['checkweigher'], notes: 'Established — check weigher running', requirements: [] }
         },
         {
           id: 'grading-waste',
           name: 'Grading Waste',
           now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
-          phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }], systems: ['sfdc'], notes: 'Booked against works orders in SFDC. Raw data capture done.', issues: [] },
-          phase2s1: { systems: ['sfdc'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] },
-          phase2s3: { systems: ['sfdc'], notes: 'Established — running in SFDC', requirements: [] }
+          phase1: { months: [{ month: 1, action: 'Booked against W.O.' }], systems: ['manual'], notes: 'Booked against works orders. Raw data capture done.', issues: [] },
+          phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
+          phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
         },
         {
           id: 'gripper-ends',
           name: 'Gripper Ends',
           now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
-          phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }], systems: ['sfdc'], notes: 'Booked against works orders in SFDC.', issues: [] },
-          phase2s1: { systems: ['sfdc'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] },
-          phase2s3: { systems: ['sfdc'], notes: 'Established — running in SFDC', requirements: [] }
+          phase1: { months: [{ month: 1, action: 'Booked against W.O.' }], systems: ['manual'], notes: 'Booked against works orders.', issues: [] },
+          phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
+          phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
         },
         {
           id: 'pressing-loss',
@@ -1309,17 +1313,17 @@ const DATA = {
           now: { systems: [], notes: 'Not currently tracked.', issues: ['No recording'] },
           phase1: { months: [], systems: [], notes: 'No Phase 1 action — deferred to Phase 2.', issues: ['No capture mechanism yet'] },
           phase2s1: { systems: [], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['sfdc'], notes: 'Calculated against W.O. in SFDC.', requirements: ['Pressing loss methodology defined', 'Data capture mechanism in place'] },
-          phase2s3: { systems: ['sfdc'], notes: 'Established — running in SFDC', requirements: [] }
+          phase2s2: { systems: ['manual'], notes: 'Calculated against W.O.', requirements: ['Pressing loss methodology defined', 'Data capture mechanism in place'] },
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
         },
         {
           id: 'high-value',
           name: 'High Value Cuts (Prime / Rib)',
           now: { systems: [], notes: 'Not tracked separately.', issues: ['No recording'] },
-          phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }, { month: 2, action: 'Prime and Rib reported separately' }], systems: ['sfdc'], notes: 'Booked against W.O. Each reported separately.', issues: [] },
-          phase2s1: { systems: ['sfdc'], notes: 'Yield sprint not started yet', requirements: [] },
-          phase2s2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] },
-          phase2s3: { systems: ['sfdc'], notes: 'Established — running in SFDC', requirements: [] }
+          phase1: { months: [{ month: 1, action: 'Booked against W.O.' }, { month: 2, action: 'Prime and Rib reported separately' }], systems: ['manual'], notes: 'Booked against W.O. Each reported separately.', issues: [] },
+          phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
+          phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
         },
       ]
     },
@@ -1332,7 +1336,7 @@ const DATA = {
         phase1: 'Scoping in progress — detail to follow.',
         phase2s1: 'Scoping in progress.',
         phase2s2: 'Scoping in progress.',
-        phase2s3: 'Labour planning and control in SFDC.'
+        phase2s3: 'Labour planning and control live.'
       },
       tbc: true,
       metrics: [
@@ -1344,12 +1348,11 @@ const DATA = {
     }
   ],
   systems: {
-    'sfdc': { name: 'SFDC', color: '#3B82F6' },
     'feedback': { name: 'Feedback', color: '#F97316' },
     'sic': { name: 'SIC', color: '#8B5CF6' },
     'xl-vorne': { name: 'XL Vorne', color: '#06B6D4' },
-    'slicer': { name: 'Slicer', color: '#EC4899' },
-    'checkweigher': { name: 'C/W', color: '#10B981' },
+    'oee-system': { name: 'OEE / SFDC', color: '#EC4899' },
+    'checkweigher': { name: 'Check Weigher', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' },
     'thinktrax': { name: 'ThinkTrax', color: '#A855F7' }
   },
@@ -1371,32 +1374,32 @@ const DATA = {
     now: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'sfdc': ['sfdc-rpt', 'sic-rpt'],
-      'checkweigher': ['sic-rpt'],
-      'manual': ['sic-rpt']
+      'manual': ['sic-rpt', 'sfdc-rpt'],
+      'checkweigher': ['sic-rpt']
     },
     phase1: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'sfdc': ['sfdc-rpt', 'sic-rpt'],
       'xl-vorne': ['feedback-rpt', 'sfdc-rpt'],
-      'slicer': ['feedback-rpt'],
-      'checkweigher': ['sic-rpt'],
-      'manual': ['feedback-rpt']
+      'manual': ['feedback-rpt', 'sfdc-rpt'],
+      'checkweigher': ['sic-rpt']
     },
     phase2s1: {
-      'sfdc': ['sfdc-rpt'],
+      'oee-system': ['sfdc-rpt'],
       'checkweigher': ['sfdc-rpt'],
-      'xl-vorne': ['sfdc-rpt']
+      'xl-vorne': ['sfdc-rpt'],
+      'manual': ['sfdc-rpt']
     },
     phase2s2: {
-      'sfdc': ['sfdc-rpt'],
+      'oee-system': ['sfdc-rpt'],
       'checkweigher': ['sfdc-rpt'],
-      'slicer': ['sfdc-rpt'],
-      'xl-vorne': ['sfdc-rpt']
+      'xl-vorne': ['sfdc-rpt'],
+      'manual': ['sfdc-rpt']
     },
     phase2s3: {
-      'sfdc': ['sfdc-rpt']
+      'oee-system': ['sfdc-rpt'],
+      'checkweigher': ['sfdc-rpt'],
+      'manual': ['sfdc-rpt']
     }
   },
   governance: [
@@ -1404,7 +1407,8 @@ const DATA = {
     { id: 'daily-ops', name: 'Daily Ops Review', cadence: 'Daily', description: 'Cross-shift performance review, escalate recurring issues' },
     { id: 'weekly-review', name: 'Weekly Review', cadence: 'Weekly', description: 'Operational steering — are we on track, what needs intervention' },
     { id: 'weekly-planning', name: 'Weekly Planning', cadence: 'Weekly', description: 'Forward-looking — next week\'s schedule, crewing, line allocation' },
-    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in £, yield losses in £, labour cost vs plan' }
+    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in £, yield losses in £, labour cost vs plan' },
+    { id: 'plan-rates', name: 'Plan Rates Review', cadence: 'Periodic', description: 'Review and update planning rates — standard throughput rates validated against actuals' }
   ],
   // Which reporting destinations feed each governance meeting per phase
   governanceToReporting: {
@@ -1425,30 +1429,33 @@ const DATA = {
       'daily-ops': ['sfdc-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
-      'monthly-finance': ['sfdc-rpt']
+      'monthly-finance': ['sfdc-rpt'],
+      'plan-rates': ['sfdc-rpt']
     },
     phase2s2: {
       'sic-meeting': ['sfdc-rpt'],
       'daily-ops': ['sfdc-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
-      'monthly-finance': ['sfdc-rpt']
+      'monthly-finance': ['sfdc-rpt'],
+      'plan-rates': ['sfdc-rpt']
     },
     phase2s3: {
       'sic-meeting': ['sfdc-rpt'],
       'daily-ops': ['sfdc-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
-      'monthly-finance': ['sfdc-rpt']
+      'monthly-finance': ['sfdc-rpt'],
+      'plan-rates': ['sfdc-rpt']
     }
   },
   // Which governance meetings are active per phase
   governanceByPhase: {
     now: ['sic-meeting', 'daily-ops', 'monthly-finance'],
     phase1: ['sic-meeting', 'daily-ops', 'monthly-finance'],
-    phase2s1: ['sic-meeting', 'daily-ops', 'monthly-finance'],
-    phase2s2: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance'],
-    phase2s3: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance']
+    phase2s1: ['sic-meeting', 'daily-ops', 'monthly-finance', 'plan-rates'],
+    phase2s2: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
+    phase2s3: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance', 'plan-rates']
   },
   // KPIs — the calculated metrics that governance meetings actually review
   kpis: {
@@ -1481,7 +1488,8 @@ const DATA = {
     'daily-ops':      ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std'],
     'weekly-review':  ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost'],
     'weekly-planning':['ctp-metric', 'labour-cost', 'crew-ratio'],
-    'monthly-finance':['efficiency', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case']
+    'monthly-finance':['efficiency', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case'],
+    'plan-rates':     ['efficiency', 'nct', 'speed-variance']
   }
 };
 
@@ -1700,9 +1708,9 @@ function renderMetricsColumn() {
 
     kpisInArea.forEach(([kpiId, kpi]) => {
       const isActive = activeKpis.has(kpiId);
-      const dimStyle = isActive ? '' : ' style="opacity:0.2;"';
+      const inactiveClass = isActive ? '' : ' inactive-kpi';
 
-      html += '<div class="metric-chip" id="mc-' + kpiId + '" data-metric-chip="' + kpiId + '"' + dimStyle + '>';
+      html += '<div class="metric-chip' + inactiveClass + '" id="mc-' + kpiId + '" data-metric-chip="' + kpiId + '">';
       html += '<div class="dot" style="background:' + kpi.color + ';"></div>';
       html += '<h4>' + kpi.name + '</h4>';
       html += '</div>';
@@ -2055,7 +2063,12 @@ function applyHighlight() {
     allDataInputs.forEach(c => c.classList.remove('dimmed', 'active'));
     allSystems.forEach(c => c.classList.remove('dimmed'));
     allReporting.forEach(c => c.classList.remove('dimmed'));
-    allMetricChips.forEach(c => c.classList.remove('dimmed', 'active-mc'));
+    const activeKpis = new Set(DATA.kpisByPhase[currentPhase] || []);
+    allMetricChips.forEach(c => {
+      c.classList.remove('dimmed', 'active-mc');
+      if (!activeKpis.has(c.dataset.metricChip)) c.classList.add('inactive-kpi');
+      else c.classList.remove('inactive-kpi');
+    });
     allGovernance.forEach(c => c.classList.remove('dimmed'));
     drawLines();
     return;
@@ -2068,7 +2081,7 @@ function applyHighlight() {
     else c.classList.add('dimmed');
   });
   allMetricChips.forEach(c => {
-    if (hl.metricChips.has(c.dataset.metricChip)) { c.classList.remove('dimmed'); c.classList.add('active-mc'); }
+    if (hl.metricChips.has(c.dataset.metricChip)) { c.classList.remove('dimmed', 'inactive-kpi'); c.classList.add('active-mc'); }
     else { c.classList.add('dimmed'); c.classList.remove('active-mc'); }
   });
   allReporting.forEach(c => {
