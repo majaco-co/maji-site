@@ -44,7 +44,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .phase-card {
@@ -108,426 +108,400 @@ body {
   margin-top: 2px;
 }
 
-.phase-transition-arrow {
-  position: absolute;
-  top: 50%;
-  right: -1.5rem;
-  transform: translateY(-50%);
-  width: 1rem;
-  height: 2px;
-  background: #DAF11B;
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-
-.phase-card:not(:last-child).showing-transition .phase-transition-arrow {
-  opacity: 0.6;
-}
-
-/* SYSTEM LEGEND */
-.system-legend {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-}
-
-.system-legend__label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.4);
-  align-self: center;
-  margin-right: 1rem;
-}
-
-.system-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 200ms ease;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.system-pill:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.system-pill.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  box-shadow: 0 0 15px rgba(218, 241, 27, 0.15);
-}
-
-.system-pill__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-/* AREA SECTIONS */
-.area-section {
-  margin-bottom: 3rem;
-}
-
-.area-header {
-  border-left: 4px solid;
-  padding-left: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.area-header__title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: #ffffff;
-}
-
-.area-header__description {
-  font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.65);
-  line-height: 1.6;
-  max-width: 600px;
-}
-
-.area-section.efficiency .area-header {
-  border-left-color: #6B7280;
-}
-
-.area-section.yield .area-header {
-  border-left-color: #22C55E;
-}
-
-.area-section.labour .area-header {
-  border-left-color: #EAB308;
-}
-
-/* LABOUR SCOPING OVERLAY */
-.area-section.labour {
+/* 3-COLUMN FRAMEWORK GRID */
+.framework {
+  max-width: 90vw;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 200px 1fr;
+  gap: 16px;
+  align-items: start;
   position: relative;
-  opacity: 0.5;
 }
 
-.labour-scoping-overlay {
+#conn-svg {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+
+.column-header .icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(218, 241, 27, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  pointer-events: none;
+  font-size: 11px;
+  color: #DAF11B;
 }
 
-.labour-scoping-text {
-  font-size: 1.25rem;
-  font-weight: 600;
+.column-header span {
+  font-size: 11px;
+  font-weight: 700;
   color: rgba(255, 255, 255, 0.5);
-  text-align: center;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  padding: 3rem;
-  border-radius: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
-/* METRIC CARDS */
-.metrics-list {
+/* AREA GROUP LABEL */
+.area-group-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 14px 0 6px;
+  padding-left: 4px;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  gap: 6px;
 }
 
-.metric-card {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.04);
+.area-group-label:first-of-type {
+  margin-top: 0;
+}
+
+.area-group-label .area-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* METRIC CARDS (left column) */
+.card {
+  border-radius: 10px;
+  padding: 12px 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
   cursor: pointer;
-  transition: all 200ms ease;
+  transition: all 0.25s ease;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 2;
 }
 
-.metric-card:hover {
+.card:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-.metric-card.dimmed {
-  opacity: 0.2;
+.card.active {
+  border-color: #DAF11B;
+  background: rgba(218, 241, 27, 0.06);
+}
+
+.card.dimmed {
+  opacity: 0.25;
   pointer-events: none;
 }
 
-.metric-card.expanded {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.metric-card__header {
+.card .card-head {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  gap: 8px;
 }
 
-.metric-card__title {
-  font-size: 1rem;
-  font-weight: 600;
+.card .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.card h3 {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
   color: #ffffff;
-  flex: 1;
+  margin: 0;
 }
 
-.metric-card__systems {
+.card .subtitle {
+  font-size: 10px;
+  margin-top: 3px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+}
+
+.card .system-pills {
   display: flex;
-  gap: 0.5rem;
-  margin-left: 1rem;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
 }
 
-.metric-card__system-pill {
+.card .sys-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  font-size: 0.75rem;
+  gap: 4px;
+  padding: 2px 7px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 9px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
-  transition: all 200ms ease;
 }
 
-.metric-card__system-pill .dot {
+.card .sys-pill .pip {
   width: 4px;
   height: 4px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.metric-card__notes {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.65);
-  line-height: 1.5;
-  margin-bottom: 1rem;
-}
-
-.metric-card__issues {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.metric-card__issues-icon {
-  flex-shrink: 0;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.metric-card__issues-list {
-  font-size: 0.8125rem;
+/* Expanded card details (phase journey) */
+.card .details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
   color: rgba(255, 255, 255, 0.5);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.metric-card__issues-list li {
-  margin-bottom: 0.25rem;
-}
-
-.metric-card__issues-list li:last-child {
-  margin-bottom: 0;
-}
-
-/* EXPANDED METRIC VIEW */
-.metric-card.expanded .metric-card__content {
+  line-height: 1.6;
   display: none;
-}
-
-.metric-expansion {
-  display: none;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.metric-card.expanded .metric-expansion {
-  display: block;
-  animation: fadeIn 300ms ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.phase-journey {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  align-items: start;
-}
-
-.phase-journey__column {
-  position: relative;
-}
-
-.phase-journey__column:not(:last-child)::after {
-  content: '→';
-  position: absolute;
-  right: -1.5rem;
-  top: 1.5rem;
-  font-size: 1.25rem;
-  color: #DAF11B;
   font-weight: 300;
 }
 
-.phase-journey__label {
-  font-size: 0.75rem;
-  font-weight: 600;
+.card.focused .details {
+  display: block;
+  animation: fadeIn 250ms ease;
+}
+
+.phase-journey-mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.phase-journey-mini .pj-col {
+  position: relative;
+}
+
+.phase-journey-mini .pj-col:not(:last-child)::after {
+  content: '\2192';
+  position: absolute;
+  right: -8px;
+  top: 0;
+  font-size: 10px;
+  color: #DAF11B;
+  opacity: 0.5;
+}
+
+.pj-col__label {
+  font-size: 8px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 4px;
 }
 
-.phase-journey__systems {
+.pj-col__systems {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 4px;
 }
 
-.phase-journey__system-pill {
+.pj-col__sys {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.875rem;
+  gap: 3px;
+  padding: 1px 5px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  width: fit-content;
-  transition: all 200ms ease;
+  border-radius: 8px;
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.phase-journey__system-pill .dot {
-  width: 5px;
-  height: 5px;
+.pj-col__sys .pip {
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
 }
 
-.phase-journey__notes {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.65);
+.pj-col__notes {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.pj-col__timeline {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.4);
   line-height: 1.5;
-  margin-bottom: 1rem;
 }
 
-.phase-journey__timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.phase-journey__timeline-item {
-  font-size: 0.8125rem;
+.pj-col__timeline strong {
   color: rgba(255, 255, 255, 0.6);
-}
-
-.phase-journey__timeline-item strong {
-  color: rgba(255, 255, 255, 0.8);
   font-weight: 600;
 }
 
-/* GOVERNANCE SECTION */
-.governance-section {
-  margin-top: 4rem;
-  padding-top: 3rem;
-  border-top: 2px solid rgba(255, 255, 255, 0.08);
+/* Issues in card */
+.card .issues {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
 }
 
-.governance-header {
-  margin-bottom: 2rem;
+.card .issues-icon {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
-.governance-header__title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-}
-
-.governance-header__note {
-  font-size: 0.875rem;
+.card .issues-list {
+  font-size: 9px;
   color: rgba(255, 255, 255, 0.4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1.5;
 }
 
-.governance-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.governance-card {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.04);
+/* SYSTEM CARDS (centre column) */
+.system-card {
+  border-radius: 10px;
+  padding: 12px 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  transition: all 200ms ease;
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 6px;
+  transition: all 0.25s ease;
+  cursor: default;
+  position: relative;
+  z-index: 2;
 }
 
-.governance-card:hover {
+.system-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.system-card.active-sys {
+  border-color: #DAF11B;
+  background: rgba(218, 241, 27, 0.06);
+}
+
+.system-card.inactive-sys {
+  opacity: 0.25;
+}
+
+.system-card.dimmed {
+  opacity: 0.25;
+}
+
+.system-card .card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.system-card .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.system-card h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.system-card .metric-count {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+  padding-left: 18px;
+}
+
+/* GOVERNANCE CARDS (right column) */
+.gov-card {
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 6px;
+  transition: all 0.25s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.gov-card:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-.governance-card__title {
-  font-size: 1rem;
+.gov-card h3 {
+  font-size: 12px;
   font-weight: 600;
   color: #ffffff;
-  margin-bottom: 0.5rem;
+  margin: 0 0 6px;
 }
 
-.governance-card__cadence {
+.gov-card .cadence-badge {
   display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 8px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.35rem 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
   background: rgba(218, 241, 27, 0.15);
   color: #DAF11B;
-  border-radius: 12px;
-  margin-bottom: 1rem;
+  border-radius: 10px;
+  margin-bottom: 8px;
 }
 
-.governance-card__description {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.65);
-  line-height: 1.6;
+.gov-card .description {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* LABOUR SCOPING */
+.labour-scoping-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 2px 8px;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+/* SVG connection lines */
+.conn-line {
+  transition: all 0.25s ease;
 }
 
 /* RESPONSIVE */
@@ -537,20 +511,21 @@ body {
     gap: 1rem;
   }
 
-  .phase-transition-arrow {
+  .framework {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  #conn-svg {
     display: none;
   }
 
-  .metrics-list {
-    gap: 0.75rem;
-  }
-
-  .phase-journey {
+  .phase-journey-mini {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 8px;
   }
 
-  .phase-journey__column:not(:last-child)::after {
+  .phase-journey-mini .pj-col:not(:last-child)::after {
     display: none;
   }
 }
@@ -564,38 +539,14 @@ body {
     font-size: 0.8125rem;
   }
 
-  .system-legend {
-    flex-direction: column;
-  }
-
-  .system-legend__label {
-    margin-right: 0;
-    margin-bottom: 0.75rem;
-    width: 100%;
-  }
-
-  .metric-card__header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .metric-card__systems {
-    margin-left: 0;
-    margin-top: 0.75rem;
-    width: 100%;
-  }
-
-  .governance-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .area-header__title {
-    font-size: 1.375rem;
-  }
-
   .phase-card__title {
     font-size: 1.25rem;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>
 </head>
@@ -657,7 +608,6 @@ body {
         <div class="phase-card__title">Phase 1</div>
         <div class="phase-card__subtitle">Making do — supplementing existing systems</div>
         <div class="phase-card__systems" id="systemsPhase1"></div>
-        <div class="phase-transition-arrow"></div>
       </div>
       <div class="phase-card" data-phase="phase2" role="tab" aria-selected="false">
         <div class="phase-card__label">Target</div>
@@ -667,22 +617,36 @@ body {
       </div>
     </div>
 
-    <!-- SYSTEM LEGEND -->
-    <div class="system-legend" role="group" aria-label="System filters">
-      <span class="system-legend__label">Systems:</span>
-      <div id="systemLegend"></div>
-    </div>
+    <!-- 3-COLUMN FRAMEWORK -->
+    <div class="framework" id="framework">
+      <svg id="conn-svg"></svg>
 
-    <!-- AREAS & METRICS -->
-    <div id="areasContainer"></div>
-
-    <!-- GOVERNANCE -->
-    <div class="governance-section">
-      <div class="governance-header">
-        <h2 class="governance-header__title">Governance Structure</h2>
-        <p class="governance-header__note">Data dependencies and integration points coming soon</p>
+      <!-- LEFT: Data Inputs -->
+      <div class="col-left" id="colLeft">
+        <div class="column-header">
+          <div class="icon">&#9671;</div>
+          <span>Data Inputs</span>
+        </div>
+        <div id="metricCards"></div>
       </div>
-      <div class="governance-grid" id="governanceGrid"></div>
+
+      <!-- CENTRE: Systems -->
+      <div class="col-centre" id="colCentre">
+        <div class="column-header">
+          <div class="icon">&#9881;</div>
+          <span>Systems</span>
+        </div>
+        <div id="systemCards"></div>
+      </div>
+
+      <!-- RIGHT: Governance -->
+      <div class="col-right" id="colRight">
+        <div class="column-header">
+          <div class="icon">&#9878;</div>
+          <span>Governance</span>
+        </div>
+        <div id="governanceCards"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -895,7 +859,7 @@ const DATA = {
             months: [{ month: 1, action: 'Whiteboard capture at line level' }, { month: 2, action: 'Giveaway data entered into Feedback' }],
             systems: ['manual', 'feedback'],
             notes: 'Starts on whiteboard, then into Feedback. Manual process.',
-            issues: ['Manual capture', 'Whiteboard → system lag']
+            issues: ['Manual capture', 'Whiteboard \u2192 system lag']
           },
           phase2: { systems: ['sfdc'], notes: 'Auto into SFDC against W.O. — multihead weigher data feeds directly.', requirements: ['Multihead weigher integration to SFDC', 'Auto-booking against W.O.'] }
         },
@@ -968,26 +932,17 @@ const DATA = {
     { id: 'daily-ops', name: 'Daily Ops Review', cadence: 'Daily', description: 'Cross-shift performance review, escalate recurring issues' },
     { id: 'weekly-review', name: 'Weekly Review', cadence: 'Weekly', description: 'Operational steering — are we on track, what needs intervention' },
     { id: 'weekly-planning', name: 'Weekly Planning', cadence: 'Weekly', description: 'Forward-looking — next week\'s schedule, crewing, line allocation' },
-    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in £, yield losses in £, labour cost vs plan' }
+    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in \u00a3, yield losses in \u00a3, labour cost vs plan' }
   ]
 };
 
 let currentPhase = 'now';
-let currentFilter = null;
+let focusedMetric = null;
+let hoveredSystem = null;
 
-function getSystemsForPhaseArea(phase, area) {
-  const systemsUsed = new Set();
-  area.metrics.forEach(metric => {
-    if (metric[phase] && metric[phase].systems) {
-      metric[phase].systems.forEach(s => systemsUsed.add(s));
-    }
-  });
-  return Array.from(systemsUsed);
-}
-
+/* ───── Phase selector dots ───── */
 function renderPhaseSystemsDots() {
   const areas = DATA.areas;
-
   const nowSystems = new Set();
   const phase1Systems = new Set();
   const phase2Systems = new Set();
@@ -1003,7 +958,7 @@ function renderPhaseSystemsDots() {
   const renderDots = (container, systems) => {
     container.innerHTML = Array.from(systems).map(sysId => {
       const sys = DATA.systems[sysId];
-      return `<div class="phase-card__system-dot" style="background-color: ${sys.color};" title="${sys.name}"></div>`;
+      return '<div class="phase-card__system-dot" style="background-color: ' + sys.color + ';" title="' + sys.name + '"></div>';
     }).join('');
   };
 
@@ -1012,214 +967,345 @@ function renderPhaseSystemsDots() {
   renderDots(document.getElementById('systemsPhase2'), phase2Systems);
 }
 
-function renderSystemLegend() {
-  const legend = document.getElementById('systemLegend');
-  const allSystems = Object.keys(DATA.systems);
-  legend.innerHTML = allSystems.map(sysId => {
-    const sys = DATA.systems[sysId];
-    return `
-      <button class="system-pill" data-system="${sysId}" title="Filter by ${sys.name}">
-        <div class="system-pill__dot" style="background-color: ${sys.color};"></div>
-        <span>${sys.name}</span>
-      </button>
-    `;
-  }).join('');
-
-  document.querySelectorAll('.system-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const sysId = pill.dataset.system;
-      if (currentFilter === sysId) {
-        currentFilter = null;
-        pill.classList.remove('active');
-      } else {
-        document.querySelectorAll('.system-pill.active').forEach(p => p.classList.remove('active'));
-        currentFilter = sysId;
-        pill.classList.add('active');
-      }
-      updateMetricVisibility();
+/* ───── Collect active systems for the current phase ───── */
+function getActiveSystemIds() {
+  const active = new Set();
+  DATA.areas.forEach(area => {
+    area.metrics.forEach(metric => {
+      const pd = metric[currentPhase];
+      if (pd && pd.systems) pd.systems.forEach(s => active.add(s));
     });
   });
+  return active;
 }
 
-function updateMetricVisibility() {
-  document.querySelectorAll('.metric-card').forEach(card => {
-    if (!currentFilter) {
-      card.classList.remove('dimmed');
-      return;
-    }
-    const systems = card.dataset.systems ? card.dataset.systems.split(',') : [];
-    if (systems.includes(currentFilter)) {
-      card.classList.remove('dimmed');
-    } else {
-      card.classList.add('dimmed');
-    }
-  });
-}
-
-function renderMetricCard(metric, phase, areaId) {
-  const phaseData = metric[phase];
-  if (!phaseData) return '';
-
-  const systemsList = phaseData.systems || [];
-  const systemsStr = systemsList.join(',');
-  const issuesCount = phaseData.issues ? phaseData.issues.length : 0;
-
-  let html = `
-    <div class="metric-card" data-metric="${metric.id}" data-phase="${phase}" data-area="${areaId}" data-systems="${systemsStr}">
-      <div class="metric-card__header">
-        <div class="metric-card__title">${metric.name}</div>
-        <div class="metric-card__systems">
-  `;
-
-  systemsList.forEach(sysId => {
-    const sys = DATA.systems[sysId];
-    html += `
-      <div class="metric-card__system-pill">
-        <div class="dot" style="background-color: ${sys.color};"></div>
-        <span>${sys.name}</span>
-      </div>
-    `;
-  });
-
-  html += `
-        </div>
-      </div>
-      <div class="metric-card__content">
-        <div class="metric-card__notes">${phaseData.notes}</div>
-  `;
-
-  if (issuesCount > 0) {
-    html += `
-      <div class="metric-card__issues">
-        <div class="metric-card__issues-icon">⚠</div>
-        <ul class="metric-card__issues-list">
-    `;
-    phaseData.issues.forEach(issue => {
-      html += `<li>${issue}</li>`;
-    });
-    html += `
-        </ul>
-      </div>
-    `;
-  }
-
-  html += `
-      </div>
-      <div class="metric-expansion">
-        <div class="phase-journey">
-  `;
-
-  ['now', 'phase1', 'phase2'].forEach((p, idx) => {
-    const pData = metric[p];
-    const pLabel = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : 'Phase 2';
-    html += `
-      <div class="phase-journey__column">
-        <div class="phase-journey__label">${pLabel}</div>
-        <div class="phase-journey__systems">
-    `;
-
-    (pData.systems || []).forEach(sysId => {
-      const sys = DATA.systems[sysId];
-      html += `
-        <div class="phase-journey__system-pill">
-          <div class="dot" style="background-color: ${sys.color};"></div>
-          <span>${sys.name}</span>
-        </div>
-      `;
-    });
-
-    html += `
-        </div>
-        <div class="phase-journey__notes">${pData.notes}</div>
-    `;
-
-    if (pData.months && pData.months.length > 0) {
-      html += `<div class="phase-journey__timeline">`;
-      pData.months.forEach(m => {
-        html += `<div class="phase-journey__timeline-item"><strong>Month ${m.month}:</strong> ${m.action}</div>`;
-      });
-      html += `</div>`;
-    }
-
-    if (pData.requirements && pData.requirements.length > 0) {
-      html += `<div class="phase-journey__timeline">`;
-      pData.requirements.forEach(req => {
-        html += `<div class="phase-journey__timeline-item"><strong>Requirement:</strong> ${req}</div>`;
-      });
-      html += `</div>`;
-    }
-
-    html += `
-      </div>
-    `;
-  });
-
-  html += `
-        </div>
-      </div>
-    </div>
-  `;
-
-  return html;
-}
-
-function renderAreas() {
-  const container = document.getElementById('areasContainer');
+/* ───── LEFT COLUMN: Metric cards ───── */
+function renderMetricCards() {
+  const container = document.getElementById('metricCards');
   let html = '';
 
   DATA.areas.forEach(area => {
-    html += `
-      <div class="area-section ${area.id}" id="area-${area.id}">
-        <div class="area-header" style="border-left-color: ${area.color};">
-          <h2 class="area-header__title">${area.name}</h2>
-          <p class="area-header__description">${area.description[currentPhase]}</p>
-        </div>
-        <div class="metrics-list">
-    `;
+    const isTbc = area.tbc;
+    html += '<div class="area-group-label"><span class="area-dot" style="background:' + area.color + ';"></span> ' + area.name;
+    if (isTbc) html += '<span class="labour-scoping-badge">Scoping</span>';
+    html += '</div>';
 
     area.metrics.forEach(metric => {
-      html += renderMetricCard(metric, currentPhase, area.id);
+      const pd = metric[currentPhase];
+      if (!pd) return;
+      const sysList = pd.systems || [];
+      const sysAttr = sysList.join(',');
+      const issueCount = pd.issues ? pd.issues.length : 0;
+      const dimClass = isTbc ? ' style="opacity:0.45;"' : '';
+
+      html += '<div class="card" id="metric-' + metric.id + '" data-metric="' + metric.id + '" data-area="' + area.id + '" data-systems="' + sysAttr + '"' + dimClass + '>';
+      html += '<div class="card-head"><div class="dot" style="background:' + area.color + ';"></div><div><h3>' + metric.name + '</h3>';
+      html += '<div class="subtitle">' + pd.notes + '</div></div></div>';
+
+      // System pills
+      if (sysList.length) {
+        html += '<div class="system-pills">';
+        sysList.forEach(sId => {
+          const s = DATA.systems[sId];
+          html += '<span class="sys-pill"><span class="pip" style="background:' + s.color + ';"></span>' + s.name + '</span>';
+        });
+        html += '</div>';
+      }
+
+      // Issues
+      if (issueCount > 0) {
+        html += '<div class="issues"><span class="issues-icon">\u26A0</span><ul class="issues-list">';
+        pd.issues.forEach(issue => { html += '<li>' + issue + '</li>'; });
+        html += '</ul></div>';
+      }
+
+      // Expandable phase journey
+      html += '<div class="details">';
+      html += '<div class="phase-journey-mini">';
+      ['now', 'phase1', 'phase2'].forEach(p => {
+        const d = metric[p];
+        const label = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : 'Phase 2';
+        html += '<div class="pj-col"><div class="pj-col__label">' + label + '</div>';
+        html += '<div class="pj-col__systems">';
+        (d.systems || []).forEach(sId => {
+          const s = DATA.systems[sId];
+          html += '<span class="pj-col__sys"><span class="pip" style="background:' + s.color + ';"></span>' + s.name + '</span>';
+        });
+        html += '</div>';
+        html += '<div class="pj-col__notes">' + d.notes + '</div>';
+        if (d.months && d.months.length) {
+          html += '<div class="pj-col__timeline">';
+          d.months.forEach(m => { html += '<div><strong>M' + m.month + ':</strong> ' + m.action + '</div>'; });
+          html += '</div>';
+        }
+        if (d.requirements && d.requirements.length) {
+          html += '<div class="pj-col__timeline">';
+          d.requirements.forEach(r => { html += '<div><strong>Req:</strong> ' + r + '</div>'; });
+          html += '</div>';
+        }
+        html += '</div>';
+      });
+      html += '</div></div>';
+
+      html += '</div>';
     });
-
-    html += `
-        </div>
-    `;
-
-    if (area.tbc) {
-      html += `
-        <div class="labour-scoping-overlay">
-          <div class="labour-scoping-text">Scoping in progress</div>
-        </div>
-      `;
-    }
-
-    html += `
-      </div>
-    `;
   });
 
   container.innerHTML = html;
   attachMetricListeners();
-  updateMetricVisibility();
 }
 
-function attachMetricListeners() {
-  document.querySelectorAll('.metric-card').forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.toggle('expanded');
+/* ───── CENTRE COLUMN: System cards ───── */
+function renderSystemCards() {
+  const container = document.getElementById('systemCards');
+  const active = getActiveSystemIds();
+  let html = '';
+
+  Object.keys(DATA.systems).forEach(sysId => {
+    const sys = DATA.systems[sysId];
+    const isActive = active.has(sysId);
+    const stateClass = isActive ? 'active-sys' : 'inactive-sys';
+
+    // Count metrics using this system in current phase
+    let count = 0;
+    DATA.areas.forEach(area => {
+      area.metrics.forEach(metric => {
+        const pd = metric[currentPhase];
+        if (pd && pd.systems && pd.systems.includes(sysId)) count++;
+      });
+    });
+
+    html += '<div class="system-card ' + stateClass + '" id="sys-' + sysId + '" data-system="' + sysId + '">';
+    html += '<div class="card-head"><div class="dot" style="background:' + sys.color + ';"></div><h3>' + sys.name + '</h3></div>';
+    if (isActive) {
+      html += '<div class="metric-count">' + count + ' metric' + (count !== 1 ? 's' : '') + ' in this phase</div>';
+    } else {
+      html += '<div class="metric-count">Not active this phase</div>';
+    }
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+  attachSystemListeners();
+}
+
+/* ───── RIGHT COLUMN: Governance cards ───── */
+function renderGovernanceCards() {
+  const container = document.getElementById('governanceCards');
+  container.innerHTML = DATA.governance.map(meeting =>
+    '<div class="gov-card" id="gov-' + meeting.id + '">' +
+    '<h3>' + meeting.name + '</h3>' +
+    '<div class="cadence-badge">' + meeting.cadence + '</div>' +
+    '<div class="description">' + meeting.description + '</div>' +
+    '</div>'
+  ).join('');
+}
+
+/* ───── SVG Connection Lines ───── */
+function drawLines() {
+  const svg = document.getElementById('conn-svg');
+  const fw = document.getElementById('framework');
+  if (!svg || !fw) return;
+
+  svg.innerHTML = '';
+
+  // Check if we're in single-column (mobile) mode
+  const fwRect = fw.getBoundingClientRect();
+  if (fwRect.width < 700) return;
+
+  const fwLeft = fwRect.left;
+  const fwTop = fwRect.top + window.scrollY;
+
+  function edgeOf(el, side) {
+    const r = el.getBoundingClientRect();
+    const y = r.top + r.height / 2 + window.scrollY - fwTop;
+    if (side === 'right') return { x: r.right - fwLeft, y: y };
+    return { x: r.left - fwLeft, y: y };
+  }
+
+  // Determine which metric cards and system cards to highlight
+  let metricEls = [];
+  let systemEls = [];
+
+  if (focusedMetric) {
+    const mCard = document.getElementById('metric-' + focusedMetric);
+    if (mCard) {
+      const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
+      metricEls = [mCard];
+      systemEls = sysList.map(s => document.getElementById('sys-' + s)).filter(Boolean);
+    }
+  } else if (hoveredSystem) {
+    const sCard = document.getElementById('sys-' + hoveredSystem);
+    if (sCard) {
+      systemEls = [sCard];
+      // Find all metric cards that use this system
+      document.querySelectorAll('.card[data-metric]').forEach(c => {
+        const sys = (c.dataset.systems || '').split(',');
+        if (sys.includes(hoveredSystem)) metricEls.push(c);
+      });
+    }
+  }
+
+  // If nothing focused/hovered, draw all connections lightly
+  if (!focusedMetric && !hoveredSystem) {
+    document.querySelectorAll('.card[data-metric]').forEach(mCard => {
+      const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
+      sysList.forEach(sId => {
+        const sCard = document.getElementById('sys-' + sId);
+        if (!sCard || sCard.classList.contains('inactive-sys')) return;
+        const from = edgeOf(mCard, 'right');
+        const to = edgeOf(sCard, 'left');
+        const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+        drawBezier(svg, from, to, color, 1.2, 0.12);
+      });
+    });
+    return;
+  }
+
+  // Draw highlighted connections
+  metricEls.forEach(mCard => {
+    systemEls.forEach(sCard => {
+      const sId = sCard.dataset.system;
+      const mSys = (mCard.dataset.systems || '').split(',');
+      if (!mSys.includes(sId)) return;
+      const from = edgeOf(mCard, 'right');
+      const to = edgeOf(sCard, 'left');
+      const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+      drawBezier(svg, from, to, color, 2, 0.7);
     });
   });
 }
 
-function renderGovernance() {
-  const grid = document.getElementById('governanceGrid');
-  grid.innerHTML = DATA.governance.map(meeting => `
-    <div class="governance-card">
-      <div class="governance-card__title">${meeting.name}</div>
-      <div class="governance-card__cadence">${meeting.cadence}</div>
-      <p class="governance-card__description">${meeting.description}</p>
-    </div>
-  `).join('');
+function drawBezier(svg, from, to, color, width, opacity) {
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  const mx = from.x + (to.x - from.x) * 0.5;
+  path.setAttribute('d', 'M' + from.x + ',' + from.y + ' C' + mx + ',' + from.y + ' ' + mx + ',' + to.y + ' ' + to.x + ',' + to.y);
+  path.setAttribute('stroke', color);
+  path.setAttribute('stroke-width', String(width));
+  path.setAttribute('stroke-opacity', String(opacity));
+  path.setAttribute('fill', 'none');
+  path.classList.add('conn-line');
+  svg.appendChild(path);
+}
+
+/* ───── Highlight / dim logic ───── */
+function applyHighlight() {
+  const allMetrics = document.querySelectorAll('.card[data-metric]');
+  const allSystems = document.querySelectorAll('.system-card');
+
+  if (!focusedMetric && !hoveredSystem) {
+    allMetrics.forEach(c => c.classList.remove('dimmed', 'active'));
+    allSystems.forEach(c => { c.classList.remove('dimmed'); });
+    drawLines();
+    return;
+  }
+
+  if (focusedMetric) {
+    const card = document.getElementById('metric-' + focusedMetric);
+    const sysList = card ? (card.dataset.systems || '').split(',').filter(Boolean) : [];
+    allMetrics.forEach(c => {
+      if (c.dataset.metric === focusedMetric) { c.classList.add('active'); c.classList.remove('dimmed'); }
+      else { c.classList.add('dimmed'); c.classList.remove('active'); }
+    });
+    allSystems.forEach(c => {
+      if (sysList.includes(c.dataset.system)) c.classList.remove('dimmed');
+      else c.classList.add('dimmed');
+    });
+  }
+
+  if (hoveredSystem) {
+    const activeSysMetrics = new Set();
+    DATA.areas.forEach(area => {
+      area.metrics.forEach(metric => {
+        const pd = metric[currentPhase];
+        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) activeSysMetrics.add(metric.id);
+      });
+    });
+    allMetrics.forEach(c => {
+      if (activeSysMetrics.has(c.dataset.metric)) c.classList.remove('dimmed');
+      else c.classList.add('dimmed');
+    });
+    allSystems.forEach(c => {
+      if (c.dataset.system === hoveredSystem) c.classList.remove('dimmed');
+      else c.classList.add('dimmed');
+    });
+  }
+
+  drawLines();
+}
+
+/* ───── Event listeners ───── */
+function attachMetricListeners() {
+  document.querySelectorAll('.card[data-metric]').forEach(card => {
+    card.addEventListener('click', () => {
+      const mId = card.dataset.metric;
+      if (focusedMetric === mId) {
+        focusedMetric = null;
+        card.classList.remove('focused');
+      } else {
+        document.querySelectorAll('.card.focused').forEach(c => c.classList.remove('focused'));
+        focusedMetric = mId;
+        card.classList.add('focused');
+      }
+      hoveredSystem = null;
+      applyHighlight();
+    });
+
+    card.addEventListener('mouseenter', () => {
+      if (focusedMetric) return;
+      const mId = card.dataset.metric;
+      const sysList = (card.dataset.systems || '').split(',').filter(Boolean);
+      document.querySelectorAll('.card[data-metric]').forEach(c => {
+        if (c.dataset.metric === mId) c.classList.remove('dimmed');
+        else c.classList.add('dimmed');
+      });
+      document.querySelectorAll('.system-card').forEach(c => {
+        if (sysList.includes(c.dataset.system)) c.classList.remove('dimmed');
+        else c.classList.add('dimmed');
+      });
+      // Temporarily set for line drawing
+      const prevFocused = focusedMetric;
+      focusedMetric = mId;
+      drawLines();
+      focusedMetric = prevFocused;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (focusedMetric) return;
+      document.querySelectorAll('.card[data-metric]').forEach(c => c.classList.remove('dimmed'));
+      document.querySelectorAll('.system-card').forEach(c => c.classList.remove('dimmed'));
+      drawLines();
+    });
+  });
+}
+
+function attachSystemListeners() {
+  document.querySelectorAll('.system-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      if (focusedMetric) return;
+      hoveredSystem = card.dataset.system;
+      applyHighlight();
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (focusedMetric) return;
+      hoveredSystem = null;
+      applyHighlight();
+    });
+
+    card.addEventListener('click', () => {
+      // Clicking a system card acts like a toggle filter
+      const sId = card.dataset.system;
+      if (hoveredSystem === sId && focusedMetric === null) {
+        hoveredSystem = null;
+      } else {
+        focusedMetric = null;
+        document.querySelectorAll('.card.focused').forEach(c => c.classList.remove('focused'));
+        hoveredSystem = sId;
+      }
+      applyHighlight();
+    });
+  });
 }
 
 function attachPhaseListeners() {
@@ -1232,18 +1318,43 @@ function attachPhaseListeners() {
       card.classList.add('active');
 
       currentPhase = newPhase;
-      renderAreas();
+      focusedMetric = null;
+      hoveredSystem = null;
+
+      renderMetricCards();
+      renderSystemCards();
       renderPhaseSystemsDots();
+
+      // Redraw lines after DOM settles
+      requestAnimationFrame(() => { drawLines(); });
     });
   });
 }
 
+/* ───── Resize handler ───── */
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { drawLines(); }, 100);
+});
+
+window.addEventListener('scroll', () => {
+  // SVG is positioned absolute inside the framework, so scroll doesn't affect coordinates
+  // But we need to redraw if the framework position changes
+});
+
+/* ───── Init ───── */
 document.addEventListener('DOMContentLoaded', () => {
   renderPhaseSystemsDots();
-  renderSystemLegend();
-  renderAreas();
-  renderGovernance();
+  renderMetricCards();
+  renderSystemCards();
+  renderGovernanceCards();
   attachPhaseListeners();
+
+  // Initial line draw after layout settles
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { drawLines(); });
+  });
 });
 </script>
 </body>
