@@ -1964,6 +1964,7 @@ function buildHighlightSets() {
   const sysToRptMap = DATA.systemToReporting[currentPhase] || {};
   const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
   const govMetricsMap = DATA.governanceMetrics;
+  const activeKpisSet = new Set(DATA.kpisByPhase[currentPhase] || []);
 
   if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance && !hoveredMetricChip) return null;
 
@@ -1971,8 +1972,8 @@ function buildHighlightSets() {
 
   if (hoveredGovernance) {
     hl.governance.add(hoveredGovernance);
-    // KPIs this meeting reviews
-    (govMetricsMap[hoveredGovernance] || []).forEach(kpiId => {
+    // KPIs this meeting reviews (filtered to current phase)
+    (govMetricsMap[hoveredGovernance] || []).filter(k => activeKpisSet.has(k)).forEach(kpiId => {
       hl.metricChips.add(kpiId);
       // Data inputs that feed this KPI
       getKpiInputs(kpiId).forEach(inputId => {
