@@ -87,16 +87,10 @@ Two-layer auth system using SHA-256 hashes stored in sessionStorage.
 
 ## Branding & Styling
 
-### maji brand (used on this site)
 - **Font**: TT Hoves Pro (loaded from `assets/fonts/`)
 - **Colours**: dark green `#001412`, pine `#006458`, lime `#DAF11B`
 - **Background**: dark (`#001412`)
 - **Shared CSS**: `css/variables.css` + `css/style.css`
-
-### Diamond Peak brand (separate repo)
-- **Fonts**: Libre Baskerville (headings), DM Sans (body), DM Mono (labels)
-- **Colours**: warm paper `#f8f5ef`, ink `#18160f`, green `#1d6840`
-- **Repo**: `Jamie-Diamond/diamondpeak-site`
 
 ## Page Template (client portal pages)
 
@@ -130,7 +124,7 @@ All client portal pages follow this pattern:
 - **Inline CSS/JS** — tool pages are self-contained; shared styles only in `css/`
 - **Auth scripts go in `<head>`** — they must run before page renders
 - **Google Fonts** are NOT used on maji pages (TT Hoves Pro is self-hosted)
-- **Disclaimers** — maji client pages should include a disclaimer banner after the breadcrumb. Diamond Peak pages should NOT have maji disclaimers.
+- **Disclaimers** — maji client pages should include a disclaimer banner after the breadcrumb
 - **base64-encoded content** — `nineten/operational-roadmap.html` encodes its HTML content in base64, decoded client-side after auth check. This is a content-protection pattern.
 
 ## Git Workflow
