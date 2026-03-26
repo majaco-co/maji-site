@@ -1138,6 +1138,213 @@ body {
   border-radius: 50%;
   flex-shrink: 0;
 }
+
+/* ── DELIVERY PLAN ── */
+.dp-container {
+  max-width: 95vw;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.dp-intro {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 720px;
+}
+
+.dp-phase {
+  margin-bottom: 2.5rem;
+}
+
+.dp-phase__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(218, 241, 27, 0.12);
+}
+
+.dp-phase__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #001412;
+  background: #DAF11B;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.dp-phase__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.dp-phase__subtitle {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-left: auto;
+}
+
+.dp-phase__objective {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid rgba(218, 241, 27, 0.2);
+  border-radius: 0 6px 6px 0;
+}
+
+.dp-workstreams {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.dp-ws {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  transition: border-color 0.2s;
+}
+
+.dp-ws:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dp-ws__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dp-ws__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.dp-ws__title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dp-ws__tasks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dp-ws__tasks li {
+  position: relative;
+  padding: 5px 0 5px 20px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.dp-ws__tasks li:last-child {
+  border-bottom: none;
+}
+
+.dp-ws__tasks li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.dp-ws__deps {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dp-ws__deps strong {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 600;
+}
+
+.dp-ws__systems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.dp-ws__sys-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.dp-ws__sys-pill .pip {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dp-gate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-top: 12px;
+  background: rgba(218, 241, 27, 0.04);
+  border: 1px dashed rgba(218, 241, 27, 0.15);
+  border-radius: 8px;
+  font-size: 11px;
+  color: rgba(218, 241, 27, 0.7);
+}
+
+.dp-gate__icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.dp-gate__text {
+  line-height: 1.5;
+}
+
+.dp-gate__text strong {
+  color: #DAF11B;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
@@ -1182,8 +1389,9 @@ body {
 <section class="section">
   <div class="container">
     <div class="view-tabs">
-      <button class="view-tab active" data-tab="roadmap">Roadmap</button>
+      <button class="view-tab active" data-tab="roadmap">Data, Systems &amp; Governance</button>
       <button class="view-tab" data-tab="deep-dive">Data Input Deep Dive</button>
+      <button class="view-tab" data-tab="delivery-plan">Delivery Plan</button>
     </div>
 
     <div class="tab-panel active" id="tab-roadmap">
@@ -1335,6 +1543,10 @@ body {
         <div id="ddTableWrap"></div>
       </div>
     </div><!-- /tab-deep-dive -->
+
+    <div class="tab-panel" id="tab-delivery-plan">
+      <div class="dp-container" id="dpContainer"></div>
+    </div><!-- /tab-delivery-plan -->
 
   </div>
 </section>
@@ -2732,6 +2944,9 @@ function initTabs() {
       if (tab.dataset.tab === 'deep-dive') {
         renderDeepDive();
       }
+      if (tab.dataset.tab === 'delivery-plan') {
+        renderDeliveryPlan();
+      }
     });
   });
 }
@@ -2849,6 +3064,312 @@ function renderDDTable() {
 
   html += '</tbody></table>';
   wrap.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
+   DELIVERY PLAN
+   ═══════════════════════════════════════════ */
+const DELIVERY_PLAN = [
+  {
+    id: 'phase1',
+    badge: 'Phase 1',
+    title: 'Making Do — Supplement Existing Systems',
+    subtitle: '~3 months',
+    objective: 'Get better data from what we already have. Establish structured capture habits, validate automated sensors on pilot lines, and stand up the first governance cadence beyond SIC.',
+    workstreams: [
+      {
+        icon: '📊', iconBg: 'rgba(249,115,22,0.15)', iconColor: '#F97316',
+        title: 'Feedback System Enhancement',
+        systems: ['feedback'],
+        tasks: [
+          'Audit current Feedback data — identify gaps in start/stop, downtime, speed',
+          'Add giveaway capture (whiteboard → Feedback digitisation)',
+          'Add speed field — manual entry per line per shift',
+          'Build daily ops report from Feedback data',
+          'Train shift managers on new fields and entry expectations'
+        ]
+      },
+      {
+        icon: '⚡', iconBg: 'rgba(6,182,212,0.15)', iconColor: '#06B6D4',
+        title: 'XL Vorne Pilot (Notts & Yorks Lines)',
+        systems: ['xl-vorne'],
+        tasks: [
+          'Install XL Vorne sensors on Notts & Yorks lines',
+          'Configure start/stop, downtime, speed, crewing capture',
+          'Run parallel — Vorne vs Feedback — for 4+ weeks',
+          'Validate accuracy: compare automated vs manual entries',
+          'Publish Vorne data into SIC meeting for pilot lines'
+        ],
+        deps: 'Feedback enhancement must be live first so comparison data exists'
+      },
+      {
+        icon: '✅', iconBg: 'rgba(16,185,129,0.15)', iconColor: '#10B981',
+        title: 'Check Weigher Integration',
+        systems: ['checkweigher'],
+        tasks: [
+          'Confirm check weigher count availability during runs',
+          'Feed check weigher good output count into SIC',
+          'Validate C/W count against W.O. quantity in SFDC',
+          'Establish C/W as trusted good output source for pilot'
+        ]
+      },
+      {
+        icon: '📋', iconBg: 'rgba(120,113,108,0.15)', iconColor: '#78716C',
+        title: 'Yield Capture (Manual / W.O. Based)',
+        systems: ['manual'],
+        tasks: [
+          'Book grading waste, gripper ends, high value cuts against W.O.',
+          'Establish yield data collection routine per shift',
+          'Report prime and rib cuts separately',
+          'Build basic yield trending in Feedback'
+        ]
+      },
+      {
+        icon: '🏛', iconBg: 'rgba(218,241,27,0.1)', iconColor: '#DAF11B',
+        title: 'Governance Rollout',
+        systems: [],
+        tasks: [
+          'Establish Weekly Review meeting — efficiency + yield focus',
+          'Establish Plan Rates Review — periodic standard rate validation',
+          'Enhance SIC with Vorne + C/W data on pilot lines',
+          'Enhance Daily Ops with Feedback-based efficiency + G.A. trending',
+          'Monthly Finance: move to SFDC-based reporting'
+        ]
+      }
+    ],
+    gate: 'Gate: Vorne accuracy validated against manual. Check weigher good output trusted. Weekly Review cadence established. All 6 efficiency data inputs captured digitally on at least pilot lines.'
+  },
+  {
+    id: 'phase2s1',
+    badge: 'Phase 2 — Sprint 1',
+    title: 'Efficiency + Yield in SFDC',
+    subtitle: '~3–4 months',
+    objective: 'SFDC becomes the single source of truth for efficiency and yield. OEE sensors replace Feedback and Vorne. Automated downtime with MECE reason codes. Yield waterfall reporting goes live.',
+    workstreams: [
+      {
+        icon: '🔧', iconBg: 'rgba(59,130,246,0.15)', iconColor: '#3B82F6',
+        title: 'OEE / SFDC — Efficiency',
+        systems: ['oee-system'],
+        tasks: [
+          'Roll out OEE sensors to all lines (start/stop, downtime, speed)',
+          'Design and agree MECE downtime reason code taxonomy',
+          'Define plan vs allow categories for downtime',
+          'Build Downtime Pareto reporting in SFDC',
+          'Build Speed Variance reporting in SFDC',
+          'Build Net Case Throughput (NCT) calculation',
+          'Retire Feedback for efficiency data — SFDC only',
+          'Retire XL Vorne — OEE sensors take over'
+        ],
+        deps: 'Phase 1 Vorne pilot must validate automated sensor approach'
+      },
+      {
+        icon: '🥩', iconBg: 'rgba(34,197,94,0.15)', iconColor: '#22C55E',
+        title: 'Yield Automation',
+        systems: ['checkweigher', 'manual'],
+        tasks: [
+          'Integrate Check Weigher Cloud for automatic giveaway vs W.O.',
+          'Build Yield Waterfall calculation (G.A. + waste + gripper + pressing + HVC)',
+          'Build Variance to Standard reporting',
+          'Define pressing loss methodology and capture mechanism',
+          'Establish auto-booking of yield components against W.O.'
+        ],
+        deps: 'Check weigher integration validated in Phase 1'
+      },
+      {
+        icon: '📈', iconBg: 'rgba(59,130,246,0.15)', iconColor: '#3B82F6',
+        title: 'BN Count & Advanced Metrics',
+        systems: ['oee-system'],
+        tasks: [
+          'Enable bottleneck count (A) from OEE system',
+          'Build Variance to Standard using BN count + good output + G.A.',
+          'Validate all efficiency KPIs against manual baselines'
+        ]
+      },
+      {
+        icon: '🏛', iconBg: 'rgba(218,241,27,0.1)', iconColor: '#DAF11B',
+        title: 'Governance Transition',
+        systems: [],
+        tasks: [
+          'SIC meeting: transition to SFDC reporting only',
+          'Daily Ops: transition to SFDC reporting only',
+          'Weekly Review: add yield waterfall + variance to standard',
+          'Retire SIC.xls spreadsheet',
+          'Retire Feedback system for efficiency/yield'
+        ]
+      }
+    ],
+    gate: 'Gate: All efficiency and yield metrics running from SFDC. Feedback and SIC.xls retired. Downtime Pareto, Speed Variance, Yield Waterfall all live and validated.'
+  },
+  {
+    id: 'phase2s2',
+    badge: 'Phase 2 — Sprint 2',
+    title: 'Labour',
+    subtitle: '~2–3 months',
+    objective: 'Consolidate labour data — permanent hours (T&A), agency costs (POs), and crew allocation into a single view. Enable £/Case, KG/Labour Hour, and Labour Cost vs Plan.',
+    workstreams: [
+      {
+        icon: '👥', iconBg: 'rgba(234,179,8,0.15)', iconColor: '#EAB308',
+        title: 'Labour Data Consolidation',
+        systems: ['ta', 'po-system', 'labour-register'],
+        tasks: [
+          'Integrate T&A paid hours with SFDC reporting',
+          'Integrate PO system agency hours with SFDC reporting',
+          'Define crew allocation workflow in labour register',
+          'Build planned vs actual crew comparison',
+          'Establish total labour cost view (permanent + agency)'
+        ]
+      },
+      {
+        icon: '💷', iconBg: 'rgba(234,179,8,0.15)', iconColor: '#EAB308',
+        title: 'Labour KPIs',
+        systems: ['ta', 'po-system'],
+        tasks: [
+          'Build £/Case calculation (good output ÷ total labour cost)',
+          'Build KG/Labour Hour calculation',
+          'Build Labour Cost vs Plan reporting',
+          'Integrate crew per line with labour planning'
+        ],
+        deps: 'Labour data consolidation must complete first'
+      },
+      {
+        icon: '🏛', iconBg: 'rgba(218,241,27,0.1)', iconColor: '#DAF11B',
+        title: 'Governance — Labour Metrics',
+        systems: [],
+        tasks: [
+          'Add £/Case and KG/Labour Hour to Daily Ops',
+          'Add Labour Cost vs Plan to Weekly Review',
+          'Add labour KPIs to Monthly Financial Review',
+          'Validate labour metrics against finance actuals'
+        ]
+      }
+    ],
+    gate: 'Gate: £/Case, KG/Labour Hour, Labour Cost vs Plan all live. T&A and PO data integrated with SFDC. Labour register driving planned vs actual crew.'
+  },
+  {
+    id: 'phase3',
+    badge: 'Phase 3',
+    title: 'Planning & Control — Relex Integration',
+    subtitle: '~4–6 months',
+    objective: 'Close the loop. Relex provides the production plan; SFDC provides actuals. Conformance to Plan, Run Length Variance, Sequence Adherence, and Stock vs Safety complete the picture. Weekly Planning meeting goes live.',
+    workstreams: [
+      {
+        icon: '🔄', iconBg: 'rgba(20,184,166,0.15)', iconColor: '#14B8A6',
+        title: 'Relex Implementation',
+        systems: ['relex'],
+        tasks: [
+          'Implement Relex for production planning',
+          'Migrate planning from spreadsheet to Relex',
+          'Configure plan sequence, batch sizes, run lengths in Relex',
+          'Integrate Relex with SFDC for plan vs actual comparison',
+          'Validate Relex plan output against existing planning spreadsheet'
+        ]
+      },
+      {
+        icon: '🔗', iconBg: 'rgba(232,121,249,0.15)', iconColor: '#E879F9',
+        title: 'ERP Integration',
+        systems: ['erp'],
+        tasks: [
+          'Integrate ERP stock levels with Relex',
+          'Integrate ERP safety stock thresholds with Relex',
+          'Build Stock vs Safety Stock comparison',
+          'Validate stock data accuracy between ERP and Relex'
+        ]
+      },
+      {
+        icon: '📐', iconBg: 'rgba(244,114,182,0.15)', iconColor: '#F472B6',
+        title: 'Planning KPIs',
+        systems: ['relex', 'oee-system'],
+        tasks: [
+          'Build Conformance to Plan (planned qty vs actual good output)',
+          'Build Run Length Variance (planned vs actual from OEE start/stop)',
+          'Build Sequence Adherence (planned sequence vs actual production order)',
+          'Build Stock vs Safety (ERP stock vs safety thresholds)',
+          'Feed labour actuals into Relex labour model'
+        ],
+        deps: 'Relex must be live and integrated with SFDC. Accurate start/stop from OEE required.'
+      },
+      {
+        icon: '🏛', iconBg: 'rgba(218,241,27,0.1)', iconColor: '#DAF11B',
+        title: 'Governance — Full Suite',
+        systems: [],
+        tasks: [
+          'Launch Weekly Planning meeting (CTP, run length, sequence, stock, labour, crew)',
+          'Add planning KPIs to Weekly Review',
+          'Add Stock vs Safety to Monthly Financial Review',
+          'Establish Plan Rates Review with Relex-validated throughput rates',
+          'Retire planning spreadsheet'
+        ]
+      }
+    ],
+    gate: 'Gate: Full planning loop closed. Relex drives plan, SFDC captures actuals, governance reviews conformance. All 18 KPIs live. Planning spreadsheet retired.'
+  }
+];
+
+function renderDeliveryPlan() {
+  const container = document.getElementById('dpContainer');
+  let html = '';
+
+  html += '<p class="dp-intro">Step-by-step plan to deliver each phase of the transition — from supplementing existing systems through to full Relex integration and the complete governance suite.</p>';
+
+  DELIVERY_PLAN.forEach(phase => {
+    html += '<div class="dp-phase">';
+
+    // Header
+    html += '<div class="dp-phase__header">';
+    html += '<span class="dp-phase__badge">' + phase.badge + '</span>';
+    html += '<h2 class="dp-phase__title">' + phase.title + '</h2>';
+    html += '<span class="dp-phase__subtitle">' + phase.subtitle + '</span>';
+    html += '</div>';
+
+    // Objective
+    html += '<div class="dp-phase__objective">' + phase.objective + '</div>';
+
+    // Workstreams
+    html += '<div class="dp-workstreams">';
+    phase.workstreams.forEach(ws => {
+      html += '<div class="dp-ws">';
+      html += '<div class="dp-ws__head">';
+      html += '<div class="dp-ws__icon" style="background:' + ws.iconBg + '; color:' + ws.iconColor + ';">' + ws.icon + '</div>';
+      html += '<div class="dp-ws__title">' + ws.title + '</div>';
+      html += '</div>';
+
+      // Tasks
+      html += '<ul class="dp-ws__tasks">';
+      ws.tasks.forEach(task => { html += '<li>' + task + '</li>'; });
+      html += '</ul>';
+
+      // Systems
+      if (ws.systems.length) {
+        html += '<div class="dp-ws__systems">';
+        ws.systems.forEach(sId => {
+          const s = DATA.systems[sId];
+          if (!s) return;
+          html += '<span class="dp-ws__sys-pill"><span class="pip" style="background:' + s.color + ';"></span>' + s.name + '</span>';
+        });
+        html += '</div>';
+      }
+
+      // Dependencies
+      if (ws.deps) {
+        html += '<div class="dp-ws__deps"><strong>Depends on:</strong> ' + ws.deps + '</div>';
+      }
+
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // Phase gate
+    if (phase.gate) {
+      html += '<div class="dp-gate">';
+      html += '<span class="dp-gate__icon">🚩</span>';
+      html += '<div class="dp-gate__text"><strong>Phase Gate:</strong> ' + phase.gate.replace('Gate: ', '') + '</div>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
 }
 
 /* ───── Init ───── */
