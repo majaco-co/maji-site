@@ -32,7 +32,7 @@ majaco's Knowledge Base is a living system in Notion. **Fetch it on every query 
 
 - **Remote**: `https://github.com/Jamie-Diamond/maji-site.git`
 - **Branch**: `main` (deploy branch)
-- **Hosting**: GitHub Pages at `maji.majaco.co`
+- **Hosting**: GitHub Pages at `majiai.co`
 
 ## Site Structure
 
