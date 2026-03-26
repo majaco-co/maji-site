@@ -115,7 +115,6 @@ Two-layer auth system using SHA-256 hashes stored in sessionStorage.
 - **Colours**: dark green `#001412`, pine `#006458`, lime `#DAF11B`
 - **Background**: dark (`#001412`)
 - **Shared CSS**: `css/variables.css` + `css/style.css`
-- **Webflow-compatible pages**: pine `#006458`, lime `#DAF11B`, dark-green `#001412`, Roboto typography, self-contained inline CSS, no external dependencies, fully responsive
 
 ## Page Template (client portal pages)
 
