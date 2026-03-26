@@ -142,97 +142,115 @@ body {
   flex-shrink: 0;
 }
 
-/* Activity row */
-.dg__row {
+/* Metric block — wraps label + bars + notes for one data input */
+.dg__metric {
   display: grid;
-  grid-template-columns: 200px repeat(5, 1fr);
+  grid-template-columns: 200px 1fr;
   gap: 0;
-  align-items: stretch;
-  min-height: 32px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
+  padding: 4px 0;
   transition: background 0.15s ease;
 }
 
-.dg__row:hover {
+.dg__metric:hover {
   background: rgba(255, 255, 255, 0.02);
 }
 
-.dg__row-label {
+.dg__metric--selected {
+  background: rgba(218, 241, 27, 0.04);
+}
+
+.dg__metric-label {
   font-size: 11px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
   padding: 4px 8px 4px 4px;
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-start;
+  padding-top: 8px;
 }
 
-.dg__row-label .sys-dots {
-  display: flex;
-  gap: 2px;
+.dg__metric--selected .dg__metric-label {
+  color: #DAF11B;
 }
 
-.dg__row-label .sys-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
+/* Bar track — 5-column grid where system bars span across phases */
+.dg__bar-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px 0;
+  padding: 2px 4px;
 }
 
-/* Gantt bar cell */
-.dg__cell {
-  padding: 2px 2px;
-  min-height: 28px;
-}
-
-.dg__bar {
-  height: 100%;
+.dg__sysbar {
+  height: 22px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   padding: 0 8px;
-  cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  overflow: hidden;
 }
 
-.dg__bar:hover {
+.dg__sysbar:hover {
   filter: brightness(1.3);
 }
 
-.dg__bar.dg-bar-selected {
-  outline: 1.5px solid #DAF11B;
-  outline-offset: 1px;
-  filter: brightness(1.2);
-}
-
-.dg__bar-text {
+.dg__sysbar-name {
   font-size: 8px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.8);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.dg__bar--empty {
-  background: rgba(255, 255, 255, 0.015);
-  cursor: default;
+.dg__sysbar--dup::after {
+  content: 'DUPLICATION';
+  position: absolute;
+  right: 8px;
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(255, 200, 50, 0.6);
+  text-transform: uppercase;
 }
 
-.dg__bar--empty:hover {
-  filter: none;
+/* Notes row — per-phase text visible beneath bars */
+.dg__notes-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0 4px;
+  padding: 0 4px 2px;
+  grid-column: 2;
 }
 
-.dg__bar--faded {
-  opacity: 0.15;
-  cursor: default;
+.dg__note {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.4;
+  padding: 2px 4px;
 }
 
-.dg__bar--faded:hover {
-  filter: none;
+.dg__note-phase {
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 1px;
+}
+
+.dg__note--empty {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+/* Phase separator lines in bar track */
+.dg__bar-track::before {
+  display: none;
 }
 
 /* Selected activity detail strip */
@@ -374,27 +392,14 @@ body {
   font-weight: 700;
 }
 
-/* Cell stack for multiple systems */
-.dg__cell-stack {
+/* Transition arrow between bars */
+.dg__transition {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  height: 100%;
-}
-
-.dg__cell-stack .dg__bar {
-  flex: 1;
-  min-height: 12px;
-}
-
-/* Selected row highlight */
-.dg__row--selected {
-  background: rgba(218, 241, 27, 0.04);
-  border-radius: 4px;
-}
-
-.dg__row--selected .dg__row-label {
-  color: #DAF11B;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.15);
+  padding: 0 2px;
 }
 
 /* Phase gates container */
@@ -3228,6 +3233,55 @@ const areaColorMap = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308
 
 let selectedGanttMetric = null; // metric id
 
+function buildSystemSpans(metric) {
+  // For each system used by this metric, find consecutive phase spans
+  const spans = []; // { sId, startIdx, endIdx }
+  const systemPhases = {}; // sId -> [phaseIdx, ...]
+
+  GANTT_PHASES.forEach((p, idx) => {
+    const pd = metric[p];
+    if (!pd || !pd.systems) return;
+    pd.systems.forEach(sId => {
+      if (!systemPhases[sId]) systemPhases[sId] = [];
+      systemPhases[sId].push(idx);
+    });
+  });
+
+  // Build spans — consecutive indices become one span, gaps create separate spans
+  Object.keys(systemPhases).forEach(sId => {
+    const indices = systemPhases[sId].sort((a, b) => a - b);
+    let start = indices[0];
+    let prev = indices[0];
+    for (let i = 1; i <= indices.length; i++) {
+      if (i < indices.length && indices[i] === prev + 1) {
+        prev = indices[i];
+      } else {
+        spans.push({ sId, startIdx: start, endIdx: prev });
+        if (i < indices.length) {
+          start = indices[i];
+          prev = indices[i];
+        }
+      }
+    }
+  });
+
+  // Sort by start index, then by system name for consistent ordering
+  spans.sort((a, b) => a.startIdx - b.startIdx || a.endIdx - b.endIdx);
+  return spans;
+}
+
+function detectDuplication(metric) {
+  // Find phases where multiple systems capture the same data
+  const dupPhases = [];
+  GANTT_PHASES.forEach((p, idx) => {
+    const pd = metric[p];
+    if (pd && pd.systems && pd.systems.length > 1) {
+      dupPhases.push(idx);
+    }
+  });
+  return dupPhases;
+}
+
 function renderDeliveryGantt() {
   const container = document.getElementById('deliveryGantt');
   let html = '<div class="dg">';
@@ -3267,34 +3321,53 @@ function renderDeliveryGantt() {
 
     area.metrics.forEach(metric => {
       const isSelected = selectedGanttMetric === metric.id;
-      const rowClass = isSelected ? ' dg__row--selected' : '';
+      const spans = buildSystemSpans(metric);
+      const dupPhases = detectDuplication(metric);
 
-      html += '<div class="dg__row' + rowClass + '" data-gantt-metric="' + metric.id + '">';
+      html += '<div class="dg__metric' + (isSelected ? ' dg__metric--selected' : '') + '" data-gantt-metric="' + metric.id + '">';
+
       // Label
-      html += '<div class="dg__row-label">' + metric.name + '</div>';
+      html += '<div class="dg__metric-label">' + metric.name + '</div>';
 
-      // Phase cells — each system gets a sub-bar
+      // Right side: bars + notes stacked
+      html += '<div style="display:flex;flex-direction:column;gap:1px;">';
+
+      // Bar track — system bars spanning phases
+      html += '<div class="dg__bar-track">';
+      if (spans.length === 0) {
+        // No systems at all — show empty placeholder
+        html += '<div style="grid-column:1/-1;height:22px;background:rgba(255,255,255,0.015);border-radius:4px;display:flex;align-items:center;justify-content:center;">';
+        html += '<span style="font-size:8px;color:rgba(255,255,255,0.1);">—</span></div>';
+      } else {
+        spans.forEach(span => {
+          const sys = DATA.systems[span.sId];
+          if (!sys) return;
+          const colStart = span.startIdx + 1; // CSS grid is 1-indexed
+          const colEnd = span.endIdx + 2;     // end is exclusive
+          const isDup = dupPhases.some(idx => idx >= span.startIdx && idx <= span.endIdx) &&
+                        spans.filter(s => s.sId !== span.sId && s.startIdx <= span.endIdx && s.endIdx >= span.startIdx).length > 0;
+          html += '<div class="dg__sysbar' + (isDup ? ' dg__sysbar--dup' : '') + '" style="grid-column:' + colStart + '/' + colEnd + ';background:rgba(' + hexToRgb(sys.color) + ',0.4);border-left:3px solid ' + sys.color + ';">';
+          html += '<span class="dg__sysbar-name">' + sys.name + '</span>';
+          html += '</div>';
+        });
+      }
+      html += '</div>';
+
+      // Notes track — per-phase text
+      html += '<div class="dg__notes-track">';
       GANTT_PHASES.forEach(p => {
         const pd = metric[p];
-        html += '<div class="dg__cell">';
-
-        if (!pd || !pd.systems || !pd.systems.length) {
-          html += '<div class="dg__bar dg__bar--empty"><span class="dg__bar-text" style="color:rgba(255,255,255,0.15);">—</span></div>';
-        } else {
-          html += '<div class="dg__cell-stack">';
-          pd.systems.forEach(sId => {
-            const sys = DATA.systems[sId];
-            if (!sys) return;
-            html += '<div class="dg__bar" style="background:rgba(' + hexToRgb(sys.color) + ',0.45);">';
-            html += '<span class="dg__bar-text">' + sys.name + '</span>';
-            html += '</div>';
-          });
-          html += '</div>';
+        html += '<div class="dg__note' + (!pd || !pd.notes ? ' dg__note--empty' : '') + '">';
+        if (pd && pd.notes) {
+          html += pd.notes;
         }
         html += '</div>';
       });
-
       html += '</div>';
+
+      html += '</div>'; // close right side
+
+      html += '</div>'; // close dg__metric
 
       // Detail panel for selected metric
       if (isSelected) {
@@ -3304,7 +3377,6 @@ function renderDeliveryGantt() {
         html += '<button class="dg__detail-close" id="dgDetailClose">&times;</button>';
         html += '</div>';
 
-        // Show notes per phase
         html += '<div class="dg__detail-phases">';
         GANTT_PHASES.forEach(p => {
           const pd = metric[p];
@@ -3368,7 +3440,7 @@ function hexToRgb(hex) {
 
 function attachGanttListeners() {
   // Row clicks — toggle detail expansion
-  document.querySelectorAll('.dg__row[data-gantt-metric]').forEach(el => {
+  document.querySelectorAll('.dg__metric[data-gantt-metric]').forEach(el => {
     el.addEventListener('click', () => {
       const metricId = el.dataset.ganttMetric;
       if (selectedGanttMetric === metricId) {
