@@ -39,16 +39,92 @@ body {
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* GANTT TIMELINE */
+.gantt-timeline {
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 16px 20px 14px;
+}
+
+.gantt-timeline__header {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr 1fr;
+  gap: 0;
+  margin-bottom: 10px;
+}
+
+.gantt-timeline__header span {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.gantt-timeline__header span:first-child {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.gantt-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr 1fr;
+  gap: 0;
+  margin-bottom: 4px;
+  align-items: center;
+}
+
+.gantt-row__label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gantt-row__label .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gantt-bar {
+  height: 20px;
+  border-radius: 4px;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.gantt-bar--active {
+  opacity: 1;
+}
+
+.gantt-bar--faded {
+  opacity: 0.15;
+}
+
+.gantt-bar__text {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 20px;
+  padding-left: 6px;
+  white-space: nowrap;
+}
+
 /* PHASE SELECTOR */
 .phase-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .phase-card {
-  padding: 1.75rem;
+  padding: 0.875rem 1rem;
   background: rgba(255, 255, 255, 0.04);
   border: 2px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
@@ -69,18 +145,18 @@ body {
 }
 
 .phase-card__label {
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .phase-card__title {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   color: #ffffff;
 }
 
@@ -89,31 +165,31 @@ body {
 }
 
 .phase-card__subtitle {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 1rem;
-  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
 }
 
 .phase-card__systems {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.375rem;
   flex-wrap: wrap;
 }
 
 .phase-card__system-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* 3-COLUMN FRAMEWORK GRID */
+/* 4-COLUMN FRAMEWORK GRID */
 .framework {
-  max-width: 90vw;
+  max-width: 95vw;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 200px 1fr;
+  grid-template-columns: 1fr 180px 180px 260px;
   gap: 16px;
   align-items: start;
   position: relative;
@@ -439,6 +515,63 @@ body {
   padding-left: 18px;
 }
 
+/* REPORTING CARDS (centre-right column) */
+.reporting-card {
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 6px;
+  transition: all 0.25s ease;
+  cursor: default;
+  position: relative;
+  z-index: 2;
+}
+
+.reporting-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.reporting-card.active-rpt {
+  border-color: #DAF11B;
+  background: rgba(218, 241, 27, 0.06);
+}
+
+.reporting-card.inactive-rpt {
+  opacity: 0.25;
+}
+
+.reporting-card.dimmed {
+  opacity: 0.25;
+}
+
+.reporting-card .card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reporting-card .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.reporting-card h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.reporting-card .rpt-count {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+  padding-left: 18px;
+}
+
 /* GOVERNANCE CARDS (right column) */
 .gov-card {
   border-radius: 10px;
@@ -483,6 +616,53 @@ body {
   font-weight: 300;
 }
 
+.gov-card.inactive-gov {
+  opacity: 0.25;
+}
+
+.gov-card.active-gov {
+  border-color: rgba(218, 241, 27, 0.3);
+}
+
+.gov-card.dimmed {
+  opacity: 0.25;
+}
+
+.gov-card .rpt-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.gov-card .rpt-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.gov-card .rpt-pill .pip {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gov-card .not-running {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 6px;
+  font-style: italic;
+}
+
 /* LABOUR SCOPING */
 .labour-scoping-badge {
   display: inline-flex;
@@ -514,6 +694,14 @@ body {
   .framework {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .col-reporting {
+    order: 3;
+  }
+
+  .col-right {
+    order: 4;
   }
 
   #conn-svg {
@@ -595,6 +783,34 @@ body {
       <strong>Roadmap note:</strong> This transition is a multi-month programme. Phases shown are indicative — timings and scope subject to resource availability and learning from earlier phases. Data dependencies and integration points are documented below the roadmap.
     </div>
 
+    <!-- GANTT TIMELINE -->
+    <div class="gantt-timeline" id="ganttTimeline">
+      <div class="gantt-timeline__header">
+        <span>System</span>
+        <span>Now</span>
+        <span>Phase 1</span>
+        <span>Phase 2</span>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row__label"><span class="dot" style="background:#F97316;"></span> Feedback</div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.35);"><span class="gantt-bar__text">Active</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.25);"><span class="gantt-bar__text">Winding down</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.08);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Off</span></div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row__label"><span class="dot" style="background:#8B5CF6;"></span> SIC</div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.35);"><span class="gantt-bar__text">Active</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.25);"><span class="gantt-bar__text">Winding down</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.08);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Off</span></div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row__label"><span class="dot" style="background:#3B82F6;"></span> SFDC</div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.2);"><span class="gantt-bar__text">Partial</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.3);"><span class="gantt-bar__text">Expanding</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.45);"><span class="gantt-bar__text">Primary</span></div>
+      </div>
+    </div>
+
     <!-- PHASE SELECTOR -->
     <div class="phase-selector" id="phaseSelector" role="tablist">
       <div class="phase-card active" data-phase="now" role="tab" aria-selected="true">
@@ -630,13 +846,22 @@ body {
         <div id="metricCards"></div>
       </div>
 
-      <!-- CENTRE: Systems -->
+      <!-- CENTRE-LEFT: Systems -->
       <div class="col-centre" id="colCentre">
         <div class="column-header">
           <div class="icon">&#9881;</div>
           <span>Systems</span>
         </div>
         <div id="systemCards"></div>
+      </div>
+
+      <!-- CENTRE-RIGHT: Storage & Reporting -->
+      <div class="col-reporting" id="colReporting">
+        <div class="column-header">
+          <div class="icon">&#128202;</div>
+          <span>Storage &amp; Reporting</span>
+        </div>
+        <div id="reportingCards"></div>
       </div>
 
       <!-- RIGHT: Governance -->
@@ -719,8 +944,8 @@ const DATA = {
             issues: ['Hourly granularity needed', 'Only 2 lines have real-time data']
           },
           phase2: {
-            systems: ['sfdc'],
-            notes: 'Good output from checkweigher data — accurate, real-time, per-unit. Feeds directly to SFDC.',
+            systems: ['sfdc', 'checkweigher'],
+            notes: 'Good output from checkweigher data — accurate, real-time, per-unit. C/W Cloud data feeds directly to SFDC.',
             requirements: ['Checkweigher integration to SFDC', 'Reconciliation with W.O. confirmed quantities']
           }
         },
@@ -815,30 +1040,6 @@ const DATA = {
             requirements: ['Crew assignment workflow in SFDC', 'Integration with labour planning']
           }
         },
-        {
-          id: 'reporting-eff',
-          name: 'Reporting',
-          now: {
-            systems: ['feedback', 'sic'],
-            notes: 'Ad hoc — whatever has been asked for and/or entered. Needs checking.',
-            issues: ['Ad hoc', 'No standard report pack', 'Data quality uncertain']
-          },
-          phase1: {
-            months: [
-              { month: 1, action: 'Efficiency + Yield report scope defined' },
-              { month: 2, action: 'Modify Feedback at SIC as required' },
-              { month: 3, action: 'XL reporting alongside Feedback/SIC' }
-            ],
-            systems: ['feedback', 'sic', 'xl-vorne'],
-            notes: 'Hybrid reporting — XL supplements alongside existing Feedback/SIC.',
-            issues: ['Multiple report sources', 'Manual consolidation needed']
-          },
-          phase2: {
-            systems: ['sfdc'],
-            notes: 'All real-time reports and dashboards driven from SFDC.',
-            requirements: ['All efficiency metrics flowing to SFDC', 'Dashboard/report design agreed']
-          }
-        }
       ]
     },
     {
@@ -861,7 +1062,7 @@ const DATA = {
             notes: 'Starts on whiteboard, then into Feedback. Manual process.',
             issues: ['Manual capture', 'Whiteboard \u2192 system lag']
           },
-          phase2: { systems: ['sfdc'], notes: 'Auto into SFDC against W.O. — multihead weigher data feeds directly.', requirements: ['Multihead weigher integration to SFDC', 'Auto-booking against W.O.'] }
+          phase2: { systems: ['sfdc', 'checkweigher'], notes: 'Auto into SFDC against W.O. — C/W Cloud data feeds directly.', requirements: ['Checkweigher Cloud integration to SFDC', 'Auto-booking against W.O.'] }
         },
         {
           id: 'grading-waste',
@@ -891,13 +1092,6 @@ const DATA = {
           phase1: { months: [{ month: 1, action: 'Booked against W.O. in SFDC' }, { month: 2, action: 'Prime and Rib reported separately' }], systems: ['sfdc'], notes: 'Booked against W.O. Each reported separately.', issues: [] },
           phase2: { systems: ['sfdc'], notes: 'Aggregation and reporting in SFDC.', requirements: ['Yield reporting framework in SFDC'] }
         },
-        {
-          id: 'reporting-yield',
-          name: 'Reporting',
-          now: { systems: [], notes: 'No structured yield reporting.', issues: ['No reporting'] },
-          phase1: { months: [{ month: 2, action: 'Waterfall by W.O. — report location TBC' }], systems: ['sfdc'], notes: 'Waterfall yield report by works order. Location TBC.', issues: ['Report location undecided'] },
-          phase2: { systems: ['sfdc'], notes: 'All yield reporting in SFDC — complete waterfall.', requirements: ['All yield components flowing to SFDC', 'Waterfall report design agreed'] }
-        }
       ]
     },
     {
@@ -914,7 +1108,7 @@ const DATA = {
         { id: 'paid-hours', name: 'Paid Hours', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } },
         { id: 'planned-hours', name: 'Planned Hours', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } },
         { id: 'plan-sequence', name: 'Plan Sequence', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } },
-        { id: 'ctp', name: 'Capacity to Promise (CTP)', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } }
+        { id: 'ctp', name: 'Conformance to Plan (CTP)', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2: { systems: [], notes: 'TBC', requirements: [] } }
       ]
     }
   ],
@@ -924,20 +1118,88 @@ const DATA = {
     'sic': { name: 'SIC', color: '#8B5CF6' },
     'xl-vorne': { name: 'XL Vorne', color: '#06B6D4' },
     'slicer': { name: 'Slicer', color: '#EC4899' },
+    'checkweigher': { name: 'C/W', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' }
+  },
+  reporting: {
+    'sic-rpt': { name: 'SIC', color: '#8B5CF6' },
+    'feedback-rpt': { name: 'Feedback', color: '#F97316' },
+    'sfdc-rpt': { name: 'SFDC', color: '#3B82F6' }
+  },
+  // Which reporting destinations are active per phase
+  reportingByPhase: {
+    now: ['sic-rpt', 'feedback-rpt'],
+    phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
+    phase2: ['sfdc-rpt']
+  },
+  // Which systems feed into which reporting destinations per phase
+  systemToReporting: {
+    now: {
+      'feedback': ['feedback-rpt'],
+      'sic': ['sic-rpt'],
+      'sfdc': ['sic-rpt'],
+      'checkweigher': ['sic-rpt'],
+      'manual': ['sic-rpt']
+    },
+    phase1: {
+      'feedback': ['feedback-rpt'],
+      'sic': ['sic-rpt'],
+      'sfdc': ['sfdc-rpt', 'sic-rpt'],
+      'xl-vorne': ['feedback-rpt', 'sfdc-rpt'],
+      'slicer': ['feedback-rpt'],
+      'checkweigher': ['sic-rpt'],
+      'manual': ['feedback-rpt']
+    },
+    phase2: {
+      'sfdc': ['sfdc-rpt'],
+      'checkweigher': ['sfdc-rpt'],
+      'slicer': ['sfdc-rpt'],
+      'xl-vorne': ['sfdc-rpt']
+    }
   },
   governance: [
     { id: 'sic-meeting', name: 'SIC', cadence: 'Per shift', description: 'Shift handover — what happened, what\'s running, immediate actions' },
     { id: 'daily-ops', name: 'Daily Ops Review', cadence: 'Daily', description: 'Cross-shift performance review, escalate recurring issues' },
     { id: 'weekly-review', name: 'Weekly Review', cadence: 'Weekly', description: 'Operational steering — are we on track, what needs intervention' },
     { id: 'weekly-planning', name: 'Weekly Planning', cadence: 'Weekly', description: 'Forward-looking — next week\'s schedule, crewing, line allocation' },
-    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in \u00a3, yield losses in \u00a3, labour cost vs plan' }
-  ]
+    { id: 'monthly-finance', name: 'Monthly Financial Review', cadence: 'Monthly', description: 'P&L bridge — efficiency losses in £, yield losses in £, labour cost vs plan' }
+  ],
+  // Which reporting destinations feed each governance meeting per phase
+  governanceToReporting: {
+    now: {
+      'sic-meeting': ['sic-rpt'],
+      'daily-ops': ['feedback-rpt'],
+      'monthly-finance': ['sfdc-rpt']
+    },
+    phase1: {
+      'sic-meeting': ['sic-rpt', 'feedback-rpt'],
+      'daily-ops': ['feedback-rpt', 'sic-rpt'],
+      'weekly-review': ['sfdc-rpt'],
+      'weekly-planning': ['sfdc-rpt'],
+      'monthly-finance': ['sfdc-rpt']
+    },
+    phase2: {
+      'sic-meeting': ['sfdc-rpt'],
+      'daily-ops': ['sfdc-rpt'],
+      'weekly-review': ['sfdc-rpt'],
+      'weekly-planning': ['sfdc-rpt'],
+      'monthly-finance': ['sfdc-rpt']
+    }
+  },
+  // Which governance meetings are active per phase
+  governanceByPhase: {
+    now: ['sic-meeting', 'daily-ops', 'monthly-finance'],
+    phase1: ['sic-meeting', 'daily-ops', 'monthly-finance'],
+    phase2: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance']
+  }
 };
 
 let currentPhase = 'now';
 let focusedMetric = null;
+let hoveredMetric = null;
 let hoveredSystem = null;
+let hoveredReporting = null;
+let hoveredGovernance = null;
 
 /* ───── Phase selector dots ───── */
 function renderPhaseSystemsDots() {
@@ -1088,16 +1350,73 @@ function renderSystemCards() {
   attachSystemListeners();
 }
 
+/* ───── CENTRE-RIGHT COLUMN: Reporting cards ───── */
+function renderReportingCards() {
+  const container = document.getElementById('reportingCards');
+  const activeRpts = new Set(DATA.reportingByPhase[currentPhase] || []);
+  let html = '';
+
+  Object.keys(DATA.reporting).forEach(rptId => {
+    const rpt = DATA.reporting[rptId];
+    const isActive = activeRpts.has(rptId);
+    const stateClass = isActive ? 'active-rpt' : 'inactive-rpt';
+
+    // Count how many systems feed this reporting destination
+    const sysMap = DATA.systemToReporting[currentPhase] || {};
+    let feedCount = 0;
+    Object.keys(sysMap).forEach(sId => {
+      if (sysMap[sId].includes(rptId)) feedCount++;
+    });
+
+    html += '<div class="reporting-card ' + stateClass + '" id="rpt-' + rptId + '" data-reporting="' + rptId + '">';
+    html += '<div class="card-head"><div class="dot" style="background:' + rpt.color + ';"></div><h3>' + rpt.name + '</h3></div>';
+    if (isActive) {
+      html += '<div class="rpt-count">' + feedCount + ' system' + (feedCount !== 1 ? 's' : '') + ' feeding in</div>';
+    } else {
+      html += '<div class="rpt-count">Not active this phase</div>';
+    }
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+  attachReportingListeners();
+}
+
 /* ───── RIGHT COLUMN: Governance cards ───── */
 function renderGovernanceCards() {
   const container = document.getElementById('governanceCards');
-  container.innerHTML = DATA.governance.map(meeting =>
-    '<div class="gov-card" id="gov-' + meeting.id + '">' +
-    '<h3>' + meeting.name + '</h3>' +
-    '<div class="cadence-badge">' + meeting.cadence + '</div>' +
-    '<div class="description">' + meeting.description + '</div>' +
-    '</div>'
-  ).join('');
+  const activeGov = new Set(DATA.governanceByPhase[currentPhase] || []);
+  const govRptMap = DATA.governanceToReporting[currentPhase] || {};
+
+  container.innerHTML = DATA.governance.map(meeting => {
+    const isActive = activeGov.has(meeting.id);
+    const stateClass = isActive ? 'active-gov' : 'inactive-gov';
+    const rptIds = govRptMap[meeting.id] || [];
+
+    let pills = '';
+    if (isActive && rptIds.length) {
+      pills = '<div class="rpt-pills">';
+      rptIds.forEach(rId => {
+        const rpt = DATA.reporting[rId];
+        pills += '<span class="rpt-pill"><span class="pip" style="background:' + rpt.color + ';"></span>' + rpt.name + '</span>';
+      });
+      pills += '</div>';
+    }
+
+    let notRunning = '';
+    if (!isActive) {
+      notRunning = '<div class="not-running">Not running this phase</div>';
+    }
+
+    return '<div class="gov-card ' + stateClass + '" id="gov-' + meeting.id + '" data-governance="' + meeting.id + '" data-reporting="' + rptIds.join(',') + '">' +
+      '<h3>' + meeting.name + '</h3>' +
+      '<div class="cadence-badge">' + meeting.cadence + '</div>' +
+      '<div class="description">' + meeting.description + '</div>' +
+      pills + notRunning +
+      '</div>';
+  }).join('');
+
+  attachGovernanceListeners();
 }
 
 /* ───── SVG Connection Lines ───── */
@@ -1108,7 +1427,6 @@ function drawLines() {
 
   svg.innerHTML = '';
 
-  // Check if we're in single-column (mobile) mode
   const fwRect = fw.getBoundingClientRect();
   if (fwRect.width < 700) return;
 
@@ -1122,55 +1440,154 @@ function drawLines() {
     return { x: r.left - fwLeft, y: y };
   }
 
-  // Determine which metric cards and system cards to highlight
-  let metricEls = [];
-  let systemEls = [];
+  const sysToRptMap = DATA.systemToReporting[currentPhase] || {};
+  const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
 
-  if (focusedMetric) {
-    const mCard = document.getElementById('metric-' + focusedMetric);
-    if (mCard) {
-      const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
-      metricEls = [mCard];
-      systemEls = sysList.map(s => document.getElementById('sys-' + s)).filter(Boolean);
-    }
-  } else if (hoveredSystem) {
-    const sCard = document.getElementById('sys-' + hoveredSystem);
-    if (sCard) {
-      systemEls = [sCard];
-      // Find all metric cards that use this system
-      document.querySelectorAll('.card[data-metric]').forEach(c => {
-        const sys = (c.dataset.systems || '').split(',');
-        if (sys.includes(hoveredSystem)) metricEls.push(c);
-      });
-    }
-  }
+  const activeMetric = focusedMetric || hoveredMetric;
 
   // If nothing focused/hovered, draw all connections lightly
-  if (!focusedMetric && !hoveredSystem) {
+  if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance) {
+    // Metric → System
     document.querySelectorAll('.card[data-metric]').forEach(mCard => {
       const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
       sysList.forEach(sId => {
         const sCard = document.getElementById('sys-' + sId);
         if (!sCard || sCard.classList.contains('inactive-sys')) return;
-        const from = edgeOf(mCard, 'right');
-        const to = edgeOf(sCard, 'left');
         const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
-        drawBezier(svg, from, to, color, 1.2, 0.12);
+        drawBezier(svg, edgeOf(mCard, 'right'), edgeOf(sCard, 'left'), color, 1.2, 0.1);
+      });
+    });
+    // System → Reporting
+    Object.keys(sysToRptMap).forEach(sId => {
+      const sCard = document.getElementById('sys-' + sId);
+      if (!sCard) return;
+      sysToRptMap[sId].forEach(rId => {
+        const rCard = document.getElementById('rpt-' + rId);
+        if (!rCard) return;
+        const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+        drawBezier(svg, edgeOf(sCard, 'right'), edgeOf(rCard, 'left'), color, 1.2, 0.1);
+      });
+    });
+    // Reporting → Governance
+    Object.keys(govToRptMap).forEach(gId => {
+      const gCard = document.getElementById('gov-' + gId);
+      if (!gCard || gCard.classList.contains('inactive-gov')) return;
+      govToRptMap[gId].forEach(rId => {
+        const rCard = document.getElementById('rpt-' + rId);
+        if (!rCard) return;
+        const color = DATA.reporting[rId] ? DATA.reporting[rId].color : '#DAF11B';
+        drawBezier(svg, edgeOf(rCard, 'right'), edgeOf(gCard, 'left'), color, 1.2, 0.1);
       });
     });
     return;
   }
 
-  // Draw highlighted connections
-  metricEls.forEach(mCard => {
-    systemEls.forEach(sCard => {
-      const sId = sCard.dataset.system;
-      const mSys = (mCard.dataset.systems || '').split(',');
-      if (!mSys.includes(sId)) return;
-      const from = edgeOf(mCard, 'right');
-      const to = edgeOf(sCard, 'left');
+  // Collect highlighted elements
+  let highlightedSystems = new Set();
+  let highlightedReporting = new Set();
+  let highlightedGovernance = new Set();
+  let highlightedMetrics = new Set();
+
+  if (activeMetric) {
+    const mCard = document.getElementById('metric-' + activeMetric);
+    if (mCard) {
+      highlightedMetrics.add(activeMetric);
+      const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
+      sysList.forEach(sId => {
+        highlightedSystems.add(sId);
+        (sysToRptMap[sId] || []).forEach(rId => {
+          highlightedReporting.add(rId);
+          Object.keys(govToRptMap).forEach(gId => {
+            if (govToRptMap[gId].includes(rId)) highlightedGovernance.add(gId);
+          });
+        });
+      });
+    }
+  } else if (hoveredSystem) {
+    highlightedSystems.add(hoveredSystem);
+    DATA.areas.forEach(area => {
+      area.metrics.forEach(m => {
+        const pd = m[currentPhase];
+        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) highlightedMetrics.add(m.id);
+      });
+    });
+    (sysToRptMap[hoveredSystem] || []).forEach(rId => {
+      highlightedReporting.add(rId);
+      Object.keys(govToRptMap).forEach(gId => {
+        if (govToRptMap[gId].includes(rId)) highlightedGovernance.add(gId);
+      });
+    });
+  } else if (hoveredReporting) {
+    highlightedReporting.add(hoveredReporting);
+    Object.keys(sysToRptMap).forEach(sId => {
+      if (sysToRptMap[sId].includes(hoveredReporting)) {
+        highlightedSystems.add(sId);
+        DATA.areas.forEach(area => {
+          area.metrics.forEach(m => {
+            const pd = m[currentPhase];
+            if (pd && pd.systems && pd.systems.includes(sId)) highlightedMetrics.add(m.id);
+          });
+        });
+      }
+    });
+    Object.keys(govToRptMap).forEach(gId => {
+      if (govToRptMap[gId].includes(hoveredReporting)) highlightedGovernance.add(gId);
+    });
+  } else if (hoveredGovernance) {
+    highlightedGovernance.add(hoveredGovernance);
+    (govToRptMap[hoveredGovernance] || []).forEach(rId => {
+      highlightedReporting.add(rId);
+      Object.keys(sysToRptMap).forEach(sId => {
+        if (sysToRptMap[sId].includes(rId)) {
+          highlightedSystems.add(sId);
+          DATA.areas.forEach(area => {
+            area.metrics.forEach(m => {
+              const pd = m[currentPhase];
+              if (pd && pd.systems && pd.systems.includes(sId)) highlightedMetrics.add(m.id);
+            });
+          });
+        }
+      });
+    });
+  }
+
+  // Draw highlighted metric→system lines
+  highlightedMetrics.forEach(mId => {
+    const mCard = document.getElementById('metric-' + mId);
+    if (!mCard) return;
+    const sysList = (mCard.dataset.systems || '').split(',').filter(Boolean);
+    sysList.forEach(sId => {
+      if (!highlightedSystems.has(sId)) return;
+      const sCard = document.getElementById('sys-' + sId);
+      if (!sCard) return;
       const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
-      drawBezier(svg, from, to, color, 2, 0.7);
+      drawBezier(svg, edgeOf(mCard, 'right'), edgeOf(sCard, 'left'), color, 2, 0.7);
+    });
+  });
+
+  // Draw highlighted system→reporting lines
+  highlightedSystems.forEach(sId => {
+    const sCard = document.getElementById('sys-' + sId);
+    if (!sCard) return;
+    (sysToRptMap[sId] || []).forEach(rId => {
+      if (!highlightedReporting.has(rId)) return;
+      const rCard = document.getElementById('rpt-' + rId);
+      if (!rCard) return;
+      const color = DATA.systems[sId] ? DATA.systems[sId].color : '#DAF11B';
+      drawBezier(svg, edgeOf(sCard, 'right'), edgeOf(rCard, 'left'), color, 2, 0.7);
+    });
+  });
+
+  // Draw highlighted reporting→governance lines
+  highlightedGovernance.forEach(gId => {
+    const gCard = document.getElementById('gov-' + gId);
+    if (!gCard) return;
+    (govToRptMap[gId] || []).forEach(rId => {
+      if (!highlightedReporting.has(rId)) return;
+      const rCard = document.getElementById('rpt-' + rId);
+      if (!rCard) return;
+      const color = DATA.reporting[rId] ? DATA.reporting[rId].color : '#DAF11B';
+      drawBezier(svg, edgeOf(rCard, 'right'), edgeOf(gCard, 'left'), color, 2, 0.7);
     });
   });
 }
@@ -1191,49 +1608,117 @@ function drawBezier(svg, from, to, color, width, opacity) {
 function applyHighlight() {
   const allMetrics = document.querySelectorAll('.card[data-metric]');
   const allSystems = document.querySelectorAll('.system-card');
+  const allReporting = document.querySelectorAll('.reporting-card');
+  const allGovernance = document.querySelectorAll('.gov-card');
+  const sysToRptMap = DATA.systemToReporting[currentPhase] || {};
+  const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
 
-  if (!focusedMetric && !hoveredSystem) {
+  const activeMetric = focusedMetric || hoveredMetric;
+
+  if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance) {
     allMetrics.forEach(c => c.classList.remove('dimmed', 'active'));
-    allSystems.forEach(c => { c.classList.remove('dimmed'); });
+    allSystems.forEach(c => c.classList.remove('dimmed'));
+    allReporting.forEach(c => c.classList.remove('dimmed'));
+    allGovernance.forEach(c => c.classList.remove('dimmed'));
     drawLines();
     return;
   }
 
-  if (focusedMetric) {
-    const card = document.getElementById('metric-' + focusedMetric);
+  // Build sets of what should be highlighted
+  let hlMetrics = new Set();
+  let hlSystems = new Set();
+  let hlReporting = new Set();
+  let hlGovernance = new Set();
+
+  if (activeMetric) {
+    hlMetrics.add(activeMetric);
+    const card = document.getElementById('metric-' + activeMetric);
     const sysList = card ? (card.dataset.systems || '').split(',').filter(Boolean) : [];
-    allMetrics.forEach(c => {
-      if (c.dataset.metric === focusedMetric) { c.classList.add('active'); c.classList.remove('dimmed'); }
-      else { c.classList.add('dimmed'); c.classList.remove('active'); }
+    sysList.forEach(sId => {
+      hlSystems.add(sId);
+      (sysToRptMap[sId] || []).forEach(rId => {
+        hlReporting.add(rId);
+        Object.keys(govToRptMap).forEach(gId => {
+          if (govToRptMap[gId].includes(rId)) hlGovernance.add(gId);
+        });
+      });
     });
-    allSystems.forEach(c => {
-      if (sysList.includes(c.dataset.system)) c.classList.remove('dimmed');
-      else c.classList.add('dimmed');
+  } else if (hoveredSystem) {
+    hlSystems.add(hoveredSystem);
+    DATA.areas.forEach(area => {
+      area.metrics.forEach(m => {
+        const pd = m[currentPhase];
+        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) hlMetrics.add(m.id);
+      });
+    });
+    (sysToRptMap[hoveredSystem] || []).forEach(rId => {
+      hlReporting.add(rId);
+      Object.keys(govToRptMap).forEach(gId => {
+        if (govToRptMap[gId].includes(rId)) hlGovernance.add(gId);
+      });
+    });
+  } else if (hoveredReporting) {
+    hlReporting.add(hoveredReporting);
+    Object.keys(sysToRptMap).forEach(sId => {
+      if (sysToRptMap[sId].includes(hoveredReporting)) {
+        hlSystems.add(sId);
+        DATA.areas.forEach(area => {
+          area.metrics.forEach(m => {
+            const pd = m[currentPhase];
+            if (pd && pd.systems && pd.systems.includes(sId)) hlMetrics.add(m.id);
+          });
+        });
+      }
+    });
+    Object.keys(govToRptMap).forEach(gId => {
+      if (govToRptMap[gId].includes(hoveredReporting)) hlGovernance.add(gId);
+    });
+  } else if (hoveredGovernance) {
+    hlGovernance.add(hoveredGovernance);
+    (govToRptMap[hoveredGovernance] || []).forEach(rId => {
+      hlReporting.add(rId);
+      Object.keys(sysToRptMap).forEach(sId => {
+        if (sysToRptMap[sId].includes(rId)) {
+          hlSystems.add(sId);
+          DATA.areas.forEach(area => {
+            area.metrics.forEach(m => {
+              const pd = m[currentPhase];
+              if (pd && pd.systems && pd.systems.includes(sId)) hlMetrics.add(m.id);
+            });
+          });
+        }
+      });
     });
   }
 
-  if (hoveredSystem) {
-    const activeSysMetrics = new Set();
-    DATA.areas.forEach(area => {
-      area.metrics.forEach(metric => {
-        const pd = metric[currentPhase];
-        if (pd && pd.systems && pd.systems.includes(hoveredSystem)) activeSysMetrics.add(metric.id);
-      });
-    });
-    allMetrics.forEach(c => {
-      if (activeSysMetrics.has(c.dataset.metric)) c.classList.remove('dimmed');
-      else c.classList.add('dimmed');
-    });
-    allSystems.forEach(c => {
-      if (c.dataset.system === hoveredSystem) c.classList.remove('dimmed');
-      else c.classList.add('dimmed');
-    });
-  }
+  // Apply dim/active states
+  allMetrics.forEach(c => {
+    if (hlMetrics.has(c.dataset.metric)) { c.classList.remove('dimmed'); if (activeMetric === c.dataset.metric) c.classList.add('active'); }
+    else { c.classList.add('dimmed'); c.classList.remove('active'); }
+  });
+  allSystems.forEach(c => {
+    if (hlSystems.has(c.dataset.system)) c.classList.remove('dimmed');
+    else c.classList.add('dimmed');
+  });
+  allReporting.forEach(c => {
+    if (hlReporting.has(c.dataset.reporting)) c.classList.remove('dimmed');
+    else c.classList.add('dimmed');
+  });
+  allGovernance.forEach(c => {
+    if (hlGovernance.has(c.dataset.governance)) c.classList.remove('dimmed');
+    else c.classList.add('dimmed');
+  });
 
   drawLines();
 }
 
 /* ───── Event listeners ───── */
+function clearHoverState() {
+  hoveredSystem = null;
+  hoveredReporting = null;
+  hoveredGovernance = null;
+}
+
 function attachMetricListeners() {
   document.querySelectorAll('.card[data-metric]').forEach(card => {
     card.addEventListener('click', () => {
@@ -1246,34 +1731,22 @@ function attachMetricListeners() {
         focusedMetric = mId;
         card.classList.add('focused');
       }
-      hoveredSystem = null;
+      clearHoverState();
       applyHighlight();
     });
 
     card.addEventListener('mouseenter', () => {
       if (focusedMetric) return;
-      const mId = card.dataset.metric;
-      const sysList = (card.dataset.systems || '').split(',').filter(Boolean);
-      document.querySelectorAll('.card[data-metric]').forEach(c => {
-        if (c.dataset.metric === mId) c.classList.remove('dimmed');
-        else c.classList.add('dimmed');
-      });
-      document.querySelectorAll('.system-card').forEach(c => {
-        if (sysList.includes(c.dataset.system)) c.classList.remove('dimmed');
-        else c.classList.add('dimmed');
-      });
-      // Temporarily set for line drawing
-      const prevFocused = focusedMetric;
-      focusedMetric = mId;
-      drawLines();
-      focusedMetric = prevFocused;
+      clearHoverState();
+      hoveredMetric = card.dataset.metric;
+      applyHighlight();
     });
 
     card.addEventListener('mouseleave', () => {
       if (focusedMetric) return;
-      document.querySelectorAll('.card[data-metric]').forEach(c => c.classList.remove('dimmed'));
-      document.querySelectorAll('.system-card').forEach(c => c.classList.remove('dimmed'));
-      drawLines();
+      hoveredMetric = null;
+      clearHoverState();
+      applyHighlight();
     });
   });
 }
@@ -1282,26 +1755,48 @@ function attachSystemListeners() {
   document.querySelectorAll('.system-card').forEach(card => {
     card.addEventListener('mouseenter', () => {
       if (focusedMetric) return;
+      clearHoverState();
       hoveredSystem = card.dataset.system;
       applyHighlight();
     });
 
     card.addEventListener('mouseleave', () => {
       if (focusedMetric) return;
-      hoveredSystem = null;
+      clearHoverState();
+      applyHighlight();
+    });
+  });
+}
+
+function attachReportingListeners() {
+  document.querySelectorAll('.reporting-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      if (focusedMetric) return;
+      clearHoverState();
+      hoveredReporting = card.dataset.reporting;
       applyHighlight();
     });
 
-    card.addEventListener('click', () => {
-      // Clicking a system card acts like a toggle filter
-      const sId = card.dataset.system;
-      if (hoveredSystem === sId && focusedMetric === null) {
-        hoveredSystem = null;
-      } else {
-        focusedMetric = null;
-        document.querySelectorAll('.card.focused').forEach(c => c.classList.remove('focused'));
-        hoveredSystem = sId;
-      }
+    card.addEventListener('mouseleave', () => {
+      if (focusedMetric) return;
+      clearHoverState();
+      applyHighlight();
+    });
+  });
+}
+
+function attachGovernanceListeners() {
+  document.querySelectorAll('.gov-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      if (focusedMetric) return;
+      clearHoverState();
+      hoveredGovernance = card.dataset.governance;
+      applyHighlight();
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (focusedMetric) return;
+      clearHoverState();
       applyHighlight();
     });
   });
@@ -1318,10 +1813,15 @@ function attachPhaseListeners() {
 
       currentPhase = newPhase;
       focusedMetric = null;
+      hoveredMetric = null;
       hoveredSystem = null;
+      hoveredReporting = null;
+      hoveredGovernance = null;
 
       renderMetricCards();
       renderSystemCards();
+      renderReportingCards();
+      renderGovernanceCards();
       renderPhaseSystemsDots();
 
       // Redraw lines after DOM settles
@@ -1347,6 +1847,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPhaseSystemsDots();
   renderMetricCards();
   renderSystemCards();
+  renderReportingCards();
   renderGovernanceCards();
   attachPhaseListeners();
 
