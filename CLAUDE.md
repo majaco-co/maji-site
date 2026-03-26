@@ -108,10 +108,63 @@ Passwords are NOT stored in this repo. Hashes are in each page's `data-password-
 
 ## Branding & Styling
 
-- **Font**: TT Hoves Pro (loaded from `assets/fonts/`)
-- **Colours**: dark green `#001412`, pine `#006458`, lime `#DAF11B`
-- **Background**: dark (`#001412`)
-- **Shared CSS**: `css/variables.css` + `css/style.css`
+### Brand Colour Palette
+
+| Name              | Hex       | CSS Variable         | Usage          |
+|-------------------|-----------|----------------------|----------------|
+| Majaco Pine       | #006458   | --color-primary      | Primary brand  |
+| Majaco Lime       | #DAF11B   | --color-accent       | Accent/highlight |
+| Majaco Grey       | #7A7A7A   | --color-grey / --color-text-muted | Neutral/muted text |
+| Majaco White      | #FFFFFF   | --color-bg           | Backgrounds    |
+| Majaco Dark Green | #001412   | --color-bg-dark      | Dark backgrounds (pine 900) |
+
+**DO NOT** use colours outside this palette. No teal, amber, sage, or other off-brand colours.
+
+### Typography
+
+Primary font: **TT Hoves Pro**. Secondary fallback: **Roboto**.
+
+| Style       | Size               | Weight         | Letter-spacing | Line-height | Notes              |
+|-------------|--------------------|----------------|----------------|-------------|--------------------|
+| H1          | 61px (3.8125rem)   | Regular (400)  | -0.02em        | 120%        |                    |
+| H2          | 49px (3.0625rem)   | Regular (400)  | -0.02em        | 120%        |                    |
+| H3          | 39px (2.4375rem)   | Regular (400)  | -0.02em        | 120%        |                    |
+| H4          | 31px (1.9375rem)   | Regular (400)  | 0              | 120%        |                    |
+| Title       | 25px (1.5625rem)   | Bold (700)     | 0              | 120%        |                    |
+| Subtitle    | 20px (1.25rem)     | Regular (400)  | 0              | 140%        |                    |
+| Body        | 16px (1rem)        | Light (300)    | 0              | 160%        |                    |
+| Heavy Body  | 16px (1rem)        | Regular (400)  | 0              | 160%        |                    |
+| Small       | 13px (0.8125rem)   | Light (300)    | 0              | 140%        |                    |
+| Overline    | 13px (0.8125rem)   | Regular (400)  | 0.12em         | —           | `text-transform: uppercase;` never over 2 lines |
+| Extra Small | 10px (0.625rem)    | Light (300)    | 0              | 140%        |                    |
+
+### Key CSS Rules
+
+- **Never** use `font-weight: 800` or `900`. The brand only has Light (300), Regular (400), and Bold (700).
+- Heading weights (H1–H4) are **Regular (400)**, not bold.
+- Body text is **Light (300)** weight.
+- Overline/eyebrow text: `letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400;`
+- Muted text uses Majaco Grey (`#7A7A7A`), not any teal shade.
+- Accent highlights use Majaco Lime (`#DAF11B`).
+- **Content width**: All pages use the standard `.container` class (max-width: 1200px). Do **not** use `container--wide` or custom max-widths unless the tool genuinely requires full-screen layout (e.g. MHW simulator). The RAG study uses `.page` at 960px for mobile field use — this is the only intentional exception.
+- **Hover shadows**: All card/panel elements should have `transition: box-shadow 0.3s ease` and `box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06)` on hover. Use `var(--shadow-lg)` where available.
+- **Font family**: Always use `'TT Hoves Pro', system-ui, -apple-system, sans-serif`. Do not introduce DM Mono, Roboto, or other fonts in scoped page CSS unless required for tabular number displays (e.g. timers).
+
+### Logo Usage
+
+Brand guidelines PDF: `assets/brand/Majaco Brand Guidelines.pdf`
+
+| Asset | Path | Use |
+|-------|------|-----|
+| White + green logo | `assets/images/logo-white-green.svg` | Dark backgrounds |
+| Logo mark (full colour) | `assets/images/logo-mark-full-colour.svg` | Footer |
+
+Do **not** distort, recolour, rotate, reduce opacity, or change proportions of any logo.
+
+### Shared CSS
+
+- `css/variables.css` for colour/font variables
+- `css/style.css` for shared component styles
 
 ## Page Template (client portal pages)
 
@@ -177,3 +230,39 @@ All client portal pages follow this pattern:
   ```js
   sessionStorage.setItem('maji_client_auth', 'THE_HASH');
   ```
+
+## CRM & People Database — Data Completeness Rules
+
+Whenever a user updates, creates, or reviews any record in the CRM or People databases, check data completeness using the per-database rules below. After any CRM update, flag any blank must-have fields on the record just modified. Do not block the update — flag only.
+
+### Opportunities
+
+**Must have:** Name (format: "[Company] – [Type]"), Company relation, Primary Contact relation, Stage, Status, Opportunity Owner, Likelihood (decimal), Type, Fees (Actual or Forecast — estimate is acceptable), Strategic Priority, Lead Gen, Notes (interaction log in format `[DD Mon YYYY] [Channel] ([person]) — [summary]`).
+
+**If Status is NOT "3 - Closed", also must have:** Next Steps, Next Step Due, Next Step Owner.
+
+**Should have:** Step N Date/Format, Expected Start, Duration (Periods).
+
+### Contacts
+
+**Must have:** Name, Company relation, Role, Source, Knows majaco.
+
+**Should have:** Email, LinkedIn, Has Budget Authority, Is Day to Day Sponsor, Last Contact Date, Next Step + Due, Notes, Opportunities relation.
+
+### Companies
+
+**Must have:** Company Name, Organisation, Sector.
+
+**Should have:** Ownership, Revenue/Fund Size, Est Number of Sites, Location & Notes, Leadership.
+
+### Actions
+
+**Must have:** Task name (specific and action-oriented), Status, Assignee (named individual), Due Date, Priority, Category.
+
+**Should have:** Client relation, Update note.
+
+### People
+
+**Must have:** Name, Priority/Likelihood status, Role.
+
+**Should have:** Source, Introduced By, Plan to Employ, Notes/Contact History.
