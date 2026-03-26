@@ -3,6 +3,5 @@ discovery/
 node_modules/
 src/
 .codemap
-CLAUDE.md
 KNOWLEDGE-INSTRUCTIONS.md
 auth-overview.html
