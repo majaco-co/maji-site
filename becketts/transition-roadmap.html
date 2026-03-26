@@ -50,7 +50,7 @@ body {
 
 .gantt-timeline__header {
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 0;
   margin-bottom: 10px;
 }
@@ -69,7 +69,7 @@ body {
 
 .gantt-row {
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 0;
   margin-bottom: 4px;
   align-items: center;
@@ -118,7 +118,7 @@ body {
 /* PHASE SELECTOR */
 .phase-selector {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
@@ -436,7 +436,7 @@ body {
 
 .phase-journey-mini {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 10px;
 }
 
@@ -554,7 +554,9 @@ body {
 }
 
 .system-card.inactive-sys {
-  opacity: 0.25;
+  opacity: 0.15;
+  pointer-events: none;
+  filter: grayscale(1);
 }
 
 .system-card.dimmed {
@@ -670,7 +672,9 @@ body {
 }
 
 .reporting-card.inactive-rpt {
-  opacity: 0.25;
+  opacity: 0.15;
+  pointer-events: none;
+  filter: grayscale(1);
 }
 
 .reporting-card.dimmed {
@@ -749,7 +753,9 @@ body {
 }
 
 .gov-card.inactive-gov {
-  opacity: 0.25;
+  opacity: 0.15;
+  pointer-events: none;
+  filter: grayscale(1);
 }
 
 .gov-card.active-gov {
@@ -924,6 +930,7 @@ body {
         <span>P2.1</span>
         <span>P2.2</span>
         <span>P2.3</span>
+        <span>P3</span>
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#F97316;"></span> Feedback</div>
@@ -931,6 +938,7 @@ body {
         <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.45);"><span class="gantt-bar__text">Enhanced</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(249,115,22,0.2);"><span class="gantt-bar__text">Parallel</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.1);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Wind down</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(249,115,22,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
       </div>
       <div class="gantt-row">
@@ -940,6 +948,7 @@ body {
         <div class="gantt-bar gantt-bar--active" style="background:rgba(139,92,246,0.2);"><span class="gantt-bar__text">Parallel</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.1);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.25);">Wind down</span></div>
         <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(139,92,246,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">Off</span></div>
       </div>
       <div class="gantt-row">
         <div class="gantt-row__label"><span class="dot" style="background:#3B82F6;"></span> SFDC</div>
@@ -948,6 +957,16 @@ body {
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.4);"><span class="gantt-bar__text">Efficiency</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.5);"><span class="gantt-bar__text">+ Yield</span></div>
         <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.6);"><span class="gantt-bar__text">+ Labour</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(59,130,246,0.7);"><span class="gantt-bar__text">Full</span></div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row__label"><span class="dot" style="background:#14B8A6;"></span> Relex</div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
+        <div class="gantt-bar gantt-bar--faded" style="background:rgba(20,184,166,0.05);"><span class="gantt-bar__text" style="color:rgba(255,255,255,0.2);">—</span></div>
+        <div class="gantt-bar gantt-bar--active" style="background:rgba(20,184,166,0.5);"><span class="gantt-bar__text">Live</span></div>
       </div>
     </div>
 
@@ -988,6 +1007,12 @@ body {
             <div class="sprint-card__title">Labour</div>
           </div>
         </div>
+      </div>
+      <div class="phase-card" data-phase="phase3" role="tab" aria-selected="false">
+        <div class="phase-card__label">Planning</div>
+        <div class="phase-card__title">Phase 3</div>
+        <div class="phase-card__subtitle">Relex — plan vs actual, full control loop</div>
+        <div class="phase-card__systems" id="systemsPhase3"></div>
       </div>
     </div>
 
@@ -1046,7 +1071,7 @@ body {
 <footer class="footer" role="contentinfo">
   <div class="container">
     <div class="footer__bottom">
-      <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+      <p class="footer__copyright">&copy; 2026 majaco. All rights reserved.</p>
       <nav class="footer__legal" aria-label="Legal links">
         <a href="../privacy-policy.html">Privacy Policy</a>
       </nav>
@@ -1064,10 +1089,11 @@ const DATA = {
       color: '#6B7280',
       description: {
         now: 'Three systems capturing efficiency data in parallel — significant duplication and accuracy gaps.',
-        phase1: 'Feedback drives efficiency. XL Vorne supplements on 2 lines. Slicer provides automated downtime and speed.',
+        phase1: 'Feedback drives efficiency. XL Vorne supplements on 2 lines. OEE sensors supplement downtime and speed capture.',
         phase2s1: 'SFDC drives efficiency — core metrics captured at bottleneck.',
         phase2s2: 'Efficiency established. SFDC downtime integration adds Pareto.',
-        phase2s3: 'Efficiency fully operational in SFDC.'
+        phase2s3: 'Efficiency fully operational in SFDC.',
+        phase3: 'Efficiency continues from P2.'
       },
       metrics: [
         {
@@ -1102,6 +1128,11 @@ const DATA = {
             systems: ['oee-system'],
             notes: 'Established — running in SFDC',
             requirements: []
+          },
+          phase3: {
+            systems: ['oee-system'],
+            notes: 'Continues from P2.',
+            requirements: []
           }
         },
         {
@@ -1115,12 +1146,12 @@ const DATA = {
           phase1: {
             months: [
               { month: 1, action: 'Check weigher count available for SIC during runs' },
-              { month: 2, action: 'NCT (Net Case Throughput) captured' },
-              { month: 3, action: 'NCT reporting validated' }
+              { month: 2, action: 'Check weigher count validates against W.O. qty' },
+              { month: 3, action: 'Good output reporting validated' }
             ],
-            systems: ['feedback', 'checkweigher', 'manual'],
-            notes: 'Feedback and SFDC continue reporting good output. Check weigher count fed into SIC for real-time output during runs. XL Vorne does not capture good output.',
-            issues: ['C/W to SIC integration needed', 'Rest of lines still manual count']
+            systems: ['checkweigher', 'manual'],
+            notes: 'Check weigher count fed into SIC for real-time good output during runs. SFDC W.O. qty used for all other meetings. XL Vorne does not capture good output.',
+            issues: ['C/W to SIC integration needed', 'Rest of lines still SFDC W.O. count']
           },
           phase2s1: {
             systems: ['checkweigher'],
@@ -1135,6 +1166,11 @@ const DATA = {
           phase2s3: {
             systems: ['checkweigher'],
             notes: 'Established — check weigher running',
+            requirements: []
+          },
+          phase3: {
+            systems: ['checkweigher'],
+            notes: 'Continues from P2.',
             requirements: []
           }
         },
@@ -1170,6 +1206,11 @@ const DATA = {
             systems: ['oee-system', 'manual'],
             notes: 'Established — running in SFDC',
             requirements: []
+          },
+          phase3: {
+            systems: ['oee-system', 'manual'],
+            notes: 'Continues from P2.',
+            requirements: []
           }
         },
         {
@@ -1204,7 +1245,8 @@ const DATA = {
             systems: ['oee-system'],
             notes: 'Established — running in SFDC',
             requirements: []
-          }
+          },
+          phase3: { systems: ['oee-system'], notes: 'Continues from P2.', requirements: [] }
         },
         {
           id: 'bn-count',
@@ -1234,7 +1276,8 @@ const DATA = {
             systems: ['oee-system'],
             notes: 'Established — running in SFDC',
             requirements: []
-          }
+          },
+          phase3: { systems: ['oee-system'], notes: 'Continues from P2.', requirements: [] }
         },
         {
           id: 'crew',
@@ -1245,10 +1288,10 @@ const DATA = {
             issues: ['Feedback only — not linked to W.O.']
           },
           phase1: {
-            months: [],
-            systems: ['feedback'],
-            notes: 'No change — crewing remains in Feedback.',
-            issues: ['Still not linked to W.O.']
+            months: [{ month: 2, action: 'XL Vorne captures crewing on Notts & Yorks lines' }],
+            systems: ['feedback', 'xl-vorne'],
+            notes: 'Crewing remains in Feedback for most lines. XL Vorne captures crewing on Notts & Yorks lines.',
+            issues: ['Only 2 lines have Vorne crewing', 'Rest still Feedback only']
           },
           phase2s1: {
             systems: ['manual'],
@@ -1264,7 +1307,8 @@ const DATA = {
             systems: ['manual'],
             notes: 'Crew assignment integrated with labour planning.',
             requirements: ['Integration with labour planning']
-          }
+          },
+          phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
       ]
     },
@@ -1277,7 +1321,8 @@ const DATA = {
         phase1: 'Most yield data booked against W.O. Manual giveaway capture via whiteboard → Feedback.',
         phase2s1: 'Yield sprint not started.',
         phase2s2: 'Aggregation, calculation and reporting live. Auto-capture from check weighers.',
-        phase2s3: 'Yield fully operational.'
+        phase2s3: 'Yield fully operational.',
+        phase3: 'Yield continues from P2.'
       },
       metrics: [
         {
@@ -1292,7 +1337,8 @@ const DATA = {
           },
           phase2s1: { systems: ['feedback'], notes: 'Yield sprint not started yet', requirements: [] },
           phase2s2: { systems: ['checkweigher'], notes: 'Auto against W.O. — Check Weigher Cloud data feeds directly.', requirements: ['Check Weigher Cloud integration', 'Auto-booking against W.O.'] },
-          phase2s3: { systems: ['checkweigher'], notes: 'Established — check weigher running', requirements: [] }
+          phase2s3: { systems: ['checkweigher'], notes: 'Established — check weigher running', requirements: [] },
+          phase3: { systems: ['checkweigher'], notes: 'Continues from P2.', requirements: [] }
         },
         {
           id: 'grading-waste',
@@ -1301,7 +1347,8 @@ const DATA = {
           phase1: { months: [{ month: 1, action: 'Booked against W.O.' }], systems: ['manual'], notes: 'Booked against works orders. Raw data capture done.', issues: [] },
           phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
           phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
         {
           id: 'gripper-ends',
@@ -1310,7 +1357,8 @@ const DATA = {
           phase1: { months: [{ month: 1, action: 'Booked against W.O.' }], systems: ['manual'], notes: 'Booked against works orders.', issues: [] },
           phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
           phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
         {
           id: 'pressing-loss',
@@ -1319,7 +1367,8 @@ const DATA = {
           phase1: { months: [], systems: [], notes: 'No Phase 1 action — deferred to Phase 2.', issues: ['No capture mechanism yet'] },
           phase2s1: { systems: [], notes: 'Yield sprint not started yet', requirements: [] },
           phase2s2: { systems: ['manual'], notes: 'Calculated against W.O.', requirements: ['Pressing loss methodology defined', 'Data capture mechanism in place'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
         {
           id: 'high-value',
@@ -1328,84 +1377,212 @@ const DATA = {
           phase1: { months: [{ month: 1, action: 'Booked against W.O.' }, { month: 2, action: 'Prime and Rib reported separately' }], systems: ['manual'], notes: 'Booked against W.O. Each reported separately.', issues: [] },
           phase2s1: { systems: ['manual'], notes: 'Yield sprint not started yet', requirements: [] },
           phase2s2: { systems: ['manual'], notes: 'Aggregation and reporting live.', requirements: ['Yield reporting framework'] },
-          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] }
+          phase2s3: { systems: ['manual'], notes: 'Established', requirements: [] },
+          phase3: { systems: ['manual'], notes: 'Continues from P2.', requirements: [] }
         },
       ]
     },
     {
       id: 'labour',
-      name: 'Labour Planning & Control',
+      name: 'Labour',
       color: '#EAB308',
       description: {
-        now: 'Scoping in progress — detail to follow.',
-        phase1: 'Scoping in progress — detail to follow.',
-        phase2s1: 'Scoping in progress.',
-        phase2s2: 'Scoping in progress.',
-        phase2s3: 'Labour planning and control live.'
+        now: 'T&A captures permanent staff hours. Agency costs tracked via Purchase Orders. Labour register manages crew allocation. No consolidated view.',
+        phase1: 'T&A and PO systems continue. Labour data not yet integrated with operational metrics.',
+        phase2s1: 'Labour sprint not started. T&A and PO data available but not operationally reviewed.',
+        phase2s2: 'Labour sprint not started. T&A and PO data available.',
+        phase2s3: 'Labour actuals consolidated — T&A (permanent), POs (agency), crew tracking live. Productivity metrics operational.',
+        phase3: 'Labour actuals feed planning conformance. Actual hours compared against Relex plan.'
       },
-      tbc: true,
       metrics: [
-        { id: 'paid-hours', name: 'Paid Hours', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2s1: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s2: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s3: { systems: [], notes: 'TBC', requirements: [] } },
-        { id: 'planned-hours', name: 'Planned Hours', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2s1: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s2: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s3: { systems: [], notes: 'TBC', requirements: [] } },
-        { id: 'plan-sequence', name: 'Plan Sequence', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2s1: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s2: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s3: { systems: [], notes: 'TBC', requirements: [] } },
-        { id: 'ctp', name: 'Conformance to Plan (CTP)', now: { systems: [], notes: 'TBC', issues: [] }, phase1: { months: [], systems: [], notes: 'TBC', issues: [] }, phase2s1: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s2: { systems: [], notes: 'Labour sprint not started yet', requirements: [] }, phase2s3: { systems: [], notes: 'TBC', requirements: [] } }
+        {
+          id: 'paid-hours',
+          name: 'Paid Hours',
+          now: { systems: ['ta'], notes: 'Clock in/out times from T&A system. Used for monthly financial review.', issues: [] },
+          phase1: { months: [], systems: ['ta'], notes: 'T&A continues to capture clock in/out. Labour planning TBC.', issues: [] },
+          phase2s1: { systems: ['ta'], notes: 'T&A provides paid hours. Labour sprint not started yet.', requirements: [] },
+          phase2s2: { systems: ['ta'], notes: 'T&A provides paid hours. Labour sprint not started yet.', requirements: [] },
+          phase2s3: { systems: ['ta'], notes: 'T&A provides paid hours. Integrated with productivity metrics.', requirements: ['Integration with SFDC reporting'] },
+          phase3: { systems: ['ta'], notes: 'T&A paid hours feed labour cost vs plan calculation.', requirements: [] }
+        },
+        {
+          id: 'agency-hours',
+          name: 'Agency Hours',
+          now: { systems: ['po-system'], notes: 'Agency staff hours and cost tracked via Purchase Orders. Not integrated with operational data.', issues: ['Separate from T&A', 'No operational visibility'] },
+          phase1: { months: [], systems: ['po-system'], notes: 'PO system continues. Agency data not integrated.', issues: ['Still separate from permanent staff data'] },
+          phase2s1: { systems: ['po-system'], notes: 'PO data available. Labour sprint not started.', requirements: [] },
+          phase2s2: { systems: ['po-system'], notes: 'PO data available. Labour sprint not started.', requirements: [] },
+          phase2s3: { systems: ['po-system'], notes: 'Agency hours consolidated with T&A for total labour cost view.', requirements: ['PO data integration with SFDC'] },
+          phase3: { systems: ['po-system'], notes: 'Agency hours feed total labour cost vs plan.', requirements: [] }
+        },
+        {
+          id: 'labour-register',
+          name: 'Labour Register',
+          now: { systems: ['labour-register'], notes: 'Planned crew allocation per line/shift. Standalone spreadsheet.', issues: ['Not integrated with T&A or operations', 'No planned vs actual comparison'] },
+          phase1: { months: [], systems: ['labour-register'], notes: 'Labour register continues standalone.', issues: ['Still not integrated'] },
+          phase2s1: { systems: ['labour-register'], notes: 'Labour sprint not started.', requirements: [] },
+          phase2s2: { systems: ['labour-register'], notes: 'Labour sprint not started.', requirements: [] },
+          phase2s3: { systems: ['labour-register'], notes: 'Labour register used for planned crew. Compared against actual crew on line.', requirements: ['Crew allocation workflow defined'] },
+          phase3: { systems: ['labour-register'], notes: 'Labour register feeds planned crew into Relex labour model.', requirements: [] }
+        }
+      ]
+    },
+    {
+      id: 'planning',
+      name: 'Planning & Control',
+      color: '#F472B6',
+      description: {
+        now: 'Production plan exists as a spreadsheet. No formal conformance tracking. Stock data in ERP.',
+        phase1: 'Planning spreadsheet continues. No conformance metrics yet.',
+        phase2s1: 'Planning spreadsheet continues. Operational data improving but planning conformance not yet measured.',
+        phase2s2: 'Planning spreadsheet continues. Operational data now reliable enough to compare against plan.',
+        phase2s3: 'Planning spreadsheet continues. Labour actuals now available for cost comparison.',
+        phase3: 'Relex live — full planning and control loop. CTP, run length, sequence adherence, stock vs safety all formally tracked.'
+      },
+      metrics: [
+        {
+          id: 'plan-sequence',
+          name: 'Plan Sequence',
+          now: { systems: ['planning-xl'], notes: 'Production schedule maintained in planning spreadsheet. What to run, in what order.', issues: ['No digital integration with shop floor', 'Sequence adherence not tracked'] },
+          phase1: { months: [], systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', issues: [] },
+          phase2s1: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase2s2: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase2s3: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase3: { systems: ['relex'], notes: 'Production sequence managed in Relex. Digital integration with SFDC for conformance tracking.', requirements: ['Relex implementation', 'SFDC integration'] }
+        },
+        {
+          id: 'planned-qty',
+          name: 'Planned Quantity (Batch Size)',
+          now: { systems: ['planning-xl'], notes: 'Batch sizes defined in planning spreadsheet. Target quantity per production run.', issues: ['No automated comparison against actuals'] },
+          phase1: { months: [], systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', issues: [] },
+          phase2s1: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase2s2: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase2s3: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase3: { systems: ['relex'], notes: 'Batch sizes in Relex. Auto-compared against actual good output for CTP.', requirements: ['Relex implementation'] }
+        },
+        {
+          id: 'planned-run-length',
+          name: 'Planned Run Length',
+          now: { systems: ['planning-xl'], notes: 'Run length on planning spreadsheet, dictated by batch size.', issues: ['No comparison against actual run times'] },
+          phase1: { months: [], systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', issues: [] },
+          phase2s1: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase2s2: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase2s3: { systems: ['planning-xl'], notes: 'Planning spreadsheet continues.', requirements: [] },
+          phase3: { systems: ['relex'], notes: 'Planned run length from Relex. Compared against actual start/stop for variance.', requirements: ['Relex implementation', 'Accurate start/stop from OEE'] }
+        },
+        {
+          id: 'stock-level',
+          name: 'Stock Level',
+          now: { systems: ['erp'], notes: 'Current stock position held in ERP.', issues: ['Not integrated with production planning'] },
+          phase1: { months: [], systems: ['erp'], notes: 'ERP continues.', issues: [] },
+          phase2s1: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
+          phase2s2: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
+          phase2s3: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
+          phase3: { systems: ['erp'], notes: 'ERP stock data feeds Relex for stock vs safety comparison.', requirements: ['ERP-Relex integration'] }
+        },
+        {
+          id: 'safety-stock',
+          name: 'Safety Stock',
+          now: { systems: ['erp'], notes: 'Safety stock thresholds defined in ERP.', issues: ['Not linked to production decisions'] },
+          phase1: { months: [], systems: ['erp'], notes: 'ERP continues.', issues: [] },
+          phase2s1: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
+          phase2s2: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
+          phase2s3: { systems: ['erp'], notes: 'ERP continues.', requirements: [] },
+          phase3: { systems: ['erp'], notes: 'Safety stock thresholds in ERP. Compared against actual stock to assess overproduction impact.', requirements: ['ERP-Relex integration'] }
+        }
       ]
     }
   ],
   systems: {
-    'feedback': { name: 'Feedback', color: '#F97316' },
     'sic': { name: 'SIC.xls', color: '#8B5CF6' },
+    'feedback': { name: 'Feedback', color: '#F97316' },
     'xl-vorne': { name: 'XL Vorne', color: '#06B6D4' },
-    'oee-system': { name: 'OEE / SFDC', color: '#EC4899' },
+    'oee-system': { name: 'OEE / SFDC', color: '#3B82F6' },
     'checkweigher': { name: 'Check Weigher', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' },
-    'thinktrax': { name: 'ThinkTrax', color: '#A855F7' }
+    'ta': { name: 'T&A', color: '#D97706' },
+    'think-trax': { name: 'Think Trax', color: '#94A3B8' },
+    'sage-x3': { name: 'Sage X3', color: '#7C3AED' },
+    'planning-xl': { name: 'Planning Spreadsheet', color: '#94A3B8' },
+    'relex': { name: 'Relex', color: '#14B8A6' },
+    'po-system': { name: 'PO System', color: '#F59E0B' },
+    'labour-register': { name: 'Labour Register', color: '#A78BFA' },
+    'erp': { name: 'ERP', color: '#E879F9' }
   },
   reporting: {
     'sic-rpt': { name: 'SIC', color: '#8B5CF6' },
     'feedback-rpt': { name: 'Feedback', color: '#F97316' },
     'sfdc-rpt': { name: 'SFDC', color: '#3B82F6' },
-    'wb-verbal': { name: 'Whiteboard / Verbal', color: '#A3A3A3' }
+    'wb-verbal': { name: 'Whiteboard / Verbal', color: '#A3A3A3' },
+    'manual-rpt': { name: 'Manual / Other', color: '#78716C' }
   },
   // Which reporting destinations are active per phase
   reportingByPhase: {
-    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'wb-verbal'],
+    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'wb-verbal', 'manual-rpt'],
     phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
     phase2s1: ['sfdc-rpt'],
     phase2s2: ['sfdc-rpt'],
-    phase2s3: ['sfdc-rpt']
+    phase2s3: ['sfdc-rpt'],
+    phase3: ['sfdc-rpt']
   },
   // Which systems feed into which reporting destinations per phase
   systemToReporting: {
     now: {
-      'feedback': ['feedback-rpt', 'sfdc-rpt'],
+      'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'manual': ['sic-rpt', 'sfdc-rpt', 'wb-verbal'],
-      'checkweigher': ['sic-rpt']
+      'manual': ['sic-rpt', 'sfdc-rpt', 'wb-verbal', 'manual-rpt'],
+      'ta': ['manual-rpt'],
+      'planning-xl': ['manual-rpt'],
+      'po-system': ['manual-rpt'],
+      'labour-register': ['manual-rpt']
     },
     phase1: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
       'xl-vorne': ['sic-rpt', 'feedback-rpt'],
       'manual': ['feedback-rpt', 'sfdc-rpt'],
-      'checkweigher': ['sic-rpt']
+      'checkweigher': ['sic-rpt'],
+      'ta': ['sfdc-rpt'],
+      'planning-xl': ['sfdc-rpt'],
+      'po-system': ['sfdc-rpt'],
+      'labour-register': ['sfdc-rpt']
     },
     phase2s1: {
       'oee-system': ['sfdc-rpt'],
       'checkweigher': ['sfdc-rpt'],
-      'xl-vorne': ['sfdc-rpt'],
-      'manual': ['sfdc-rpt']
+      'manual': ['sfdc-rpt'],
+      'ta': ['sfdc-rpt'],
+      'planning-xl': ['sfdc-rpt'],
+      'po-system': ['sfdc-rpt'],
+      'labour-register': ['sfdc-rpt']
     },
     phase2s2: {
       'oee-system': ['sfdc-rpt'],
       'checkweigher': ['sfdc-rpt'],
-      'xl-vorne': ['sfdc-rpt'],
-      'manual': ['sfdc-rpt']
+      'manual': ['sfdc-rpt'],
+      'ta': ['sfdc-rpt'],
+      'planning-xl': ['sfdc-rpt'],
+      'po-system': ['sfdc-rpt'],
+      'labour-register': ['sfdc-rpt']
     },
     phase2s3: {
       'oee-system': ['sfdc-rpt'],
       'checkweigher': ['sfdc-rpt'],
-      'manual': ['sfdc-rpt']
+      'manual': ['sfdc-rpt'],
+      'ta': ['sfdc-rpt'],
+      'planning-xl': ['sfdc-rpt'],
+      'po-system': ['sfdc-rpt'],
+      'labour-register': ['sfdc-rpt']
+    },
+    phase3: {
+      'oee-system': ['sfdc-rpt'],
+      'checkweigher': ['sfdc-rpt'],
+      'manual': ['sfdc-rpt'],
+      'ta': ['sfdc-rpt'],
+      'po-system': ['sfdc-rpt'],
+      'labour-register': ['sfdc-rpt'],
+      'relex': ['sfdc-rpt'],
+      'erp': ['sfdc-rpt']
     }
   },
   governance: [
@@ -1421,12 +1598,12 @@ const DATA = {
     now: {
       'sic-meeting': ['sic-rpt', 'wb-verbal'],
       'daily-ops': ['feedback-rpt'],
-      'monthly-finance': ['sfdc-rpt']
+      'monthly-finance': ['sfdc-rpt', 'manual-rpt']
     },
     phase1: {
       'sic-meeting': ['sic-rpt', 'feedback-rpt'],
-      'daily-ops': ['feedback-rpt', 'sic-rpt'],
-      'weekly-review': ['sfdc-rpt'],
+      'daily-ops': ['feedback-rpt'],
+      'weekly-review': ['feedback-rpt', 'sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
       'monthly-finance': ['sfdc-rpt'],
       'plan-rates': ['feedback-rpt', 'sfdc-rpt']
@@ -1454,21 +1631,30 @@ const DATA = {
       'weekly-planning': ['sfdc-rpt'],
       'monthly-finance': ['sfdc-rpt'],
       'plan-rates': ['sfdc-rpt']
+    },
+    phase3: {
+      'sic-meeting': ['sfdc-rpt'],
+      'daily-ops': ['sfdc-rpt'],
+      'weekly-review': ['sfdc-rpt'],
+      'weekly-planning': ['sfdc-rpt'],
+      'monthly-finance': ['sfdc-rpt'],
+      'plan-rates': ['sfdc-rpt']
     }
   },
   // Which governance meetings are active per phase
   governanceByPhase: {
     now: ['sic-meeting', 'daily-ops', 'monthly-finance'],
-    phase1: ['sic-meeting', 'daily-ops', 'monthly-finance', 'plan-rates'],
-    phase2s1: ['sic-meeting', 'daily-ops', 'monthly-finance', 'plan-rates'],
+    phase1: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
+    phase2s1: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
     phase2s2: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
-    phase2s3: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance', 'plan-rates']
+    phase2s3: ['sic-meeting', 'daily-ops', 'weekly-review', 'monthly-finance', 'plan-rates'],
+    phase3: ['sic-meeting', 'daily-ops', 'weekly-review', 'weekly-planning', 'monthly-finance', 'plan-rates']
   },
   // KPIs — the calculated metrics that governance meetings actually review
   kpis: {
     'efficiency':      { name: 'Efficiency',          area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'good-output', 'downtime', 'speed'] },
     'lost-time':       { name: 'Lost Time',           area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'downtime'] },
-    'slow-running':    { name: 'Slow Running',        area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
+    'slow-running':    { name: 'Slow Running',        area: 'efficiency', color: '#6B7280', inputs: ['speed', 'start-stop', 'good-output'] },
     'downtime':        { name: 'Downtime',             area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
     'dt-pareto':       { name: 'Downtime Pareto',     area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
     'speed-variance':  { name: 'Speed Variance',      area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
@@ -1477,27 +1663,31 @@ const DATA = {
     'yield-waterfall': { name: 'Yield Waterfall',     area: 'yield',      color: '#22C55E', inputs: ['giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value'] },
     'ga-pct':          { name: 'Giveaway %',          area: 'yield',      color: '#22C55E', inputs: ['giveaway'] },
     'var-to-std':      { name: 'Variance to Std',     area: 'yield',      color: '#22C55E', inputs: ['good-output', 'bn-count', 'giveaway'] },
-    'ctp-metric':      { name: 'Conformance to Plan', area: 'labour',     color: '#EAB308', inputs: ['plan-sequence', 'ctp'] },
-    'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'planned-hours', 'crew'] },
-    'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours'] },
-    'kgplh':           { name: 'KG/Labour Hour',      area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours'] }
+    'ctp-metric':      { name: 'Conformance to Plan', area: 'planning',   color: '#F472B6', inputs: ['planned-qty', 'good-output'] },
+    'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'agency-hours', 'labour-register'] },
+    'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours', 'agency-hours'] },
+    'kgplh':           { name: 'KG/Labour Hour',      area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours', 'agency-hours'] },
+    'run-length-var':      { name: 'Run Length Variance',  area: 'planning', color: '#F472B6', inputs: ['planned-run-length', 'start-stop'] },
+    'sequence-adherence':  { name: 'Sequence Adherence',   area: 'planning', color: '#F472B6', inputs: ['plan-sequence', 'good-output'] },
+    'stock-vs-safety':     { name: 'Stock vs Safety',      area: 'planning', color: '#F472B6', inputs: ['stock-level', 'safety-stock'] }
   },
   // Which KPIs are active per phase
   kpisByPhase: {
-    now:    ['efficiency', 'downtime', 'crew-ratio', 'ga-pct'],
-    phase1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'var-to-std'],
-    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'kgplh'],
-    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'kgplh'],
-    phase2s3: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost', 'cost-per-case', 'kgplh']
+    now:      ['efficiency', 'downtime', 'crew-ratio', 'ga-pct'],
+    phase1:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct'],
+    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'cost-per-case', 'kgplh'],
+    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh'],
+    phase2s3: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh'],
+    phase3:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety']
   },
   // Which KPIs each governance meeting reviews
   governanceMetrics: {
-    'sic-meeting':    ['efficiency', 'lost-time', 'downtime', 'nct', 'crew-ratio', 'ga-pct', 'kgplh'],
-    'daily-ops':      ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh'],
-    'weekly-review':  ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost', 'kgplh'],
-    'weekly-planning':['ctp-metric', 'labour-cost', 'crew-ratio', 'kgplh'],
-    'monthly-finance':['efficiency', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case', 'kgplh'],
-    'plan-rates':     ['efficiency', 'nct', 'speed-variance', 'kgplh']
+    'sic-meeting':     ['efficiency', 'lost-time', 'slow-running', 'downtime', 'nct', 'ga-pct'],
+    'daily-ops':       ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'var-to-std', 'kgplh'],
+    'weekly-review':   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'labour-cost', 'kgplh'],
+    'weekly-planning': ['ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'labour-cost', 'crew-ratio', 'kgplh'],
+    'monthly-finance': ['efficiency', 'lost-time', 'yield-waterfall', 'cost-per-case', 'labour-cost', 'kgplh', 'stock-vs-safety'],
+    'plan-rates':      ['efficiency', 'nct', 'speed-variance', 'run-length-var', 'kgplh']
   }
 };
 
@@ -1517,6 +1707,7 @@ function renderPhaseSystemsDots() {
   const phase2s1Systems = new Set();
   const phase2s2Systems = new Set();
   const phase2s3Systems = new Set();
+  const phase3Systems = new Set();
 
   areas.forEach(area => {
     area.metrics.forEach(metric => {
@@ -1525,10 +1716,12 @@ function renderPhaseSystemsDots() {
       if (metric.phase2s1 && metric.phase2s1.systems) metric.phase2s1.systems.forEach(s => phase2s1Systems.add(s));
       if (metric.phase2s2 && metric.phase2s2.systems) metric.phase2s2.systems.forEach(s => phase2s2Systems.add(s));
       if (metric.phase2s3 && metric.phase2s3.systems) metric.phase2s3.systems.forEach(s => phase2s3Systems.add(s));
+      if (metric.phase3 && metric.phase3.systems) metric.phase3.systems.forEach(s => phase3Systems.add(s));
     });
   });
 
   const renderDots = (container, systems) => {
+    if (!container) return;
     container.innerHTML = Array.from(systems).map(sysId => {
       const sys = DATA.systems[sysId];
       return '<div class="phase-card__system-dot" style="background-color: ' + sys.color + ';" title="' + sys.name + '"></div>';
@@ -1540,6 +1733,7 @@ function renderPhaseSystemsDots() {
   renderDots(document.getElementById('systemsPhase2s1'), phase2s1Systems);
   renderDots(document.getElementById('systemsPhase2s2'), phase2s2Systems);
   renderDots(document.getElementById('systemsPhase2s3'), phase2s3Systems);
+  renderDots(document.getElementById('systemsPhase3'), phase3Systems);
 }
 
 /* ───── Collect active systems for the current phase ───── */
@@ -1597,9 +1791,10 @@ function renderMetricCards() {
       // Expandable phase journey
       html += '<div class="details">';
       html += '<div class="phase-journey-mini">';
-      ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase2s3'].forEach(p => {
+      ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase2s3', 'phase3'].forEach(p => {
         const d = metric[p];
-        const label = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : p === 'phase2s1' ? 'P2.1' : p === 'phase2s2' ? 'P2.2' : 'P2.3';
+        if (!d) return;
+        const label = p === 'now' ? 'Now' : p === 'phase1' ? 'Phase 1' : p === 'phase2s1' ? 'P2.1' : p === 'phase2s2' ? 'P2.2' : p === 'phase2s3' ? 'P2.3' : 'P3';
         html += '<div class="pj-col"><div class="pj-col__label">' + label + '</div>';
         html += '<div class="pj-col__systems">';
         (d.systems || []).forEach(sId => {
@@ -1722,7 +1917,7 @@ function renderReportingCards() {
 function renderMetricsColumn() {
   const container = document.getElementById('metricsColumn');
 
-  const areaColors = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308' };
+  const areaColors = { efficiency: '#6B7280', yield: '#22C55E', labour: '#EAB308', planning: '#F472B6' };
   const activeKpis = new Set(DATA.kpisByPhase[currentPhase] || []);
   const allKpis = Object.entries(DATA.kpis);
   const activeList = allKpis.filter(([id]) => activeKpis.has(id));
@@ -1965,6 +2160,7 @@ function buildHighlightSets() {
   const govToRptMap = DATA.governanceToReporting[currentPhase] || {};
   const govMetricsMap = DATA.governanceMetrics;
   const activeKpisSet = new Set(DATA.kpisByPhase[currentPhase] || []);
+  const activeGovSet = new Set(DATA.governanceByPhase[currentPhase] || []);
 
   if (!activeMetric && !hoveredSystem && !hoveredReporting && !hoveredGovernance && !hoveredMetricChip) return null;
 
@@ -1972,27 +2168,35 @@ function buildHighlightSets() {
 
   if (hoveredGovernance) {
     hl.governance.add(hoveredGovernance);
+    // Reporting destinations this meeting uses
+    const meetingRpts = new Set(govToRptMap[hoveredGovernance] || []);
+    meetingRpts.forEach(rId => hl.reporting.add(rId));
+    // Systems that feed those specific reporting destinations
+    const meetingSystems = new Set();
+    Object.keys(sysToRptMap).forEach(sId => {
+      (sysToRptMap[sId] || []).forEach(rId => {
+        if (meetingRpts.has(rId)) meetingSystems.add(sId);
+      });
+    });
     // KPIs this meeting reviews (filtered to current phase)
     (govMetricsMap[hoveredGovernance] || []).filter(k => activeKpisSet.has(k)).forEach(kpiId => {
       hl.metricChips.add(kpiId);
-      // Data inputs that feed this KPI
+      // Data inputs that feed this KPI — only highlight if using a system in this meeting's chain
       getKpiInputs(kpiId).forEach(inputId => {
-        hl.dataInputs.add(inputId);
-        getMetricSystems(inputId).forEach(sId => hl.systems.add(sId));
+        const inputSystems = getMetricSystems(inputId);
+        const relevantSystems = inputSystems.filter(sId => meetingSystems.has(sId));
+        if (relevantSystems.length) {
+          hl.dataInputs.add(inputId);
+          relevantSystems.forEach(sId => hl.systems.add(sId));
+        }
       });
-    });
-    // Reporting from govToRpt
-    (govToRptMap[hoveredGovernance] || []).forEach(rId => hl.reporting.add(rId));
-    // Also add reporting for highlighted systems
-    hl.systems.forEach(sId => {
-      (sysToRptMap[sId] || []).forEach(rId => hl.reporting.add(rId));
     });
 
   } else if (hoveredMetricChip) {
     hl.metricChips.add(hoveredMetricChip);
-    // Left: governance meetings that review this KPI
+    // Left: governance meetings that review this KPI (only active meetings)
     Object.keys(govMetricsMap).forEach(gId => {
-      if (govMetricsMap[gId].includes(hoveredMetricChip)) hl.governance.add(gId);
+      if (activeGovSet.has(gId) && govMetricsMap[gId].includes(hoveredMetricChip)) hl.governance.add(gId);
     });
     // Right: data inputs → systems → reporting
     getKpiInputs(hoveredMetricChip).forEach(inputId => {
@@ -2005,11 +2209,11 @@ function buildHighlightSets() {
 
   } else if (hoveredReporting) {
     hl.reporting.add(hoveredReporting);
-    // Left: governance
+    // Left: governance (only active meetings)
     Object.keys(govToRptMap).forEach(gId => {
-      if (govToRptMap[gId].includes(hoveredReporting)) hl.governance.add(gId);
+      if (activeGovSet.has(gId) && govToRptMap[gId].includes(hoveredReporting)) hl.governance.add(gId);
     });
-    // Right: systems → data inputs → KPIs
+    // Right: systems → data inputs → KPIs (only active KPIs)
     Object.keys(sysToRptMap).forEach(sId => {
       if (sysToRptMap[sId].includes(hoveredReporting)) {
         hl.systems.add(sId);
@@ -2018,7 +2222,9 @@ function buildHighlightSets() {
             const pd = m[currentPhase];
             if (pd && pd.systems && pd.systems.includes(sId)) {
               hl.dataInputs.add(m.id);
-              getKpisForInput(m.id).forEach(kId => hl.metricChips.add(kId));
+              getKpisForInput(m.id).forEach(kId => {
+                if (activeKpisSet.has(kId)) hl.metricChips.add(kId);
+              });
             }
           });
         });
@@ -2027,33 +2233,37 @@ function buildHighlightSets() {
 
   } else if (hoveredSystem) {
     hl.systems.add(hoveredSystem);
-    // Right: data inputs
+    // Right: data inputs → KPIs (only active KPIs)
     DATA.areas.forEach(area => {
       area.metrics.forEach(m => {
         const pd = m[currentPhase];
         if (pd && pd.systems && pd.systems.includes(hoveredSystem)) {
           hl.dataInputs.add(m.id);
-          getKpisForInput(m.id).forEach(kId => hl.metricChips.add(kId));
+          getKpisForInput(m.id).forEach(kId => {
+            if (activeKpisSet.has(kId)) hl.metricChips.add(kId);
+          });
         }
       });
     });
-    // Left: reporting → governance
+    // Left: reporting → governance (only active meetings)
     (sysToRptMap[hoveredSystem] || []).forEach(rId => {
       hl.reporting.add(rId);
       Object.keys(govToRptMap).forEach(gId => {
-        if (govToRptMap[gId].includes(rId)) hl.governance.add(gId);
+        if (activeGovSet.has(gId) && govToRptMap[gId].includes(rId)) hl.governance.add(gId);
       });
     });
 
   } else if (activeMetric) {
-    // Data input hover/focus → trace left through KPIs
+    // Data input hover/focus → trace left through KPIs (only active)
     hl.dataInputs.add(activeMetric);
     // Which KPIs use this data input
     getKpisForInput(activeMetric).forEach(kId => {
-      hl.metricChips.add(kId);
-      Object.keys(govMetricsMap).forEach(gId => {
-        if (govMetricsMap[gId].includes(kId)) hl.governance.add(gId);
-      });
+      if (activeKpisSet.has(kId)) {
+        hl.metricChips.add(kId);
+        Object.keys(govMetricsMap).forEach(gId => {
+          if (activeGovSet.has(gId) && govMetricsMap[gId].includes(kId)) hl.governance.add(gId);
+        });
+      }
     });
     // Systems and reporting
     getMetricSystems(activeMetric).forEach(sId => {
@@ -2061,7 +2271,7 @@ function buildHighlightSets() {
       (sysToRptMap[sId] || []).forEach(rId => {
         hl.reporting.add(rId);
         Object.keys(govToRptMap).forEach(gId => {
-          if (govToRptMap[gId].includes(rId)) hl.governance.add(gId);
+          if (activeGovSet.has(gId) && govToRptMap[gId].includes(rId)) hl.governance.add(gId);
         });
       });
     });
@@ -2274,7 +2484,7 @@ function attachPhaseListeners() {
           switchToPhase('phase2s3');
         }
       } else {
-        // Close sprint selector for Now / P1
+        // Close sprint selector for Now / P1 / P3
         sprintSelector.classList.remove('open');
         document.querySelectorAll('.sprint-card').forEach(c => c.classList.remove('active'));
         switchToPhase(card.dataset.phase);
