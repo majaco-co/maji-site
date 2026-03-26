@@ -1207,32 +1207,32 @@ const DATA = {
           }
         },
         {
-          id: 'waste',
-          name: 'Waste',
+          id: 'bn-count',
+          name: 'BN Count (A)',
           now: {
             systems: [],
-            notes: 'No structured waste capture.',
-            issues: ['No systematic recording']
+            notes: 'Not captured currently.',
+            issues: ['No bottleneck count']
           },
           phase1: {
-            months: [{ month: 1, action: 'Yield captured by W.O.' }],
-            systems: ['manual'],
-            notes: 'Waste captured as part of yield tracking against works orders.',
+            months: [],
+            systems: [],
+            notes: 'Not captured in Phase 1.',
             issues: []
           },
           phase2s1: {
-            systems: ['manual'],
-            notes: 'See Yield — waste is a component of overall yield tracking.',
-            requirements: ['Yield framework fully operational']
+            systems: ['oee-system'],
+            notes: 'Count at bottleneck captured by OEE system. Used with good product count to calculate waste (A\u2013B).',
+            requirements: ['Bottleneck counter deployed']
           },
           phase2s2: {
-            systems: ['checkweigher'],
-            notes: 'Check weigher data drives waste tracking.',
+            systems: ['oee-system'],
+            notes: 'Continues from Sprint 1',
             requirements: []
           },
           phase2s3: {
-            systems: ['checkweigher'],
-            notes: 'Established — check weigher running',
+            systems: ['oee-system'],
+            notes: 'Established — running in SFDC',
             requirements: []
           }
         },
@@ -1476,7 +1476,7 @@ const DATA = {
     'crew-ratio':      { name: 'Crew per Line',       area: 'efficiency', color: '#6B7280', inputs: ['crew'] },
     'yield-waterfall': { name: 'Yield Waterfall',     area: 'yield',      color: '#22C55E', inputs: ['giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value'] },
     'ga-pct':          { name: 'Giveaway %',          area: 'yield',      color: '#22C55E', inputs: ['giveaway'] },
-    'var-to-std':      { name: 'Variance to Std',     area: 'yield',      color: '#22C55E', inputs: ['good-output', 'waste', 'giveaway'] },
+    'var-to-std':      { name: 'Variance to Std',     area: 'yield',      color: '#22C55E', inputs: ['good-output', 'bn-count', 'giveaway'] },
     'ctp-metric':      { name: 'Conformance to Plan', area: 'labour',     color: '#EAB308', inputs: ['plan-sequence', 'ctp'] },
     'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'planned-hours', 'crew'] },
     'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours'] }
