@@ -1283,7 +1283,7 @@ const DATA = {
         {
           id: 'giveaway',
           name: 'Giveaway (G.A.)',
-          now: { systems: ['whiteboard'], notes: 'Recorded on whiteboard at line level. Not in any system.', issues: ['Whiteboard only — no digital capture', 'No trending or reporting'] },
+          now: { systems: ['manual'], notes: 'Recorded on whiteboard at line level. Reported via whiteboard into SIC meeting.', issues: ['Whiteboard only — no digital capture', 'No trending or reporting'] },
           phase1: {
             months: [{ month: 1, action: 'Whiteboard data entered into Feedback' }, { month: 2, action: 'Giveaway trending and reporting in Feedback' }],
             systems: ['feedback'],
@@ -1354,22 +1354,22 @@ const DATA = {
   ],
   systems: {
     'feedback': { name: 'Feedback', color: '#F97316' },
-    'sic': { name: 'SIC', color: '#8B5CF6' },
+    'sic': { name: 'SIC.xls', color: '#8B5CF6' },
     'xl-vorne': { name: 'XL Vorne', color: '#06B6D4' },
     'oee-system': { name: 'OEE / SFDC', color: '#EC4899' },
     'checkweigher': { name: 'Check Weigher', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' },
-    'whiteboard': { name: 'Whiteboard', color: '#A3A3A3' },
     'thinktrax': { name: 'ThinkTrax', color: '#A855F7' }
   },
   reporting: {
     'sic-rpt': { name: 'SIC', color: '#8B5CF6' },
     'feedback-rpt': { name: 'Feedback', color: '#F97316' },
-    'sfdc-rpt': { name: 'SFDC', color: '#3B82F6' }
+    'sfdc-rpt': { name: 'SFDC', color: '#3B82F6' },
+    'whiteboard-rpt': { name: 'Whiteboard', color: '#A3A3A3' }
   },
   // Which reporting destinations are active per phase
   reportingByPhase: {
-    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
+    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'whiteboard-rpt'],
     phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
     phase2s1: ['sfdc-rpt'],
     phase2s2: ['sfdc-rpt'],
@@ -1380,9 +1380,8 @@ const DATA = {
     now: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'manual': ['sic-rpt', 'sfdc-rpt'],
-      'checkweigher': ['sic-rpt'],
-      'whiteboard': ['sic-rpt']
+      'manual': ['sic-rpt', 'sfdc-rpt', 'whiteboard-rpt'],
+      'checkweigher': ['sic-rpt']
     },
     phase1: {
       'feedback': ['feedback-rpt'],
@@ -1420,7 +1419,7 @@ const DATA = {
   // Which reporting destinations feed each governance meeting per phase
   governanceToReporting: {
     now: {
-      'sic-meeting': ['sic-rpt'],
+      'sic-meeting': ['sic-rpt', 'whiteboard-rpt'],
       'daily-ops': ['feedback-rpt'],
       'monthly-finance': ['sfdc-rpt']
     },
