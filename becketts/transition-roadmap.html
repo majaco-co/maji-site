@@ -1252,10 +1252,13 @@ const DATA = {
   // KPIs — the calculated metrics that governance meetings actually review
   kpis: {
     'efficiency':      { name: 'Efficiency',          area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'good-output', 'downtime', 'speed'] },
-    'dt-pareto':       { name: 'Downtime Pareto',    area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
-    'speed-variance':  { name: 'Speed Variance',     area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
-    'nct':             { name: 'Net Case Throughput', area: 'efficiency', color: '#6B7280', inputs: ['good-output', 'start-stop'] },
-    'crew-ratio':      { name: 'Crew per Line',      area: 'efficiency', color: '#6B7280', inputs: ['crew'] },
+    'lost-time':       { name: 'Lost Time',           area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'downtime'] },
+    'slow-running':    { name: 'Slow Running',        area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
+    'downtime':        { name: 'Downtime',             area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
+    'dt-pareto':       { name: 'Downtime Pareto',     area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
+    'speed-variance':  { name: 'Speed Variance',      area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
+    'nct':             { name: 'Net Case Throughput',  area: 'efficiency', color: '#6B7280', inputs: ['good-output', 'start-stop'] },
+    'crew-ratio':      { name: 'Crew per Line',       area: 'efficiency', color: '#6B7280', inputs: ['crew'] },
     'yield-waterfall': { name: 'Yield Waterfall',     area: 'yield',      color: '#22C55E', inputs: ['giveaway', 'grading-waste', 'gripper-ends', 'pressing-loss', 'high-value'] },
     'ga-pct':          { name: 'Giveaway %',          area: 'yield',      color: '#22C55E', inputs: ['giveaway'] },
     'var-to-std':      { name: 'Variance to Std',     area: 'yield',      color: '#22C55E', inputs: ['good-output', 'waste', 'giveaway'] },
@@ -1263,11 +1266,17 @@ const DATA = {
     'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'planned-hours', 'crew'] },
     'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours'] }
   },
+  // Which KPIs are active per phase
+  kpisByPhase: {
+    now:    ['efficiency', 'crew-ratio'],
+    phase1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'var-to-std'],
+    phase2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost', 'cost-per-case']
+  },
   // Which KPIs each governance meeting reviews
   governanceMetrics: {
-    'sic-meeting':    ['efficiency', 'dt-pareto', 'nct', 'crew-ratio', 'ga-pct'],
-    'daily-ops':      ['efficiency', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std'],
-    'weekly-review':  ['efficiency', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost'],
+    'sic-meeting':    ['efficiency', 'lost-time', 'slow-running', 'downtime', 'nct', 'crew-ratio', 'ga-pct'],
+    'daily-ops':      ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std'],
+    'weekly-review':  ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost'],
     'weekly-planning':['ctp-metric', 'labour-cost', 'crew-ratio'],
     'monthly-finance':['efficiency', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case']
   }
@@ -1478,13 +1487,11 @@ function renderMetricsColumn() {
 
     html += '<div class="area-group-label"><span class="area-dot" style="background:' + areaColors[areaId] + ';"></span> ' + areaLabels[areaId] + '</div>';
 
+    const activeKpis = new Set(DATA.kpisByPhase[currentPhase] || []);
+
     kpisInArea.forEach(([kpiId, kpi]) => {
-      // Check if any of the input data points have systems in the current phase
-      const hasData = kpi.inputs.some(inputId => {
-        const sys = getMetricSystems(inputId);
-        return sys.length > 0;
-      });
-      const dimStyle = hasData ? '' : ' style="opacity:0.4;"';
+      const isActive = activeKpis.has(kpiId);
+      const dimStyle = isActive ? '' : ' style="opacity:0.2;"';
 
       html += '<div class="metric-chip" id="mc-' + kpiId + '" data-metric-chip="' + kpiId + '"' + dimStyle + '>';
       html += '<div class="dot" style="background:' + kpi.color + ';"></div>';
