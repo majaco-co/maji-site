@@ -1813,6 +1813,33 @@ const DATA = {
           phase2s1: { systems: ['labour-register'], notes: 'Labour sprint not started.', requirements: [] },
           phase2s2: { systems: ['labour-register'], notes: 'Labour register used for planned crew. Compared against actual crew on line.', requirements: ['Crew allocation workflow defined'] },
           phase3: { systems: ['labour-register'], notes: 'Labour register feeds planned crew into Relex labour model.', requirements: [] }
+        },
+        {
+          id: 'planned-labour',
+          name: 'Planned Labour',
+          now: { systems: ['planning-system'], notes: 'Shift plan built in Planning system — assigns individuals to roles by area. Used to set crewing expectations before each shift.', issues: ['No comparison against actual', 'No integration with T&A or operations'] },
+          phase1: { months: [], systems: ['planning-system'], notes: 'Planning system continues. Plan available for daily ops review.', issues: [] },
+          phase2s1: { systems: ['planning-system'], notes: 'Planning system continues.', requirements: [] },
+          phase2s2: { systems: ['planning-system'], notes: 'Planned labour feeds labour control comparison.', requirements: ['Integration with actual labour data'] },
+          phase3: { systems: ['planning-system'], notes: 'Planned labour feeds Relex labour model.', requirements: [] }
+        },
+        {
+          id: 'actual-labour',
+          name: 'Actual Labour',
+          now: { systems: ['planning-system'], notes: 'Recorded in Planning system — who actually did what role on each shift. Manual entry post-shift.', issues: ['Relies on supervisor entry after the fact', 'No automated reconciliation against plan'] },
+          phase1: { months: [], systems: ['planning-system'], notes: 'Planning system continues recording actuals.', issues: [] },
+          phase2s1: { systems: ['planning-system'], notes: 'Planning system continues.', requirements: [] },
+          phase2s2: { systems: ['planning-system'], notes: 'Actual labour compared against planned for variance.', requirements: [] },
+          phase3: { systems: ['planning-system'], notes: 'Actual labour feeds labour control loop.', requirements: [] }
+        },
+        {
+          id: 'paid-labour',
+          name: 'Paid Labour',
+          now: { systems: ['ta', 'po-system'], notes: 'Paid hours from T&A (permanent) and agency POs. Used to reconcile recorded labour vs what we actually pay.', issues: ['Not reconciled against planned or actual labour', 'Separate systems for permanent vs agency'] },
+          phase1: { months: [], systems: ['ta', 'po-system'], notes: 'T&A and PO systems continue. Reconciliation manual.', issues: [] },
+          phase2s1: { systems: ['ta', 'po-system'], notes: 'Data available, not yet reconciled.', requirements: [] },
+          phase2s2: { systems: ['ta', 'po-system'], notes: 'Paid labour reconciled against actual for cost control.', requirements: ['T&A + PO integration'] },
+          phase3: { systems: ['ta', 'po-system'], notes: 'Full reconciliation: planned vs actual vs paid.', requirements: [] }
         }
       ]
     },
@@ -1890,6 +1917,7 @@ const DATA = {
     'relex': { name: 'Relex', color: '#14B8A6' },
     'po-system': { name: 'PO System', color: '#F59E0B' },
     'labour-register': { name: 'Labour Register', color: '#A78BFA' },
+    'planning-system': { name: 'Planning (XL/SQL)', color: '#F59E0B' },
     'erp': { name: 'ERP', color: '#E879F9' }
   },
   reporting: {
@@ -1897,15 +1925,16 @@ const DATA = {
     'feedback-rpt': { name: 'Feedback', color: '#F97316' },
     'sfdc-rpt': { name: 'SFDC', color: '#3B82F6' },
     'wb-verbal': { name: 'Whiteboard / Verbal', color: '#A3A3A3' },
-    'manual-rpt': { name: 'Manual / Other', color: '#78716C' }
+    'manual-rpt': { name: 'Manual / Other', color: '#78716C' },
+    'planning-rpt': { name: 'Planning', color: '#F59E0B' }
   },
   // Which reporting destinations are active per phase
   reportingByPhase: {
-    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'wb-verbal', 'manual-rpt'],
-    phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
-    phase2s1: ['sfdc-rpt'],
-    phase2s2: ['sfdc-rpt'],
-    phase3: ['sfdc-rpt']
+    now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'wb-verbal', 'manual-rpt', 'planning-rpt'],
+    phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'planning-rpt'],
+    phase2s1: ['sfdc-rpt', 'planning-rpt'],
+    phase2s2: ['sfdc-rpt', 'planning-rpt'],
+    phase3: ['sfdc-rpt', 'planning-rpt']
   },
   // Which systems feed into which reporting destinations per phase
   systemToReporting: {
@@ -1916,7 +1945,8 @@ const DATA = {
       'ta': ['manual-rpt'],
       'planning-xl': ['manual-rpt'],
       'po-system': ['manual-rpt'],
-      'labour-register': ['manual-rpt']
+      'labour-register': ['manual-rpt'],
+      'planning-system': ['planning-rpt']
     },
     phase1: {
       'feedback': ['feedback-rpt'],
@@ -1927,7 +1957,8 @@ const DATA = {
       'ta': ['sfdc-rpt'],
       'planning-xl': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
-      'labour-register': ['sfdc-rpt']
+      'labour-register': ['sfdc-rpt'],
+      'planning-system': ['planning-rpt']
     },
     phase2s1: {
       'oee-system': ['sfdc-rpt'],
@@ -1936,7 +1967,8 @@ const DATA = {
       'ta': ['sfdc-rpt'],
       'planning-xl': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
-      'labour-register': ['sfdc-rpt']
+      'labour-register': ['sfdc-rpt'],
+      'planning-system': ['planning-rpt']
     },
     phase2s2: {
       'oee-system': ['sfdc-rpt'],
@@ -1945,7 +1977,8 @@ const DATA = {
       'ta': ['sfdc-rpt'],
       'planning-xl': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
-      'labour-register': ['sfdc-rpt']
+      'labour-register': ['sfdc-rpt'],
+      'planning-system': ['planning-rpt']
     },
     phase3: {
       'oee-system': ['sfdc-rpt'],
@@ -1954,6 +1987,7 @@ const DATA = {
       'ta': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
       'labour-register': ['sfdc-rpt'],
+      'planning-system': ['planning-rpt'],
       'relex': ['sfdc-rpt'],
       'erp': ['sfdc-rpt']
     }
@@ -1970,12 +2004,12 @@ const DATA = {
   governanceToReporting: {
     now: {
       'sic-meeting': ['sic-rpt', 'wb-verbal'],
-      'daily-ops': ['feedback-rpt'],
+      'daily-ops': ['feedback-rpt', 'planning-rpt'],
       'monthly-finance': ['sfdc-rpt', 'manual-rpt']
     },
     phase1: {
       'sic-meeting': ['sic-rpt', 'feedback-rpt'],
-      'daily-ops': ['feedback-rpt'],
+      'daily-ops': ['feedback-rpt', 'planning-rpt'],
       'weekly-review': ['feedback-rpt', 'sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
       'monthly-finance': ['sfdc-rpt'],
@@ -1983,7 +2017,7 @@ const DATA = {
     },
     phase2s1: {
       'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt'],
+      'daily-ops': ['sfdc-rpt', 'planning-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
       'monthly-finance': ['sfdc-rpt'],
@@ -1991,7 +2025,7 @@ const DATA = {
     },
     phase2s2: {
       'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt'],
+      'daily-ops': ['sfdc-rpt', 'planning-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
       'monthly-finance': ['sfdc-rpt'],
@@ -1999,7 +2033,7 @@ const DATA = {
     },
     phase3: {
       'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt'],
+      'daily-ops': ['sfdc-rpt', 'planning-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-planning': ['sfdc-rpt'],
       'monthly-finance': ['sfdc-rpt'],
@@ -2031,22 +2065,23 @@ const DATA = {
     'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'agency-hours', 'labour-register'] },
     'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours', 'agency-hours'] },
     'kgplh':           { name: 'KG/Labour Hour',      area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours', 'agency-hours'] },
+    'labour-control':  { name: 'Labour Control',     area: 'labour',     color: '#EAB308', inputs: ['planned-labour', 'actual-labour', 'paid-labour'] },
     'run-length-var':      { name: 'Run Length Variance',  area: 'planning', color: '#F472B6', inputs: ['planned-run-length', 'start-stop'] },
     'sequence-adherence':  { name: 'Sequence Adherence',   area: 'planning', color: '#F472B6', inputs: ['plan-sequence', 'good-output'] },
     'stock-vs-safety':     { name: 'Stock vs Safety',      area: 'planning', color: '#F472B6', inputs: ['stock-level', 'safety-stock'] }
   },
   // Which KPIs are active per phase
   kpisByPhase: {
-    now:      ['efficiency', 'downtime', 'crew-ratio', 'ga-pct'],
-    phase1:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct'],
-    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh'],
-    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh'],
-    phase3:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety']
+    now:      ['efficiency', 'downtime', 'crew-ratio', 'ga-pct', 'labour-control'],
+    phase1:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'labour-control'],
+    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh', 'labour-control'],
+    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'labour-control'],
+    phase3:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'labour-control', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety']
   },
   // Which KPIs each governance meeting reviews
   governanceMetrics: {
     'sic-meeting':     ['efficiency', 'lost-time', 'slow-running', 'downtime', 'nct', 'ga-pct'],
-    'daily-ops':       ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh'],
+    'daily-ops':       ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh', 'labour-control'],
     'weekly-review':   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'labour-cost', 'kgplh'],
     'weekly-planning': ['ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'labour-cost', 'crew-ratio', 'kgplh'],
     'monthly-finance': ['efficiency', 'lost-time', 'yield-waterfall', 'cost-per-case', 'labour-cost', 'kgplh', 'stock-vs-safety'],
@@ -3020,7 +3055,7 @@ function renderDDTable() {
 const GANTT_PHASES = ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase3'];
 const GANTT_PHASE_META = {
   now:      { label: 'Current',    title: 'Now',      sub: 'Fragmented' },
-  phase1:   { label: 'Transition', title: 'Phase 1',  sub: '~3 months' },
+  phase1:   { label: 'Transition', title: 'Phase 1',  sub: 'Best of what we have' },
   phase2s1: { label: 'Target',     title: 'P2.1',     sub: 'Eff + Yield' },
   phase2s2: { label: 'Target',     title: 'P2.2',     sub: 'Labour' },
   phase3:   { label: 'Planning',   title: 'Phase 3',  sub: '~4–6 months' }
@@ -3097,6 +3132,16 @@ const GANTT_ROWS = [
       now: null, phase1: null, phase2s1: null,
       phase2s2: { text: 'Live', color: '#EAB308', opacity: 0.55, tasks: ['£/Case calculation', 'KG/Labour Hour', 'Labour Cost vs Plan'], deps: 'Labour consolidation first' },
       phase3:   { text: 'Continues', color: '#EAB308', opacity: 0.6 }
+    }
+  },
+  {
+    id: 'labour-control-ws', label: 'Labour Control', systems: ['planning-system', 'ta', 'po-system'],
+    phases: {
+      now:      { text: 'Plan + Actual', color: '#F59E0B', opacity: 0.3, tasks: ['Planned labour by area/role in Planning system', 'Actual labour recorded post-shift', 'Paid labour from T&A + agency POs'] },
+      phase1:   { text: 'Continues', color: '#F59E0B', opacity: 0.35 },
+      phase2s1: { text: 'Continues', color: '#F59E0B', opacity: 0.4 },
+      phase2s2: { text: 'Reconciled', color: '#F59E0B', opacity: 0.55, tasks: ['Plan vs actual vs paid reconciliation', 'Full labour control loop in daily ops'] },
+      phase3:   { text: 'Feeds Relex', color: '#F59E0B', opacity: 0.6 }
     }
   },
   // ── Planning & Control ──
