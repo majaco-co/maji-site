@@ -1075,7 +1075,7 @@ const DATA = {
           name: 'Start / Stop Time',
           now: {
             systems: ['feedback', 'manual'],
-            notes: 'Manual entry in both Feedback and SFDC. Not accurate — recorded within the hour, not to the minute.',
+            notes: 'Manually entered into Feedback and SFDC. Not accurate — recorded within the hour, not to the minute. Needed for all governance meetings.',
             issues: ['Dual entry across systems', 'Accuracy — within hour, not minute', 'No automated capture']
           },
           phase1: {
@@ -1109,18 +1109,18 @@ const DATA = {
           name: 'Good Output',
           now: {
             systems: ['sic', 'feedback', 'manual'],
-            notes: 'SIC uses estimated current cases completed. SFDC gets QTY confirmed against W.O. Feedback pulls from SFDC data via SQL.',
-            issues: ['SIC estimate vs SFDC confirmed mismatch', 'Feedback is derivative of SFDC', 'Not real-time']
+            notes: 'SIC.xls gets a manual/whiteboard count of completed cases. SFDC gets QTY confirmed against W.O. Feedback pulls from SFDC data via SQL.',
+            issues: ['SIC is manual/whiteboard estimate', 'Feedback is derivative of SFDC', 'Not real-time']
           },
           phase1: {
             months: [
-              { month: 1, action: 'Explore hourly output updates via XL' },
+              { month: 1, action: 'Check weigher count available for SIC during runs' },
               { month: 2, action: 'NCT (Net Case Throughput) captured' },
               { month: 3, action: 'NCT reporting validated' }
             ],
-            systems: ['xl-vorne', 'manual'],
-            notes: 'W.O. data entered manually. XL Vorne supplements with near-real-time output counts on 2 lines. NCT captured from Month 2.',
-            issues: ['Hourly granularity needed', 'Only 2 lines have real-time data']
+            systems: ['feedback', 'checkweigher', 'manual'],
+            notes: 'Feedback and SFDC continue reporting good output. Check weigher count fed into SIC for real-time output during runs. XL Vorne does not capture good output.',
+            issues: ['C/W to SIC integration needed', 'Rest of lines still manual count']
           },
           phase2s1: {
             systems: ['checkweigher'],
@@ -1378,7 +1378,7 @@ const DATA = {
   // Which systems feed into which reporting destinations per phase
   systemToReporting: {
     now: {
-      'feedback': ['feedback-rpt'],
+      'feedback': ['feedback-rpt', 'sfdc-rpt'],
       'sic': ['sic-rpt'],
       'manual': ['sic-rpt', 'sfdc-rpt', 'whiteboard-rpt'],
       'checkweigher': ['sic-rpt']
@@ -1386,7 +1386,7 @@ const DATA = {
     phase1: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
-      'xl-vorne': ['sic-rpt', 'feedback-rpt', 'sfdc-rpt'],
+      'xl-vorne': ['sic-rpt', 'feedback-rpt'],
       'manual': ['feedback-rpt', 'sfdc-rpt'],
       'checkweigher': ['sic-rpt']
     },
