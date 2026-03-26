@@ -1157,17 +1157,17 @@ const DATA = {
             issues: ['Only 2 lines have automated capture', 'Rest of lines still manual via Feedback']
           },
           phase2s1: {
-            systems: ['oee-system'],
-            notes: 'Downtime recorded at bottleneck (BN) in SFDC. Basic reason codes.',
-            requirements: ['Bottleneck sensors deployed']
+            systems: ['oee-system', 'manual'],
+            notes: 'Downtime automatically recorded via OEE system. Reason codes entered manually. Basic reason codes initially.',
+            requirements: ['Bottleneck sensors deployed', 'Reason code entry workflow']
           },
           phase2s2: {
-            systems: ['oee-system'],
-            notes: 'SFDC downtime fully integrated. MECE reason codes. Downtime Pareto reporting live.',
-            requirements: ['MECE reason code taxonomy agreed', 'SFDC integration complete', 'Plan vs allow categories defined']
+            systems: ['oee-system', 'manual'],
+            notes: 'Downtime auto-captured, MECE reason codes entered manually. Downtime Pareto reporting live.',
+            requirements: ['MECE reason code taxonomy agreed', 'Plan vs allow categories defined']
           },
           phase2s3: {
-            systems: ['oee-system'],
+            systems: ['oee-system', 'manual'],
             notes: 'Established — running in SFDC',
             requirements: []
           }
