@@ -342,6 +342,69 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
+/* Phase objective strip */
+.dg__objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 8px 0 0;
+  background: rgba(218, 241, 27, 0.03);
+  border-left: 3px solid rgba(218, 241, 27, 0.2);
+  border-radius: 0 6px 6px 0;
+  animation: fadeIn 0.2s ease;
+}
+
+.dg__objective-badge {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #001412;
+  background: #DAF11B;
+  border-radius: 4px;
+  margin-top: 1px;
+}
+
+.dg__objective-text {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+}
+
+/* Phase gate */
+.dg__gate {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  background: rgba(218, 241, 27, 0.03);
+  border: 1px dashed rgba(218, 241, 27, 0.12);
+  border-radius: 6px;
+  animation: fadeIn 0.2s ease;
+}
+
+.dg__gate-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  color: rgba(218, 241, 27, 0.5);
+  margin-top: 1px;
+}
+
+.dg__gate-text {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.6;
+}
+
+.dg__gate-text strong {
+  color: rgba(218, 241, 27, 0.7);
+  font-weight: 700;
+}
+
 /* PHASE SELECTOR */
 .phase-selector {
   display: grid;
@@ -1415,12 +1478,6 @@ body {
     </div>
 
     <div class="tab-panel active" id="tab-roadmap">
-    <div class="disclaimer-banner">
-      <strong>Roadmap note:</strong> This transition is a multi-month programme. Phases shown are indicative — timings and scope subject to resource availability and learning from earlier phases.
-    </div>
-
-    <!-- DELIVERY GANTT -->
-    <div id="deliveryGantt"></div>
 
     <!-- PHASE SELECTOR (hidden, driven by Gantt clicks) -->
     <div class="phase-selector" id="phaseSelector" role="tablist" style="display:none;">
@@ -1485,6 +1542,10 @@ body {
         <div id="metricCards"></div>
       </div>
     </div>
+
+    <!-- DELIVERY GANTT (below framework) -->
+    <div id="deliveryGantt"></div>
+
     </div><!-- /tab-roadmap -->
 
     <div class="tab-panel" id="tab-deep-dive">
@@ -3054,11 +3115,20 @@ function renderDDTable() {
    ═══════════════════════════════════════════ */
 const GANTT_PHASES = ['now', 'phase1', 'phase2s1', 'phase2s2', 'phase3'];
 const GANTT_PHASE_META = {
-  now:      { label: 'Current',    title: 'Now',      sub: 'Fragmented' },
-  phase1:   { label: 'Transition', title: 'Phase 1',  sub: 'Best of what we have' },
-  phase2s1: { label: 'Target',     title: 'P2.1',     sub: 'Eff + Yield' },
-  phase2s2: { label: 'Target',     title: 'P2.2',     sub: 'Labour' },
-  phase3:   { label: 'Planning',   title: 'Phase 3',  sub: '~4–6 months' }
+  now:      { label: 'Current',    title: 'Now',      sub: 'Fragmented',
+    objective: 'Three systems capturing data in parallel — SIC, Feedback and SFDC. Significant duplication, accuracy gaps, and no single source of truth. Governance limited to SIC meeting, daily ops and monthly finance.' },
+  phase1:   { label: 'Transition', title: 'Phase 1',  sub: 'Best of what we have',
+    objective: 'Get better data from what we already have. Establish structured capture habits, validate automated sensors on pilot lines, and stand up the first governance cadence beyond SIC.',
+    gate: 'Vorne accuracy validated against manual. Check weigher good output trusted. Weekly Review cadence established. All efficiency data inputs captured digitally on at least pilot lines.' },
+  phase2s1: { label: 'Target',     title: 'P2.1',     sub: 'Eff + Yield',
+    objective: 'SFDC becomes the single source of truth for efficiency and yield. OEE sensors replace Feedback and Vorne. Automated downtime with MECE reason codes. Yield waterfall reporting goes live.',
+    gate: 'All efficiency and yield metrics running from SFDC. Feedback and SIC.xls retired. Downtime Pareto, Speed Variance, Yield Waterfall all live and validated.' },
+  phase2s2: { label: 'Target',     title: 'P2.2',     sub: 'Labour',
+    objective: 'Consolidate labour data — permanent hours (T&A), agency costs (POs), and crew allocation into a single view. Enable £/Case, KG/Labour Hour, and Labour Cost vs Plan.',
+    gate: '£/Case, KG/Labour Hour, Labour Cost vs Plan all live. T&A and PO data integrated with SFDC. Labour register driving planned vs actual crew.' },
+  phase3:   { label: 'Planning',   title: 'Phase 3',  sub: 'Plan & Control',
+    objective: 'Close the loop. Relex provides the production plan; SFDC provides actuals. Conformance to Plan, Run Length Variance, Sequence Adherence, and Stock vs Safety complete the picture. Weekly Planning meeting goes live.',
+    gate: 'Full planning loop closed. Relex drives plan, SFDC captures actuals, governance reviews conformance. All KPIs live. Planning spreadsheet retired.' }
 };
 
 // Each row: { id, label, area (for grouping color), systems[], phases: { phaseId: { text, color, opacity, tasks[], deps? } | null } }
@@ -3215,6 +3285,16 @@ function renderDeliveryGantt() {
     html += '</div>';
   });
   html += '</div>';
+
+  // Phase objective strip
+  const currentMeta = GANTT_PHASE_META[currentPhase];
+  if (currentMeta.objective) {
+    html += '<div class="dg__objective">';
+    html += '<div class="dg__objective-badge">' + currentMeta.title + '</div>';
+    html += '<div class="dg__objective-text">' + currentMeta.objective + '</div>';
+    html += '</div>';
+  }
+
   html += '<div class="dg__divider"></div>';
 
   // Rows
@@ -3259,6 +3339,14 @@ function renderDeliveryGantt() {
 
     html += '</div>';
   });
+
+  // Phase gate
+  if (currentMeta.gate) {
+    html += '<div class="dg__gate">';
+    html += '<span class="dg__gate-icon">&#9873;</span>';
+    html += '<div class="dg__gate-text"><strong>' + currentMeta.title + ' Gate:</strong> ' + currentMeta.gate + '</div>';
+    html += '</div>';
+  }
 
   // Detail panel for selected bar
   if (selectedGanttBar) {
