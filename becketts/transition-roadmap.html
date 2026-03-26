@@ -1251,7 +1251,7 @@ const DATA = {
   },
   // KPIs — the calculated metrics that governance meetings actually review
   kpis: {
-    'lost-time':       { name: 'Lost Time',          area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'good-output', 'downtime', 'speed'] },
+    'efficiency':      { name: 'Efficiency',          area: 'efficiency', color: '#6B7280', inputs: ['start-stop', 'good-output', 'downtime', 'speed'] },
     'dt-pareto':       { name: 'Downtime Pareto',    area: 'efficiency', color: '#6B7280', inputs: ['downtime'] },
     'speed-variance':  { name: 'Speed Variance',     area: 'efficiency', color: '#6B7280', inputs: ['speed', 'good-output'] },
     'nct':             { name: 'Net Case Throughput', area: 'efficiency', color: '#6B7280', inputs: ['good-output', 'start-stop'] },
@@ -1265,11 +1265,11 @@ const DATA = {
   },
   // Which KPIs each governance meeting reviews
   governanceMetrics: {
-    'sic-meeting':    ['lost-time', 'dt-pareto', 'nct', 'crew-ratio', 'ga-pct'],
-    'daily-ops':      ['lost-time', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std'],
-    'weekly-review':  ['lost-time', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost'],
+    'sic-meeting':    ['efficiency', 'dt-pareto', 'nct', 'crew-ratio', 'ga-pct'],
+    'daily-ops':      ['efficiency', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std'],
+    'weekly-review':  ['efficiency', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'labour-cost'],
     'weekly-planning':['ctp-metric', 'labour-cost', 'crew-ratio'],
-    'monthly-finance':['lost-time', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case']
+    'monthly-finance':['efficiency', 'yield-waterfall', 'ga-pct', 'var-to-std', 'labour-cost', 'cost-per-case']
   }
 };
 
