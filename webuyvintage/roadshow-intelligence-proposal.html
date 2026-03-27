@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadshow Intelligence Platform — WeBuyVintage — majaco</title>
+  <script src="../js/auth-redirect.js"></script>
+  <script src="../js/client-redirect.js" data-password-hash="3a54811189e32a62aee733af7df79e029805124809693afdec1a936e6021b1d6"></script>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    /* Proposal layout */
+    .proposal { max-width: 860px; margin: 0 auto; }
+    .proposal-meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; font-size: 0.8125rem; color: var(--color-text-muted); letter-spacing: 0.04em; }
+    .proposal-meta span { display: flex; align-items: center; gap: 0.375rem; }
+
+    .proposal h2 { font-size: 1.9375rem; font-weight: 400; letter-spacing: -0.02em; line-height: 120%; margin: 3.5rem 0 1rem; color: var(--color-text); }
+    .proposal h3 { font-size: 1.5625rem; font-weight: 700; line-height: 120%; margin: 2.5rem 0 0.75rem; color: var(--color-text); }
+    .proposal h4 { font-size: 1.25rem; font-weight: 400; line-height: 140%; margin: 2rem 0 0.5rem; color: var(--color-text); }
+    .proposal p { font-size: 1rem; font-weight: 300; line-height: 160%; color: var(--color-text); margin-bottom: 1rem; }
+    .proposal strong { font-weight: 700; }
+    .proposal em { font-style: italic; color: var(--color-text-muted); }
+    .proposal ul, .proposal ol { margin: 0.5rem 0 1.25rem 1.5rem; }
+    .proposal li { font-size: 1rem; font-weight: 300; line-height: 180%; color: var(--color-text); }
+    .proposal li strong { font-weight: 700; }
+    .proposal hr { border: none; border-top: 1px solid var(--color-border); margin: 3rem 0; }
+
+    /* Tables */
+    .proposal table { width: 100%; border-collapse: collapse; margin: 1.25rem 0 1.75rem; font-size: 0.9375rem; }
+    .proposal th { text-align: left; padding: 0.75rem 1rem; background: var(--color-bg-alt); border: 1px solid var(--color-border); font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-muted); }
+    .proposal td { padding: 0.75rem 1rem; border: 1px solid var(--color-border); font-weight: 300; line-height: 150%; }
+    .proposal td strong { font-weight: 700; }
+
+    /* Key inputs callout */
+    .key-inputs { background: var(--color-bg-alt); border-left: 3px solid var(--color-primary); padding: 1rem 1.25rem; margin: 1rem 0 1.5rem; border-radius: 0 8px 8px 0; font-size: 0.9375rem; font-weight: 300; color: var(--color-text-muted); }
+    .key-inputs strong { color: var(--color-text); font-weight: 700; }
+
+    /* Highlight box */
+    .highlight-box { background: var(--color-bg-dark); border-radius: 12px; padding: 2rem; margin: 2rem 0; }
+    .highlight-box h3 { color: #fff; margin-top: 0; }
+    .highlight-box p, .highlight-box li { color: rgba(255,255,255,0.85); }
+    .highlight-box strong { color: #fff; }
+    .highlight-box .big-number { font-size: 3.0625rem; font-weight: 400; letter-spacing: -0.02em; line-height: 120%; color: var(--color-accent); margin: 0.5rem 0; }
+
+    /* Model cards */
+    .model-card { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 12px; padding: 2rem; margin: 1.5rem 0; transition: box-shadow 0.3s ease; }
+    .model-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06); }
+    .model-card h3 { margin-top: 0; }
+    .model-card .question { font-size: 1.125rem; font-style: italic; color: var(--color-primary); margin-bottom: 1rem; font-weight: 400; }
+
+    /* Pricing grid */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+    .pricing-option { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 12px; padding: 2rem; }
+    .pricing-option h4 { margin-top: 0; font-weight: 700; font-size: 1.25rem; }
+    .pricing-option .price { font-size: 1.9375rem; font-weight: 400; color: var(--color-primary); margin: 0.5rem 0; }
+    .pricing-option .price-sub { font-size: 0.875rem; color: var(--color-text-muted); font-weight: 300; }
+
+    /* Steps */
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 1.5rem 0; }
+    .steps li { counter-increment: step; position: relative; padding-left: 3rem; margin-bottom: 1.25rem; }
+    .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; background: var(--color-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; }
+
+    /* Disclaimer */
+    .disclaimer { background: var(--color-bg-alt); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 3rem; font-size: 0.8125rem; color: var(--color-text-muted); font-weight: 300; line-height: 160%; }
+
+    @media (max-width: 640px) {
+      .proposal h2 { font-size: 1.5625rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .highlight-box .big-number { font-size: 2.4375rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html">WeBuyVintage</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Proposal</span>
+      </nav>
+      <p class="page-hero__eyebrow">Proposal</p>
+      <h1 class="page-hero__title">
+        Roadshow Intelligence <span class="text-green">Platform</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        Data-driven event scheduling, dealer ranking, and area intelligence for WeBuyVintage.
+      </p>
+    </div>
+  </section>
+
+  <!-- Proposal Content -->
+  <section class="section">
+    <div class="container">
+      <div class="proposal">
+
+        <div class="proposal-meta">
+          <span>Prepared for <strong>Liam Vasey, Founder</strong></span>
+          <span>27 March 2026</span>
+        </div>
+
+        <!-- 1. Executive Summary -->
+        <h2>1. Executive Summary</h2>
+        <p>WeBuyVintage has scaled from zero to 2,800+ roadshow events per year in under four years &mdash; a remarkable achievement built on instinct, hustle, and strong dealer relationships. This proposal outlines a data platform that turns your events, customer, and dealer data into a decision-making engine, so growth from here is guided by evidence rather than gut feel.</p>
+        <p><strong>The core objective: maximise return on every hour of dealer time in the field.</strong></p>
+        <p>We propose building five interconnected analytical models, delivered as an internal tool your operations team can use day-to-day, with a one-off build phase followed by an ongoing software subscription.</p>
+
+        <hr>
+
+        <!-- 2. Understanding Your Business -->
+        <h2>2. Understanding Your Business</h2>
+
+        <table>
+          <tbody>
+            <tr><td><strong>Founded</strong></td><td>October 2022</td></tr>
+            <tr><td><strong>Model</strong></td><td>In-person roadshow buying events across the UK</td></tr>
+            <tr><td><strong>Scale</strong></td><td>~2,800 events/year (8&ndash;13 events per day)</td></tr>
+            <tr><td><strong>Avg. attendance</strong></td><td>~25 people per event</td></tr>
+            <tr><td><strong>Avg. payout</strong></td><td>~&pound;600 per person</td></tr>
+            <tr><td><strong>Event economics</strong></td><td>~&pound;15k cost &rarr; ~&pound;25k revenue = ~&pound;10k margin per event</td></tr>
+            <tr><td><strong>Dealers</strong></td><td>2&ndash;3 per event; they assess items and set purchase prices on the spot</td></tr>
+            <tr><td><strong>Items</strong></td><td>Gold, silver, jewellery, watches, cameras, coins, collectibles</td></tr>
+            <tr><td><strong>Revenue driver</strong></td><td>Margin between what dealers pay at events and downstream resale value</td></tr>
+            <tr><td><strong>Reputation</strong></td><td>4.7/5 Trustpilot (1,370+ reviews)</td></tr>
+            <tr><td><strong>Current tooling</strong></td><td>Event data held in Google Sheets</td></tr>
+          </tbody>
+        </table>
+
+        <p>At ~&pound;70m annual turnover, the business is producing approximately <strong>&pound;28m in gross margin per year</strong>. The fundamental economics: <strong>the right dealer, in the right town, at the right time</strong> is the difference between a highly profitable event and a wasted day. Every model below is designed to sharpen one dimension of that equation.</p>
+
+        <hr>
+
+        <!-- 3. What We'll Build -->
+        <h2>3. What We'll Build</h2>
+
+        <!-- Model 1 -->
+        <div class="model-card">
+          <h3>Model 1: Event Repeat Timing Engine</h3>
+          <p class="question">"When should we return to [town X]?"</p>
+          <ul>
+            <li>Analyses historical event performance by location over time (revenue, items purchased, footfall, margin)</li>
+            <li>Identifies the optimal "cooldown" period before an area is ready to be revisited &mdash; too soon and the well is dry, too late and competitors move in</li>
+            <li><strong>Diminishing returns analysis</strong> &mdash; quantifies exactly how yield decays with each repeat visit to the same area. Answers: "Does the 3rd visit to Tunbridge Wells still make money? What about the 5th?" Maps the yield curve per location type so you can see where you're past the point of diminishing returns and should rotate to fresh areas</li>
+            <li>Factors in seasonality (e.g. post-Christmas clear-outs, spring cleaning, probate cycles)</li>
+            <li>Factors in "replenishment rate" &mdash; how quickly an area's pool of sellable items regenerates between visits</li>
+            <li>Outputs a rolling calendar recommendation: which locations are "ripe" for a return visit this month</li>
+          </ul>
+          <div class="key-inputs"><strong>Key inputs:</strong> Event date, location, revenue, items bought, category mix, footfall/attendance estimates</div>
+        </div>
+
+        <!-- Model 2 -->
+        <div class="model-card">
+          <h3>Model 2: Dealer Performance Ranking</h3>
+          <p class="question">"Who are our best dealers, and where do they perform best?"</p>
+          <ul>
+            <li>Creates a composite dealer score based on: total value acquired per event, margin generated (if resale data available), item volume, customer satisfaction signals, category expertise</li>
+            <li>Controls for location quality &mdash; a dealer in a strong area shouldn't get credit for the postcode; equally, a strong dealer in a weak area should be recognised</li>
+            <li>Identifies dealer specialisms (e.g. Dealer A is exceptional at jewellery but average at cameras)</li>
+            <li>Flags underperformance early &mdash; if a dealer's numbers are trending down, surface it before it costs real money</li>
+          </ul>
+          <div class="key-inputs"><strong>Key inputs:</strong> Dealer ID per event, items purchased per dealer, amounts paid, category breakdown, any customer feedback data</div>
+        </div>
+
+        <!-- Model 3 -->
+        <div class="model-card">
+          <h3>Model 3: Customer &amp; Area Intelligence</h3>
+          <p class="question">"Where are our best customers, and where haven't we been yet?"</p>
+          <ul>
+            <li>Maps all customer postcodes to build a heatmap of demand density and spend quality</li>
+            <li>Segments customers by value tier (one-off sellers vs. repeat high-value customers)</li>
+            <li>Identifies <strong>white space</strong> &mdash; high-potential areas (by demographics, wealth indicators, housing age/type) where you've never run an event</li>
+            <li>Ranks untapped postcodes by predicted yield, so you're not guessing where to expand</li>
+            <li>Cross-references with competitor event locations (where data is available) to find underserved markets</li>
+          </ul>
+          <div class="key-inputs"><strong>Key inputs:</strong> Customer postcodes, transaction values, item categories, event attended, repeat visit flag</div>
+          <p style="margin-top: 1rem; font-size: 0.9375rem; color: var(--color-text-muted);"><strong>Enrichment data we'll layer in:</strong> ONS demographic data, house price data, population age profiles, Index of Multiple Deprivation, rural/urban classification</p>
+        </div>
+
+        <!-- Model 4 -->
+        <div class="model-card">
+          <h3>Model 4: Dealer Capacity Planning</h3>
+          <p class="question">"Which regions need more dealers?"</p>
+          <ul>
+            <li>Compares current dealer deployment against predicted demand by region</li>
+            <li>Identifies bottlenecks &mdash; areas where event frequency is capped by dealer availability, not demand</li>
+            <li>Models the revenue impact of adding a dealer in each region, so you can prioritise recruitment</li>
+            <li>Accounts for dealer travel radius and availability to produce realistic deployment scenarios</li>
+          </ul>
+          <div class="key-inputs"><strong>Key inputs:</strong> Dealer home locations, availability patterns, current event assignments, regional event revenue data</div>
+        </div>
+
+        <!-- Model 5 -->
+        <div class="model-card">
+          <h3>Model 5: "What Makes a Great Roadshow Area?" &mdash; Pattern Analysis</h3>
+          <p class="question">"What do our best-performing locations have in common?"</p>
+          <p>This is a one-off strategic deep-dive delivered as a report alongside the platform, covering:</p>
+          <ul>
+            <li>Statistical analysis of your top-performing vs. bottom-performing event locations</li>
+            <li>Identification of the external factors that predict success: population demographics, average age, home ownership rates, house prices, distance to nearest competitor, venue type, day of week, time of year</li>
+            <li>A scoring model that rates any UK postcode for roadshow potential &mdash; before you've ever been there</li>
+            <li>Clear, actionable findings: <em>"Your best areas tend to be market towns with 10k&ndash;30k population, 55+ age skew, above-average home ownership, and no competing roadshow within 20 miles"</em></li>
+          </ul>
+          <div class="key-inputs"><strong>Deliverable:</strong> Written report + interactive scoring tool embedded in the platform</div>
+        </div>
+
+        <hr>
+
+        <!-- 4. How It Will Work -->
+        <h2>4. How It Will Work in Practice</h2>
+
+        <h3>The Platform</h3>
+        <p>A web-based internal dashboard (accessible to your ops team, not public) with:</p>
+        <ul>
+          <li><strong>Event Calendar View</strong> &mdash; recommended schedule with colour-coded priority (green = high predicted yield, amber = moderate, red = too soon / low potential)</li>
+          <li><strong>Dealer Leaderboard</strong> &mdash; live ranking with drill-down into individual dealer performance by category, region, and trend over time</li>
+          <li><strong>Area Explorer</strong> &mdash; interactive map showing customer heatmaps, white space opportunities, and postcode-level scoring</li>
+          <li><strong>Capacity Dashboard</strong> &mdash; regional view of dealer supply vs. demand, with recruitment priority flags</li>
+          <li><strong>Data Upload</strong> &mdash; simple CSV/Excel upload or direct integration with your existing systems to keep models fresh</li>
+        </ul>
+
+        <h3>How models stay accurate</h3>
+        <p>Models are only as good as the data feeding them. We'll establish:</p>
+        <ul>
+          <li>A direct integration with your existing Google Sheets event data &mdash; automated ingestion, no manual exports</li>
+          <li>Monthly model refresh cycles so recommendations reflect the latest events</li>
+          <li>Quarterly model performance reviews to tune accuracy</li>
+        </ul>
+
+        <hr>
+
+        <!-- 5. Delivery Plan -->
+        <h2>5. Delivery Plan</h2>
+
+        <table>
+          <thead>
+            <tr><th>Phase</th><th>Duration</th><th>What happens</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Discovery &amp; Data Audit</strong></td><td>2 weeks</td><td>Map all available data sources, assess quality, define schemas, agree KPIs</td></tr>
+            <tr><td><strong>Data Engineering</strong></td><td>3 weeks</td><td>Build ingestion pipeline, clean/structure historical data, enrich with external datasets</td></tr>
+            <tr><td><strong>Model Development</strong></td><td>4 weeks</td><td>Build and validate all five models against historical performance</td></tr>
+            <tr><td><strong>"Good Area" Report</strong></td><td>Included above</td><td>One-off strategic analysis delivered as written report</td></tr>
+            <tr><td><strong>Platform Build</strong></td><td>3 weeks</td><td>Web dashboard, visualisations, data upload flows</td></tr>
+            <tr><td><strong>Testing &amp; Handover</strong></td><td>2 weeks</td><td>UAT with your team, training, documentation, go-live</td></tr>
+            <tr><td><strong>Total</strong></td><td><strong>~14 weeks</strong></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <!-- 6. Pricing -->
+        <h2>6. Pricing</h2>
+
+        <div class="pricing-grid">
+          <div class="pricing-option">
+            <h4>Option A: Standard</h4>
+            <p class="price">&pound;45,000</p>
+            <p class="price-sub">One-off build (discovery through go-live, including the strategic "good area" report)</p>
+            <hr style="margin: 1.25rem 0;">
+            <p class="price">&pound;2,500<span style="font-size: 1rem;">/month</span></p>
+            <p class="price-sub">Software &amp; model maintenance<br>24-month minimum term</p>
+          </div>
+          <div class="pricing-option">
+            <h4>Option B: Accelerated (10 weeks)</h4>
+            <p class="price">&pound;55,000</p>
+            <p class="price-sub">One-off build (compressed timeline)</p>
+            <hr style="margin: 1.25rem 0;">
+            <p class="price">&pound;2,500<span style="font-size: 1rem;">/month</span></p>
+            <p class="price-sub">Software &amp; model maintenance<br>24-month minimum term</p>
+          </div>
+        </div>
+
+        <p style="font-size: 0.875rem; color: var(--color-text-muted); font-style: italic;">Monthly fees are subject to a 24-month minimum commitment. After the initial term, the agreement continues on a rolling 3-month notice basis.</p>
+
+        <h3>What's included in the monthly fee</h3>
+        <ul>
+          <li>Cloud hosting and infrastructure</li>
+          <li>Direct integration with your Google Sheets event data (automated sync &mdash; no manual exports needed)</li>
+          <li>Monthly model retraining on latest data</li>
+          <li>Data pipeline maintenance</li>
+          <li>Up to 4 hours/month of support and ad-hoc analysis</li>
+          <li>Quarterly model performance review and tuning</li>
+          <li>Bug fixes and minor enhancements</li>
+        </ul>
+
+        <h3>What's not included</h3>
+        <ul>
+          <li>Major new features or models (scoped and quoted separately)</li>
+          <li>Integration with new third-party systems beyond initial scope</li>
+          <li>On-site training beyond initial handover</li>
+        </ul>
+
+        <!-- ROI highlight -->
+        <div class="highlight-box">
+          <h3>The economics of getting this right</h3>
+          <table style="border-color: rgba(255,255,255,0.15);">
+            <tbody>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);">Avg. attendance</td><td style="border-color: rgba(255,255,255,0.15); color: #fff;">~25 people</td></tr>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);">Avg. payout per person</td><td style="border-color: rgba(255,255,255,0.15); color: #fff;">~&pound;600</td></tr>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);">Avg. cost per event</td><td style="border-color: rgba(255,255,255,0.15); color: #fff;">~&pound;15,000</td></tr>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);">Avg. revenue per event</td><td style="border-color: rgba(255,255,255,0.15); color: #fff;">~&pound;25,000</td></tr>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);"><strong style="color: #fff;">Avg. margin per event</strong></td><td style="border-color: rgba(255,255,255,0.15);"><strong style="color: var(--color-accent);">~&pound;10,000</strong></td></tr>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);">Events per year</td><td style="border-color: rgba(255,255,255,0.15); color: #fff;">~2,800</td></tr>
+              <tr><td style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);"><strong style="color: #fff;">Annual gross margin</strong></td><td style="border-color: rgba(255,255,255,0.15);"><strong style="color: var(--color-accent);">~&pound;28,000,000</strong></td></tr>
+            </tbody>
+          </table>
+          <p>Even a <strong>5% improvement in event yield</strong> &mdash; through better location selection, optimal repeat timing, and stronger dealer allocation &mdash; would mean:</p>
+          <p class="big-number">&pound;1.4m additional annual margin</p>
+          <p>Against a total first-year cost of <strong>&pound;75,000</strong> (build + 12 months of software) &mdash; a <strong>~19x return on investment in year one</strong>.</p>
+          <p>The upside is asymmetric: avoiding even 2&ndash;3 dud events per month (&pound;10k margin each) pays for the entire platform. And the diminishing returns analysis alone &mdash; knowing when to stop going back to an area &mdash; could prevent tens of thousands in wasted dealer time annually.</p>
+        </div>
+
+        <hr>
+
+        <!-- 7. What We Need -->
+        <h2>7. What We Need From You</h2>
+        <p>To get started, we'd need access to:</p>
+        <ol class="steps">
+          <li><strong>Google Sheets access</strong> &mdash; read access to your existing event data sheets</li>
+          <li><strong>Dealer data</strong> &mdash; who worked which events, what they bought, amounts paid (if not already in Sheets)</li>
+          <li><strong>Customer postcodes</strong> &mdash; anonymised is fine, along with transaction values and item categories</li>
+          <li><strong>Any existing reporting</strong> &mdash; dashboards or summaries your team currently uses for scheduling decisions</li>
+          <li><strong>30 minutes with your ops lead</strong> &mdash; to understand current scheduling process and pain points</li>
+        </ol>
+
+        <hr>
+
+        <!-- 8. About Us -->
+        <h2>8. About majaco</h2>
+        <p>majaco is an operational improvement consultancy that combines deep process expertise with AI-powered analytics. We build tools that make complex operational decisions simpler &mdash; from production line optimisation to nationwide logistics planning.</p>
+        <p>Our AI platform, <strong>maji</strong>, powers analytical tools across industries including food manufacturing, logistics, and now retail buying operations. We specialise in turning messy operational data into clear, actionable intelligence.</p>
+
+        <hr>
+
+        <!-- 9. Next Steps -->
+        <h2>9. Next Steps</h2>
+        <ol class="steps">
+          <li><strong>Review this proposal</strong> &mdash; happy to walk through it on a call</li>
+          <li><strong>Data discovery session</strong> (1 hour) &mdash; we look at what you have and confirm feasibility</li>
+          <li><strong>Sign-off &amp; kick-off</strong> &mdash; we can start within 1 week of agreement</li>
+        </ol>
+
+        <div class="disclaimer">
+          This proposal is valid for 30 days from the date above. All fees are exclusive of VAT. Confidential &mdash; prepared exclusively for WeBuyVintage.
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
