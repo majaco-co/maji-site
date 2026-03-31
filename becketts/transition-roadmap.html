@@ -1766,7 +1766,7 @@ const DATA = {
           id: 'good-output',
           name: 'Good Output',
           now: {
-            systems: ['sic', 'feedback'],
+            systems: ['sic', 'feedback', 'oee-system'],
             notes: 'SIC.xls gets a manual count of completed cases. SFDC gets QTY confirmed against W.O. Feedback pulls from SFDC data via SQL.',
             issues: ['SIC is manual estimate', 'Feedback is derivative of SFDC', 'Not real-time']
           },
@@ -1811,7 +1811,7 @@ const DATA = {
               { month: 3, action: 'Vorne downtime reporting live for 2 lines' }
             ],
             systems: ['feedback', 'xl-vorne'],
-            notes: 'Manually recorded in Feedback for all lines. XL Vorne supplements on Notts & Yorks lines only. Slicer downtime deferred to Phase 2.',
+            notes: 'Manually recorded in Feedback for all lines. XL Vorne supplements on Notts & Yorks lines only.',
             issues: ['Only 2 lines have automated capture', 'Rest of lines still manual via Feedback']
           },
           phase2s1: {
@@ -2120,7 +2120,7 @@ const DATA = {
     'relex': { name: 'Relex', color: '#14B8A6' },
     'po-system': { name: 'PO System', color: '#F59E0B' },
     'labour-register': { name: 'Labour Register', color: '#A78BFA' },
-    'planning-system': { name: 'Planning (XL/SQL)', color: '#F59E0B' },
+    'planning-system': { name: 'Planning (XL/SQL)', color: '#64748B' },
     'erp': { name: 'ERP', color: '#E879F9' }
   },
   reporting: {
@@ -2144,6 +2144,7 @@ const DATA = {
     now: {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
+      'oee-system': ['sfdc-rpt'],
       'manual': ['sic-rpt', 'sfdc-rpt', 'wb-verbal', 'manual-rpt'],
       'ta': ['manual-rpt'],
       'planning-xl': ['manual-rpt'],
@@ -2209,12 +2210,12 @@ const DATA = {
   governanceToReporting: {
     now: {
       'sic-meeting': ['sic-rpt', 'wb-verbal'],
-      'daily-ops': ['feedback-rpt', 'planning-rpt'],
+      'daily-ops': ['feedback-rpt', 'planning-rpt', 'manual-rpt'],
       'monthly-finance': ['sfdc-rpt', 'manual-rpt']
     },
     phase1: {
       'sic-meeting': ['sic-rpt', 'feedback-rpt'],
-      'daily-ops': ['feedback-rpt', 'planning-rpt'],
+      'daily-ops': ['feedback-rpt', 'planning-rpt', 'manual-rpt'],
       'daily-plan-review': ['planning-rpt'],
       'weekly-review': ['feedback-rpt', 'sfdc-rpt'],
       'weekly-plan-review': ['planning-rpt'],
@@ -2223,7 +2224,7 @@ const DATA = {
     },
     phase2s1: {
       'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt', 'planning-rpt'],
+      'daily-ops': ['sfdc-rpt', 'planning-rpt', 'manual-rpt'],
       'daily-plan-review': ['sfdc-rpt', 'planning-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-plan-review': ['sfdc-rpt', 'planning-rpt'],
@@ -2232,7 +2233,7 @@ const DATA = {
     },
     phase2s2: {
       'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt', 'planning-rpt'],
+      'daily-ops': ['sfdc-rpt', 'planning-rpt', 'manual-rpt'],
       'daily-plan-review': ['sfdc-rpt', 'planning-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-plan-review': ['sfdc-rpt', 'planning-rpt'],
@@ -2242,7 +2243,7 @@ const DATA = {
     },
     phase3: {
       'sic-meeting': ['sfdc-rpt'],
-      'daily-ops': ['sfdc-rpt', 'planning-rpt'],
+      'daily-ops': ['sfdc-rpt', 'planning-rpt', 'manual-rpt'],
       'daily-plan-review': ['sfdc-rpt', 'planning-rpt'],
       'weekly-review': ['sfdc-rpt'],
       'weekly-plan-review': ['sfdc-rpt', 'planning-rpt'],
@@ -2276,7 +2277,7 @@ const DATA = {
     'labour-cost':     { name: 'Labour Cost vs Plan', area: 'labour',     color: '#EAB308', inputs: ['paid-hours', 'agency-hours', 'labour-register'] },
     'cost-per-case':   { name: '£/Case',              area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours', 'agency-hours'] },
     'kgplh':           { name: 'KG/Labour Hour',      area: 'labour',     color: '#EAB308', inputs: ['good-output', 'paid-hours', 'agency-hours'] },
-    'labour-control':  { name: 'Labour Control',     area: 'labour',     color: '#EAB308', inputs: ['planned-labour', 'actual-labour', 'paid-labour'] },
+    'labour-reconciliation':  { name: 'Labour Reconciliation', area: 'labour', color: '#EAB308', inputs: ['planned-labour', 'actual-labour', 'paid-labour'] },
     'run-length-var':      { name: 'Run Length Variance',  area: 'planning', color: '#F472B6', inputs: ['planned-run-length', 'start-stop'] },
     'sequence-adherence':  { name: 'Sequence Adherence',   area: 'planning', color: '#F472B6', inputs: ['plan-sequence', 'good-output'] },
     'stock-vs-safety':     { name: 'Stock vs Safety',      area: 'planning', color: '#F472B6', inputs: ['stock-level', 'safety-stock'] },
@@ -2301,21 +2302,21 @@ const DATA = {
   },
   // Which KPIs are active per phase
   kpisByPhase: {
-    now:      ['efficiency', 'downtime', 'crew-ratio', 'ga-pct', 'labour-control'],
-    phase1:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'labour-control'],
-    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh', 'labour-control', 'plan-attainment', 'avg-batch-size', 'runs-per-day', 'capacity-util', 'runs-below-mmq'],
-    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'labour-control', 'plan-flatness', 'planned-kgplh', 'kgplh-gap', 'avg-batch-size', 'runs-per-day', 'plan-attainment', 'capacity-util', 'runs-below-mmq', 'plan-change-24hr', 'temp-dwell', 'temp-not-on-plan'],
-    phase3:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'labour-control', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'service-level', 'skus-oos', 'discounting', 'stock-at-risk', 'plan-flatness', 'planned-kgplh', 'kgplh-gap', 'avg-batch-size', 'runs-per-day', 'plan-attainment', 'capacity-util', 'runs-below-mmq', 'plan-change-24hr', 'temp-dwell', 'temp-not-on-plan']
+    now:      ['efficiency', 'downtime', 'crew-ratio', 'ga-pct'],
+    phase1:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'crew-ratio', 'ga-pct', 'labour-reconciliation'],
+    phase2s1: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'kgplh', 'labour-reconciliation', 'plan-attainment', 'avg-batch-size', 'runs-per-day', 'capacity-util', 'runs-below-mmq'],
+    phase2s2: ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'labour-reconciliation', 'plan-flatness', 'planned-kgplh', 'kgplh-gap', 'avg-batch-size', 'runs-per-day', 'plan-attainment', 'capacity-util', 'runs-below-mmq', 'plan-change-24hr', 'temp-dwell', 'temp-not-on-plan'],
+    phase3:   ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'crew-ratio', 'yield-waterfall', 'ga-pct', 'var-to-std', 'cost-per-case', 'labour-cost', 'kgplh', 'labour-reconciliation', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'service-level', 'skus-oos', 'discounting', 'stock-at-risk', 'plan-flatness', 'planned-kgplh', 'kgplh-gap', 'avg-batch-size', 'runs-per-day', 'plan-attainment', 'capacity-util', 'runs-below-mmq', 'plan-change-24hr', 'temp-dwell', 'temp-not-on-plan']
   },
   // Which KPIs each governance meeting reviews
   governanceMetrics: {
     'sic-meeting':          ['efficiency', 'lost-time', 'slow-running', 'downtime', 'nct', 'ga-pct'],
-    'daily-ops':            ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh', 'labour-control'],
-    'daily-plan-review':    ['ctp-metric', 'plan-attainment', 'crew-ratio', 'labour-control'],
+    'daily-ops':            ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh', 'labour-reconciliation'],
+    'daily-plan-review':    ['ctp-metric', 'plan-attainment', 'crew-ratio', 'labour-reconciliation'],
     'weekly-review':        ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'labour-cost', 'kgplh'],
     'weekly-plan-review':   ['ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'labour-cost', 'crew-ratio', 'kgplh', 'plan-attainment', 'avg-batch-size'],
     'weekly-planning-perf': ['service-level', 'skus-oos', 'discounting', 'stock-at-risk', 'stock-vs-safety', 'avg-batch-size', 'runs-per-day', 'plan-attainment', 'capacity-util', 'runs-below-mmq', 'plan-change-24hr', 'temp-dwell', 'temp-not-on-plan', 'plan-flatness', 'planned-kgplh', 'kgplh', 'kgplh-gap'],
-    'monthly-finance':      ['efficiency', 'lost-time', 'yield-waterfall', 'cost-per-case', 'labour-cost', 'kgplh', 'stock-vs-safety'],
+    'monthly-finance':      ['efficiency', 'lost-time', 'yield-waterfall', 'ga-pct', 'cost-per-case', 'labour-cost', 'kgplh', 'stock-vs-safety'],
     'plan-rates':           ['efficiency', 'nct', 'speed-variance', 'run-length-var', 'kgplh']
   }
 };
