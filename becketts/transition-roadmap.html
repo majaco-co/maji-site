@@ -1776,7 +1776,7 @@ const DATA = {
               { month: 2, action: 'Check weigher count validates against W.O. qty' },
               { month: 3, action: 'Good output reporting validated' }
             ],
-            systems: ['checkweigher', 'manual'],
+            systems: ['checkweigher', 'oee-system', 'manual'],
             notes: 'Check weigher count fed into SIC for real-time good output during runs. SFDC W.O. qty used for all other meetings. XL Vorne does not capture good output.',
             issues: ['C/W to SIC integration needed', 'Rest of lines still SFDC W.O. count']
           },
@@ -2114,7 +2114,7 @@ const DATA = {
     'checkweigher': { name: 'Check Weigher', color: '#10B981' },
     'manual': { name: 'Manual', color: '#78716C' },
     'ta': { name: 'T&A', color: '#D97706' },
-    'think-trax': { name: 'Think Trax', color: '#94A3B8' },
+    'think-trax': { name: 'Think Trax', color: '#607D8B' },
     'sage-x3': { name: 'Sage X3', color: '#7C3AED' },
     'planning-xl': { name: 'Planning Spreadsheet', color: '#94A3B8' },
     'relex': { name: 'Relex', color: '#14B8A6' },
@@ -2156,6 +2156,7 @@ const DATA = {
       'feedback': ['feedback-rpt'],
       'sic': ['sic-rpt'],
       'xl-vorne': ['sic-rpt', 'feedback-rpt'],
+      'oee-system': ['sfdc-rpt'],
       'manual': ['feedback-rpt', 'sfdc-rpt'],
       'checkweigher': ['sic-rpt'],
       'ta': ['sfdc-rpt'],
