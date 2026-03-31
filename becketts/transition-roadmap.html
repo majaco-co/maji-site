@@ -2134,10 +2134,10 @@ const DATA = {
   // Which reporting destinations are active per phase
   reportingByPhase: {
     now: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'wb-verbal', 'manual-rpt', 'planning-rpt'],
-    phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'planning-rpt'],
-    phase2s1: ['sfdc-rpt', 'planning-rpt'],
-    phase2s2: ['sfdc-rpt', 'planning-rpt'],
-    phase3: ['sfdc-rpt', 'planning-rpt']
+    phase1: ['sic-rpt', 'feedback-rpt', 'sfdc-rpt', 'manual-rpt', 'planning-rpt'],
+    phase2s1: ['sfdc-rpt', 'manual-rpt', 'planning-rpt'],
+    phase2s2: ['sfdc-rpt', 'manual-rpt', 'planning-rpt'],
+    phase3: ['sfdc-rpt', 'manual-rpt', 'planning-rpt']
   },
   // Which systems feed into which reporting destinations per phase
   systemToReporting: {
@@ -2150,11 +2150,11 @@ const DATA = {
       'planning-xl': ['manual-rpt'],
       'po-system': ['manual-rpt'],
       'labour-register': ['manual-rpt'],
-      'planning-system': ['planning-rpt']
+      'planning-system': ['planning-rpt'],
+      'erp': ['manual-rpt']
     },
     phase1: {
       'feedback': ['feedback-rpt'],
-      'sic': ['sic-rpt'],
       'xl-vorne': ['sic-rpt', 'feedback-rpt'],
       'oee-system': ['sfdc-rpt'],
       'manual': ['feedback-rpt', 'sfdc-rpt'],
@@ -2163,7 +2163,8 @@ const DATA = {
       'planning-xl': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
       'labour-register': ['sfdc-rpt'],
-      'planning-system': ['planning-rpt']
+      'planning-system': ['planning-rpt'],
+      'erp': ['manual-rpt']
     },
     phase2s1: {
       'oee-system': ['sfdc-rpt'],
@@ -2173,7 +2174,8 @@ const DATA = {
       'planning-xl': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
       'labour-register': ['sfdc-rpt'],
-      'planning-system': ['planning-rpt']
+      'planning-system': ['planning-rpt'],
+      'erp': ['sfdc-rpt']
     },
     phase2s2: {
       'oee-system': ['sfdc-rpt'],
@@ -2183,7 +2185,8 @@ const DATA = {
       'planning-xl': ['sfdc-rpt'],
       'po-system': ['sfdc-rpt'],
       'labour-register': ['sfdc-rpt'],
-      'planning-system': ['planning-rpt']
+      'planning-system': ['planning-rpt'],
+      'erp': ['sfdc-rpt']
     },
     phase3: {
       'oee-system': ['sfdc-rpt'],
@@ -2315,7 +2318,7 @@ const DATA = {
     'daily-ops':            ['efficiency', 'lost-time', 'slow-running', 'downtime', 'speed-variance', 'nct', 'crew-ratio', 'ga-pct', 'var-to-std', 'kgplh', 'labour-reconciliation'],
     'daily-plan-review':    ['ctp-metric', 'plan-attainment', 'crew-ratio', 'labour-reconciliation'],
     'weekly-review':        ['efficiency', 'lost-time', 'slow-running', 'downtime', 'dt-pareto', 'speed-variance', 'nct', 'yield-waterfall', 'ga-pct', 'var-to-std', 'ctp-metric', 'run-length-var', 'sequence-adherence', 'labour-cost', 'kgplh'],
-    'weekly-plan-review':   ['ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'labour-cost', 'crew-ratio', 'kgplh', 'plan-attainment', 'avg-batch-size'],
+    'weekly-plan-review':   ['ctp-metric', 'run-length-var', 'sequence-adherence', 'stock-vs-safety', 'labour-cost', 'crew-ratio', 'kgplh', 'plan-attainment', 'avg-batch-size', 'runs-per-day', 'capacity-util', 'runs-below-mmq'],
     'weekly-planning-perf': ['service-level', 'skus-oos', 'discounting', 'stock-at-risk', 'stock-vs-safety', 'avg-batch-size', 'runs-per-day', 'plan-attainment', 'capacity-util', 'runs-below-mmq', 'plan-change-24hr', 'temp-dwell', 'temp-not-on-plan', 'plan-flatness', 'planned-kgplh', 'kgplh', 'kgplh-gap'],
     'monthly-finance':      ['efficiency', 'lost-time', 'yield-waterfall', 'ga-pct', 'cost-per-case', 'labour-cost', 'kgplh', 'stock-vs-safety'],
     'plan-rates':           ['efficiency', 'nct', 'speed-variance', 'run-length-var', 'kgplh']
