@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hindsight Partners | Making The Obvious Look Strategic Since 2026</title>
+  <meta name="description" content="Hindsight Partners. Operational improvement consultancy. We tell you what you already knew, but with better fonts.">
+  <meta property="og:title" content="majaco — Big news.">
+  <meta property="og:description" content="We've been working on something for a while now. Today feels like the right day to share it.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://majiai.co/hindsight-partners.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    @font-face {
+      font-family: 'TT Hoves Pro';
+      src: url('assets/fonts/TT_Hoves_Pro_Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Hoves Pro';
+      src: url('assets/fonts/TT_Hoves_Pro_Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Hoves Pro';
+      src: url('assets/fonts/TT_Hoves_Pro_Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pine: #006458;
+      --lime: #DAF11B;
+      --dark: #001412;
+      --white: #FFFFFF;
+      --grey: #7A7A7A;
+      --light-bg: #f5f5f5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'TT Hoves Pro', system-ui, -apple-system, sans-serif;
+      font-weight: 300;
+      color: #1A1A1A;
+      line-height: 1.6;
+      font-size: 16px;
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 { font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(2.5rem, 5vw, 3.8125rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3.0625rem); }
+    h3 { font-size: clamp(1.5rem, 3vw, 2.4375rem); }
+    h4 { font-size: 1.9375rem; letter-spacing: 0; }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .overline {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 1rem;
+    }
+
+    /* ---- Scroll Animations ---- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--dark);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      height: 80px;
+    }
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--white);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+    .nav__logo .eyeglass {
+      font-size: 1.6rem;
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav__links a {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.9375rem;
+      font-weight: 300;
+      transition: color 0.25s ease;
+    }
+    .nav__links a:hover { color: var(--white); }
+    .nav__cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.625rem 1.5rem;
+      background: var(--lime);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 0.875rem;
+      border-radius: 9999px;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+    }
+    .nav__cta:hover {
+      box-shadow: 0 4px 20px rgba(218, 241, 27, 0.3);
+      transform: translateY(-1px);
+    }
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav__mobile {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: var(--dark);
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      z-index: 999;
+    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      padding: 0.5rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav__links, .nav__cta { display: none; }
+      .nav__hamburger { display: flex; }
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      padding: 10rem 0 6rem;
+      background: var(--dark);
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(0,100,88,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(218,241,27,0.05) 0%, transparent 60%);
+      animation: shimmer 8s ease-in-out infinite alternate;
+    }
+    @keyframes shimmer {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-2%, 1%); }
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid rgba(218,241,27,0.3);
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--lime);
+      margin-bottom: 2.5rem;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 auto 1.5rem;
+    }
+    .hero h1 .highlight {
+      color: var(--lime);
+    }
+    .hero__sub {
+      max-width: 660px;
+      margin: 0 auto 2.5rem;
+      font-size: 1.25rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
+    .hero__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      background: var(--lime);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 9999px;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+    }
+    .hero__cta:hover {
+      box-shadow: 0 4px 20px rgba(218,241,27,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      padding: 6rem 0;
+    }
+    .section--grey {
+      background: var(--light-bg);
+    }
+    .section--dark {
+      background: var(--dark);
+      color: var(--white);
+    }
+    .section__header {
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto 4rem;
+    }
+    .section__header p {
+      margin-top: 1rem;
+      color: var(--grey);
+      font-size: 1.125rem;
+    }
+
+    /* ---- Case Study Cards ---- */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .case-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      border: 1px solid #e0e0e0;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .case-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+    .case-card__client {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pine);
+      margin-bottom: 1rem;
+    }
+    .case-card__stat {
+      font-size: 2.4375rem;
+      font-weight: 400;
+      color: var(--pine);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .case-card p {
+      color: var(--grey);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .case-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 1.5rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--pine);
+    }
+    .case-card__link::after {
+      content: '\2192';
+      transition: transform 0.2s ease;
+    }
+    .case-card:hover .case-card__link::after {
+      transform: translateX(4px);
+    }
+
+    /* ---- Pillars ---- */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+    @media (max-width: 768px) {
+      .pillars-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    .pillar {
+      padding: 2rem 0;
+    }
+    .pillar__icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(218,241,27,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .pillar h3 {
+      font-size: 1.5625rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .pillar p {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+
+    /* ---- Testimonials ---- */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    @media (max-width: 768px) {
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    .testimonial {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2.5rem;
+      border: 1px solid #e0e0e0;
+      transition: box-shadow 0.3s ease;
+    }
+    .testimonial:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06);
+    }
+    .testimonial__quote {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: #1A1A1A;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .testimonial__author {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--pine);
+    }
+    .testimonial__role {
+      font-size: 0.8125rem;
+      color: var(--grey);
+      margin-top: 0.25rem;
+    }
+
+    /* ---- Logos ---- */
+    .logos-section {
+      padding: 4rem 0;
+      border-top: 1px solid #e0e0e0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .logos-section .overline {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .logos-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      opacity: 0.5;
+    }
+    .logos-strip span {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--grey);
+      white-space: nowrap;
+    }
+
+    /* ---- Brand Partner ---- */
+    .partner-section {
+      text-align: center;
+    }
+    .partner-section .yaya-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--pine);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.08em;
+    }
+    .partner-section p {
+      max-width: 620px;
+      margin: 0 auto;
+      color: var(--grey);
+      font-size: 1.125rem;
+      line-height: 1.7;
+    }
+    .partner-section p + p {
+      margin-top: 1rem;
+    }
+
+    /* ---- CTA Section ---- */
+    .cta-section {
+      padding: 8rem 0;
+      text-align: center;
+      background: var(--dark);
+      color: var(--white);
+      position: relative;
+    }
+    .cta-section h2 {
+      margin-bottom: 1.5rem;
+    }
+    .cta-section p {
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+      color: rgba(255,255,255,0.65);
+      font-size: 1.125rem;
+      line-height: 1.7;
+    }
+    .cta-section .hero__cta {
+      font-size: 1.0625rem;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      padding: 4rem 0 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.875rem;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 768px) {
+      .footer__grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+    .footer__brand .nav__logo {
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .footer__brand p {
+      line-height: 1.6;
+      max-width: 280px;
+    }
+    .footer__col h4 {
+      color: var(--white);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .footer__col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .footer__col a {
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s ease;
+    }
+    .footer__col a:hover { color: var(--white); }
+    .footer__bottom {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer__social {
+      display: flex;
+      gap: 1rem;
+    }
+    .footer__social a {
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s ease;
+    }
+    .footer__social a:hover { color: var(--lime); }
+
+    /* ---- Reveal (April Fools) ---- */
+    .reveal-bar {
+      background: var(--lime);
+      color: var(--dark);
+      text-align: center;
+      padding: 1.5rem;
+      font-weight: 400;
+      font-size: 0.9375rem;
+    }
+    .reveal-bar a {
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ---- Sparkle cursor effect ---- */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 1rem;
+      animation: sparkle-fade 0.8s ease-out forwards;
+    }
+    @keyframes sparkle-fade {
+      0% { opacity: 1; transform: scale(1) translateY(0); }
+      100% { opacity: 0; transform: scale(0.5) translateY(-30px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="#" class="nav__logo">
+        <span class="eyeglass">&#128373;</span> Hindsight Partners
+      </a>
+      <ul class="nav__links">
+        <li><a href="#work">Case studies</a></li>
+        <li><a href="#why">Methodology</a></li>
+        <li><a href="#kind-words">Testimonials</a></li>
+        <li><a href="#partner">The rebrand</a></li>
+      </ul>
+      <a href="#cta" class="nav__cta">Hire us</a>
+      <button class="nav__hamburger" aria-label="Toggle menu" onclick="document.querySelector('.nav__mobile').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__mobile">
+      <a href="#work" onclick="this.parentElement.classList.remove('open')">Case studies</a>
+      <a href="#why" onclick="this.parentElement.classList.remove('open')">Methodology</a>
+      <a href="#kind-words" onclick="this.parentElement.classList.remove('open')">Testimonials</a>
+      <a href="#partner" onclick="this.parentElement.classList.remove('open')">The rebrand</a>
+      <a href="#cta" class="nav__cta" style="text-align:center;margin-top:0.5rem" onclick="this.parentElement.classList.remove('open')">Hire us</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="fade-up">
+        <div class="hero__badge">&#128373; Announcing our rebrand</div>
+        <h1>Making the obvious look <span class="highlight">strategic</span> since 2026</h1>
+        <p class="hero__sub">We go into factories, point at things, and the numbers go up. We've tried explaining it other ways but honestly that's the gist of it. Our clients keep paying us so we assume it's working.</p>
+        <a href="#cta" class="hero__cta">Throw money at us &#128373;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies -->
+  <section class="section" id="work">
+    <div class="container">
+      <div class="section__header fade-up">
+        <div class="overline">Case studies</div>
+        <h2>Clients who paid us and then felt compelled to say nice things</h2>
+      </div>
+      <div class="cases-grid">
+        <div class="case-card fade-up">
+          <div class="case-card__client">Crumble &amp; Sons</div>
+          <div class="case-card__stat">&pound;4.5m</div>
+          <p>We found &pound;4.5m of savings that had been there the whole time. The operations director described the experience as 'like being told your house has a basement you never knew about and it's full of money'. He has since been promoted and takes full credit.</p>
+          <span class="case-card__link">Read the case study you'll forward to your boss</span>
+        </div>
+        <div class="case-card fade-up">
+          <div class="case-card__client">Velvet Puddings</div>
+          <div class="case-card__stat">50% reduction</div>
+          <p>We halved their product giveaway by staring at a depositor for three weeks and then telling them to clean it more often. They could have worked this out themselves but didn't, which is essentially our entire business model.</p>
+          <span class="case-card__link">Read more, if you must</span>
+        </div>
+        <div class="case-card fade-up">
+          <div class="case-card__client">Thornbury Group</div>
+          <div class="case-card__stat">25% cost reduction</div>
+          <p>It turned out they had far too many people standing around waiting for things to happen. We told them to stop doing that. They paid us a considerable sum for this observation and everyone agreed it was worth it, mainly because admitting otherwise would be embarrassing.</p>
+          <span class="case-card__link">Reluctantly learn more</span>
+        </div>
+        <div class="case-card fade-up">
+          <div class="case-card__client">Wagmore</div>
+          <div class="case-card__stat">11% output increase</div>
+          <p>One in every ten units of fresh pet food was being thrown in the bin. We asked 'have you tried not doing that?' and after some additional steps which we've dressed up in a methodology, they stopped. Output went up 11%. The dogs remain blissfully unaware of any of this.</p>
+          <span class="case-card__link">Read the heartwarming tale</span>
+        </div>
+        <div class="case-card fade-up">
+          <div class="case-card__client">Goldhawk</div>
+          <div class="case-card__stat">40% labour productivity gain</div>
+          <p>Six production lines. Hundreds of staff. Nobody had thought to check whether people were actually needed at the stations they were standing at. Turns out quite a lot of them weren't. We made a spreadsheet about it and everyone was very impressed.</p>
+          <span class="case-card__link">Marvel at the spreadsheet</span>
+        </div>
+        <div class="case-card fade-up">
+          <div class="case-card__client">Ridgeline</div>
+          <div class="case-card__stat">90% giveaway reduction</div>
+          <p>They were giving away 2% of everything they made for free. We got it down to 0.2%. The method involved maths and a whiteboard. The client described the savings as 'appearing out of thin air', which is generous given we'd been on site for four months eating their biscuits.</p>
+          <span class="case-card__link">View the maths</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Logos -->
+  <div class="logos-section">
+    <div class="container">
+      <div class="overline">Companies whose cheques cleared</div>
+      <div class="logos-strip">
+        <span>Velvet Puddings</span>
+        <span>Crumble &amp; Sons</span>
+        <span>Wagmore</span>
+        <span>Thornbury Group</span>
+        <span>Goldhawk</span>
+        <span>Fenwick &amp; Clay</span>
+        <span>Ridgeline</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Hindsight Partners -->
+  <section class="section section--dark" id="why">
+    <div class="container">
+      <div class="section__header fade-up">
+        <div class="overline" style="color: var(--lime);">Our methodology</div>
+        <h2>How we <span style="color: var(--lime);">actually</span> work</h2>
+        <p style="color: rgba(255,255,255,0.55);">Our three-phase approach has been refined over dozens of engagements. We have given each phase a name to make it sound more deliberate than it is.</p>
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar fade-up">
+          <div class="pillar__icon">&#128203;</div>
+          <h3>Phase 1: We watch you do things and write them down</h3>
+          <p>Our consultants will stand in your factory with a clipboard for several weeks. They will then present your own processes back to you in a nicer font. The real skill is maintaining a facial expression that suggests this required a postgraduate degree. Which, to be fair, it did.</p>
+        </div>
+        <div class="pillar fade-up">
+          <div class="pillar__icon">&#128200;</div>
+          <h3>Phase 2: We put it in a graph and say 'look at that'</h3>
+          <p>Every problem gets a 2&times;2 matrix. Every solution gets a Greek letter. We turn your gut feelings into 80-page slide decks with executive summaries that say exactly what you already knew, but with better axis labels and a colour palette that tested well in focus groups.</p>
+        </div>
+        <div class="pillar fade-up">
+          <div class="pillar__icon">&#128587;</div>
+          <h3>Phase 3: We leave and you take the credit</h3>
+          <p>After several months we go home and you present our findings as your own at the next board meeting. This is the correct and expected outcome. We get paid, you get promoted, the factory runs 30% better. Everybody wins. Nobody mentions us again until the next problem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section section--grey" id="kind-words">
+    <div class="container">
+      <div class="section__header fade-up">
+        <div class="overline">Testimonials</div>
+        <h2>Things clients said, possibly under duress</h2>
+        <p>We asked for testimonials. These people were kind enough not to run away.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial fade-up">
+          <p class="testimonial__quote">"I still don't fully understand what they did, but the numbers went up and my boss stopped asking difficult questions at the Monday meeting. They called it 'unlocking latent capacity'. I call it 'I can finally leave the office before seven'."</p>
+          <div class="testimonial__author">Man Who Was Initially Quite Hostile In The Car Park</div>
+          <div class="testimonial__role">Operations Director, Crumble &amp; Sons</div>
+        </div>
+        <div class="testimonial fade-up">
+          <p class="testimonial__quote">"They turned up, drew on our whiteboards for a bit, asked a lot of questions we should probably have been asking ourselves, and then our costs went down by 25%. My wife asked if they could come and have a look at our household budget. I said no, because I suspect the answer would be upsetting."</p>
+          <div class="testimonial__author">Man Who Now Uses The Phrase 'Value Stream' At Dinner Parties</div>
+          <div class="testimonial__role">Managing Director, Thornbury Group</div>
+        </div>
+        <div class="testimonial fade-up">
+          <p class="testimonial__quote">"They were contracted to deliver &pound;2m in annual savings. They actually delivered &pound;3.5m. I've worked with consultants who charge you &pound;200 an hour to tell you things are complicated. This lot actually fixed it. Bit annoying, if I'm honest, because now we can't blame the consultants when something goes wrong."</p>
+          <div class="testimonial__author">Woman Who Keeps Checking The Numbers Because Surely There's A Catch</div>
+          <div class="testimonial__role">CFO, Fenwick &amp; Clay</div>
+        </div>
+        <div class="testimonial fade-up">
+          <p class="testimonial__quote">"They had to be really good at what they do while also keeping hearts and minds with them. It's like servicing your car while you're driving along the motorway. But they did it. The factory staff actually liked them, which is honestly the most suspicious part of the whole thing."</p>
+          <div class="testimonial__author">Man Who Was Burned By McKinsey In 2014 And Is Still A Bit Twitchy About It</div>
+          <div class="testimonial__role">CEO, Thornbury Group</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Partner: yaya -->
+  <section class="section" id="partner">
+    <div class="container">
+      <div class="partner-section fade-up">
+        <div class="overline">Brand partnership</div>
+        <div class="yaya-logo">yaya</div>
+        <h3 style="margin-bottom: 1.5rem;">The rebrand nobody asked for, courtesy of yaya</h3>
+        <p>We are immensely grateful to our brand partners at <strong style="color:var(--pine);">yaya</strong> for helping us realise this bold new vision. When we said 'we want to lean into the hindsight angle', they maintained steady eye contact, nodded slowly, and charged us accordingly.</p>
+        <p>The new wordmark took eight weeks, two residential workshops, and a mood board that at one point contained the phrase 'if a rear-view mirror were a management consultancy'. We're told this is normal. The invoice suggests it's at least expensive.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="container fade-up">
+      <h2>Let's have an <span style="color: var(--lime);">awkward first call</span></h2>
+      <p>You'll describe your problems. We'll nod and say 'interesting' several times. Then we'll send you a proposal that costs more than you expected but less than the problem is costing you. You'll huff about it for a week, then sign it. This is how it always works.</p>
+      <a href="mailto:hello@majaco.co" class="hero__cta">Book the awkward call &#128373;</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="#" class="nav__logo">
+            <span class="eyeglass">&#128373;</span> Hindsight Partners
+          </a>
+          <p>6th Floor, 9 Appold Street, London, EC2A 2AP</p>
+          <p style="margin-top:0.5rem;">(A real building. We checked.)</p>
+          <p style="margin-top:0.5rem;">020 3633 8437</p>
+        </div>
+        <div class="footer__col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#work">Case studies</a></li>
+            <li><a href="#why">Methodology</a></li>
+            <li><a href="#kind-words">Testimonials</a></li>
+            <li><a href="#partner">The rebrand</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">Careers (clipboard holders wanted)</a></li>
+            <li><a href="#">Partnerships</a></li>
+            <li><a href="#">Privacy Policy (long, sorry)</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Hindsight Partners. All insights retrospectively obvious. Registered in England &amp; Wales, unfortunately.</span>
+        <div class="footer__social">
+          <a href="https://www.linkedin.com/company/majacouk/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- April Fools Reveal -->
+  <div class="reveal-bar">
+    &#127881; Happy April Fools' Day from the team at <a href="https://majaco.co" target="_blank" rel="noopener">majaco</a>. We haven't actually rebranded. But everything else on this page is uncomfortably close to the truth. &#127881;
+    <br><span style="font-size:0.8125rem;opacity:0.7;">This page was created by <a href="https://majiai.co" target="_blank" rel="noopener">maji</a> &mdash; our AI, who we're starting to think might be funnier than us.</span>
+  </div>
+
+  <!-- Sparkle cursor effect & scroll animations -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    const sparkles = ['&#128373;', '&#9734;', '&#128269;', '&#128161;'];
+    document.addEventListener('click', (e) => {
+      const sparkle = document.createElement('span');
+      sparkle.className = 'sparkle';
+      sparkle.innerHTML = sparkles[Math.floor(Math.random() * sparkles.length)];
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 800);
+    });
+  </script>
+
+</body>
+</html>
