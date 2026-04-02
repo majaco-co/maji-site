@@ -866,6 +866,19 @@ h5, h6 {
   }
 }
 
+.locked-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+@media (max-width: 700px) {
+  .locked-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 a.tool-card--locked {
   display: block;
   text-decoration: none;
@@ -876,6 +889,10 @@ a.tool-card--locked {
   border-radius: var(--radius-lg);
   padding: var(--space-lg) var(--space-xl);
   transition: box-shadow 0.3s ease, border-color 0.2s ease;
+}
+
+.locked-grid a.tool-card--locked {
+  margin-top: 0;
 }
 
 a.tool-card--locked:hover {
