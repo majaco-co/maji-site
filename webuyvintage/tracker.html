@@ -11,26 +11,26 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --navy: #0a1628;
-  --navy-mid: #132240;
-  --navy-light: #1a2d4a;
-  --gold: #c9a84c;
-  --gold-light: #dfc06a;
-  --gold-dim: #8a7233;
-  --cream: #f4f0e8;
-  --text-primary: #f4f0e8;
-  --text-secondary: #8a97ad;
-  --text-muted: #5a6a80;
-  --border: rgba(201, 168, 76, 0.15);
-  --border-strong: rgba(201, 168, 76, 0.3);
-  --green: #5cb87a;
-  --green-dim: rgba(92, 184, 122, 0.15);
-  --amber: #d4a84c;
-  --amber-dim: rgba(212, 168, 76, 0.15);
-  --red: #d4564a;
-  --red-dim: rgba(212, 86, 74, 0.12);
-  --blue: #5a9fd4;
-  --blue-dim: rgba(90, 159, 212, 0.12);
+  --navy: #fafafa;
+  --navy-mid: #f0f0f0;
+  --navy-light: #e8e8e8;
+  --gold: #9a7b2d;
+  --gold-light: #b8952a;
+  --gold-dim: #c4a44a;
+  --cream: #1a1a1a;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --green: #3d8c55;
+  --green-dim: rgba(61, 140, 85, 0.1);
+  --amber: #9a7b2d;
+  --amber-dim: rgba(154, 123, 45, 0.1);
+  --red: #c0453a;
+  --red-dim: rgba(192, 69, 58, 0.08);
+  --blue: #4080b0;
+  --blue-dim: rgba(64, 128, 176, 0.08);
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -48,12 +48,7 @@ body {
 }
 
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
+  content: none;
 }
 
 /* ── NAV ── */
@@ -66,7 +61,7 @@ nav {
   align-items: center;
   gap: 32px;
   height: 56px;
-  background: rgba(10, 22, 40, 0.9);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   overflow-x: auto;
@@ -109,7 +104,7 @@ nav a:hover, nav a.active { color: var(--gold); border-bottom-color: var(--gold)
   right: -200px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.06), transparent 70%);
+  background: radial-gradient(circle, rgba(154, 123, 45, 0.04), transparent 70%);
   pointer-events: none;
 }
 .header h1 {
@@ -263,7 +258,7 @@ section {
 .task.done .task-check {
   background: var(--gold);
   border-color: var(--gold);
-  color: var(--navy);
+  color: #ffffff;
 }
 .task.done .task-title { color: var(--text-secondary); }
 
@@ -376,7 +371,7 @@ section {
     <div class="task">
       <div class="task-check"></div>
       <div class="task-body">
-        <div class="task-title">Confirm: Ishy Khan tagged as DL in dealer_sales &mdash; error or explainable?</div>
+        <div class="task-title">Confirm: Ishy Khan tagged as DL in dealer_sales -error or explainable?</div>
         <div class="task-detail">In dealer_sales.csv, the initials <strong>DL</strong> map to both "Danielle Lizdek" and "Ishy Khan". Ishy Khan has their own correct initials (IK) elsewhere. Is the DL entry a data entry error, or was Ishy working under Danielle's code for a specific reason?</div>
       </div>
       <div class="task-meta">
@@ -388,7 +383,7 @@ section {
       <div class="task-check">&#10003;</div>
       <div class="task-body">
         <div class="task-title">Adam Chapman = Adam Harland (name change)</div>
-        <div class="task-detail">Confirmed by Liam. Adam changed his surname from Harland to Chapman. Same person, same initials (AH). No action needed in the data &mdash; both names are correct for their respective time periods.</div>
+        <div class="task-detail">Confirmed by Liam. Adam changed his surname from Harland to Chapman. Same person, same initials (AH). No action needed in the data -both names are correct for their respective time periods.</div>
       </div>
       <div class="task-meta">
         <span class="tag tag-done">Resolved</span>
