@@ -116,7 +116,7 @@
         Scope of Work &amp; <span class="text-green">Approach</span>
       </h1>
       <p class="page-hero__subtitle">
-        From proof of concept to production analytics platform &mdash; ongoing data consultancy for WeBuyVintage.
+        From proof of concept to production analytics platform -ongoing data consultancy for WeBuyVintage.
       </p>
     </div>
   </section>
@@ -135,11 +135,11 @@
         <!-- 1. Executive Summary -->
         <h2>1. Executive Summary</h2>
 
-        <p>We completed a rapid proof-of-concept sprint against your Google Sheets data. The results confirm that your data can power a full suite of analytical models &mdash; from area scoring to dealer ranking to event timing. The PoC is directional; this document sets out the scope for building it properly.</p>
+        <p>We ran a proof-of-concept sprint against your Google Sheets data. It confirmed that your data supports all the models we proposed. The PoC gave us directional answers; this document sets out the scope for building it properly.</p>
 
-        <p>This is <strong>not a one-off software build</strong>. It's an ongoing data consultancy: a living analytical engine that gets smarter as more events happen, combined with a self-serve AI interface your team can query in plain English. The platform will be hosted at <strong>majiai.co</strong> with password-protected access for your operations team.</p>
+        <p>This isn't a one-off software build. It's an ongoing data consultancy: the models improve as more events happen, and your team gets a self-serve AI tool they can ask questions to in plain English. Everything is hosted at <strong>majiai.co</strong> with password-protected access.</p>
 
-        <p><strong>The immediate priority:</strong> What makes a great area, and where haven't you been yet? You've visited 80&ndash;95% of your target areas. The highest-value work right now is finding the remaining gold mines and optimising when you go back to the ones you know.</p>
+        <p><strong>Immediate priority:</strong> what makes a great area, and where haven't you been yet? You've visited 80-95% of your target areas. The most valuable work right now is finding the remaining opportunities and working out when to go back to places you already know.</p>
 
         <hr>
 
@@ -149,11 +149,11 @@
         <p>During the PoC sprint we ingested all 59 Google Sheets tabs into a structured database and built prototype versions of all five original models. Key findings:</p>
 
         <ul>
-          <li><strong>Commodity normalisation is essential.</strong> Gold is ~80% of revenue and has risen 2.4&times; since 2023. Raw revenue figures are misleading &mdash; we built a blended commodity index to strip out price movement and isolate real operational performance.</li>
-          <li><strong>Seasonality is real but moderate.</strong> Commodity-normalised, Jan&ndash;Feb peak at index 1.26&ndash;1.29; July trough at 0.77. Worth scheduling around, but not the biggest lever.</li>
-          <li><strong>Diminishing returns vary by area.</strong> Some areas sustain well through 4&ndash;5 visits; others drop off sharply after the 2nd. The repeat timing model captures this per-area.</li>
-          <li><strong>Dealer performance is measurable</strong> once you control for area quality. We identified clear tiers and category specialisms across 50 dealers.</li>
-          <li><strong>859 white-space expansion opportunities</strong> identified in postcode districts you've never visited, adjacent to your strongest-performing areas.</li>
+          <li><strong>Commodity normalisation is essential.</strong> Gold is ~80% of revenue and has risen 2.4x since 2023. Raw revenue numbers are misleading. We built a blended commodity index to strip out price movement and see real operational performance.</li>
+          <li><strong>Seasonality is real but moderate.</strong> Commodity-normalised, Jan/Feb peak at 1.26-1.29; July trough at 0.77. Worth scheduling around, but not the biggest lever.</li>
+          <li><strong>Diminishing returns vary by area.</strong> Some areas hold up well through 4-5 visits; others drop off sharply after the 2nd. The repeat timing model captures this per-area.</li>
+          <li><strong>Dealer performance is measurable</strong> once you control for area quality. We found clear tiers and category specialisms across 50 dealers.</li>
+          <li><strong>859 white-space opportunities</strong> in postcode districts you've never visited, next to your strongest-performing areas.</li>
         </ul>
 
         <div class="key-inputs"><strong>PoC status:</strong> All five prototype models are running and queryable. They validate the approach but have not been backtested, cross-validated, or tuned for production use. The work below takes them from directional to reliable.</div>
@@ -164,7 +164,7 @@
         <h2>3. Scope of Work</h2>
 
         <h3>A. Strategic Intelligence <span class="tag tag-priority">Priority</span></h3>
-        <p>Delivered first. One-off strategic analyses that answer Liam's most pressing questions. These are written reports with interactive tools, not just data dumps.</p>
+        <p>Delivered first. One-off strategic analyses that answer the most pressing questions. Each one comes with a written report and an interactive tool you can explore.</p>
 
         <div class="model-card">
           <h3>What Makes a Great Area</h3>
@@ -172,21 +172,21 @@
           <ul>
             <li>Statistical analysis of top vs bottom quartile areas across all measurable characteristics</li>
             <li>Sweet spot identification: population size, demographics, wealth indicators, community character, housing age, competition density</li>
-            <li>First-visit baseline analysis &mdash; normalise margin per customer on visit #1 to find the "gold seam" independent of commodity prices</li>
-            <li>Profit tree per customer (median margin/customer, not averages &mdash; avoids outlier distortion)</li>
-            <li>How performance evolves across visit types (1st, 2nd, 3rd, 4th+) &mdash; do good areas start good or always get better?</li>
+            <li>First-visit baseline analysis. Normalise margin per customer on visit #1 to find the "gold seam" independent of commodity prices</li>
+            <li>Profit tree per customer (median margin/customer, not averages, to avoid outlier distortion)</li>
+            <li>How performance evolves across visit types (1st, 2nd, 3rd, 4th+). Do good areas start good or always get better?</li>
             <li>External data enrichment: ONS demographics, house prices, population age profiles, deprivation indices, Mosaic.tech customer profiling</li>
             <li>Scoring model that rates any UK postcode 0&ndash;100 for roadshow potential</li>
           </ul>
-          <div class="key-inputs"><strong>Core insight from Liam:</strong> "They're not buying gold &mdash; they're buying everything else. The gold comes with it." The best areas are market towns (2&ndash;20k pop), strong community spirit, conservative demographics, areas with old money or former wealth. Places like Wisbech &mdash; used to have money, the stock is still there even if the area is now poorer. Smaller villages (~2k) benefit from network effects where everyone knows what's happening. In 6k+ areas, that effect disappears.</div>
+          <div class="key-inputs"><strong>Core insight from Liam:</strong> "They're not buying gold, they're buying everything else. The gold comes with it." The best areas are market towns (2-20k pop), strong community spirit, conservative demographics, areas with old money or former wealth. Places like Wisbech: used to have money, the stock is still there even if the area is now poorer. Smaller villages (~2k) benefit from network effects where everyone knows what's happening. In 6k+ areas, that effect disappears.</div>
         </div>
 
         <div class="model-card">
           <h3>New Area Target Lists</h3>
           <p class="question">"Where should we go that we've never been?"</p>
           <ul>
-            <li><strong>List 1: Towns &amp; villages</strong> &mdash; populations 2,500&ndash;20,000 across England &amp; Wales. Ranked high to low priority, spread geographically. Includes: area name, county, local population, predicted score.</li>
-            <li><strong>List 2: City suburbs</strong> &mdash; suburbs within large towns and cities (30,000+ population) that haven't been touched. 50 primary targets, 150 secondary targets, spread nationwide. Includes: suburb, parent town/city, county, suburb population, city population.</li>
+            <li><strong>List 1: Towns &amp; villages</strong> -populations 2,500&ndash;20,000 across England &amp; Wales. Ranked high to low priority, spread geographically. Includes: area name, county, local population, predicted score.</li>
+            <li><strong>List 2: City suburbs</strong> -suburbs within large towns and cities (30,000+ population) that haven't been touched. 50 primary targets, 150 secondary targets, spread nationwide. Includes: suburb, parent town/city, county, suburb population, city population.</li>
           </ul>
           <div class="key-inputs"><strong>Data sources:</strong> ONS Census 2021, National Statistics Postcode Lookup, OS Open Data, Mosaic.tech consumer segmentation, Index of Multiple Deprivation, house price data from Land Registry.</div>
         </div>
@@ -194,16 +194,16 @@
         <div class="model-card">
           <h3>Additional One-Off Analyses</h3>
           <ul>
-            <li><strong>Rank event performance by month</strong> &mdash; commodity-normalised, with % drop-off from peak month. Answers: "How much does July really cost us vs January?"</li>
-            <li><strong>Rank counties</strong> &mdash; overall performance index per county, controlling for visit frequency and commodity prices</li>
-            <li><strong>Ideal regional split at 400 events/month</strong> &mdash; if you're running 400 events/month, what's the optimal geographic distribution?</li>
-            <li><strong>Top factors for a good event</strong> &mdash; multivariate analysis: what drives revenue beyond area quality? (Venue type, day of week, dealer combination, seasonality, marketing spend)</li>
-            <li><strong>Best venue types</strong> &mdash; which types of venues consistently outperform? Community halls vs hotels vs pubs vs sports clubs etc.</li>
+            <li><strong>Rank event performance by month</strong> -commodity-normalised, with % drop-off from peak month. Answers: "How much does July really cost us vs January?"</li>
+            <li><strong>Rank counties</strong> -overall performance index per county, controlling for visit frequency and commodity prices</li>
+            <li><strong>Ideal regional split at 400 events/month</strong> -if you're running 400 events/month, what's the optimal geographic distribution?</li>
+            <li><strong>Top factors for a good event</strong> -multivariate analysis: what drives revenue beyond area quality? (Venue type, day of week, dealer combination, seasonality, marketing spend)</li>
+            <li><strong>Best venue types</strong> -which types of venues consistently outperform? Community halls vs hotels vs pubs vs sports clubs etc.</li>
           </ul>
         </div>
 
         <h3>B. Analytical Models <span class="tag tag-ongoing">Ongoing</span></h3>
-        <p>Eight models that run continuously, refreshing as new data comes in. The original five from the proposal, evolved with PoC learnings, plus three new models identified during discovery.</p>
+        <p>Eight models that refresh as new data comes in. The original five from the proposal, evolved with PoC learnings, plus three new ones identified during discovery.</p>
 
         <div class="model-card">
           <h3>Model 1: Event Repeat Timing Engine</h3>
@@ -211,9 +211,9 @@
           <ul>
             <li>Commodity-normalised revenue analysis per area per visit number</li>
             <li>Optimal cooldown period per area, factoring: target list numbers, target counts, dealer capacity, previous performance</li>
-            <li>Diminishing returns curves &mdash; per-area yield decay to know when to stop returning</li>
+            <li>Diminishing returns curves per area, so you know when to stop going back</li>
             <li>Seasonality adjustment (within-year index, stripped of commodity and growth trends)</li>
-            <li>Rolling calendar: which areas are "ripe" for a return visit this month</li>
+            <li>Rolling calendar showing which areas are ready for a return visit this month</li>
           </ul>
         </div>
 
@@ -223,7 +223,7 @@
           <ul>
             <li>Composite score: location-adjusted performance, consistency, margin %, volume, category expertise</li>
             <li>Category expertise mapping per dealer (gold, silver, watches, cameras, medals, coins, jewellery)</li>
-            <li>Trend detection &mdash; early flags when a dealer's performance is declining</li>
+            <li>Trend detection so you spot declining performance early</li>
             <li>Dealers within an acceptable band is the baseline; the key long-term metrics are customer satisfaction and repeat rates</li>
           </ul>
         </div>
@@ -233,7 +233,7 @@
           <p class="question">"Where are our best customers, and where's the untapped demand?"</p>
           <ul>
             <li>Postcode-level demand heatmaps and spend quality segmentation (platinum / gold / silver / bronze)</li>
-            <li>White space identification &mdash; ranked by predicted yield using the "good area" scoring model</li>
+            <li>White space identification, ranked by predicted yield using the area scoring model</li>
             <li>Target numbers per week per region based on dealer days available in that area</li>
             <li>Regional benchmarking across all 17+ operational regions</li>
           </ul>
@@ -244,7 +244,7 @@
           <p class="question">"Are we using our dealer network efficiently?"</p>
           <ul>
             <li>~35 active dealers, 4 days/week each, 2 per venue = ~220 realistic events/month (~78% utilisation)</li>
-            <li>Regional supply vs demand mapping &mdash; where is capacity the constraint?</li>
+            <li>Regional supply vs demand mapping. Where is capacity the constraint?</li>
             <li>Revenue impact modelling for adding a dealer in each region</li>
             <li>Travel radius and availability modelling per dealer</li>
           </ul>
@@ -256,7 +256,7 @@
           <ul>
             <li>Ongoing scoring of all areas (A/B/C/D tiers), refreshed as new data arrives</li>
             <li>Predictive factors ranked by correlation strength</li>
-            <li>Area scoring model for any UK postcode &mdash; before you've ever been there</li>
+            <li>Area scoring model for any UK postcode, before you've ever been there</li>
           </ul>
         </div>
 
@@ -276,22 +276,22 @@
           <p class="question">"How accurate are each dealer's estimates, and who's gaming the system?"</p>
           <ul>
             <li>Tracks estimation accuracy per dealer across three categories: <strong>gold</strong> (superseded by gold dealer price within ~6 days), <strong>silver</strong> (longer lead time), and <strong>SKU items</strong> (tracked to actual sale, can take up to 9 months)</li>
-            <li>Replaces the blanket 30% reduction with <strong>per-dealer accuracy profiles</strong> &mdash; fair to honest estimators, catches those inflating</li>
+            <li>Replaces the blanket 30% reduction with <strong>per-dealer accuracy profiles</strong>. Fair to honest estimators, catches those inflating</li>
             <li>Estimation accuracy as a component of the dealer performance score</li>
             <li>Trend monitoring: is a dealer's accuracy improving or deteriorating over time?</li>
           </ul>
-          <div class="key-inputs"><strong>Why this matters:</strong> The current blanket 30% reduction penalises accurate estimators and rewards those who inflate. With 9-month lag on SKU results, honest dealers see their commission cut unfairly while gamers learn to simply add 30%. Per-dealer calibration fixes this and improves morale.</div>
+          <div class="key-inputs"><strong>Why this matters:</strong> The current blanket 30% reduction penalises accurate estimators and rewards those who inflate. With a 9-month lag on SKU results, honest dealers get their commission cut unfairly while gamers learn to just add 30%. Per-dealer calibration fixes this.</div>
         </div>
 
         <div class="model-card">
           <h3>Model 8: Scheduling Automation <span class="tag tag-bounty">Bounty</span></h3>
           <p class="question">"Can a machine do the rota as well as Liam?"</p>
-          <p>Multi-objective optimisation engine that balances Liam's 10 prioritised scheduling goals:</p>
+          <p>Scheduling tool that balances Liam's 10 prioritised goals:</p>
           <ol>
             <li>Fill all seats at every event</li>
             <li>Minimise average distance travelled, keeping standard deviation low (even spread across dealers is better than low average with outliers)</li>
-            <li>Minimise road trips &mdash; only use them when they help goals 1&ndash;2</li>
-            <li>Keep travel time &le;90 minutes wherever possible</li>
+            <li>Minimise road trips. Only use them when they help goals 1-2</li>
+            <li>Keep travel time under 90 minutes wherever possible</li>
             <li>Match each dealer's ideal number of events per month</li>
             <li>Match each dealer's ideal number of events per week</li>
             <li>Fill the 3rd seat at twin events and high-traffic roadshows</li>
@@ -303,14 +303,14 @@
         </div>
 
         <h3>C. Platform &amp; AI Interface</h3>
-        <p>Not just dashboards &mdash; a self-serve analytical engine your team can interrogate directly.</p>
+        <p>Dashboards, recurring analysis pages, and an AI tool your team can ask questions to directly.</p>
 
         <div class="model-card">
           <h3>Self-Serve AI Query Tool</h3>
           <p class="question">"Ask any question about your data in plain English."</p>
           <ul>
             <li>Claude-powered conversational interface embedded on majiai.co</li>
-            <li>Connected directly to the live database &mdash; answers questions with current data, not stale reports</li>
+            <li>Connected to the live database, so answers use current data</li>
             <li>Useable by anyone on the team, no technical skills required</li>
             <li>Example queries: "Which areas in Yorkshire are ready for a return visit?", "How did Matt Case perform last month vs his average?", "Show me the top 20 untapped postcodes near Leeds"</li>
             <li>Token usage costs included in the monthly fee (budgeted for normal operational use)</li>
@@ -322,7 +322,7 @@
           <ul>
             <li><strong>Recurring analyses</strong> that Liam has asked for, published as fixed pages on the platform that automatically refresh as new data comes in</li>
             <li>Event performance by month, dealer leaderboard, area rankings, capacity dashboard, attendance predictions</li>
-            <li>Each page updates on a schedule (daily/weekly) &mdash; always current, no manual effort</li>
+            <li>Each page updates on a schedule (daily/weekly), no manual effort</li>
             <li>Accessible via the password-protected WeBuyVintage portal at majiai.co</li>
           </ul>
         </div>
@@ -343,26 +343,26 @@
         <!-- 4. Approach & Methodology -->
         <h2>4. Approach &amp; Methodology</h2>
 
-        <p>How we turn raw Google Sheets data into reliable, actionable intelligence.</p>
+        <p>How we turn the raw data into something you can actually rely on.</p>
 
         <h3>Commodity Normalisation</h3>
-        <p>Gold is ~80% of your revenue and has risen 2.4&times; since 2023. Silver (~9%) has risen 3.1&times;. Any analysis that uses raw revenue numbers is measuring commodity markets, not your operational performance. We build a blended price index weighted by each event's actual gold/silver/other revenue mix, then normalise all revenue to constant commodity terms. This reveals true seasonality, genuine area quality, and real dealer performance &mdash; stripped of the noise from metal prices.</p>
+        <p>Gold is ~80% of your revenue and has risen 2.4x since 2023. Silver (~9%) has risen 3.1x. Any analysis using raw revenue numbers is measuring commodity markets, not your operational performance. We build a blended price index weighted by each event's actual gold/silver/other revenue mix, then normalise all revenue to constant commodity terms. This helps separate true seasonality, area quality, and dealer performance from metal price movement. It's worth noting that higher gold prices also attract more sellers, so operational growth and commodity growth are interlinked. The normalised view is a guide, not a clean split.</p>
 
         <h3>Per-Customer Economics</h3>
-        <p>The profit tree is framed per customer, not per event. An event's revenue is a function of footfall &times; margin per customer. We use <strong>median</strong> margin per customer (not average) to avoid distortion from outlier transactions. This lets you see: are your 2026 events genuinely better, or do you just have more customers walking through the door because of commodity prices?</p>
+        <p>The profit tree is framed per customer, not per event. An event's revenue is footfall x margin per customer. We use <strong>median</strong> margin per customer (not average) to avoid distortion from outlier transactions. This lets you see whether your 2026 events are genuinely better, or whether you just have more customers coming through the door because of commodity prices.</p>
 
         <h3>First-Visit Baseline</h3>
-        <p>The first visit to any area is the purest signal of that area's underlying potential &mdash; before repeat effects, customer fatigue, or marketing build-up. By normalising first-visit margin per customer across all areas, we build a "gold seam" map that shows where the richest untapped stock lies, independent of how many times you've been there.</p>
+        <p>The first visit to any area is the cleanest signal of that area's potential, before repeat effects or marketing build-up. By normalising first-visit margin per customer across all areas, we build a "gold seam" map showing where the richest untapped stock sits, regardless of how many times you've been there.</p>
 
         <h3>Backtesting &amp; Validation</h3>
-        <p>Every model is backtested against held-out data before going live. We hold out the most recent 6 months, train on history, predict the held-out period, and measure accuracy. Cross-validation across regions ensures models generalise and aren't overfitting to specific areas. Confidence intervals on every recommendation so your team knows how much to trust each score.</p>
+        <p>Every model is tested against held-out data before going live. We hold out the most recent 6 months, train on history, predict the held-out period, and measure accuracy. We also cross-validate across regions to make sure models work everywhere, not just in the areas they were trained on. Every recommendation comes with a confidence score so your team knows how much weight to give it.</p>
 
         <h3>External Data Enrichment</h3>
         <ul>
           <li><strong>ONS Census 2021:</strong> population, age profiles, home ownership, household composition</li>
           <li><strong>Land Registry:</strong> house prices by postcode (proxy for "old money" areas)</li>
-          <li><strong>Index of Multiple Deprivation:</strong> identifies areas that are economically deprived but may have legacy wealth in stock</li>
-          <li><strong>Mosaic.tech:</strong> consumer segmentation &mdash; find where your ideal customer profiles cluster</li>
+          <li><strong>Index of Multiple Deprivation:</strong> finds areas that are economically deprived but may still have legacy wealth in stock</li>
+          <li><strong>Mosaic.tech:</strong> consumer segmentation to find where your ideal customer profiles cluster</li>
           <li><strong>Rural/urban classification:</strong> market town identification, village network mapping</li>
         </ul>
 
@@ -374,9 +374,9 @@
         <p>16-week phased delivery, with the highest-value strategic work front-loaded.</p>
 
         <div class="phase-card">
-          <div class="timing">Phase 1 &mdash; Weeks 1&ndash;4</div>
+          <div class="timing">Phase 1 -Weeks 1&ndash;4</div>
           <h3>Strategic Intelligence</h3>
-          <p>The priority work Liam needs now. Delivered as written reports with interactive tools.</p>
+          <p>The priority work. Each analysis comes with a report and an interactive tool.</p>
           <ul>
             <li>"What Makes a Great Area" deep analysis + postcode scoring model</li>
             <li>New area target lists (towns 2.5&ndash;20k + city suburbs 30k+)</li>
@@ -387,9 +387,9 @@
         </div>
 
         <div class="phase-card">
-          <div class="timing">Phase 2 &mdash; Weeks 3&ndash;7</div>
+          <div class="timing">Phase 2 -Weeks 3&ndash;7</div>
           <h3>Data Engineering</h3>
-          <p>Production-grade pipeline replacing the PoC's one-off CSV import.</p>
+          <p>Proper pipeline replacing the PoC's one-off CSV import.</p>
           <ul>
             <li>Data source integration (Google Sheets initially, flexible to whatever WBV moves to)</li>
             <li>PostgreSQL deployment with production schema</li>
@@ -400,22 +400,22 @@
         </div>
 
         <div class="phase-card">
-          <div class="timing">Phase 3 &mdash; Weeks 5&ndash;11</div>
+          <div class="timing">Phase 3 -Weeks 5&ndash;11</div>
           <h3>Model Validation &amp; Tuning</h3>
-          <p>Take PoC prototypes to production: backtesting, cross-validation, confidence intervals.</p>
+          <p>Take the PoC prototypes to production. Test them properly, tune them, add confidence scores.</p>
           <ul>
             <li>Backtest all 8 models against held-out data</li>
             <li>Cross-validation across regions and time periods</li>
             <li>Add confidence intervals to all model outputs</li>
             <li>Edge-case handling (new venues, new dealers, sparse data)</li>
-            <li>Estimate vs actual model build (new &mdash; requires gold dealer price linkage)</li>
-            <li>Attendance predictor model build (new &mdash; requires FB spend + RSVP data)</li>
+            <li>Estimate vs actual model build (new, requires gold dealer price linkage)</li>
+            <li>Attendance predictor model build (new, requires FB spend + RSVP data)</li>
             <li>Model performance benchmarks documented</li>
           </ul>
         </div>
 
         <div class="phase-card">
-          <div class="timing">Phase 4 &mdash; Weeks 9&ndash;14</div>
+          <div class="timing">Phase 4 -Weeks 9&ndash;14</div>
           <h3>Platform Build &amp; AI Interface</h3>
           <p>Web dashboard + self-serve AI query tool on majiai.co.</p>
           <ul>
@@ -428,7 +428,7 @@
         </div>
 
         <div class="phase-card">
-          <div class="timing">Phase 5 &mdash; Weeks 14&ndash;16</div>
+          <div class="timing">Phase 5 -Weeks 14&ndash;16</div>
           <h3>Testing, Training &amp; Handover</h3>
           <ul>
             <li>UAT with ops team</li>
@@ -440,7 +440,7 @@
         </div>
 
         <div class="phase-card">
-          <div class="timing">Ongoing &mdash; from Month 1</div>
+          <div class="timing">Ongoing -from Month 1</div>
           <h3>Data Consultancy &amp; Maintenance</h3>
           <ul>
             <li>Monthly model retraining on latest data</li>
@@ -448,7 +448,7 @@
             <li>Up to 4 hours/month ad-hoc analysis and support</li>
             <li>Platform hosting, data pipeline monitoring, bug fixes</li>
             <li>AI query interface token costs</li>
-            <li>Scheduling automation development (bounty &mdash; runs in parallel)</li>
+            <li>Scheduling automation development (bounty -runs in parallel)</li>
           </ul>
         </div>
 
@@ -484,23 +484,23 @@
             </thead>
             <tbody>
               <tr>
-                <td><strong>Full replacement</strong> &mdash; tool completely replaces manual scheduling</td>
+                <td><strong>Full replacement</strong> -tool completely replaces manual scheduling</td>
                 <td>&pound;1,000/month + VAT</td>
               </tr>
               <tr>
-                <td><strong>Assisted</strong> &mdash; handles majority of scheduling, still needs manual tweaks</td>
+                <td><strong>Assisted</strong> -handles majority of scheduling, still needs manual tweaks</td>
                 <td>&pound;500/month + VAT</td>
               </tr>
             </tbody>
           </table>
-          <p style="font-size: 0.875rem; color: var(--color-text-muted);">Assessment after a 4-week trial period. Bounty model &mdash; you only pay if it works. Development runs in parallel with the main platform build.</p>
+          <p style="font-size: 0.875rem; color: var(--color-text-muted);">Assessment after a 4-week trial period. Bounty model, you only pay if it works. Development runs in parallel with the main platform build.</p>
         </div>
 
         <div class="highlight-box">
           <h3>Total Contract Value</h3>
           <p><strong>Year 1:</strong> &pound;20,000 build + &pound;14,000 monthly (7 months Jun&ndash;Dec) = <strong>&pound;34,000</strong></p>
           <p><strong>3-Year Total:</strong> &pound;20,000 build + &pound;72,000 monthly (36 months) = <strong>&pound;92,000</strong></p>
-          <p style="margin-top: 1.5rem; font-size: 0.9375rem;">Against ~&pound;28m annual gross margin, even a 1% improvement in event yield would deliver &pound;280,000 in additional annual margin &mdash; a <strong>8&times; return on the full 3-year investment in the first year alone</strong>.</p>
+          <p style="margin-top: 1.5rem; font-size: 0.9375rem;">Against ~&pound;28m annual gross margin, even a 1% improvement in event yield would mean &pound;280,000 in additional annual margin. That's a <strong>8x return on the full 3-year investment in year one</strong>.</p>
         </div>
 
         <hr>
@@ -510,10 +510,10 @@
 
         <ul class="steps">
           <li><strong>Data source access</strong> - read-only access to your event data, currently in Google Sheets. If you move to a different system during the engagement, we'll adapt the pipeline accordingly.</li>
-          <li><strong>Jotform account access</strong> &mdash; to add required fields (category dropdowns, postcode validation, dealer ID standardisation) and configure webhooks for real-time data flow.</li>
-          <li><strong>Facebook ad spend data</strong> &mdash; per-event spend, RSVP counts, and leaflet distribution numbers. Can be added to Jotform or provided via a Google Sheet.</li>
-          <li><strong>30 minutes with your ops lead</strong> &mdash; to understand the current scheduling process, dealer preferences, and pain points.</li>
-          <li><strong>Scheduling constraints document</strong> &mdash; dealer home postcodes, availability patterns, ideal event counts, road trip preferences, and any exemptions.</li>
+          <li><strong>Jotform account access</strong> - to add required fields (category dropdowns, postcode validation, dealer ID standardisation) and set up webhooks.</li>
+          <li><strong>Facebook ad spend data</strong> - per-event spend, RSVP counts, and leaflet distribution numbers. Can be added to Jotform or provided via a spreadsheet.</li>
+          <li><strong>30 minutes with your ops lead</strong> - to understand the current scheduling process, dealer preferences, and pain points.</li>
+          <li><strong>Scheduling constraints document</strong> - dealer home postcodes, availability patterns, ideal event counts, road trip preferences, and any exemptions.</li>
           <li><strong>Confirm hosting approach</strong> - we'll discuss the best option during discovery.</li>
         </ul>
 
@@ -524,9 +524,9 @@
 
         <ul class="steps">
           <li><strong>Review &amp; sign-off</strong> on this scope of work and the accompanying services agreement.</li>
-          <li><strong>First invoice</strong> &mdash; &pound;5,000 + VAT, April 2026. Work begins immediately.</li>
+          <li><strong>First invoice</strong> - &pound;5,000 + VAT, April 2026. Work begins immediately.</li>
           <li><strong>Data access</strong> - credentials for your data sources and Jotform login provided within first week.</li>
-          <li><strong>Strategic intelligence delivered</strong> by end of Week 4 &mdash; area analysis, target lists, and county rankings in your hands within the first month.</li>
+          <li><strong>Strategic intelligence delivered</strong> by end of Week 4. Area analysis, target lists, and county rankings in your hands within the first month.</li>
         </ul>
 
         <div class="disclaimer">
