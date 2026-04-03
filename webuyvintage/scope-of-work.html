@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scope of Work &amp; Engagement Plan — WeBuyVintage — majaco</title>
+  <script src="../js/client-redirect.js" data-password-hash="3a54811189e32a62aee733af7df79e029805124809693afdec1a936e6021b1d6"></script>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    .proposal { max-width: 860px; margin: 0 auto; }
+    .proposal-meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; font-size: 0.8125rem; color: var(--color-text-muted); letter-spacing: 0.04em; }
+    .proposal-meta span { display: flex; align-items: center; gap: 0.375rem; }
+
+    .proposal h2 { font-size: 1.9375rem; font-weight: 400; letter-spacing: -0.02em; line-height: 120%; margin: 3.5rem 0 1rem; color: var(--color-text); }
+    .proposal h3 { font-size: 1.5625rem; font-weight: 700; line-height: 120%; margin: 2.5rem 0 0.75rem; color: var(--color-text); }
+    .proposal h4 { font-size: 1.25rem; font-weight: 400; line-height: 140%; margin: 2rem 0 0.5rem; color: var(--color-text); }
+    .proposal p { font-size: 1rem; font-weight: 300; line-height: 160%; color: var(--color-text); margin-bottom: 1rem; }
+    .proposal strong { font-weight: 700; }
+    .proposal em { font-style: italic; color: var(--color-text-muted); }
+    .proposal ul, .proposal ol { margin: 0.5rem 0 1.25rem 1.5rem; }
+    .proposal li { font-size: 1rem; font-weight: 300; line-height: 180%; color: var(--color-text); }
+    .proposal li strong { font-weight: 700; }
+    .proposal hr { border: none; border-top: 1px solid var(--color-border); margin: 3rem 0; }
+
+    .proposal table { width: 100%; border-collapse: collapse; margin: 1.25rem 0 1.75rem; font-size: 0.9375rem; }
+    .proposal th { text-align: left; padding: 0.75rem 1rem; background: var(--color-bg-alt); border: 1px solid var(--color-border); font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-muted); }
+    .proposal td { padding: 0.75rem 1rem; border: 1px solid var(--color-border); font-weight: 300; line-height: 150%; }
+    .proposal td strong { font-weight: 700; }
+
+    .key-inputs { background: var(--color-bg-alt); border-left: 3px solid var(--color-primary); padding: 1rem 1.25rem; margin: 1rem 0 1.5rem; border-radius: 0 8px 8px 0; font-size: 0.9375rem; font-weight: 300; color: var(--color-text-muted); }
+    .key-inputs strong { color: var(--color-text); font-weight: 700; }
+
+    .highlight-box { background: var(--color-bg-dark); border-radius: 12px; padding: 2rem; margin: 2rem 0; }
+    .highlight-box h3 { color: #fff; margin-top: 0; }
+    .highlight-box p, .highlight-box li { color: rgba(255,255,255,0.85); }
+    .highlight-box strong { color: #fff; }
+    .highlight-box .big-number { font-size: 3.0625rem; font-weight: 400; letter-spacing: -0.02em; line-height: 120%; color: var(--color-accent); margin: 0.5rem 0; }
+
+    .model-card { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 12px; padding: 2rem; margin: 1.5rem 0; transition: box-shadow 0.3s ease; }
+    .model-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06); }
+    .model-card h3 { margin-top: 0; }
+    .model-card .question { font-size: 1.125rem; font-style: italic; color: var(--color-primary); margin-bottom: 1rem; font-weight: 400; }
+
+    .phase-card { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 12px; padding: 2rem; margin: 1.5rem 0; }
+    .phase-card h3 { margin-top: 0; color: var(--color-primary); }
+    .phase-card .timing { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 0.5rem; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+    .pricing-option { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 12px; padding: 2rem; }
+    .pricing-option h4 { margin-top: 0; font-weight: 700; font-size: 1.25rem; }
+    .pricing-option .price { font-size: 1.9375rem; font-weight: 400; color: var(--color-primary); margin: 0.5rem 0; }
+    .pricing-option .price-sub { font-size: 0.875rem; color: var(--color-text-muted); font-weight: 300; }
+
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 1.5rem 0; }
+    .steps li { counter-increment: step; position: relative; padding-left: 3rem; margin-bottom: 1.25rem; }
+    .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; background: var(--color-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; }
+
+    .disclaimer { background: var(--color-bg-alt); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 3rem; font-size: 0.8125rem; color: var(--color-text-muted); font-weight: 300; line-height: 160%; }
+
+    .tag { display: inline-block; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 4px; margin-right: 0.375rem; }
+    .tag-priority { background: rgba(92,184,122,0.15); color: #5cb87a; }
+    .tag-new { background: rgba(90,159,212,0.15); color: #5a9fd4; }
+    .tag-bounty { background: rgba(212,168,76,0.15); color: #c9a84c; }
+    .tag-ongoing { background: rgba(160,120,200,0.15); color: #a078c8; }
+
+    @media (max-width: 640px) {
+      .proposal h2 { font-size: 1.5625rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .highlight-box .big-number { font-size: 2.4375rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="../index.html" class="nav__logo" aria-label="maji by majaco — home">
+          <img src="../assets/images/logo-white-green.svg" alt="maji by majaco">
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="../about-maji.html">About maji</a></li>
+          <li><a href="https://majaco.co" target="_blank" rel="noopener">Get in touch</a></li>
+        </ul>
+        <a href="https://majaco.co" class="btn btn-primary nav__cta" target="_blank" rel="noopener">
+          Get started
+        </a>
+        <button class="nav__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="menu">
+      <a href="../about-maji.html" role="menuitem">About maji</a>
+      <a href="https://majaco.co" target="_blank" rel="noopener" role="menuitem">Get in touch</a>
+      <a href="https://majaco.co" class="btn btn-primary" target="_blank" rel="noopener" role="menuitem">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <a href="index.html">WeBuyVintage</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Scope of Work</span>
+      </nav>
+      <p class="page-hero__eyebrow">Engagement Plan</p>
+      <h1 class="page-hero__title">
+        Scope of Work &amp; <span class="text-green">Approach</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        From proof of concept to production analytics platform &mdash; ongoing data consultancy for WeBuyVintage.
+      </p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="section">
+    <div class="container">
+      <div class="proposal">
+
+        <div class="proposal-meta">
+          <span>Prepared for <strong>Liam Vasey &amp; Andrew, Co-Founders</strong></span>
+          <span>The Antiques Collective Ltd</span>
+          <span>April 2026</span>
+        </div>
+
+        <!-- 1. Executive Summary -->
+        <h2>1. Executive Summary</h2>
+
+        <p>We completed a rapid proof-of-concept sprint against your Google Sheets data. The results confirm that your data can power a full suite of analytical models &mdash; from area scoring to dealer ranking to event timing. The PoC is directional; this document sets out the scope for building it properly.</p>
+
+        <p>This is <strong>not a one-off software build</strong>. It's an ongoing data consultancy: a living analytical engine that gets smarter as more events happen, combined with a self-serve AI interface your team can query in plain English. The platform will be hosted at <strong>majiai.co</strong> with password-protected access for your operations team.</p>
+
+        <p><strong>The immediate priority:</strong> What makes a great area, and where haven't you been yet? You've visited 80&ndash;95% of your target areas. The highest-value work right now is finding the remaining gold mines and optimising when you go back to the ones you know.</p>
+
+        <hr>
+
+        <!-- 2. What We've Already Proven -->
+        <h2>2. What We've Already Proven</h2>
+
+        <p>During the PoC sprint we ingested all 59 Google Sheets tabs into a structured database and built prototype versions of all five original models. Key findings:</p>
+
+        <ul>
+          <li><strong>Commodity normalisation is essential.</strong> Gold is ~80% of revenue and has risen 2.4&times; since 2023. Raw revenue figures are misleading &mdash; we built a blended commodity index to strip out price movement and isolate real operational performance.</li>
+          <li><strong>Seasonality is real but moderate.</strong> Commodity-normalised, Jan&ndash;Feb peak at index 1.26&ndash;1.29; July trough at 0.77. Worth scheduling around, but not the biggest lever.</li>
+          <li><strong>Diminishing returns vary by area.</strong> Some areas sustain well through 4&ndash;5 visits; others drop off sharply after the 2nd. The repeat timing model captures this per-area.</li>
+          <li><strong>Dealer performance is measurable</strong> once you control for area quality. We identified clear tiers and category specialisms across 50 dealers.</li>
+          <li><strong>859 white-space expansion opportunities</strong> identified in postcode districts you've never visited, adjacent to your strongest-performing areas.</li>
+        </ul>
+
+        <div class="key-inputs"><strong>PoC status:</strong> All five prototype models are running and queryable. They validate the approach but have not been backtested, cross-validated, or tuned for production use. The work below takes them from directional to reliable.</div>
+
+        <hr>
+
+        <!-- 3. Scope of Work -->
+        <h2>3. Scope of Work</h2>
+
+        <h3>A. Strategic Intelligence <span class="tag tag-priority">Priority</span></h3>
+        <p>Delivered first. One-off strategic analyses that answer Liam's most pressing questions. These are written reports with interactive tools, not just data dumps.</p>
+
+        <div class="model-card">
+          <h3>What Makes a Great Area</h3>
+          <p class="question">"What do our 100 best-performing areas have in common?"</p>
+          <ul>
+            <li>Statistical analysis of top vs bottom quartile areas across all measurable characteristics</li>
+            <li>Sweet spot identification: population size, demographics, wealth indicators, community character, housing age, competition density</li>
+            <li>First-visit baseline analysis &mdash; normalise margin per customer on visit #1 to find the "gold seam" independent of commodity prices</li>
+            <li>Profit tree per customer (median margin/customer, not averages &mdash; avoids outlier distortion)</li>
+            <li>How performance evolves across visit types (1st, 2nd, 3rd, 4th+) &mdash; do good areas start good or always get better?</li>
+            <li>External data enrichment: ONS demographics, house prices, population age profiles, deprivation indices, Mosaic.tech customer profiling</li>
+            <li>Scoring model that rates any UK postcode 0&ndash;100 for roadshow potential</li>
+          </ul>
+          <div class="key-inputs"><strong>Core insight from Liam:</strong> "They're not buying gold &mdash; they're buying everything else. The gold comes with it." The best areas are market towns (2&ndash;20k pop), strong community spirit, conservative demographics, areas with old money or former wealth. Places like Wisbech &mdash; used to have money, the stock is still there even if the area is now poorer. Smaller villages (~2k) benefit from network effects where everyone knows what's happening. In 6k+ areas, that effect disappears.</div>
+        </div>
+
+        <div class="model-card">
+          <h3>New Area Target Lists</h3>
+          <p class="question">"Where should we go that we've never been?"</p>
+          <ul>
+            <li><strong>List 1: Towns &amp; villages</strong> &mdash; populations 2,500&ndash;20,000 across England &amp; Wales. Ranked high to low priority, spread geographically. Includes: area name, county, local population, predicted score.</li>
+            <li><strong>List 2: City suburbs</strong> &mdash; suburbs within large towns and cities (30,000+ population) that haven't been touched. 50 primary targets, 150 secondary targets, spread nationwide. Includes: suburb, parent town/city, county, suburb population, city population.</li>
+          </ul>
+          <div class="key-inputs"><strong>Data sources:</strong> ONS Census 2021, National Statistics Postcode Lookup, OS Open Data, Mosaic.tech consumer segmentation, Index of Multiple Deprivation, house price data from Land Registry.</div>
+        </div>
+
+        <div class="model-card">
+          <h3>Additional One-Off Analyses</h3>
+          <ul>
+            <li><strong>Rank event performance by month</strong> &mdash; commodity-normalised, with % drop-off from peak month. Answers: "How much does July really cost us vs January?"</li>
+            <li><strong>Rank counties</strong> &mdash; overall performance index per county, controlling for visit frequency and commodity prices</li>
+            <li><strong>Ideal regional split at 400 events/month</strong> &mdash; if you're running 400 events/month, what's the optimal geographic distribution?</li>
+            <li><strong>Top factors for a good event</strong> &mdash; multivariate analysis: what drives revenue beyond area quality? (Venue type, day of week, dealer combination, seasonality, marketing spend)</li>
+            <li><strong>Best venue types</strong> &mdash; which types of venues consistently outperform? Community halls vs hotels vs pubs vs sports clubs etc.</li>
+          </ul>
+        </div>
+
+        <h3>B. Analytical Models <span class="tag tag-ongoing">Ongoing</span></h3>
+        <p>Eight models that run continuously, refreshing as new data comes in. The original five from the proposal, evolved with PoC learnings, plus three new models identified during discovery.</p>
+
+        <div class="model-card">
+          <h3>Model 1: Event Repeat Timing Engine</h3>
+          <p class="question">"When should we go back, and is it still worth going back?"</p>
+          <ul>
+            <li>Commodity-normalised revenue analysis per area per visit number</li>
+            <li>Optimal cooldown period per area, factoring: target list numbers, target counts, dealer capacity, previous performance</li>
+            <li>Diminishing returns curves &mdash; per-area yield decay to know when to stop returning</li>
+            <li>Seasonality adjustment (within-year index, stripped of commodity and growth trends)</li>
+            <li>Rolling calendar: which areas are "ripe" for a return visit this month</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 2: Dealer Performance Ranking</h3>
+          <p class="question">"Who are our best dealers, controlling for where they work?"</p>
+          <ul>
+            <li>Composite score: location-adjusted performance, consistency, margin %, volume, category expertise</li>
+            <li>Category expertise mapping per dealer (gold, silver, watches, cameras, medals, coins, jewellery)</li>
+            <li>Trend detection &mdash; early flags when a dealer's performance is declining</li>
+            <li>Dealers within an acceptable band is the baseline; the key long-term metrics are customer satisfaction and repeat rates</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 3: Area Intelligence &amp; Postcode Scoring</h3>
+          <p class="question">"Where are our best customers, and where's the untapped demand?"</p>
+          <ul>
+            <li>Postcode-level demand heatmaps and spend quality segmentation (platinum / gold / silver / bronze)</li>
+            <li>White space identification &mdash; ranked by predicted yield using the "good area" scoring model</li>
+            <li>Target numbers per week per region based on dealer days available in that area</li>
+            <li>Regional benchmarking across all 17+ operational regions</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 4: Dealer Capacity Planning</h3>
+          <p class="question">"Are we using our dealer network efficiently?"</p>
+          <ul>
+            <li>~35 active dealers, 4 days/week each, 2 per venue = ~220 realistic events/month (~78% utilisation)</li>
+            <li>Regional supply vs demand mapping &mdash; where is capacity the constraint?</li>
+            <li>Revenue impact modelling for adding a dealer in each region</li>
+            <li>Travel radius and availability modelling per dealer</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 5: Pattern Analysis</h3>
+          <p class="question">"What distinguishes a &pound;30k event from a &pound;3k event?"</p>
+          <ul>
+            <li>Ongoing scoring of all areas (A/B/C/D tiers), refreshed as new data arrives</li>
+            <li>Predictive factors ranked by correlation strength</li>
+            <li>Area scoring model for any UK postcode &mdash; before you've ever been there</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 6: Event Attendance Predictor <span class="tag tag-new">New</span></h3>
+          <p class="question">"How many customers will show up at this specific event?"</p>
+          <ul>
+            <li>Predicts footfall for each individual event based on: Facebook ad spend, time of year, number of RSVPs, leaflet distribution, local population, previous area performance, whether it's a repeat visit</li>
+            <li><strong>Operational decisions it drives:</strong> whether to send a 3rd dealer, how much cash float is needed, whether an assistant is required</li>
+            <li>Can also be used to evaluate potential new target areas before committing</li>
+          </ul>
+          <div class="key-inputs"><strong>New data needed:</strong> Individual event Facebook spend, RSVP counts, leaflet distribution numbers. To be captured in Jotform or provided via Google Sheets.</div>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 7: Estimate vs Actual Tracker <span class="tag tag-new">New</span></h3>
+          <p class="question">"How accurate are each dealer's estimates, and who's gaming the system?"</p>
+          <ul>
+            <li>Tracks estimation accuracy per dealer across three categories: <strong>gold</strong> (superseded by gold dealer price within ~6 days), <strong>silver</strong> (longer lead time), and <strong>SKU items</strong> (tracked to actual sale, can take up to 9 months)</li>
+            <li>Replaces the blanket 30% reduction with <strong>per-dealer accuracy profiles</strong> &mdash; fair to honest estimators, catches those inflating</li>
+            <li>Estimation accuracy as a component of the dealer performance score</li>
+            <li>Trend monitoring: is a dealer's accuracy improving or deteriorating over time?</li>
+          </ul>
+          <div class="key-inputs"><strong>Why this matters:</strong> The current blanket 30% reduction penalises accurate estimators and rewards those who inflate. With 9-month lag on SKU results, honest dealers see their commission cut unfairly while gamers learn to simply add 30%. Per-dealer calibration fixes this and improves morale.</div>
+        </div>
+
+        <div class="model-card">
+          <h3>Model 8: Scheduling Automation <span class="tag tag-bounty">Bounty</span></h3>
+          <p class="question">"Can a machine do the rota as well as Liam?"</p>
+          <p>Multi-objective optimisation engine that balances Liam's 10 prioritised scheduling goals:</p>
+          <ol>
+            <li>Fill all seats at every event</li>
+            <li>Minimise average distance travelled, keeping standard deviation low (even spread across dealers is better than low average with outliers)</li>
+            <li>Minimise road trips &mdash; only use them when they help goals 1&ndash;2</li>
+            <li>Keep travel time &le;90 minutes wherever possible</li>
+            <li>Match each dealer's ideal number of events per month</li>
+            <li>Match each dealer's ideal number of events per week</li>
+            <li>Fill the 3rd seat at twin events and high-traffic roadshows</li>
+            <li>Get inexperienced dealers into 3rd seats for training</li>
+            <li>Limit road trips to &le;2/month for willing dealers, &le;1/month for reluctant, zero for those with exemptions</li>
+            <li>Respect individual dealer constraints (family, availability, preferences)</li>
+          </ol>
+          <div class="key-inputs"><strong>Commercial model:</strong> Delivered on a bounty basis. If the tool fully replaces manual scheduling: &pound;1,000/month. If it handles the majority but still needs manual adjustment: &pound;500/month. Assessment after a 4-week trial period.</div>
+        </div>
+
+        <h3>C. Platform &amp; AI Interface</h3>
+        <p>Not just dashboards &mdash; a self-serve analytical engine your team can interrogate directly.</p>
+
+        <div class="model-card">
+          <h3>Self-Serve AI Query Tool</h3>
+          <p class="question">"Ask any question about your data in plain English."</p>
+          <ul>
+            <li>Claude-powered conversational interface embedded on majiai.co</li>
+            <li>Connected directly to the live database &mdash; answers questions with current data, not stale reports</li>
+            <li>Useable by anyone on the team, no technical skills required</li>
+            <li>Example queries: "Which areas in Yorkshire are ready for a return visit?", "How did Matt Case perform last month vs his average?", "Show me the top 20 untapped postcodes near Leeds"</li>
+            <li>Token usage costs included in the monthly fee (budgeted for normal operational use)</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Fixed Analysis Pages</h3>
+          <ul>
+            <li><strong>Recurring analyses</strong> that Liam has asked for, published as fixed pages on the platform that automatically refresh as new data comes in</li>
+            <li>Event performance by month, dealer leaderboard, area rankings, capacity dashboard, attendance predictions</li>
+            <li>Each page updates on a schedule (daily/weekly) &mdash; always current, no manual effort</li>
+            <li>Accessible via the password-protected WeBuyVintage portal at majiai.co</li>
+          </ul>
+        </div>
+
+        <div class="model-card">
+          <h3>Data Pipeline</h3>
+          <ul>
+            <li><strong>Google Sheets &rarr; PostgreSQL</strong> automated daily sync via API &mdash; your team keeps working in Sheets as they do now</li>
+            <li>Jotform webhook integration for real-time event data capture</li>
+            <li>Validation rules on ingest: dealer initials, currency parsing, date checks, anomaly flagging</li>
+            <li>Commodity price feed for ongoing normalisation</li>
+            <li>External data refresh (ONS, house prices, demographic updates)</li>
+          </ul>
+        </div>
+
+        <hr>
+
+        <!-- 4. Approach & Methodology -->
+        <h2>4. Approach &amp; Methodology</h2>
+
+        <p>How we turn raw Google Sheets data into reliable, actionable intelligence.</p>
+
+        <h3>Commodity Normalisation</h3>
+        <p>Gold is ~80% of your revenue and has risen 2.4&times; since 2023. Silver (~9%) has risen 3.1&times;. Any analysis that uses raw revenue numbers is measuring commodity markets, not your operational performance. We build a blended price index weighted by each event's actual gold/silver/other revenue mix, then normalise all revenue to constant commodity terms. This reveals true seasonality, genuine area quality, and real dealer performance &mdash; stripped of the noise from metal prices.</p>
+
+        <h3>Per-Customer Economics</h3>
+        <p>The profit tree is framed per customer, not per event. An event's revenue is a function of footfall &times; margin per customer. We use <strong>median</strong> margin per customer (not average) to avoid distortion from outlier transactions. This lets you see: are your 2026 events genuinely better, or do you just have more customers walking through the door because of commodity prices?</p>
+
+        <h3>First-Visit Baseline</h3>
+        <p>The first visit to any area is the purest signal of that area's underlying potential &mdash; before repeat effects, customer fatigue, or marketing build-up. By normalising first-visit margin per customer across all areas, we build a "gold seam" map that shows where the richest untapped stock lies, independent of how many times you've been there.</p>
+
+        <h3>Backtesting &amp; Validation</h3>
+        <p>Every model is backtested against held-out data before going live. We hold out the most recent 6 months, train on history, predict the held-out period, and measure accuracy. Cross-validation across regions ensures models generalise and aren't overfitting to specific areas. Confidence intervals on every recommendation so your team knows how much to trust each score.</p>
+
+        <h3>External Data Enrichment</h3>
+        <ul>
+          <li><strong>ONS Census 2021:</strong> population, age profiles, home ownership, household composition</li>
+          <li><strong>Land Registry:</strong> house prices by postcode (proxy for "old money" areas)</li>
+          <li><strong>Index of Multiple Deprivation:</strong> identifies areas that are economically deprived but may have legacy wealth in stock</li>
+          <li><strong>Mosaic.tech:</strong> consumer segmentation &mdash; find where your ideal customer profiles cluster</li>
+          <li><strong>Rural/urban classification:</strong> market town identification, village network mapping</li>
+        </ul>
+
+        <hr>
+
+        <!-- 5. Delivery Plan -->
+        <h2>5. Delivery Plan</h2>
+
+        <p>16-week phased delivery, with the highest-value strategic work front-loaded.</p>
+
+        <div class="phase-card">
+          <div class="timing">Phase 1 &mdash; Weeks 1&ndash;4</div>
+          <h3>Strategic Intelligence</h3>
+          <p>The priority work Liam needs now. Delivered as written reports with interactive tools.</p>
+          <ul>
+            <li>"What Makes a Great Area" deep analysis + postcode scoring model</li>
+            <li>New area target lists (towns 2.5&ndash;20k + city suburbs 30k+)</li>
+            <li>County rankings, monthly performance analysis, ideal regional split</li>
+            <li>Best venue type analysis</li>
+            <li>KPI workshop + data schema design running in parallel</li>
+          </ul>
+        </div>
+
+        <div class="phase-card">
+          <div class="timing">Phase 2 &mdash; Weeks 3&ndash;7</div>
+          <h3>Data Engineering</h3>
+          <p>Production-grade pipeline replacing the PoC's one-off CSV import.</p>
+          <ul>
+            <li>Google Sheets API integration (automated daily sync)</li>
+            <li>PostgreSQL deployment with production schema</li>
+            <li>Data validation, reconciliation rules, and audit trails</li>
+            <li>Historical data backfill through the production pipeline</li>
+            <li>External data enrichment (ONS, Mosaic, house prices, deprivation indices)</li>
+          </ul>
+        </div>
+
+        <div class="phase-card">
+          <div class="timing">Phase 3 &mdash; Weeks 5&ndash;11</div>
+          <h3>Model Validation &amp; Tuning</h3>
+          <p>Take PoC prototypes to production: backtesting, cross-validation, confidence intervals.</p>
+          <ul>
+            <li>Backtest all 8 models against held-out data</li>
+            <li>Cross-validation across regions and time periods</li>
+            <li>Add confidence intervals to all model outputs</li>
+            <li>Edge-case handling (new venues, new dealers, sparse data)</li>
+            <li>Estimate vs actual model build (new &mdash; requires gold dealer price linkage)</li>
+            <li>Attendance predictor model build (new &mdash; requires FB spend + RSVP data)</li>
+            <li>Model performance benchmarks documented</li>
+          </ul>
+        </div>
+
+        <div class="phase-card">
+          <div class="timing">Phase 4 &mdash; Weeks 9&ndash;14</div>
+          <h3>Platform Build &amp; AI Interface</h3>
+          <p>Web dashboard + self-serve AI query tool on majiai.co.</p>
+          <ul>
+            <li>Fixed analysis pages (auto-refreshing with new data)</li>
+            <li>Self-serve Claude AI query interface</li>
+            <li>Event calendar, dealer leaderboard, area explorer, capacity dashboard</li>
+            <li>Jotform webhook integration for real-time data flow</li>
+            <li>Password-protected client portal</li>
+          </ul>
+        </div>
+
+        <div class="phase-card">
+          <div class="timing">Phase 5 &mdash; Weeks 14&ndash;16</div>
+          <h3>Testing, Training &amp; Handover</h3>
+          <ul>
+            <li>UAT with ops team</li>
+            <li>Team training on all platform features and AI query tool</li>
+            <li>Documentation: user guide, data dictionary, model methodology</li>
+            <li>Automated weekly email digest setup (areas ready for revisit, dealer flags, opportunities)</li>
+            <li>Go-live</li>
+          </ul>
+        </div>
+
+        <div class="phase-card">
+          <div class="timing">Ongoing &mdash; from Month 1</div>
+          <h3>Data Consultancy &amp; Maintenance</h3>
+          <ul>
+            <li>Monthly model retraining on latest data</li>
+            <li>Quarterly model performance review and tuning</li>
+            <li>Up to 4 hours/month ad-hoc analysis and support</li>
+            <li>Platform hosting, data pipeline monitoring, bug fixes</li>
+            <li>AI query interface token costs</li>
+            <li>Scheduling automation development (bounty &mdash; runs in parallel)</li>
+          </ul>
+        </div>
+
+        <hr>
+
+        <!-- 6. Investment -->
+        <h2>6. Investment</h2>
+
+        <div class="pricing-grid">
+          <div class="pricing-option">
+            <h4>Build Fee</h4>
+            <div class="price">&pound;20,000</div>
+            <div class="price-sub">Payable in 4 monthly instalments of &pound;5,000 + VAT</div>
+            <p style="margin-top: 1rem; font-size: 0.9375rem; color: var(--color-text-muted);">Covers: all strategic analyses, 8 production models, data pipeline, platform build, AI interface, training &amp; handover. Invoiced monthly April&ndash;July 2026.</p>
+          </div>
+          <div class="pricing-option">
+            <h4>Monthly Service Fee</h4>
+            <div class="price">&pound;2,000<span style="font-size: 1rem; color: var(--color-text-muted);">/month</span></div>
+            <div class="price-sub">36-month term from June 2026</div>
+            <p style="margin-top: 1rem; font-size: 0.9375rem; color: var(--color-text-muted);">Covers: cloud hosting, automated data sync, monthly model retraining, AI query tokens, 4 hours/month support, quarterly reviews, pipeline maintenance, bug fixes.</p>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <h3>Scheduling Automation Add-On</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Outcome</th>
+                <th>Monthly Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Full replacement</strong> &mdash; tool completely replaces manual scheduling</td>
+                <td>&pound;1,000/month + VAT</td>
+              </tr>
+              <tr>
+                <td><strong>Assisted</strong> &mdash; handles majority of scheduling, still needs manual tweaks</td>
+                <td>&pound;500/month + VAT</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.875rem; color: var(--color-text-muted);">Assessment after a 4-week trial period. Bounty model &mdash; you only pay if it works. Development runs in parallel with the main platform build.</p>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Total Contract Value</h3>
+          <p><strong>Year 1:</strong> &pound;20,000 build + &pound;14,000 monthly (7 months Jun&ndash;Dec) = <strong>&pound;34,000</strong></p>
+          <p><strong>3-Year Total:</strong> &pound;20,000 build + &pound;72,000 monthly (36 months) = <strong>&pound;92,000</strong></p>
+          <p style="margin-top: 1.5rem; font-size: 0.9375rem;">Against ~&pound;28m annual gross margin, even a 1% improvement in event yield would deliver &pound;280,000 in additional annual margin &mdash; a <strong>8&times; return on the full 3-year investment in the first year alone</strong>.</p>
+        </div>
+
+        <hr>
+
+        <!-- 7. What We Need From You -->
+        <h2>7. What We Need From You</h2>
+
+        <ul class="steps">
+          <li><strong>Google Sheets API access</strong> &mdash; read-only service account access to your existing event data sheets for automated daily sync.</li>
+          <li><strong>Jotform account access</strong> &mdash; to add required fields (category dropdowns, postcode validation, dealer ID standardisation) and configure webhooks for real-time data flow.</li>
+          <li><strong>Facebook ad spend data</strong> &mdash; per-event spend, RSVP counts, and leaflet distribution numbers. Can be added to Jotform or provided via a Google Sheet.</li>
+          <li><strong>30 minutes with your ops lead</strong> &mdash; to understand the current scheduling process, dealer preferences, and pain points.</li>
+          <li><strong>Scheduling constraints document</strong> &mdash; dealer home postcodes, availability patterns, ideal event counts, road trip preferences, and any exemptions.</li>
+          <li><strong>Confirm hosting approach</strong> &mdash; we recommend Option A (Google Sheets sync + PostgreSQL + web dashboard) to start.</li>
+        </ul>
+
+        <hr>
+
+        <!-- 8. Next Steps -->
+        <h2>8. Next Steps</h2>
+
+        <ul class="steps">
+          <li><strong>Review &amp; sign-off</strong> on this scope of work and the accompanying services agreement.</li>
+          <li><strong>First invoice</strong> &mdash; &pound;5,000 + VAT, April 2026. Work begins immediately.</li>
+          <li><strong>Data access</strong> &mdash; Google Sheets API credentials and Jotform login provided within first week.</li>
+          <li><strong>Strategic intelligence delivered</strong> by end of Week 4 &mdash; area analysis, target lists, and county rankings in your hands within the first month.</li>
+        </ul>
+
+        <div class="disclaimer">
+          <p>This scope of work is valid for 30 days from the date above. All fees are exclusive of VAT. This document should be read in conjunction with the Data Analytics &amp; Platform Services Agreement which sets out the formal commercial terms.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 majaco. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="../privacy-policy.html">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
