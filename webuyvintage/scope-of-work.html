@@ -330,7 +330,7 @@
         <div class="model-card">
           <h3>Data Pipeline</h3>
           <ul>
-            <li><strong>Google Sheets &rarr; PostgreSQL</strong> automated daily sync via API &mdash; your team keeps working in Sheets as they do now</li>
+            <li><strong>Data source &rarr; PostgreSQL</strong> automated daily sync. Currently Google Sheets, but the pipeline will be built to adapt if WBV moves to a different system (CRM, ERP, or custom tooling)</li>
             <li>Jotform webhook integration for real-time event data capture</li>
             <li>Validation rules on ingest: dealer initials, currency parsing, date checks, anomaly flagging</li>
             <li>Commodity price feed for ongoing normalisation</li>
@@ -391,7 +391,7 @@
           <h3>Data Engineering</h3>
           <p>Production-grade pipeline replacing the PoC's one-off CSV import.</p>
           <ul>
-            <li>Google Sheets API integration (automated daily sync)</li>
+            <li>Data source integration (Google Sheets initially, flexible to whatever WBV moves to)</li>
             <li>PostgreSQL deployment with production schema</li>
             <li>Data validation, reconciliation rules, and audit trails</li>
             <li>Historical data backfill through the production pipeline</li>
@@ -509,12 +509,12 @@
         <h2>7. What We Need From You</h2>
 
         <ul class="steps">
-          <li><strong>Google Sheets API access</strong> &mdash; read-only service account access to your existing event data sheets for automated daily sync.</li>
+          <li><strong>Data source access</strong> - read-only access to your event data, currently in Google Sheets. If you move to a different system during the engagement, we'll adapt the pipeline accordingly.</li>
           <li><strong>Jotform account access</strong> &mdash; to add required fields (category dropdowns, postcode validation, dealer ID standardisation) and configure webhooks for real-time data flow.</li>
           <li><strong>Facebook ad spend data</strong> &mdash; per-event spend, RSVP counts, and leaflet distribution numbers. Can be added to Jotform or provided via a Google Sheet.</li>
           <li><strong>30 minutes with your ops lead</strong> &mdash; to understand the current scheduling process, dealer preferences, and pain points.</li>
           <li><strong>Scheduling constraints document</strong> &mdash; dealer home postcodes, availability patterns, ideal event counts, road trip preferences, and any exemptions.</li>
-          <li><strong>Confirm hosting approach</strong> &mdash; we recommend Option A (Google Sheets sync + PostgreSQL + web dashboard) to start.</li>
+          <li><strong>Confirm hosting approach</strong> - we'll discuss the best option during discovery.</li>
         </ul>
 
         <hr>
@@ -525,7 +525,7 @@
         <ul class="steps">
           <li><strong>Review &amp; sign-off</strong> on this scope of work and the accompanying services agreement.</li>
           <li><strong>First invoice</strong> &mdash; &pound;5,000 + VAT, April 2026. Work begins immediately.</li>
-          <li><strong>Data access</strong> &mdash; Google Sheets API credentials and Jotform login provided within first week.</li>
+          <li><strong>Data access</strong> - credentials for your data sources and Jotform login provided within first week.</li>
           <li><strong>Strategic intelligence delivered</strong> by end of Week 4 &mdash; area analysis, target lists, and county rankings in your hands within the first month.</li>
         </ul>
 
