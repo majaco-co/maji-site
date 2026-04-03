@@ -110,7 +110,7 @@
       for (var i = 0; i < PORTALS.length; i++) {
         if (h === PORTALS[i].hash) {
           // Store the client auth so their portal pages don't re-prompt
-          sessionStorage.setItem('maji_client_auth', h);
+          localStorage.setItem('maji_client_auth', h);
           window.location.href = PORTALS[i].url;
           return;
         }

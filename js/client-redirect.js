@@ -17,7 +17,7 @@
   var HASH = scriptTag?.getAttribute('data-password-hash') || '';
   var SESSION_KEY = 'maji_client_auth';
 
-  if (sessionStorage.getItem(SESSION_KEY) === HASH) return;
+  if (localStorage.getItem(SESSION_KEY) === HASH) return;
 
   // Not authenticated for this client — send to the client portal
   window.location.replace('/clients.html');
