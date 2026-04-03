@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeBuyVintage — Model Outputs & Analysis</title>
+<script src="../js/client-redirect.js" data-password-hash="3a54811189e32a62aee733af7df79e029805124809693afdec1a936e6021b1d6"></script>
+<meta name="robots" content="noindex, nofollow">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0a1628;--navy-mid:#0f1d35;--navy-light:#152744;--navy-lighter:#1a3050;
+  --gold:#c9a84c;--gold-light:#dfc06a;--gold-dim:#8a7233;--gold-muted:rgba(201,168,76,0.15);
+  --cream:#f0ece4;--text:#ddd8ce;--text-dim:#7a8699;--text-muted:#4a5568;
+  --red:#d4564a;--green:#5cb87a;--blue:#5a9fd4;
+  --border:rgba(201,168,76,0.12);--border-strong:rgba(201,168,76,0.28);
+  --font-d:'Cormorant Garamond',Georgia,serif;
+  --font-b:'DM Sans',system-ui,sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:var(--font-b);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;gap:32px;height:52px;overflow-x:auto}
+nav a{font-family:var(--font-m);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;white-space:nowrap;padding:16px 0;border-bottom:2px solid transparent;transition:all .25s}
+nav a:hover,nav a.active{color:var(--gold);border-bottom-color:var(--gold)}
+.nav-brand{font-family:var(--font-d);font-size:17px;font-weight:500;color:var(--gold);letter-spacing:.03em;margin-right:16px;white-space:nowrap}
+
+/* ── HERO ── */
+.hero{padding:80px 40px 60px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 70%);pointer-events:none}
+.hero h1{font-family:var(--font-d);font-size:clamp(36px,5vw,60px);font-weight:300;line-height:1.1;letter-spacing:-.01em}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--gold)}
+.hero-sub{font-size:16px;color:var(--text-dim);margin-top:12px;font-weight:300}
+.hero-stats{display:flex;gap:40px;margin-top:36px;flex-wrap:wrap}
+.hero-stat .n{font-family:var(--font-d);font-size:32px;font-weight:400;color:var(--gold);line-height:1}
+.hero-stat .l{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-top:4px}
+
+/* ── SECTIONS ── */
+section{padding:64px 40px;border-bottom:1px solid var(--border)}
+.s-label{font-family:var(--font-m);font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px}
+.s-title{font-family:var(--font-d);font-size:clamp(28px,3.5vw,42px);font-weight:300;line-height:1.15;margin-bottom:8px}
+.s-title em{font-style:italic;font-weight:400;color:var(--gold)}
+.s-desc{font-size:14px;color:var(--text-dim);max-width:700px;margin-bottom:32px;line-height:1.7}
+
+/* ── INSIGHT BOX ── */
+.insight{background:var(--navy-mid);border-left:3px solid var(--gold);padding:16px 20px;margin-top:24px;border-radius:0 4px 4px 0;font-size:13px;color:var(--text-dim);line-height:1.7}
+.insight strong{color:var(--gold-light);font-weight:600}
+
+/* ── CHARTS ── */
+.chart-wrap{background:var(--navy-mid);border:1px solid var(--border);border-radius:4px;padding:28px;position:relative}
+.chart-wrap canvas{max-height:380px}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{font-family:var(--font-m);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--navy-mid);position:sticky;top:0;cursor:pointer;user-select:none;white-space:nowrap}
+thead th:hover{color:var(--gold)}
+thead th.sorted-asc::after{content:' \25B2';color:var(--gold);font-size:8px}
+thead th.sorted-desc::after{content:' \25BC';color:var(--gold);font-size:8px}
+tbody td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03);font-family:var(--font-m);font-size:12px;white-space:nowrap}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(201,168,76,.04)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.tier{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:3px;font-size:10px;font-weight:700}
+.tier-A{background:rgba(201,168,76,.2);color:var(--gold)}
+.tier-B{background:rgba(90,159,212,.15);color:var(--blue)}
+.tier-C{background:rgba(122,134,153,.15);color:var(--text-dim)}
+.tier-D{background:rgba(212,86,74,.12);color:var(--red)}
+.seg{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px}
+.seg-platinum{background:rgba(201,168,76,.18);color:var(--gold)}
+.seg-gold{background:rgba(201,168,76,.1);color:var(--gold-dim)}
+
+/* ── HEATMAP ── */
+.heatmap{border:1px solid var(--border);border-radius:4px;overflow-x:auto}
+.heatmap table{font-size:12px}
+.heatmap thead th{font-size:10px;padding:10px 12px;text-align:center}
+.heatmap thead th:first-child{text-align:left}
+.heatmap tbody td{text-align:center;padding:8px 12px;font-family:var(--font-m);font-size:11px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.02)}
+.heatmap tbody td:first-child{text-align:left;font-family:var(--font-b);font-weight:500;color:var(--cream)}
+.hm-cell{border-radius:3px;padding:4px 8px;display:inline-block;min-width:36px}
+
+/* ── GRID LAYOUTS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr}nav{padding:0 16px}section,.hero{padding:40px 16px}}
+
+/* ── PAIRED BARS ── */
+.paired-bars{display:flex;flex-direction:column;gap:12px}
+.pb-row{display:grid;grid-template-columns:140px 1fr 60px 1fr 60px;gap:8px;align-items:center;font-size:12px}
+.pb-label{font-weight:500;color:var(--cream);text-align:right;font-size:11px}
+.pb-bar{height:24px;border-radius:2px;position:relative;min-width:2px;transition:width .6s cubic-bezier(.16,1,.3,1)}
+.pb-top{background:linear-gradient(90deg,var(--gold-dim),var(--gold));justify-self:end}
+.pb-bot{background:rgba(122,134,153,.3)}
+.pb-val{font-family:var(--font-m);font-size:11px;color:var(--text-dim)}
+
+/* ── FEATURE LIST ── */
+.feat-list{display:flex;flex-direction:column;gap:8px}
+.feat-row{display:grid;grid-template-columns:32px 160px 1fr 60px;gap:12px;align-items:center;padding:8px 12px;border-radius:4px;background:var(--navy-mid);border:1px solid var(--border)}
+.feat-rank{font-family:var(--font-m);font-size:11px;color:var(--gold);text-align:center}
+.feat-name{font-size:13px;font-weight:500}
+.feat-bar-wrap{height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+.feat-bar{height:100%;background:var(--gold);border-radius:4px;transition:width .8s cubic-bezier(.16,1,.3,1)}
+.feat-corr{font-family:var(--font-m);font-size:12px;color:var(--gold-light);text-align:right}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{opacity:1;transform:none}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--navy)}
+::-webkit-scrollbar-thumb{background:var(--navy-light);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold-dim)}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">WBV Analytics</span>
+  <a href="#tree">Profit Tree</a>
+  <a href="#growth">Growth</a>
+  <a href="#normalised">Normalised</a>
+  <a href="#metals">Metals</a>
+  <a href="#seasonality">Seasonality</a>
+  <a href="#returns">Returns</a>
+  <a href="#dealers">Dealers</a>
+  <a href="#expertise">Expertise</a>
+  <a href="#regions">Regions</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#postcodes">Postcodes</a>
+  <a href="#whitespace">White Space</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Model Outputs<br>& <em>Analysis</em></h1>
+  <p class="hero-sub">Proof of concept built from your existing Google Sheets data</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">2,312</div><div class="l">Events Analysed</div></div>
+    <div class="hero-stat"><div class="n">1,063</div><div class="l">Areas Profiled</div></div>
+    <div class="hero-stat"><div class="n">50</div><div class="l">Dealers Ranked</div></div>
+    <div class="hero-stat"><div class="n">854</div><div class="l">Postcodes Mapped</div></div>
+    <div class="hero-stat"><div class="n">859</div><div class="l">White Space Targets</div></div>
+  </div>
+</div>
+
+<!-- 0. PROFIT TREE -->
+<section id="tree" style="padding-bottom:40px">
+  <div class="reveal">
+    <div class="s-label">Strategic Framework</div>
+    <h2 class="s-title">The <em>Profit Tree</em></h2>
+    <p class="s-desc">Every pound of profit comes from three levers: more events, higher revenue per event, and better margin. Here&rsquo;s where the data says the biggest opportunities are &mdash; and what Liam can actually control.</p>
+  </div>
+
+  <!-- TREE VISUAL -->
+  <div class="reveal" style="overflow-x:auto">
+  <div class="tree">
+    <div class="tree-root">
+      <div class="tree-node root-node">
+        <div class="tn-label">Annual Gross Profit</div>
+        <div class="tn-value">&pound;32.7m <span class="tn-sub">at 2026 run rate</span></div>
+        <div class="tn-note">2,400 events &times; &pound;13,644 margin</div>
+      </div>
+    </div>
+
+    <div class="tree-connector"><div class="tc-line"></div><div class="tc-branches"><div class="tc-branch"></div><div class="tc-branch"></div><div class="tc-branch"></div></div></div>
+
+    <div class="tree-level">
+      <!-- LEVER 1: MORE EVENTS -->
+      <div class="tree-branch">
+        <div class="tree-node lever-node lever-green">
+          <div class="tn-tag">Lever 1</div>
+          <div class="tn-label">Number of Events</div>
+          <div class="tn-value">~158/month</div>
+          <div class="tn-note">18 regions &middot; 1,112 areas</div>
+        </div>
+        <div class="tree-children">
+          <div class="tree-leaf" data-section="whitespace">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Geographic Expansion</div>
+              <div class="tl-data"><strong>859</strong> white-space targets identified</div>
+              <div class="tl-action">Expand into untapped postcode districts adjacent to proven areas</div>
+              <div class="tl-model">Model 3</div>
+            </div>
+          </div>
+          <div class="tree-leaf" data-section="seasonality">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Seasonal Scheduling</div>
+              <div class="tl-data">Jan/Feb: <strong>+27%</strong> &middot; Jul: <strong>-23%</strong></div>
+              <div class="tl-action">Maximise event density in Jan&ndash;Feb; reduce or reposition July events</div>
+              <div class="tl-model">Model 1</div>
+            </div>
+          </div>
+          <div class="tree-leaf" data-section="returns">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Repeat Timing</div>
+              <div class="tl-data"><strong>896</strong> area-months ready for return now</div>
+              <div class="tl-action">Use optimal cooldown periods &mdash; don&rsquo;t revisit too soon or too late</div>
+              <div class="tl-model">Model 1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEVER 2: REVENUE PER EVENT -->
+      <div class="tree-branch">
+        <div class="tree-node lever-node lever-gold">
+          <div class="tn-tag">Lever 2</div>
+          <div class="tn-label">Revenue per Event</div>
+          <div class="tn-value">&pound;13,647 <span class="tn-sub">normalised</span></div>
+          <div class="tn-note">&pound;32,449 nominal &middot; 42% margin</div>
+        </div>
+        <div class="tree-children">
+          <div class="tree-leaf" data-section="patterns">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Venue Quality</div>
+              <div class="tl-data">High footfall venues: <strong>&pound;12,269</strong> vs Low: <strong>&pound;3,797</strong> normalised</div>
+              <div class="tl-action">Prioritise venues scoring 4+ on footfall &mdash; 3.2&times; revenue impact</div>
+              <div class="tl-model">Model 5</div>
+            </div>
+          </div>
+          <div class="tree-leaf" data-section="postcodes">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Area Selection</div>
+              <div class="tl-data">Top quartile: <strong>&pound;31,902</strong> vs Bottom: <strong>&pound;3,190</strong> avg revenue</div>
+              <div class="tl-action">Use area scoring model to prioritise high-potential postcodes</div>
+              <div class="tl-model">Model 3 + 5</div>
+            </div>
+          </div>
+          <div class="tree-leaf" data-section="normalised">
+            <div class="tl-icon">&#9670;</div>
+            <div>
+              <div class="tl-title">Commodity Prices</div>
+              <div class="tl-data">~50% of nominal revenue growth is gold/silver price</div>
+              <div class="tl-action">Not controllable &mdash; track normalised metrics to see real performance</div>
+              <div class="tl-model">Commodity Index</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEVER 3: MARGIN -->
+      <div class="tree-branch">
+        <div class="tree-node lever-node lever-blue">
+          <div class="tn-tag">Lever 3</div>
+          <div class="tn-label">Margin Optimisation</div>
+          <div class="tn-value">42% <span class="tn-sub">gross margin</span></div>
+          <div class="tn-note">&pound;13,644 margin per event</div>
+        </div>
+        <div class="tree-children">
+          <div class="tree-leaf" data-section="dealers">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Dealer Quality</div>
+              <div class="tl-data">Tier A/B: <strong>&pound;3,900</strong> norm margin vs C/D: <strong>&pound;3,140</strong></div>
+              <div class="tl-action">Deploy top dealers to highest-value events; coach underperformers</div>
+              <div class="tl-model">Model 2</div>
+            </div>
+          </div>
+          <div class="tree-leaf" data-section="expertise">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Category Matching</div>
+              <div class="tl-data">GC: watches 108 expertise &middot; RS: jewellery 82 &middot; MC: gold 88</div>
+              <div class="tl-action">Match dealer specialisms to area item profiles</div>
+              <div class="tl-model">Model 2</div>
+            </div>
+          </div>
+          <div class="tree-leaf">
+            <div class="tl-icon">&#9678;</div>
+            <div>
+              <div class="tl-title">Resale Channels</div>
+              <div class="tl-data">eBay avg &pound;70 &middot; Fellows avg &pound;296 &middot; Elmwoods avg &pound;925</div>
+              <div class="tl-action">Route higher-value items to specialist auctions, not eBay</div>
+              <div class="tl-model">SKU Data</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<style>
+/* ── PROFIT TREE ── */
+.tree{min-width:900px;padding:20px 0}
+.tree-root{display:flex;justify-content:center;margin-bottom:0}
+.tree-node{background:var(--navy-mid);border:1px solid var(--border);border-radius:6px;padding:20px 24px;text-align:center;position:relative}
+.root-node{border-color:var(--border-strong);min-width:320px}
+.root-node::before{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent);pointer-events:none}
+.tn-tag{font-family:var(--font-m);font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
+.tn-label{font-family:var(--font-d);font-size:20px;font-weight:500;color:var(--cream);margin-bottom:4px}
+.tn-value{font-family:var(--font-m);font-size:18px;font-weight:500;color:var(--gold)}
+.tn-value .tn-sub{font-size:11px;color:var(--text-dim);font-weight:400}
+.tn-note{font-size:11px;color:var(--text-muted);margin-top:4px}
+
+.tree-connector{display:flex;flex-direction:column;align-items:center;padding:8px 0}
+.tc-line{width:1px;height:20px;background:var(--border-strong)}
+.tc-branches{display:flex;width:80%;justify-content:space-between;position:relative}
+.tc-branches::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--border-strong)}
+.tc-branch{width:1px;height:20px;background:var(--border-strong)}
+
+.tree-level{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.tree-branch{display:flex;flex-direction:column;gap:12px}
+
+.lever-node{min-width:0}
+.lever-green{border-color:rgba(92,184,122,.3)}
+.lever-green .tn-value{color:#5cb87a}
+.lever-gold{border-color:var(--border-strong)}
+.lever-blue{border-color:rgba(90,159,212,.3)}
+.lever-blue .tn-value{color:var(--blue)}
+
+.tree-children{display:flex;flex-direction:column;gap:8px}
+.tree-leaf{display:flex;gap:10px;padding:12px 14px;background:var(--navy-mid);border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:border-color .25s,transform .2s}
+.tree-leaf:hover{border-color:var(--border-strong);transform:translateX(3px)}
+.tl-icon{color:var(--gold-dim);font-size:10px;margin-top:3px;flex-shrink:0}
+.tl-title{font-size:13px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.tl-data{font-family:var(--font-m);font-size:11px;color:var(--text-dim);line-height:1.5}
+.tl-data strong{color:var(--gold-light)}
+.tl-action{font-size:11px;color:var(--text-muted);margin-top:3px;font-style:italic}
+.tl-model{display:inline-block;font-family:var(--font-m);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-dim);background:rgba(201,168,76,.08);padding:2px 6px;border-radius:2px;margin-top:4px}
+
+@media(max-width:900px){.tree-level{grid-template-columns:1fr}}
+</style>
+
+<!-- 1. GROWTH -->
+<section id="growth">
+  <div class="reveal">
+    <div class="s-label">Model Context</div>
+    <h2 class="s-title">Business <em>Growth Trajectory</em></h2>
+    <p class="s-desc">Monthly average revenue per event alongside event volume. The step-change in January 2026 is dramatic &mdash; but how much is real operational growth vs. gold price?</p>
+  </div>
+  <div class="chart-wrap reveal"><canvas id="growthChart"></canvas></div>
+  <div class="insight reveal"><strong>Nominal revenue per event jumped 4.2&times; from Dec 2024 to Jan 2026.</strong> But gold prices rose 1.8&times; over the same period. We need to separate the commodity tailwind from genuine operational improvement. See the next section.</div>
+</section>
+
+<!-- 1b. GOLD NORMALISATION -->
+<section id="normalised">
+  <div class="reveal">
+    <div class="s-label">Critical Adjustment</div>
+    <h2 class="s-title">Nominal vs <em>Commodity-Normalised</em> Revenue</h2>
+    <p class="s-desc">Gold is ~80% of revenue, silver ~9%. Both have surged (gold 2.4&times;, silver 3.5&times; since 2023). This chart strips out commodity price movement using a blended index weighted by each event&rsquo;s actual gold/silver/other revenue mix. Normalised revenue shows real operational performance in constant commodity terms (Jan 2024 = 100).</p>
+  </div>
+  <div class="chart-wrap reveal"><canvas id="normChart"></canvas></div>
+
+  <div class="g3 reveal" style="margin-top:32px">
+    <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:4px;padding:24px;text-align:center">
+      <div style="font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Nominal Growth</div>
+      <div style="font-family:var(--font-d);font-size:36px;color:var(--gold)">4.2&times;</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">Dec '24 &rarr; Jan '26</div>
+    </div>
+    <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:4px;padding:24px;text-align:center">
+      <div style="font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Commodity Price Effect</div>
+      <div style="font-family:var(--font-d);font-size:36px;color:var(--text-dim)">1.9&times;</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">Commodity index 124 &rarr; 240</div>
+    </div>
+    <div style="background:var(--navy-mid);border:1px solid var(--border-strong);border-radius:4px;padding:24px;text-align:center">
+      <div style="font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Real Operational Growth</div>
+      <div style="font-family:var(--font-d);font-size:36px;color:var(--gold)">2.2&times;</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">&pound;6,649 &rarr; &pound;14,399 normalised</div>
+    </div>
+  </div>
+
+  <div class="insight reveal" style="margin-top:24px"><strong>The real story:</strong> 2025 saw massive volume scaling (40&rarr;1,298 events) but per-event yield <em>fell</em> in real terms (&pound;9.7k&rarr;&pound;6.0k normalised) &mdash; classic growth-vs-quality tradeoff. Then in Q1 2026, both volume AND real yield jumped hard. The 2.2&times; real growth is still very strong, but commodity prices account for roughly <strong>half of the nominal revenue increase.</strong> A correction in gold/silver prices would compress margins significantly.</div>
+</section>
+
+<!-- 1c. GOLD & SILVER PRICE CONTEXT -->
+<section id="metals">
+  <div class="reveal">
+    <div class="s-label">Commodity Context</div>
+    <h2 class="s-title">Gold &amp; Silver <em>Price Movement</em></h2>
+    <p class="s-desc">Monthly gold and silver prices in GBP per troy ounce. Gold has risen 2.4&times; since Apr 2023; silver has risen 3.1&times;. Both are at historic highs.</p>
+  </div>
+  <div class="chart-wrap reveal"><canvas id="metalChart"></canvas></div>
+  <div class="insight reveal"><strong>Key risk:</strong> If gold and silver return to 2024 levels (~&pound;1,800/oz gold, ~&pound;22/oz silver), revenue per event would fall ~50% from current nominal figures even with identical operational performance. The platform should track commodity-normalised metrics alongside nominal &mdash; separating what&rsquo;s controllable (venue selection, dealer quality, scheduling) from what isn&rsquo;t (metal prices).</div>
+</section>
+
+<!-- 2. SEASONALITY -->
+<section id="seasonality">
+  <div class="reveal">
+    <div class="s-label">Model 1 &mdash; Timing Engine</div>
+    <h2 class="s-title">Seasonal <em>Revenue Index</em></h2>
+    <p class="s-desc">Commodity-normalised, within-year seasonal index. Each month&rsquo;s normalised revenue is compared to its own year&rsquo;s average (not the all-time average), then averaged across years. This strips out both commodity price moves and year-over-year growth to isolate true seasonality.</p>
+  </div>
+  <div class="chart-wrap reveal"><canvas id="seasonChart"></canvas></div>
+  <div class="insight reveal"><strong>January&ndash;February is genuinely the strongest period</strong> (~26&ndash;29% above average) even after stripping out commodity price inflation. July remains the trough at 23% below. The rest of the year is relatively flat. The old analysis showed a much larger seasonal swing (up to +92%) but that was inflated by 2026 Q1 commodity prices. The real seasonal effect is more moderate but still meaningful &mdash; January/February are worth prioritising for top venues and dealers.</div>
+</section>
+
+<!-- 3. DIMINISHING RETURNS -->
+<section id="returns">
+  <div class="reveal">
+    <div class="s-label">Model 1 &mdash; Timing Engine</div>
+    <h2 class="s-title">Diminishing <em>Returns Analysis</em></h2>
+    <p class="s-desc">Average revenue by visit number to the same area. Does performance decay with repeat visits?</p>
+  </div>
+  <div class="chart-wrap reveal"><canvas id="returnsChart"></canvas></div>
+  <div class="insight reveal"><strong>Counter to expectation, returns increase with repeat visits.</strong> This is likely survivorship bias &mdash; areas that reach visit 4+ are ones performing well enough to warrant rebooking. But it validates the strategy of returning to proven areas rather than constantly seeking new ones.</div>
+</section>
+
+<!-- 4. DEALER LEADERBOARD -->
+<section id="dealers">
+  <div class="reveal">
+    <div class="s-label">Model 2 &mdash; Dealer Performance</div>
+    <h2 class="s-title">Dealer <em>Leaderboard</em></h2>
+    <p class="s-desc">Composite score weights: performance vs area average (30%), consistency (25%), margin % (25%), volume (20%). Location-adjusted score controls for area quality &mdash; 1.07 means 7% better than average dealer in the same locations. Click column headers to sort.</p>
+  </div>
+  <div class="tbl-wrap reveal">
+    <table id="dealerTable">
+      <thead><tr>
+        <th data-type="num">Rank</th><th>Name</th><th>Tier</th><th data-type="num">Events</th>
+        <th data-type="num">Avg Rev</th><th data-type="num">Avg Margin</th><th data-type="num">Margin %</th>
+        <th data-type="num">Loc Adj</th><th data-type="num">% Above Avg</th><th data-type="num">Score</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 5. DEALER EXPERTISE -->
+<section id="expertise">
+  <div class="reveal">
+    <div class="s-label">Model 2 &mdash; Category Analysis</div>
+    <h2 class="s-title">Dealer <em>Category Expertise</em></h2>
+    <p class="s-desc">Expertise score relative to all dealers in each category. 50 = average; higher = specialist. Colour intensity reflects score. Empty cells mean insufficient data (&lt;15 items).</p>
+  </div>
+  <div class="heatmap reveal">
+    <table id="heatmapTable">
+      <thead><tr><th>Dealer</th><th>Watches</th><th>Gold</th><th>Jewellery</th><th>Silver</th><th>Cameras</th><th>Medals</th><th>Other</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 6. REGIONS -->
+<section id="regions">
+  <div class="reveal">
+    <div class="s-label">Model 3 &mdash; Area Intelligence</div>
+    <h2 class="s-title">Regional <em>Performance</em></h2>
+    <p class="s-desc">Average event revenue by region, ordered by performance. Excludes the single "Premium" event (outlier at &pound;110k).</p>
+  </div>
+  <div class="chart-wrap reveal"><canvas id="regionChart"></canvas></div>
+</section>
+
+<!-- 7. PATTERNS -->
+<section id="patterns">
+  <div class="reveal">
+    <div class="s-label">Model 5 &mdash; Pattern Analysis</div>
+    <h2 class="s-title">What Makes a <em>Great Area</em></h2>
+    <p class="s-desc">Top-quartile vs bottom-quartile comparison across all measured characteristics, plus the features most correlated with high revenue.</p>
+  </div>
+  <div class="g2">
+    <div class="reveal">
+      <h3 style="font-family:var(--font-d);font-size:22px;font-weight:400;margin-bottom:20px">Top vs Bottom <em style="color:var(--gold)">Quartile</em></h3>
+      <div class="paired-bars" id="pairedBars"></div>
+    </div>
+    <div class="reveal">
+      <h3 style="font-family:var(--font-d);font-size:22px;font-weight:400;margin-bottom:20px">Feature <em style="color:var(--gold)">Importance</em></h3>
+      <div class="feat-list" id="featList"></div>
+    </div>
+  </div>
+  <div class="insight reveal" style="margin-top:32px"><strong>Payout volume is the #1 predictor (r=0.97)</strong> &mdash; higher-spend areas generate higher revenue. Footfall (r=0.69) and venue quality (r=0.44) are the next strongest signals. Demographics and venue familiarity also matter. Gold-heavy areas outperform SKU-heavy ones.</div>
+</section>
+
+<!-- 8. POSTCODES -->
+<section id="postcodes">
+  <div class="reveal">
+    <div class="s-label">Model 3 &mdash; Area Intelligence</div>
+    <h2 class="s-title">Top Postcode <em>Districts</em></h2>
+    <p class="s-desc">The 20 highest-revenue postcode districts with at least 3 events. Click headers to sort.</p>
+  </div>
+  <div class="tbl-wrap reveal">
+    <table id="postcodeTable">
+      <thead><tr>
+        <th>District</th><th>Area</th><th data-type="num">Events</th>
+        <th data-type="num">Avg Revenue</th><th data-type="num">Avg Margin</th><th>Segment</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 9. WHITE SPACE -->
+<section id="whitespace">
+  <div class="reveal">
+    <div class="s-label">Model 3 &mdash; Expansion</div>
+    <h2 class="s-title">White Space <em>Opportunities</em></h2>
+    <p class="s-desc">Untapped postcode districts adjacent to high-performing areas. These are places you've never been that are surrounded by strong results.</p>
+  </div>
+  <div class="tbl-wrap reveal">
+    <table id="whitespaceTable">
+      <thead><tr>
+        <th>Target District</th><th>Area</th><th>Potential</th>
+        <th data-type="num">Nearby Avg Rev</th><th>Adjacent To</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="insight reveal"><strong>859 expansion targets identified.</strong> The LU (Luton) postcode area stands out: districts LU4&ndash;LU9 are untapped, adjacent to LU6/LU7 which average &pound;44,779 per event. The LL (North Wales) area is similarly promising at &pound;39,658 nearby average.</div>
+</section>
+
+<footer style="padding:48px 40px;text-align:center;border-top:1px solid var(--border)">
+  <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Prepared for</div>
+  <div style="font-family:var(--font-d);font-size:22px;margin-top:4px">Liam Vasey, WeBuyVintage</div>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:4px">April 2026 &middot; Confidential</div>
+</footer>
+
+<script>
+// ── Chart.js defaults ──
+Chart.defaults.color='#7a8699';
+Chart.defaults.borderColor='rgba(201,168,76,0.08)';
+Chart.defaults.font.family="'DM Sans',sans-serif";
+Chart.defaults.font.size=11;
+const gold='#c9a84c',goldLight='#dfc06a',goldDim='rgba(201,168,76,0.3)',blue='#5a9fd4',blueDim='rgba(90,159,212,0.15)';
+
+// ── 1. GROWTH CHART ──
+const gLabels=['Apr 23','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb','Mar'];
+const gRevenue=[5427,7105,6730,7435,2011,9337,8758,9454,8975,12276,13437,11926,10370,11112,11911,9218,11962,12373,13788,10610,8239,12302,14176,11759,9606,8903,8096,7059,7784,7763,9735,10431,12680,34351,36186,29189];
+const gEvents=[2,3,1,3,1,2,8,11,9,10,12,15,17,29,29,30,31,32,33,37,30,57,70,75,101,101,97,118,129,145,167,151,87,98,161,207];
+new Chart(document.getElementById('growthChart'),{type:'line',data:{labels:gLabels,datasets:[
+{label:'Avg Revenue / Event (£)',data:gRevenue,borderColor:gold,backgroundColor:'rgba(201,168,76,0.08)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
+{label:'Events / Month',data:gEvents,borderColor:blue,backgroundColor:blueDim,fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,borderDash:[4,4],yAxisID:'y1'}
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}}},scales:{y:{position:'left',grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+' events'}}}}});
+
+// ── 1b. NORMALISED CHART ──
+const nNominal=[5427,7105,6730,7435,2011,9337,8758,9454,8975,12276,13437,11926,10370,11112,11911,9218,11962,12373,13788,10610,8239,12302,14176,11759,9606,8903,8096,7059,7784,7763,9735,10431,12680,34351,36186,29189];
+const nReal=[5532,7217,6922,7613,2134,9522,8770,9486,8899,12276,13405,11303,8984,9636,10510,8032,10198,10509,11077,8403,6649,9671,10518,8280,6464,5805,5027,4517,4930,4760,5622,5565,6180,14399,14819,12582];
+new Chart(document.getElementById('normChart'),{type:'line',data:{labels:gLabels,datasets:[
+{label:'Nominal Revenue (£)',data:nNominal,borderColor:gold,backgroundColor:'rgba(201,168,76,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2},
+{label:'Commodity-Normalised Revenue (£)',data:nReal,borderColor:'#5cb87a',backgroundColor:'rgba(92,184,122,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2.5},
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}},tooltip:{callbacks:{label:c=>(c.dataset.label.includes('Nominal')?'Nominal':'Normalised')+': £'+c.raw.toLocaleString()}}},scales:{y:{grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}}}}});
+
+// ── 1c. METALS CHART ──
+const mGold=[1550,1560,1540,1545,1481,1560,1600,1590,1610,1601,1603,1707,1888,1862,1833,1863,1911,1924,2030,2128,2085,2100,2250,2400,2500,2550,2700,2600,2650,2730,2900,3150,3360,3669,3891,3769];
+const mSilver=[19.5,19.2,18.5,19.0,18.0,18.2,18.0,18.8,19.5,18.2,18.5,19.8,22.0,23.5,23.0,23.2,22.5,23.0,26.0,24.5,23.5,24.0,25.0,26.5,26.0,27.0,27.5,28.5,30.0,31.0,35.0,42.0,50.0,71.4,64.2,60.9];
+new Chart(document.getElementById('metalChart'),{type:'line',data:{labels:gLabels,datasets:[
+{label:'Gold (£/oz)',data:mGold,borderColor:gold,backgroundColor:'rgba(201,168,76,0.08)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
+{label:'Silver (£/oz)',data:mSilver,borderColor:'#8aa4c0',backgroundColor:'rgba(138,164,192,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,borderDash:[5,3],yAxisID:'y1'}
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}},tooltip:{callbacks:{label:c=>c.dataset.label+': £'+c.raw.toLocaleString()}}},scales:{y:{position:'left',grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()},title:{display:true,text:'Gold £/oz',color:'#7a8699'}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>'£'+v.toFixed(0)},title:{display:true,text:'Silver £/oz',color:'#7a8699'}}}}});
+
+// ── 2. SEASONALITY ──
+const sMonths=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const sIndex=[1.26,1.29,1.05,1.03,0.97,0.89,0.77,0.86,0.84,0.97,0.92,0.95];
+new Chart(document.getElementById('seasonChart'),{type:'bar',data:{labels:sMonths,datasets:[{data:sIndex,backgroundColor:sIndex.map(v=>v>=1?gold:'rgba(122,134,153,0.35)'),borderColor:sIndex.map(v=>v>=1?goldLight:'rgba(122,134,153,0.5)'),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Index: '+c.raw.toFixed(2)+' ('+(c.raw>=1?'+':'')+((c.raw-1)*100).toFixed(0)+'%)'}}},scales:{x:{grid:{color:'rgba(201,168,76,0.05)'},min:0,max:1.5,ticks:{callback:v=>v.toFixed(1)}},y:{grid:{display:false}}}}});
+
+// ── 3. DIMINISHING RETURNS ──
+const dVisits=['1st','2nd','3rd','4th','5th','6th','7th','8th'];
+const dRev=[13064,15763,16761,19744,17779,22246,22081,39765];
+const dAreas=[1063,577,265,124,52,22,10,3];
+new Chart(document.getElementById('returnsChart'),{type:'line',data:{labels:dVisits,datasets:[
+{label:'Avg Revenue (£)',data:dRev,borderColor:gold,backgroundColor:'rgba(201,168,76,0.1)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:gold,borderWidth:2.5,yAxisID:'y'},
+{label:'# Areas with data',data:dAreas,borderColor:'rgba(122,134,153,0.5)',backgroundColor:'rgba(122,134,153,0.08)',fill:true,tension:.3,pointRadius:3,pointBackgroundColor:'#7a8699',borderWidth:1.5,borderDash:[4,4],yAxisID:'y1'}
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}}},scales:{y:{position:'left',grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+' areas'}}}}});
+
+// ── 4. REGIONAL CHART ──
+const rData=[
+['North Wales',38736],['South Wales',26578],['Fenland',18871],['Home Counties',17106],['North West',16863],['Thames Valley',16676],['Cumbria',15332],['South East',15307],['West Country',14732],['East Midlands',14664],['North East',14530],['East Anglia',14091],['South Coast',14057],['Mersey & Peaks',13702],['West Midlands',13586],['Yorkshire',13531],['Severn',10943]
+];
+new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:rData.map(r=>r[0]),datasets:[{data:rData.map(r=>r[1]),backgroundColor:rData.map((_,i)=>{const t=1-i/rData.length;return `rgba(201,168,76,${.2+t*.6})`}),borderColor:rData.map((_,i)=>{const t=1-i/rData.length;return `rgba(201,168,76,${.4+t*.5})`}),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'£'+c.raw.toLocaleString()+' avg revenue'}}},scales:{x:{grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y:{grid:{display:false}}}}});
+
+// ── 5. DEALER TABLE ──
+const dealers=[
+[1,'Gary Clitheroe','A',379,13250,5418,40.9,1.02,39.8,65.7],
+[2,'Ella Vasey','A',228,13088,6452,49.3,1.04,37.7,64.9],
+[3,'Andrew Wood','A',209,13097,5679,43.4,1.07,48.3,63.8],
+[4,'Neil Church','A',251,12654,5587,44.2,1.02,38.2,63.6],
+[5,'Adam Chapman','A',271,13534,5291,39.1,0.97,35.1,60.9],
+[6,'Christopher Christoforou','A',185,15017,8143,54.2,0.97,32.4,59.9],
+[7,'Chloe Cropper','A',203,15201,6784,44.6,0.98,36.5,59.6],
+[8,'Matt Case','B',201,17715,8426,47.6,0.98,26.4,58.4],
+[9,'Lauren Gardner','B',183,13419,5724,42.7,0.99,37.7,57.8],
+[10,'Rebecca Sandberg','B',167,15518,7279,46.9,1.01,32.3,57.8],
+[11,'Ishy Khan','B',70,24173,10706,44.3,1.16,52.9,57.4],
+[12,'Herman Hazu','B',159,17674,7474,42.3,1.05,34.0,55.9],
+[13,'Kate Talbot','B',159,13497,5808,43.0,1.00,35.8,55.5],
+[14,'Patricia Negus','B',169,12419,5195,41.8,0.94,29.6,54.3],
+[15,'Edd Thomas','B',65,12498,6101,48.8,0.95,33.8,52.8]
+];
+const dtb=document.querySelector('#dealerTable tbody');
+dealers.forEach(d=>{
+const tr=document.createElement('tr');
+tr.innerHTML=`<td class="num">${d[0]}</td><td style="font-family:var(--font-b);font-weight:500;color:var(--cream)">${d[1]}</td><td><span class="tier tier-${d[2]}">${d[2]}</span></td><td class="num">${d[3]}</td><td class="num">&pound;${d[4].toLocaleString()}</td><td class="num">&pound;${d[5].toLocaleString()}</td><td class="num">${d[6]}%</td><td class="num" style="color:${d[7]>=1?'var(--green)':'var(--red)'}">${d[7].toFixed(2)}</td><td class="num">${d[8]}%</td><td class="num" style="color:var(--gold);font-weight:600">${d[9]}</td>`;
+dtb.appendChild(tr);
+});
+
+// ── 6. HEATMAP ──
+const hmData={
+'Gary Clitheroe (GC)':{watches:108,cameras:179,other:143,silver:77,jewellery:76,medals:63},
+'Ella Vasey (EV)':{silver:92,jewellery:86},
+'Matt Case (MC)':{gold:88,medals:74,silver:73},
+'Neil Church (NC)':{watches:85},
+'Rebecca Sandberg (RS)':{jewellery:82,gold:69},
+'Lauren Gardner (LG)':{gold:81,cameras:73},
+'Chloe Cropper (CC)':{silver:76,watches:75},
+'Adam Chapman (AH)':{other:79,watches:75,jewellery:73,gold:68},
+'Kate Talbot (KT)':{coins:92},
+'Andrew Wood (AW)':{jewellery:72}
+};
+const cats=['watches','gold','jewellery','silver','cameras','medals','other'];
+const hmtb=document.querySelector('#heatmapTable tbody');
+Object.entries(hmData).forEach(([name,scores])=>{
+const tr=document.createElement('tr');
+let html=`<td>${name}</td>`;
+cats.forEach(c=>{
+const v=scores[c];
+if(v){
+  const intensity=Math.min((v-40)/160,.9);
+  const bg=`rgba(201,168,76,${(.05+intensity*.4).toFixed(2)})`;
+  const color=intensity>.3?'var(--gold-light)':'var(--text-dim)';
+  html+=`<td><span class="hm-cell" style="background:${bg};color:${color}">${v}</span></td>`;
+}else{html+=`<td style="color:var(--text-muted)">-</td>`}
+});
+tr.innerHTML=html;hmtb.appendChild(tr);
+});
+
+// ── 7. PAIRED BARS (Top vs Bottom) ──
+const pbData=[
+['Avg Revenue','£31,902','£3,190',31902,3190],
+['Avg Margin','£14,071','£1,492',14071,1492],
+['Margin %','44%','25%',44,25],
+['Avg Payout','£17,831','£1,699',17831,1699],
+['Footfall','4.2','1.7',4.2,1.7],
+['Demographics','4.0','3.0',4.0,3.0],
+['Well-Known','4.3','3.3',4.3,3.3],
+['Dealmaking','3.6','2.9',3.6,2.9],
+['Gold Rev %','82%','69%',82,69]
+];
+const pbEl=document.getElementById('pairedBars');
+pbData.forEach(([label,topStr,botStr,topV,botV])=>{
+const maxV=Math.max(topV,botV);
+const topW=Math.round(topV/maxV*100);
+const botW=Math.round(botV/maxV*100);
+const row=document.createElement('div');row.className='pb-row';
+row.innerHTML=`<div class="pb-label">${label}</div><div style="display:flex;justify-content:flex-end"><div class="pb-bar pb-top" style="width:${topW}%"></div></div><div class="pb-val" style="color:var(--gold)">${topStr}</div><div><div class="pb-bar pb-bot" style="width:${botW}%"></div></div><div class="pb-val">${botStr}</div>`;
+pbEl.appendChild(row);
+});
+
+// ── 8. FEATURE IMPORTANCE ──
+const features=[
+['Payout volume',0.97],['Footfall',0.69],['Venue score',0.44],['Demographics',0.36],
+['Well-known venue',0.30],['Items per event',0.25],['Gold %',0.24],['Dealmaking',0.24]
+];
+const flEl=document.getElementById('featList');
+features.forEach(([name,corr],i)=>{
+const row=document.createElement('div');row.className='feat-row';
+row.innerHTML=`<div class="feat-rank">${i+1}</div><div class="feat-name">${name}</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:${Math.round(corr/0.97*100)}%"></div></div><div class="feat-corr">r=${corr.toFixed(2)}</div>`;
+flEl.appendChild(row);
+});
+
+// ── 9. POSTCODE TABLE ──
+const postcodes=[
+['TN12','TN',3,38987,24009],['SR7','SR',7,33952,13821],['CB22','CB',5,33113,17496],
+['NG10','NG',4,31572,15006],['CA13','CA',3,29709,13800],['YO51','YO',3,29568,10973],
+['AL3','AL',5,28833,14079],['TS27','TS',3,28774,10192],['LE7','LE',5,28631,11326],
+['PE13','PE',6,28313,11074],['SG5','SG',6,27762,12445],['TS12','TS',3,27017,10771],
+['CM3','CM',3,26841,11429],['RM15','RM',4,26797,11879],['IP19','IP',4,26376,11585],
+['WF7','WF',4,26259,12706],['TN28','TN',4,26035,10792],['AL4','AL',4,25965,13587],
+['CO5','CO',4,25923,15116],['DY12','DY',4,25818,12108]
+];
+const ptb=document.querySelector('#postcodeTable tbody');
+postcodes.forEach(p=>{
+const tr=document.createElement('tr');
+tr.innerHTML=`<td style="font-weight:600;color:var(--cream)">${p[0]}</td><td>${p[1]}</td><td class="num">${p[2]}</td><td class="num">&pound;${p[3].toLocaleString()}</td><td class="num">&pound;${p[4].toLocaleString()}</td><td><span class="seg seg-platinum">Platinum</span></td>`;
+ptb.appendChild(tr);
+});
+
+// ── 10. WHITE SPACE TABLE ──
+const whitespace=[
+['LU4','LU','High',44779,'LU6'],['LU5','LU','High',44779,'LU6, LU7'],
+['LU8','LU','High',44779,'LU6, LU7'],['LU9','LU','High',44779,'LU7'],
+['LL9','LL','High',39658,'LL11'],['LL10','LL','High',39658,'LL11'],
+['LL12','LL','High',39658,'LL11'],['LL13','LL','High',39658,'LL11'],
+['LL17','LL','High',39658,'LL19'],['LL18','LL','High',39658,'LL19'],
+['LL20','LL','High',39658,'LL19, LL22'],['LL21','LL','High',39658,'LL19, LL22'],
+['LL23','LL','High',39658,'LL22'],['LL24','LL','High',39658,'LL22'],
+['LL27','LL','High',39658,'LL29']
+];
+const wtb=document.querySelector('#whitespaceTable tbody');
+whitespace.forEach(w=>{
+const tr=document.createElement('tr');
+tr.innerHTML=`<td style="font-weight:600;color:var(--cream)">${w[0]}</td><td>${w[1]}</td><td><span class="seg seg-platinum">${w[2]}</span></td><td class="num">&pound;${w[3].toLocaleString()}</td><td style="font-size:11px;color:var(--text-dim)">${w[4]}</td>`;
+wtb.appendChild(tr);
+});
+
+// ── SORTABLE TABLES ──
+document.querySelectorAll('table').forEach(table=>{
+const headers=table.querySelectorAll('thead th');
+let sortCol=-1,sortDir=1;
+headers.forEach((th,i)=>{
+th.addEventListener('click',()=>{
+  headers.forEach(h=>{h.classList.remove('sorted-asc','sorted-desc')});
+  if(sortCol===i){sortDir*=-1}else{sortCol=i;sortDir=1}
+  th.classList.add(sortDir===1?'sorted-asc':'sorted-desc');
+  const rows=Array.from(table.querySelectorAll('tbody tr'));
+  const isNum=th.dataset.type==='num';
+  rows.sort((a,b)=>{
+    let av=a.cells[i].textContent.replace(/[£,%\s]/g,'');
+    let bv=b.cells[i].textContent.replace(/[£,%\s]/g,'');
+    if(isNum){av=parseFloat(av)||0;bv=parseFloat(bv)||0;return (av-bv)*sortDir}
+    return av.localeCompare(bv)*sortDir;
+  });
+  const tbody=table.querySelector('tbody');
+  rows.forEach(r=>tbody.appendChild(r));
+});
+});
+});
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{
+entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── TREE LEAF CLICK → SCROLL ──
+document.querySelectorAll('.tree-leaf[data-section]').forEach(leaf=>{
+leaf.addEventListener('click',()=>{
+  const target=document.getElementById(leaf.dataset.section);
+  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+});
+});
+
+// ── ACTIVE NAV ──
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('nav a');
+window.addEventListener('scroll',()=>{
+let current='';
+sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)current=s.id});
+navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current)});
+});
+</script>
+</body>
+</html>

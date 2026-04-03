@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeBuyVintage — Project Tracker</title>
+<script src="../js/client-redirect.js" data-password-hash="3a54811189e32a62aee733af7df79e029805124809693afdec1a936e6021b1d6"></script>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #0a1628;
+  --navy-mid: #132240;
+  --navy-light: #1a2d4a;
+  --gold: #c9a84c;
+  --gold-light: #dfc06a;
+  --gold-dim: #8a7233;
+  --cream: #f4f0e8;
+  --text-primary: #f4f0e8;
+  --text-secondary: #8a97ad;
+  --text-muted: #5a6a80;
+  --border: rgba(201, 168, 76, 0.15);
+  --border-strong: rgba(201, 168, 76, 0.3);
+  --green: #5cb87a;
+  --green-dim: rgba(92, 184, 122, 0.15);
+  --amber: #d4a84c;
+  --amber-dim: rgba(212, 168, 76, 0.15);
+  --red: #d4564a;
+  --red-dim: rgba(212, 86, 74, 0.12);
+  --blue: #5a9fd4;
+  --blue-dim: rgba(90, 159, 212, 0.12);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 56px;
+  background: rgba(10, 22, 40, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  margin-right: 16px;
+}
+nav a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 18px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.25s;
+}
+nav a:hover, nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── HEADER ── */
+.header {
+  padding: 80px 48px 60px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.06), transparent 70%);
+  pointer-events: none;
+}
+.header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  position: relative;
+}
+.header h1 em { font-style: italic; font-weight: 400; color: var(--gold); }
+.header-sub {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  font-weight: 300;
+  position: relative;
+}
+.header-meta {
+  display: flex;
+  gap: 40px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.header-meta .stat .n {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+}
+.header-meta .stat .l {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── SECTIONS ── */
+section {
+  padding: 64px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-divider {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+.section-divider hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+}
+.s-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.s-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+.s-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.s-title em { font-style: italic; font-weight: 400; color: var(--gold); }
+.s-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+/* ── TASK LIST ── */
+.task-group {
+  margin-bottom: 48px;
+}
+.task-group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.task-group-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+}
+.task-group-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--navy-mid);
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 16px;
+  align-items: start;
+  padding: 16px 20px;
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+.task:hover { border-color: var(--border-strong); }
+
+.task-check {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--text-muted);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  margin-top: 1px;
+}
+.task.done .task-check {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+.task.done .task-title { color: var(--text-secondary); }
+
+.task-body { min-width: 0; }
+.task-title {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.task-detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.6;
+}
+.task-note {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--navy-light);
+  border-left: 2px solid var(--gold-dim);
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.task-note strong { color: var(--gold-light); font-weight: 600; }
+
+.task-meta {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  align-items: start;
+  margin-top: 2px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.tag-done { background: var(--green-dim); color: var(--green); }
+.tag-todo { background: var(--blue-dim); color: var(--blue); }
+.tag-blocked { background: var(--amber-dim); color: var(--amber); }
+.tag-question { background: var(--red-dim); color: var(--red); }
+
+.tag-phase {
+  background: rgba(201, 168, 76, 0.08);
+  color: var(--gold-dim);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  section, .header { padding-left: 24px; padding-right: 24px; }
+  nav { padding: 0 24px; }
+  .task { grid-template-columns: 28px 1fr; }
+  .task-meta { grid-column: 2; margin-top: 8px; }
+  .header-meta { flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">WBV Intelligence</div>
+  <a href="#data-questions">Data Questions</a>
+  <a href="#poc-complete">PoC Complete</a>
+  <a href="#phase-1">Phase 1</a>
+  <a href="#phase-2">Phase 2</a>
+  <a href="#phase-3">Phase 3</a>
+  <a href="#phase-4">Phase 4</a>
+  <a href="#phase-5">Phase 5</a>
+</nav>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Project <em>Tracker</em></h1>
+  <p class="header-sub">End-to-end task list: proof of concept through production go-live</p>
+  <div class="header-meta">
+    <div class="stat"><div class="n">5</div><div class="l">Done</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">Awaiting Liam</div></div>
+    <div class="stat"><div class="n">24</div><div class="l">To Do</div></div>
+  </div>
+</div>
+
+<!-- DATA QUESTIONS -->
+<div class="section-divider"><hr></div>
+<section id="data-questions">
+  <div class="s-label">Awaiting Liam</div>
+  <h2 class="s-title">Data <em>Questions</em></h2>
+  <p class="s-desc">Items that need confirmation or clarification before we proceed.</p>
+
+  <div class="task-list">
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Confirm: is Gary Clitheroe the same person as Gary Trainor?</div>
+        <div class="task-detail">Both appear under initials <strong>GC</strong> in jotform (column AD). Gary Clitheroe has 312 entries, Gary Trainor has 67, and they overlap in the same time periods. If they are the same person, we'll unify them. If not, Gary Trainor needs his own initials code (GT).</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-question">Ask Liam</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Confirm: Ishy Khan tagged as DL in dealer_sales &mdash; error or explainable?</div>
+        <div class="task-detail">In dealer_sales.csv, the initials <strong>DL</strong> map to both "Danielle Lizdek" and "Ishy Khan". Ishy Khan has their own correct initials (IK) elsewhere. Is the DL entry a data entry error, or was Ishy working under Danielle's code for a specific reason?</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-question">Ask Liam</span>
+      </div>
+    </div>
+
+    <div class="task done">
+      <div class="task-check">&#10003;</div>
+      <div class="task-body">
+        <div class="task-title">Adam Chapman = Adam Harland (name change)</div>
+        <div class="task-detail">Confirmed by Liam. Adam changed his surname from Harland to Chapman. Same person, same initials (AH). No action needed in the data &mdash; both names are correct for their respective time periods.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-done">Resolved</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POC COMPLETE -->
+<div class="section-divider"><hr></div>
+<section id="poc-complete">
+  <div class="s-label">Proof of Concept</div>
+  <h2 class="s-title">Completed <em>Work</em></h2>
+  <p class="s-desc">Rapid PoC sprint to validate feasibility. All items below are directional prototypes, not production-grade.</p>
+
+  <div class="task-list">
+    <div class="task done">
+      <div class="task-check">&#10003;</div>
+      <div class="task-body">
+        <div class="task-title">Data audit &amp; ingestion</div>
+        <div class="task-detail">59 Google Sheets tabs ingested into structured SQLite database. 2,312 events, 14,725 SKU items, 22,107 sale records loaded.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-done">Done</span>
+      </div>
+    </div>
+
+    <div class="task done">
+      <div class="task-check">&#10003;</div>
+      <div class="task-body">
+        <div class="task-title">Commodity price normalisation</div>
+        <div class="task-detail">Built blended gold/silver/other price index to strip commodity price movement from revenue figures. Isolates true operational performance.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-done">Done</span>
+      </div>
+    </div>
+
+    <div class="task done">
+      <div class="task-check">&#10003;</div>
+      <div class="task-body">
+        <div class="task-title">All 5 prototype models built</div>
+        <div class="task-detail">M1 Repeat Timing, M2 Dealer Performance, M3 Area Intelligence, M4 Dealer Capacity, M5 Pattern Analysis. All producing directional outputs from existing data.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-done">Done</span>
+      </div>
+    </div>
+
+    <div class="task done">
+      <div class="task-check">&#10003;</div>
+      <div class="task-body">
+        <div class="task-title">Analysis dashboard &amp; roadmap deliverables</div>
+        <div class="task-detail">Interactive model outputs page (analysis.html), platform roadmap (roadmap.html), and project proposal (proposal.md) delivered to Liam.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-done">Done</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 1 -->
+<div class="section-divider"><hr></div>
+<section id="phase-1">
+  <div class="s-label">Weeks 1&ndash;2</div>
+  <h2 class="s-title">Discovery &amp; <em>Data Audit</em></h2>
+  <p class="s-desc">Formal discovery phase: validate PoC findings, agree KPIs, define data schemas, and lock down scope.</p>
+
+  <div class="task-list">
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">KPI workshop with Liam &amp; ops lead</div>
+        <div class="task-detail">Agree the specific metrics each model should optimise for. Define what "good" looks like for event scheduling, dealer allocation, and area selection.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 1</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Validate PoC data quality findings</div>
+        <div class="task-detail">Review all data quality issues found during PoC with WBV team. Confirm which are real issues vs. intentional (e.g. the AH/Adam Chapman name change). Agree remediation plan for genuine problems.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 1</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Define production data schema</div>
+        <div class="task-detail">Design the relational schema for PostgreSQL. Agree entity relationships, naming conventions, and data types. Document in a schema spec.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 2</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Map current scheduling workflow</div>
+        <div class="task-detail">30 minutes with ops lead. Understand how events are currently scheduled, how dealers are assigned, and where the pain points are. Ensures the platform fits their actual process.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 2</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 2 -->
+<div class="section-divider"><hr></div>
+<section id="phase-2">
+  <div class="s-label">Weeks 3&ndash;5</div>
+  <h2 class="s-title">Data <em>Engineering</em></h2>
+  <p class="s-desc">Production-grade data pipeline: automated ingestion, validation, reconciliation, and audit trails.</p>
+
+  <div class="task-list">
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Google Sheets API integration</div>
+        <div class="task-detail">Read-only API connection to WBV's Google Sheets. Automated daily sync replacing manual CSV exports. Incremental updates, not full re-imports.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 3</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Data validation &amp; reconciliation rules</div>
+        <div class="task-detail">Automated checks on ingest: dealer initials must match known list, currency fields must parse, event dates must be valid, postcode format checks. Flag anomalies rather than silently dropping rows.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 3&ndash;4</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">PostgreSQL database deployment</div>
+        <div class="task-detail">Migrate from PoC SQLite to production PostgreSQL. Apply agreed schema, set up backups, configure access controls.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 4</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Historical data backfill &amp; cleaning</div>
+        <div class="task-detail">Full re-import of all historical data through the production pipeline. Resolve known issues (initials collisions, spelling inconsistencies, missing links between events and sales).</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 4&ndash;5</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">External data enrichment</div>
+        <div class="task-detail">Integrate ONS demographics, house price data, population age profiles, Index of Multiple Deprivation, rural/urban classification. Keyed by postcode for area intelligence model.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 5</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 3 -->
+<div class="section-divider"><hr></div>
+<section id="phase-3">
+  <div class="s-label">Weeks 6&ndash;9</div>
+  <h2 class="s-title">Model Validation <em>&amp; Tuning</em></h2>
+  <p class="s-desc">Take PoC prototypes to production quality: backtesting, cross-validation, confidence intervals, and edge-case handling.</p>
+
+  <div class="task-list">
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Backtest all models against held-out data</div>
+        <div class="task-detail">Hold out the most recent 6 months of data. Train models on history, predict the held-out period, measure accuracy. Proves predictions are reliable, not just plausible.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 6&ndash;7</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Cross-validation across regions and time periods</div>
+        <div class="task-detail">Ensure models generalise and aren't overfitting to specific regions or seasonal patterns. K-fold validation by region.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 7</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Add confidence intervals to all model outputs</div>
+        <div class="task-detail">Every recommendation should carry a confidence score so the ops team knows how much to trust each prediction. High-data areas get tight intervals; sparse areas get wide ones.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 7&ndash;8</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Edge-case handling</div>
+        <div class="task-detail">New venues with no history, new dealers with &lt;5 events, areas with sparse data, seasonal anomalies (e.g. COVID residuals). Models must degrade gracefully, not produce misleading outputs.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 8</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">"Good Area" strategic report</div>
+        <div class="task-detail">Full written report with validated statistical findings. What makes a great area, scoring model for any UK postcode, actionable recommendations for expansion. Delivered as PDF + interactive tool.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 8&ndash;9</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Model performance benchmarks</div>
+        <div class="task-detail">Document accuracy metrics for each model. Establish baselines so quarterly reviews can measure drift and improvement over time.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 9</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 4 -->
+<div class="section-divider"><hr></div>
+<section id="phase-4">
+  <div class="s-label">Weeks 10&ndash;12</div>
+  <h2 class="s-title">Platform <em>Build</em></h2>
+  <p class="s-desc">Web-based dashboard the ops team can use daily. Event calendar, dealer leaderboard, area explorer, capacity planning.</p>
+
+  <div class="task-list">
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Event calendar view</div>
+        <div class="task-detail">Recommended schedule with colour-coded priority (green = high predicted yield, amber = moderate, red = too soon / low potential). Drag-and-drop rescheduling.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 10</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Dealer leaderboard &amp; profiles</div>
+        <div class="task-detail">Live ranking with drill-down into individual dealer performance by category, region, and trend over time. Category expertise visualisation.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 10&ndash;11</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Area explorer &amp; heatmap</div>
+        <div class="task-detail">Interactive map showing customer heatmaps, white-space opportunities, and postcode-level scoring. Filter by region, tier, and model output.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 11</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Capacity dashboard</div>
+        <div class="task-detail">Regional view of dealer supply vs. demand, with recruitment priority flags. Utilisation tracking per dealer.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 11&ndash;12</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Data upload &amp; Jotform webhooks</div>
+        <div class="task-detail">Real-time data flow from Jotform submissions into the platform. CSV/Excel upload as fallback. Models refresh overnight on fresh data.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 12</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 5 -->
+<div class="section-divider"><hr></div>
+<section id="phase-5">
+  <div class="s-label">Weeks 13&ndash;14</div>
+  <h2 class="s-title">Testing &amp; <em>Handover</em></h2>
+  <p class="s-desc">UAT with the ops team, training, documentation, and go-live.</p>
+
+  <div class="task-list">
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">UAT with ops team</div>
+        <div class="task-detail">Structured testing of all platform features with the people who will use it daily. Capture feedback, fix issues, iterate.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 13</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Team training sessions</div>
+        <div class="task-detail">Walkthrough of all dashboard features, how to interpret model outputs, and when to trust vs. question recommendations.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 13&ndash;14</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Documentation</div>
+        <div class="task-detail">Platform user guide, data dictionary, model methodology docs, and runbook for data pipeline operations.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 14</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Automated alerting setup</div>
+        <div class="task-detail">Weekly email digest: areas ready for return visits, dealer performance flags, emerging white-space opportunities. Configure recipients and thresholds.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 14</span>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check"></div>
+      <div class="task-body">
+        <div class="task-title">Go-live &amp; handover</div>
+        <div class="task-detail">Production deployment, monitoring setup, and handover to ongoing monthly support arrangement.</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag tag-todo">To Do</span>
+        <span class="tag tag-phase">Wk 14</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="padding: 60px 48px; text-align: center; border-top: 1px solid var(--border);">
+  <div style="font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">WeBuyVintage Intelligence Platform</div>
+  <div style="font-family: var(--font-display); font-size: 20px; font-weight: 400; color: var(--text-secondary);">Last updated: 2 April 2026</div>
+  <div style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 24px; opacity: 0.5;">Confidential</div>
+</footer>
+
+<script>
+// Active nav highlighting
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.2, rootMargin: '-56px 0px -50% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

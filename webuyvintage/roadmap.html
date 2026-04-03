@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeBuyVintage — Platform Roadmap & Data Strategy</title>
+<script src="../js/client-redirect.js" data-password-hash="3a54811189e32a62aee733af7df79e029805124809693afdec1a936e6021b1d6"></script>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #0a1628;
+  --navy-mid: #132240;
+  --navy-light: #1a2d4a;
+  --gold: #c9a84c;
+  --gold-light: #dfc06a;
+  --gold-dim: #8a7233;
+  --cream: #f4f0e8;
+  --cream-dark: #e8e2d6;
+  --white: #ffffff;
+  --text-primary: #f4f0e8;
+  --text-secondary: #8a97ad;
+  --text-muted: #5a6a80;
+  --border: rgba(201, 168, 76, 0.15);
+  --border-strong: rgba(201, 168, 76, 0.3);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── NAV ──────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 22, 40, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.4s ease;
+}
+nav.scrolled { padding: 14px 48px; }
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ─── HERO ─────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(201, 168, 76, 0.04) 0%, transparent 40%);
+  animation: heroGlow 20s ease-in-out infinite alternate;
+}
+@keyframes heroGlow {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-5%, 3%) rotate(2deg); }
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+}
+.hero-subtitle {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-top: 32px;
+  max-width: 500px;
+  position: relative;
+  z-index: 1;
+}
+.hero-meta {
+  margin-top: 64px;
+  display: flex;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
+}
+.hero-meta-item {
+  text-align: center;
+}
+.hero-meta-item .label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.hero-meta-item .value {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.hero-scroll .line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold-dim), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  50.01% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ─── SECTIONS ─────────────────────────────────────── */
+section {
+  padding: 120px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-divider {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+.section-divider hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 56px);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.section-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+}
+.section-intro {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.8;
+  margin-bottom: 64px;
+}
+
+/* ─── STATS GRID ───────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 48px;
+}
+.stat-card {
+  background: var(--navy);
+  padding: 32px;
+  position: relative;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.03), transparent);
+  pointer-events: none;
+}
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── DATA QUALITY CALLOUT ─────────────────────────── */
+.callout {
+  background: var(--navy-mid);
+  border-left: 3px solid var(--gold);
+  padding: 28px 32px;
+  border-radius: 0 4px 4px 0;
+  margin-top: 32px;
+}
+.callout-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.callout p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ─── MODEL CARDS ──────────────────────────────────── */
+.models-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.model-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px;
+  transition: border-color 0.4s, transform 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.model-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+.model-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.model-card:hover::before { opacity: 1; }
+.model-card.full-width {
+  grid-column: 1 / -1;
+}
+.model-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gold-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.model-card h3 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+.model-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.model-card li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.6;
+}
+.model-card li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 1px;
+  background: var(--gold);
+}
+.model-highlight {
+  display: inline-block;
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--gold-light);
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ─── DATA CAPTURE PHASES ──────────────────────────── */
+.phases {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.phase {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.phase-header {
+  position: sticky;
+  top: 100px;
+}
+.phase-number {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0.4;
+}
+.phase-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+.phase-timing {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.phase-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.phase-item {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px 28px;
+  transition: border-color 0.3s;
+}
+.phase-item:hover { border-color: var(--border-strong); }
+.phase-item h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.phase-item p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── ARCHITECTURE ─────────────────────────────────── */
+.arch-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+.arch-card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px;
+  position: relative;
+}
+.arch-card.recommended {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), transparent);
+}
+.arch-badge {
+  position: absolute;
+  top: -1px;
+  right: 24px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 0 0 4px 4px;
+}
+.arch-card h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.arch-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 24px 0;
+}
+.arch-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--navy-light);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  position: relative;
+}
+.arch-node .icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(201, 168, 76, 0.1);
+  border-radius: 4px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.arch-arrow {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+  color: var(--gold-dim);
+  font-size: 14px;
+}
+.arch-cost {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.arch-cost .amount {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--gold);
+}
+.arch-cost .period {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.arch-note {
+  text-align: center;
+  padding: 24px 32px;
+  background: rgba(201, 168, 76, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+.arch-note strong {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+/* ─── TIMELINE ─────────────────────────────────────── */
+.timeline {
+  position: relative;
+  margin: 48px 0;
+}
+.timeline-header {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+.timeline-weeks {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 2px;
+}
+.timeline-week {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+.timeline-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.timeline-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: right;
+  padding-right: 16px;
+}
+.timeline-label.done { color: var(--gold); }
+.timeline-bar-container {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 2px;
+  height: 36px;
+}
+.timeline-bar {
+  background: var(--navy-light);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+.timeline-bar.active {
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+  color: var(--navy);
+  font-weight: 600;
+}
+.timeline-bar.done {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+  position: relative;
+}
+.timeline-bar.milestone {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.2), rgba(201, 168, 76, 0.1));
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+}
+
+/* ─── CHECKLIST ────────────────────────────────────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+}
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+.check-item:hover { border-color: var(--border-strong); }
+.check-box {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--text-muted);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.check-item.done .check-box {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+.check-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+.check-item.done .check-text { color: var(--text-primary); }
+
+/* ─── INVESTMENT ───────────────────────────────────── */
+.investment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+.invest-card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px;
+}
+.invest-card.highlight {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), transparent);
+}
+.invest-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.invest-amount {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.invest-detail {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.roi-banner {
+  background: var(--navy-mid);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 48px;
+  text-align: center;
+}
+.roi-banner .label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.roi-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.roi-item {
+  text-align: center;
+}
+.roi-item .number {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--gold);
+}
+.roi-item .desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.roi-arrow {
+  color: var(--gold-dim);
+  font-size: 20px;
+}
+.roi-result {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--gold);
+  margin-top: 24px;
+}
+.roi-result-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+/* ─── FOOTER ───────────────────────────────────────── */
+footer {
+  padding: 80px 48px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+footer .prepared {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+footer .for {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+footer .date {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+footer .confidential {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 32px;
+  opacity: 0.5;
+}
+
+/* ─── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 900px) {
+  section { padding: 80px 24px; }
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .models-grid { grid-template-columns: 1fr; }
+  .arch-options { grid-template-columns: 1fr; }
+  .investment-grid { grid-template-columns: 1fr; }
+  .phase { grid-template-columns: 1fr; gap: 16px; }
+  .phase-header { position: static; }
+  .timeline-header,
+  .timeline-row { grid-template-columns: 120px 1fr; }
+  .hero-meta { flex-direction: column; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand">WBV Intelligence</div>
+  <div class="nav-links">
+    <a href="#current-state">Current State</a>
+    <a href="#proof-of-concept">Proof of Concept</a>
+    <a href="#data-strategy">Data Strategy</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#investment">Investment</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">Confidential &mdash; April 2026</div>
+  <h1>Platform Roadmap<br>&amp; <em>Data Strategy</em></h1>
+  <p class="hero-subtitle">From Google Sheets to Decision Engine</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="label">Prepared For</div>
+      <div class="value">Liam Vasey, Founder</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="label">Company</div>
+      <div class="value">WeBuyVintage</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="label">Status</div>
+      <div class="value">Proof of Concept Delivered</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="line"></div>
+    Scroll
+  </div>
+</header>
+
+<!-- CURRENT STATE -->
+<div class="section-divider"><hr></div>
+<section id="current-state">
+  <div class="reveal">
+    <div class="section-label">01 &mdash; Current State</div>
+    <h2 class="section-title">Where We <em>Are Now</em></h2>
+    <p class="section-intro">We've completed a full audit of your Google Sheets data. The raw material is rich &mdash; the structure needs work. Here's what we found.</p>
+  </div>
+
+  <div class="stats-grid reveal">
+    <div class="stat-card">
+      <div class="stat-number">59</div>
+      <div class="stat-label">Google Sheets tabs ingested</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">289</div>
+      <div class="stat-label">Columns in the main events sheet</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2,312</div>
+      <div class="stat-label">Events loaded (Apr '23 &ndash; Apr '26)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">14,725</div>
+      <div class="stat-label">Individual SKU items tracked</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">22,107</div>
+      <div class="stat-label">Downstream sale records</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">51</div>
+      <div class="stat-label">Dealers across 17 regions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1,470</div>
+      <div class="stat-label">Unique venues with postcodes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3 yrs</div>
+      <div class="stat-label">Event history (Apr '23 &ndash; Apr '26)</div>
+    </div>
+  </div>
+
+  <div class="callout reveal">
+    <div class="callout-title">Data Quality Assessment</div>
+    <p>The data is <strong>rich but fragmented</strong>. Information is duplicated across multiple tabs, dealer names and initials are inconsistent between sheets, there's no relational structure linking events to items to sales, and many tabs serve as presentation dashboards rather than clean data tables. All fixable &mdash; and we've already normalised it into a structured database for analysis.</p>
+  </div>
+</section>
+
+<!-- PROOF OF CONCEPT -->
+<div class="section-divider"><hr></div>
+<section id="proof-of-concept">
+  <div class="reveal">
+    <div class="section-label">02 &mdash; Proof of Concept</div>
+    <h2 class="section-title">Validating the <em>Approach</em></h2>
+    <p class="section-intro">To demonstrate feasibility before the full engagement begins, we ran a rapid proof-of-concept sprint against your existing data. These are directional prototypes &mdash; they confirm the data supports all five models, but production deployment requires rigorous validation, backtesting, and proper engineering.</p>
+  </div>
+
+  <div class="models-grid">
+    <div class="model-card reveal">
+      <div class="model-number">Model 01</div>
+      <h3>Event Repeat Timing Engine</h3>
+      <ul>
+        <li><span class="model-highlight">1,063 areas</span> analysed with optimal cooldown periods</li>
+        <li>Seasonality mapped (commodity-normalised): Jan&ndash;Feb peak (index 1.26&ndash;1.29), July trough (0.77)</li>
+        <li><span class="model-highlight">896</span> area-month combinations ready for return visits right now</li>
+        <li>Diminishing returns curves computed per location</li>
+      </ul>
+    </div>
+
+    <div class="model-card reveal">
+      <div class="model-number">Model 02</div>
+      <h3>Dealer Performance Ranking</h3>
+      <ul>
+        <li><span class="model-highlight">50 dealers</span> scored on composite metric: location-adjusted performance, consistency, margin, volume</li>
+        <li>Category expertise mapped: Gary Clitheroe &mdash; cameras (82% sell-through), watches (88%)</li>
+        <li>Ella Vasey: highest avg margin at <span class="model-highlight">&pound;6,452</span>/event</li>
+        <li>Gary Clitheroe: most consistent at <span class="model-highlight">379 events</span></li>
+      </ul>
+    </div>
+
+    <div class="model-card reveal">
+      <div class="model-number">Model 03</div>
+      <h3>Customer &amp; Area Intelligence</h3>
+      <ul>
+        <li><span class="model-highlight">854</span> postcode districts profiled and segmented (platinum / gold / silver / bronze)</li>
+        <li><span class="model-highlight">859</span> white-space expansion opportunities identified</li>
+        <li>18 regions benchmarked: Fenland (&pound;18,871 avg rev) vs South East (&pound;10,684)</li>
+        <li>Coverage density analysis per region</li>
+      </ul>
+    </div>
+
+    <div class="model-card reveal">
+      <div class="model-number">Model 04</div>
+      <h3>Dealer Capacity Planning</h3>
+      <ul>
+        <li>All regions currently below 5% utilisation &mdash; significant spare capacity</li>
+        <li>Matt Case busiest at <span class="model-highlight">16 events/month</span> (80% utilisation); 50 dealers tracked</li>
+        <li>No critical recruitment gaps currently</li>
+        <li>Capacity model ready for growth-phase planning</li>
+      </ul>
+    </div>
+
+    <div class="model-card full-width reveal">
+      <div class="model-number">Model 05</div>
+      <h3>Pattern Analysis &mdash; What Makes a Great Area</h3>
+      <ul>
+        <li>Top predictors: Payout volume (<span class="model-highlight">r=0.97</span>), Footfall (r=0.69), Venue score (r=0.44), Demographics (r=0.36)</li>
+        <li>Top quartile areas: avg &pound;31,902 revenue, 44% margin, 4.0 footfall score</li>
+        <li>Bottom quartile: avg &pound;3,190 revenue, 25% margin, 1.0 footfall score</li>
+        <li>2026 run rate: avg <span class="model-highlight">&pound;32,449 revenue</span> per event, &pound;13,644 margin &mdash; aligning with &pound;25k+ target</li>
+        <li>Every known area scored 0&ndash;100 and tiered A/B/C/D for scheduling priority</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout reveal" style="margin-top: 48px;">
+    <div class="callout-title">PoC &ne; Production</div>
+    <p>The prototypes above validate that your data can power all five models. Moving to production is where the real work begins: <strong>backtesting against held-out data</strong> to prove predictions are accurate, not just plausible. <strong>Cross-validation</strong> across regions and time periods to ensure models generalise. <strong>Confidence intervals</strong> on every recommendation so your ops team knows how much to trust each score. <strong>Edge-case handling</strong> for new venues, new dealers, sparse data regions, and seasonal anomalies. <strong>Proper data pipeline engineering</strong> &mdash; automated ingestion, validation rules, reconciliation checks, and audit trails rather than a one-off CSV import. The PoC shows the <em>what</em>; the build phase delivers the <em>how well</em>.</p>
+  </div>
+</section>
+
+<!-- DATA STRATEGY -->
+<div class="section-divider"><hr></div>
+<section id="data-strategy">
+  <div class="reveal">
+    <div class="section-label">03 &mdash; Data Capture Strategy</div>
+    <h2 class="section-title">Better Data In,<br><em>Better Decisions</em> Out</h2>
+    <p class="section-intro">The models above were built on your existing data. Here's how small changes to data capture will dramatically improve their accuracy and unlock new capabilities.</p>
+  </div>
+
+  <div class="phases">
+    <div class="phase reveal">
+      <div class="phase-header">
+        <div class="phase-number">1</div>
+        <div class="phase-title">Quick Wins</div>
+        <div class="phase-timing">Weeks 1&ndash;4</div>
+      </div>
+      <div class="phase-items">
+        <div class="phase-item">
+          <h4>Standardise Jotform Submissions</h4>
+          <p>Enforce required fields, add postcode validation, replace free-text dealer names with a dropdown. Prevents initials collisions (e.g. two different dealers sharing the same code) and ensures clean linking between events, dealers, and sales.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Capture Customer Postcodes</h4>
+          <p>Even the first 3&ndash;4 characters (outward code) is enough. This unlocks demand heatmapping: see where your sellers are actually coming from, not just where the venue is.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Standardise Item Categories</h4>
+          <p>Add a category dropdown to the SKU jotform: Gold, Silver, Watches, Cameras, Medals, Coins, Jewellery, Other. Currently we infer this from free-text titles &mdash; a dropdown gives clean data instantly.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Add Footfall Counter</h4>
+          <p>Simple tally of total walk-ins vs. those who sell something. Gives a conversion rate per venue &mdash; a powerful signal for the pattern analysis model.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase reveal">
+      <div class="phase-header">
+        <div class="phase-number">2</div>
+        <div class="phase-title">Process Integration</div>
+        <div class="phase-timing">Weeks 5&ndash;10</div>
+      </div>
+      <div class="phase-items">
+        <div class="phase-item">
+          <h4>Structured Metal Tracking</h4>
+          <p>Replace manual gold/silver tracking with a structured form linked to event number. Eliminates the reconciliation problem between the events sheet and gold_sales/silver_sales tabs.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Dealer Self-Reporting</h4>
+          <p>End-of-day form: items bought, estimated values, categories. Gives per-dealer item-level data &mdash; currently only available at event level.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Sale Outcome Linking</h4>
+          <p>When items sell on eBay, Fellows, or trade, link the sale back to the original SKU. Closes the loop from purchase to resale &mdash; the missing piece for true margin analysis.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Venue Feedback Loop</h4>
+          <p>Automated post-event venue rating form. Builds the venue scoring database that drives Models 1 and 5.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase reveal">
+      <div class="phase-header">
+        <div class="phase-number">3</div>
+        <div class="phase-title">Platform Integration</div>
+        <div class="phase-timing">Weeks 11&ndash;14</div>
+      </div>
+      <div class="phase-items">
+        <div class="phase-item">
+          <h4>Google Sheets Sync</h4>
+          <p>Automated daily pull from your existing sheets into the platform database. No manual exports, no CSVs. Your team keeps working in Sheets as they do now.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Jotform Webhooks</h4>
+          <p>New jotform submissions flow directly into the platform database in real-time. Models update overnight on fresh data.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Dashboard Access</h4>
+          <p>Ops team gets web-based access to all model outputs: event calendar, dealer leaderboard, area explorer, capacity dashboard.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Automated Alerting</h4>
+          <p>Weekly email digest: areas ready for return visits, dealer performance flags, emerging white-space opportunities.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<div class="section-divider"><hr></div>
+<section id="architecture">
+  <div class="reveal">
+    <div class="section-label">04 &mdash; Technical Architecture</div>
+    <h2 class="section-title">How It <em>Works</em></h2>
+    <p class="section-intro">Two hosting options. Both are fully cloud-hosted &mdash; WBV needs nothing installed locally. Access via any web browser, mobile-friendly for dealers in the field.</p>
+  </div>
+
+  <div class="arch-options reveal">
+    <div class="arch-card recommended">
+      <div class="arch-badge">Recommended</div>
+      <h3>Option A: Simple MVP</h3>
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">Your team keeps using Sheets exactly as they do now. Data flows automatically into the platform.</p>
+      <div class="arch-flow">
+        <div class="arch-node"><span class="icon">&#x1f4ca;</span> Google Sheets</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x26a1;</span> Automated Sync (daily)</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x1f5c4;</span> PostgreSQL Database</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x2699;</span> Analytics Models (nightly)</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x1f310;</span> Web Dashboard</div>
+      </div>
+      <div class="arch-cost">
+        <span class="amount">&pound;50&ndash;100</span>
+        <span class="period">/ month hosting</span>
+      </div>
+    </div>
+
+    <div class="arch-card">
+      <h3>Option B: Full Platform</h3>
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">Custom data entry replaces some Jotform usage. Real-time updates, not daily batch.</p>
+      <div class="arch-flow">
+        <div class="arch-node"><span class="icon">&#x1f4dd;</span> Jotform + Custom Forms</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x1f517;</span> Webhooks + API Layer</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x1f5c4;</span> PostgreSQL Database</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x2699;</span> Analytics Models (real-time)</div>
+        <div class="arch-arrow">&darr;</div>
+        <div class="arch-node"><span class="icon">&#x1f310;</span> Web Dashboard + Alerts</div>
+      </div>
+      <div class="arch-cost">
+        <span class="amount">&pound;150&ndash;300</span>
+        <span class="period">/ month hosting</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arch-note reveal">
+    <strong>WBV needs nothing installed locally.</strong> Everything is cloud-hosted. Access via web browser on any device. Mobile-friendly for dealers in the field.
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<div class="section-divider"><hr></div>
+<section id="timeline">
+  <div class="reveal">
+    <div class="section-label">05 &mdash; Delivery Timeline</div>
+    <h2 class="section-title">14 Weeks to <em>Go-Live</em></h2>
+    <p class="section-intro">The proof of concept validates the approach. The 14-week plan below takes the prototype models through production-grade engineering, statistical validation, and into a platform your ops team can rely on daily.</p>
+  </div>
+
+  <div class="timeline reveal">
+    <div class="timeline-header">
+      <div></div>
+      <div class="timeline-weeks">
+        <div class="timeline-week">1</div>
+        <div class="timeline-week">2</div>
+        <div class="timeline-week">3</div>
+        <div class="timeline-week">4</div>
+        <div class="timeline-week">5</div>
+        <div class="timeline-week">6</div>
+        <div class="timeline-week">7</div>
+        <div class="timeline-week">8</div>
+        <div class="timeline-week">9</div>
+        <div class="timeline-week">10</div>
+        <div class="timeline-week">11</div>
+        <div class="timeline-week">12</div>
+        <div class="timeline-week">13</div>
+        <div class="timeline-week">14</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label done">Discovery &amp; Audit &#10003;</div>
+      <div class="timeline-bar-container">
+        <div class="timeline-bar done">&#10003;</div>
+        <div class="timeline-bar done">&#10003;</div>
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Data Engineering</div>
+      <div class="timeline-bar-container">
+        <div class="timeline-bar"></div><div class="timeline-bar"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Model Validation &amp; Tuning</div>
+      <div class="timeline-bar-container">
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">&ldquo;Good Area&rdquo; Report</div>
+      <div class="timeline-bar-container">
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+        <div class="timeline-bar milestone">&#9733;</div>
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Platform Build</div>
+      <div class="timeline-bar-container">
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar"></div><div class="timeline-bar"></div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Testing &amp; Handover</div>
+      <div class="timeline-bar-container">
+        <div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div><div class="timeline-bar"></div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-bar active"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE NEED -->
+<div class="section-divider"><hr></div>
+<section id="next-steps">
+  <div class="reveal">
+    <div class="section-label">06 &mdash; Next Steps</div>
+    <h2 class="section-title">What We Need <em>From WBV</em></h2>
+    <p class="section-intro">To move from proof of concept to production, we need the following.</p>
+  </div>
+
+  <div class="checklist reveal">
+    <div class="check-item done">
+      <div class="check-box">&#10003;</div>
+      <div class="check-text">Google Sheets access &mdash; data downloaded and analysed</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">Read-only API access to Google Sheets for automated sync</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">Jotform account access to add required fields and set up webhooks</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">30 minutes with your ops lead to review current scheduling workflow</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">Confirm hosting preference (we recommend Option A to start)</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">Sign-off on data capture changes (Phase 1 quick wins)</div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<div class="section-divider"><hr></div>
+<section id="investment">
+  <div class="reveal">
+    <div class="section-label">07 &mdash; Investment</div>
+    <h2 class="section-title">The <em>Numbers</em></h2>
+  </div>
+
+  <div class="investment-grid reveal">
+    <div class="invest-card">
+      <div class="invest-label">One-Off Build</div>
+      <div class="invest-amount">&pound;45,000</div>
+      <div class="invest-detail">Discovery through go-live, including the strategic &ldquo;Good Area&rdquo; report. All five models, data pipeline, web dashboard, training, and handover.</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-label">Monthly Software &amp; Maintenance</div>
+      <div class="invest-amount">&pound;2,500<span style="font-size: 20px; color: var(--text-muted);">/mo</span></div>
+      <div class="invest-detail">Cloud hosting, automated data sync, monthly model retraining, pipeline maintenance, up to 4 hours/month support, quarterly performance review. 24-month minimum term.</div>
+    </div>
+  </div>
+
+  <div class="roi-banner reveal">
+    <div class="label">Return on Investment</div>
+    <div class="roi-flow">
+      <div class="roi-item">
+        <div class="number">5%</div>
+        <div class="desc">Event yield<br>improvement</div>
+      </div>
+      <div class="roi-arrow">&times;</div>
+      <div class="roi-item">
+        <div class="number">&pound;28m</div>
+        <div class="desc">Annual gross<br>margin</div>
+      </div>
+      <div class="roi-arrow">=</div>
+      <div class="roi-item">
+        <div class="number">&pound;1.4m</div>
+        <div class="desc">Additional annual<br>margin</div>
+      </div>
+    </div>
+    <div class="roi-result">19&times; ROI</div>
+    <div class="roi-result-label">in year one, against a total cost of &pound;75,000 (build + 12 months software)</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="prepared">Prepared For</div>
+  <div class="for">Liam Vasey, WeBuyVintage</div>
+  <div class="date">April 2026</div>
+  <div class="confidential">Confidential &mdash; Not for distribution</div>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Nav scroll behavior
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Smooth section anchors
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
