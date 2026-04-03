@@ -3,26 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WeBuyVintage — Platform Roadmap & Data Strategy</title>
+<title>WeBuyVintage - Platform Roadmap & Data Strategy</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --navy: #0a1628;
-  --navy-mid: #132240;
-  --navy-light: #1a2d4a;
-  --gold: #c9a84c;
-  --gold-light: #dfc06a;
-  --gold-dim: #8a7233;
-  --cream: #f4f0e8;
-  --cream-dark: #e8e2d6;
+  --navy: #fafafa;
+  --navy-mid: #f0f0f0;
+  --navy-light: #e8e8e8;
+  --gold: #9a7b2d;
+  --gold-light: #b8952a;
+  --gold-dim: #c4a44a;
+  --cream: #1a1a1a;
+  --cream-dark: #333333;
   --white: #ffffff;
-  --text-primary: #f4f0e8;
-  --text-secondary: #8a97ad;
-  --text-muted: #5a6a80;
-  --border: rgba(201, 168, 76, 0.15);
-  --border-strong: rgba(201, 168, 76, 0.3);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -45,9 +45,10 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 1000;
+  opacity: 0.5;
 }
 
 /* Scroll reveal */
@@ -72,7 +73,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(10, 22, 40, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: all 0.4s ease;
@@ -116,8 +117,8 @@ nav.scrolled { padding: 14px 48px; }
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.06) 0%, transparent 50%),
-              radial-gradient(ellipse at 70% 30%, rgba(201, 168, 76, 0.04) 0%, transparent 40%);
+  background: radial-gradient(ellipse at 30% 50%, rgba(154, 123, 45, 0.05) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(154, 123, 45, 0.03) 0%, transparent 40%);
   animation: heroGlow 20s ease-in-out infinite alternate;
 }
 @keyframes heroGlow {
@@ -306,7 +307,7 @@ section {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(201, 168, 76, 0.03), transparent);
+  background: linear-gradient(135deg, rgba(154, 123, 45, 0.04), transparent);
   pointer-events: none;
 }
 .stat-number {
@@ -419,8 +420,8 @@ section {
 }
 .model-highlight {
   display: inline-block;
-  background: rgba(201, 168, 76, 0.1);
-  color: var(--gold-light);
+  background: rgba(154, 123, 45, 0.1);
+  color: var(--gold);
   padding: 2px 8px;
   border-radius: 2px;
   font-family: var(--font-mono);
@@ -503,14 +504,14 @@ section {
 }
 .arch-card.recommended {
   border-color: var(--gold);
-  background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), transparent);
+  background: linear-gradient(135deg, rgba(154, 123, 45, 0.06), transparent);
 }
 .arch-badge {
   position: absolute;
   top: -1px;
   right: 24px;
   background: var(--gold);
-  color: var(--navy);
+  color: #ffffff;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -548,7 +549,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(201, 168, 76, 0.1);
+  background: rgba(154, 123, 45, 0.1);
   border-radius: 4px;
   font-size: 14px;
   flex-shrink: 0;
@@ -581,7 +582,7 @@ section {
 .arch-note {
   text-align: center;
   padding: 24px 32px;
-  background: rgba(201, 168, 76, 0.05);
+  background: rgba(154, 123, 45, 0.05);
   border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 15px;
@@ -649,17 +650,17 @@ section {
 }
 .timeline-bar.active {
   background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-  color: var(--navy);
+  color: #ffffff;
   font-weight: 600;
 }
 .timeline-bar.done {
   background: var(--gold);
-  color: var(--navy);
+  color: #ffffff;
   font-weight: 600;
   position: relative;
 }
 .timeline-bar.milestone {
-  background: linear-gradient(135deg, rgba(201, 168, 76, 0.2), rgba(201, 168, 76, 0.1));
+  background: linear-gradient(135deg, rgba(154, 123, 45, 0.15), rgba(154, 123, 45, 0.08));
   border: 1px solid var(--gold-dim);
   color: var(--gold);
 }
@@ -696,7 +697,7 @@ section {
 .check-item.done .check-box {
   background: var(--gold);
   border-color: var(--gold);
-  color: var(--navy);
+  color: #ffffff;
 }
 .check-text {
   font-size: 15px;
@@ -718,7 +719,7 @@ section {
 }
 .invest-card.highlight {
   border-color: var(--gold);
-  background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), transparent);
+  background: linear-gradient(135deg, rgba(154, 123, 45, 0.06), transparent);
 }
 .invest-label {
   font-size: 11px;
@@ -862,7 +863,7 @@ footer .confidential {
 
 <!-- HERO -->
 <header class="hero">
-  <div class="hero-badge">Confidential &mdash; April 2026</div>
+  <div class="hero-badge">Confidential - April 2026</div>
   <h1>Platform Roadmap<br>&amp; <em>Data Strategy</em></h1>
   <p class="hero-subtitle">From Google Sheets to Decision Engine</p>
   <div class="hero-meta">
@@ -889,9 +890,9 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="current-state">
   <div class="reveal">
-    <div class="section-label">01 &mdash; Current State</div>
+    <div class="section-label">01 - Current State</div>
     <h2 class="section-title">Where We <em>Are Now</em></h2>
-    <p class="section-intro">We've completed a full audit of your Google Sheets data. The raw material is rich &mdash; the structure needs work. Here's what we found.</p>
+    <p class="section-intro">We've completed a full audit of your Google Sheets data. The raw material is rich - the structure needs work. Here's what we found.</p>
   </div>
 
   <div class="stats-grid reveal">
@@ -931,7 +932,7 @@ footer .confidential {
 
   <div class="callout reveal">
     <div class="callout-title">Data Quality Assessment</div>
-    <p>The data is <strong>rich but fragmented</strong>. Information is duplicated across multiple tabs, dealer names and initials are inconsistent between sheets, there's no relational structure linking events to items to sales, and many tabs serve as presentation dashboards rather than clean data tables. All fixable &mdash; and we've already normalised it into a structured database for analysis.</p>
+    <p>The data is <strong>rich but fragmented</strong>. Information is duplicated across multiple tabs, dealer names and initials are inconsistent between sheets, there's no relational structure linking events to items to sales, and many tabs serve as presentation dashboards rather than clean data tables. All fixable - and we've already normalised it into a structured database for analysis.</p>
   </div>
 </section>
 
@@ -939,9 +940,9 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="proof-of-concept">
   <div class="reveal">
-    <div class="section-label">02 &mdash; Proof of Concept</div>
+    <div class="section-label">02 - Proof of Concept</div>
     <h2 class="section-title">Validating the <em>Approach</em></h2>
-    <p class="section-intro">To demonstrate feasibility before the full engagement begins, we ran a rapid proof-of-concept sprint against your existing data. These are directional prototypes &mdash; they confirm the data supports all five models, but production deployment requires rigorous validation, backtesting, and proper engineering.</p>
+    <p class="section-intro">To demonstrate feasibility before the full engagement begins, we ran a rapid proof-of-concept sprint against your existing data. These are directional prototypes - they confirm the data supports all five models, but production deployment requires rigorous validation, backtesting, and proper engineering.</p>
   </div>
 
   <div class="models-grid">
@@ -961,7 +962,7 @@ footer .confidential {
       <h3>Dealer Performance Ranking</h3>
       <ul>
         <li><span class="model-highlight">50 dealers</span> scored on composite metric: location-adjusted performance, consistency, margin, volume</li>
-        <li>Category expertise mapped: Gary Clitheroe &mdash; cameras (82% sell-through), watches (88%)</li>
+        <li>Category expertise mapped: Gary Clitheroe - cameras (82% sell-through), watches (88%)</li>
         <li>Ella Vasey: highest avg margin at <span class="model-highlight">&pound;6,452</span>/event</li>
         <li>Gary Clitheroe: most consistent at <span class="model-highlight">379 events</span></li>
       </ul>
@@ -982,7 +983,7 @@ footer .confidential {
       <div class="model-number">Model 04</div>
       <h3>Dealer Capacity Planning</h3>
       <ul>
-        <li>All regions currently below 5% utilisation &mdash; significant spare capacity</li>
+        <li>All regions currently below 5% utilisation - significant spare capacity</li>
         <li>Matt Case busiest at <span class="model-highlight">16 events/month</span> (80% utilisation); 50 dealers tracked</li>
         <li>No critical recruitment gaps currently</li>
         <li>Capacity model ready for growth-phase planning</li>
@@ -991,12 +992,12 @@ footer .confidential {
 
     <div class="model-card full-width reveal">
       <div class="model-number">Model 05</div>
-      <h3>Pattern Analysis &mdash; What Makes a Great Area</h3>
+      <h3>Pattern Analysis - What Makes a Great Area</h3>
       <ul>
         <li>Top predictors: Payout volume (<span class="model-highlight">r=0.97</span>), Footfall (r=0.69), Venue score (r=0.44), Demographics (r=0.36)</li>
         <li>Top quartile areas: avg &pound;31,902 revenue, 44% margin, 4.0 footfall score</li>
         <li>Bottom quartile: avg &pound;3,190 revenue, 25% margin, 1.0 footfall score</li>
-        <li>2026 run rate: avg <span class="model-highlight">&pound;32,449 revenue</span> per event, &pound;13,644 margin &mdash; aligning with &pound;25k+ target</li>
+        <li>2026 run rate: avg <span class="model-highlight">&pound;32,449 revenue</span> per event, &pound;13,644 margin - aligning with &pound;25k+ target</li>
         <li>Every known area scored 0&ndash;100 and tiered A/B/C/D for scheduling priority</li>
       </ul>
     </div>
@@ -1004,7 +1005,7 @@ footer .confidential {
 
   <div class="callout reveal" style="margin-top: 48px;">
     <div class="callout-title">PoC &ne; Production</div>
-    <p>The prototypes above validate that your data can power all five models. Moving to production is where the real work begins: <strong>backtesting against held-out data</strong> to prove predictions are accurate, not just plausible. <strong>Cross-validation</strong> across regions and time periods to ensure models generalise. <strong>Confidence intervals</strong> on every recommendation so your ops team knows how much to trust each score. <strong>Edge-case handling</strong> for new venues, new dealers, sparse data regions, and seasonal anomalies. <strong>Proper data pipeline engineering</strong> &mdash; automated ingestion, validation rules, reconciliation checks, and audit trails rather than a one-off CSV import. The PoC shows the <em>what</em>; the build phase delivers the <em>how well</em>.</p>
+    <p>The prototypes above validate that your data can power all five models. Moving to production is where the real work begins: <strong>backtesting against held-out data</strong> to prove predictions are accurate, not just plausible. <strong>Cross-validation</strong> across regions and time periods to ensure models generalise. <strong>Confidence intervals</strong> on every recommendation so your ops team knows how much to trust each score. <strong>Edge-case handling</strong> for new venues, new dealers, sparse data regions, and seasonal anomalies. <strong>Proper data pipeline engineering</strong> - automated ingestion, validation rules, reconciliation checks, and audit trails rather than a one-off CSV import. The PoC shows the <em>what</em>; the build phase delivers the <em>how well</em>.</p>
   </div>
 </section>
 
@@ -1012,7 +1013,7 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="data-strategy">
   <div class="reveal">
-    <div class="section-label">03 &mdash; Data Capture Strategy</div>
+    <div class="section-label">03 - Data Capture Strategy</div>
     <h2 class="section-title">Better Data In,<br><em>Better Decisions</em> Out</h2>
     <p class="section-intro">The models above were built on your existing data. Here's how small changes to data capture will dramatically improve their accuracy and unlock new capabilities.</p>
   </div>
@@ -1035,11 +1036,11 @@ footer .confidential {
         </div>
         <div class="phase-item">
           <h4>Standardise Item Categories</h4>
-          <p>Add a category dropdown to the SKU jotform: Gold, Silver, Watches, Cameras, Medals, Coins, Jewellery, Other. Currently we infer this from free-text titles &mdash; a dropdown gives clean data instantly.</p>
+          <p>Add a category dropdown to the SKU jotform: Gold, Silver, Watches, Cameras, Medals, Coins, Jewellery, Other. Currently we infer this from free-text titles - a dropdown gives clean data instantly.</p>
         </div>
         <div class="phase-item">
           <h4>Add Footfall Counter</h4>
-          <p>Simple tally of total walk-ins vs. those who sell something. Gives a conversion rate per venue &mdash; a powerful signal for the pattern analysis model.</p>
+          <p>Simple tally of total walk-ins vs. those who sell something. Gives a conversion rate per venue - a powerful signal for the pattern analysis model.</p>
         </div>
       </div>
     </div>
@@ -1057,11 +1058,11 @@ footer .confidential {
         </div>
         <div class="phase-item">
           <h4>Dealer Self-Reporting</h4>
-          <p>End-of-day form: items bought, estimated values, categories. Gives per-dealer item-level data &mdash; currently only available at event level.</p>
+          <p>End-of-day form: items bought, estimated values, categories. Gives per-dealer item-level data - currently only available at event level.</p>
         </div>
         <div class="phase-item">
           <h4>Sale Outcome Linking</h4>
-          <p>When items sell on eBay, Fellows, or trade, link the sale back to the original SKU. Closes the loop from purchase to resale &mdash; the missing piece for true margin analysis.</p>
+          <p>When items sell on eBay, Fellows, or trade, link the sale back to the original SKU. Closes the loop from purchase to resale - the missing piece for true margin analysis.</p>
         </div>
         <div class="phase-item">
           <h4>Venue Feedback Loop</h4>
@@ -1102,9 +1103,9 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="architecture">
   <div class="reveal">
-    <div class="section-label">04 &mdash; Technical Architecture</div>
+    <div class="section-label">04 - Technical Architecture</div>
     <h2 class="section-title">How It <em>Works</em></h2>
-    <p class="section-intro">Two hosting options. Both are fully cloud-hosted &mdash; WBV needs nothing installed locally. Access via any web browser, mobile-friendly for dealers in the field.</p>
+    <p class="section-intro">Two hosting options. Both are fully cloud-hosted - WBV needs nothing installed locally. Access via any web browser, mobile-friendly for dealers in the field.</p>
   </div>
 
   <div class="arch-options reveal">
@@ -1159,7 +1160,7 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="timeline">
   <div class="reveal">
-    <div class="section-label">05 &mdash; Delivery Timeline</div>
+    <div class="section-label">05 - Delivery Timeline</div>
     <h2 class="section-title">14 Weeks to <em>Go-Live</em></h2>
     <p class="section-intro">The proof of concept validates the approach. The 14-week plan below takes the prototype models through production-grade engineering, statistical validation, and into a platform your ops team can rely on daily.</p>
   </div>
@@ -1252,7 +1253,7 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="next-steps">
   <div class="reveal">
-    <div class="section-label">06 &mdash; Next Steps</div>
+    <div class="section-label">06 - Next Steps</div>
     <h2 class="section-title">What We Need <em>From WBV</em></h2>
     <p class="section-intro">To move from proof of concept to production, we need the following.</p>
   </div>
@@ -1260,7 +1261,7 @@ footer .confidential {
   <div class="checklist reveal">
     <div class="check-item done">
       <div class="check-box">&#10003;</div>
-      <div class="check-text">Google Sheets access &mdash; data downloaded and analysed</div>
+      <div class="check-text">Google Sheets access - data downloaded and analysed</div>
     </div>
     <div class="check-item">
       <div class="check-box"></div>
@@ -1289,7 +1290,7 @@ footer .confidential {
 <div class="section-divider"><hr></div>
 <section id="investment">
   <div class="reveal">
-    <div class="section-label">07 &mdash; Investment</div>
+    <div class="section-label">07 - Investment</div>
     <h2 class="section-title">The <em>Numbers</em></h2>
   </div>
 
@@ -1334,7 +1335,7 @@ footer .confidential {
   <div class="prepared">Prepared For</div>
   <div class="for">Liam Vasey, WeBuyVintage</div>
   <div class="date">April 2026</div>
-  <div class="confidential">Confidential &mdash; Not for distribution</div>
+  <div class="confidential">Confidential - Not for distribution</div>
 </footer>
 
 <script>
