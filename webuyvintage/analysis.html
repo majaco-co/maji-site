@@ -9,28 +9,28 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --navy:#0a1628;--navy-mid:#0f1d35;--navy-light:#152744;--navy-lighter:#1a3050;
-  --gold:#c9a84c;--gold-light:#dfc06a;--gold-dim:#8a7233;--gold-muted:rgba(201,168,76,0.15);
-  --cream:#f0ece4;--text:#ddd8ce;--text-dim:#7a8699;--text-muted:#4a5568;
-  --red:#d4564a;--green:#5cb87a;--blue:#5a9fd4;
-  --border:rgba(201,168,76,0.12);--border-strong:rgba(201,168,76,0.28);
+  --navy:#fafafa;--navy-mid:#f5f5f5;--navy-light:#ebebeb;--navy-lighter:#e0e0e0;
+  --gold:#9a7b2d;--gold-light:#b8952a;--gold-dim:#c4a44a;--gold-muted:rgba(154,123,45,0.1);
+  --cream:#1a1a1a;--text:#2a2a2a;--text-dim:#666666;--text-muted:#999999;
+  --red:#c0392b;--green:#27864a;--blue:#2e7bb6;
+  --border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.15);
   --font-d:'Cormorant Garamond',Georgia,serif;
   --font-b:'DM Sans',system-ui,sans-serif;
   --font-m:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth}
 body{background:var(--navy);color:var(--text);font-family:var(--font-b);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
-body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+body::after{content:none}
 
 /* ── NAV ── */
-nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;gap:32px;height:52px;overflow-x:auto}
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,0.1);padding:0 40px;display:flex;align-items:center;gap:32px;height:52px;overflow-x:auto}
 nav a{font-family:var(--font-m);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;white-space:nowrap;padding:16px 0;border-bottom:2px solid transparent;transition:all .25s}
 nav a:hover,nav a.active{color:var(--gold);border-bottom-color:var(--gold)}
 .nav-brand{font-family:var(--font-d);font-size:17px;font-weight:500;color:var(--gold);letter-spacing:.03em;margin-right:16px;white-space:nowrap}
 
 /* ── HERO ── */
 .hero{padding:80px 40px 60px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-100px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 70%);pointer-events:none}
+.hero::before{content:'';position:absolute;top:-100px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(154,123,45,.04),transparent 70%);pointer-events:none}
 .hero h1{font-family:var(--font-d);font-size:clamp(36px,5vw,60px);font-weight:300;line-height:1.1;letter-spacing:-.01em}
 .hero h1 em{font-style:italic;font-weight:400;color:var(--gold)}
 .hero-sub{font-size:16px;color:var(--text-dim);margin-top:12px;font-weight:300}
@@ -60,25 +60,25 @@ thead th{font-family:var(--font-m);font-size:10px;font-weight:500;letter-spacing
 thead th:hover{color:var(--gold)}
 thead th.sorted-asc::after{content:' \25B2';color:var(--gold);font-size:8px}
 thead th.sorted-desc::after{content:' \25BC';color:var(--gold);font-size:8px}
-tbody td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03);font-family:var(--font-m);font-size:12px;white-space:nowrap}
+tbody td{padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.05);font-family:var(--font-m);font-size:12px;white-space:nowrap}
 tbody tr{transition:background .15s}
-tbody tr:hover{background:rgba(201,168,76,.04)}
+tbody tr:hover{background:rgba(154,123,45,.04)}
 .num{text-align:right;font-variant-numeric:tabular-nums}
 .tier{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:3px;font-size:10px;font-weight:700}
-.tier-A{background:rgba(201,168,76,.2);color:var(--gold)}
-.tier-B{background:rgba(90,159,212,.15);color:var(--blue)}
-.tier-C{background:rgba(122,134,153,.15);color:var(--text-dim)}
-.tier-D{background:rgba(212,86,74,.12);color:var(--red)}
+.tier-A{background:rgba(154,123,45,.12);color:var(--gold)}
+.tier-B{background:rgba(46,123,182,.1);color:var(--blue)}
+.tier-C{background:rgba(0,0,0,.06);color:var(--text-dim)}
+.tier-D{background:rgba(192,57,43,.08);color:var(--red)}
 .seg{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px}
-.seg-platinum{background:rgba(201,168,76,.18);color:var(--gold)}
-.seg-gold{background:rgba(201,168,76,.1);color:var(--gold-dim)}
+.seg-platinum{background:rgba(154,123,45,.1);color:var(--gold)}
+.seg-gold{background:rgba(154,123,45,.07);color:var(--gold-dim)}
 
 /* ── HEATMAP ── */
 .heatmap{border:1px solid var(--border);border-radius:4px;overflow-x:auto}
 .heatmap table{font-size:12px}
 .heatmap thead th{font-size:10px;padding:10px 12px;text-align:center}
 .heatmap thead th:first-child{text-align:left}
-.heatmap tbody td{text-align:center;padding:8px 12px;font-family:var(--font-m);font-size:11px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.02)}
+.heatmap tbody td{text-align:center;padding:8px 12px;font-family:var(--font-m);font-size:11px;font-weight:500;border-bottom:1px solid rgba(0,0,0,.04)}
 .heatmap tbody td:first-child{text-align:left;font-family:var(--font-b);font-weight:500;color:var(--cream)}
 .hm-cell{border-radius:3px;padding:4px 8px;display:inline-block;min-width:36px}
 
@@ -93,7 +93,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 .pb-label{font-weight:500;color:var(--cream);text-align:right;font-size:11px}
 .pb-bar{height:24px;border-radius:2px;position:relative;min-width:2px;transition:width .6s cubic-bezier(.16,1,.3,1)}
 .pb-top{background:linear-gradient(90deg,var(--gold-dim),var(--gold));justify-self:end}
-.pb-bot{background:rgba(122,134,153,.3)}
+.pb-bot{background:rgba(0,0,0,.12)}
 .pb-val{font-family:var(--font-m);font-size:11px;color:var(--text-dim)}
 
 /* ── FEATURE LIST ── */
@@ -101,7 +101,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 .feat-row{display:grid;grid-template-columns:32px 160px 1fr 60px;gap:12px;align-items:center;padding:8px 12px;border-radius:4px;background:var(--navy-mid);border:1px solid var(--border)}
 .feat-rank{font-family:var(--font-m);font-size:11px;color:var(--gold);text-align:center}
 .feat-name{font-size:13px;font-weight:500}
-.feat-bar-wrap{height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+.feat-bar-wrap{height:8px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden}
 .feat-bar{height:100%;background:var(--gold);border-radius:4px;transition:width .8s cubic-bezier(.16,1,.3,1)}
 .feat-corr{font-family:var(--font-m);font-size:12px;color:var(--gold-light);text-align:right}
 
@@ -202,7 +202,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
             <div>
               <div class="tl-title">Repeat Timing</div>
               <div class="tl-data"><strong>896</strong> area-months ready for return now</div>
-              <div class="tl-action">Use optimal cooldown periods &mdash; don&rsquo;t revisit too soon or too late</div>
+              <div class="tl-action">Use optimal cooldown periods - don&rsquo;t revisit too soon or too late</div>
               <div class="tl-model">Model 1</div>
             </div>
           </div>
@@ -233,7 +233,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
                 <div>
                   <div class="tl-title">Venue &amp; Area Quality</div>
                   <div class="tl-data">High footfall venues: <strong>4.0</strong> score vs Low: <strong>1.0</strong></div>
-                  <div class="tl-action">Prioritise venues scoring 4+ on footfall &mdash; 3.2&times; revenue impact</div>
+                  <div class="tl-action">Prioritise venues scoring 4+ on footfall - 3.2&times; revenue impact</div>
                   <div class="tl-model">Model 5</div>
                 </div>
               </div>
@@ -251,7 +251,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
                 <div>
                   <div class="tl-title">Area Demographics</div>
                   <div class="tl-data">Sweet spot: market towns, 2&ndash;20k pop, community spirit, old money</div>
-                  <div class="tl-action">Network effect in smaller areas &mdash; everyone knows what&rsquo;s on</div>
+                  <div class="tl-action">Network effect in smaller areas - everyone knows what&rsquo;s on</div>
                   <div class="tl-model">Model 3 + 5</div>
                 </div>
               </div>
@@ -290,7 +290,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
                     <div>
                       <div class="tl-title">Commodity Prices</div>
                       <div class="tl-data">Gold +2.4&times; since 2023 &middot; ~80% of revenue</div>
-                      <div class="tl-action">Not controllable &mdash; normalise to see real performance</div>
+                      <div class="tl-action">Not controllable - normalise to see real performance</div>
                       <div class="tl-model">Commodity Index</div>
                     </div>
                   </div>
@@ -348,7 +348,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 .tree-root{display:flex;justify-content:center;margin-bottom:0}
 .tree-node{background:var(--navy-mid);border:1px solid var(--border);border-radius:6px;padding:20px 24px;text-align:center;position:relative}
 .root-node{border-color:var(--border-strong);min-width:320px}
-.root-node::before{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent);pointer-events:none}
+.root-node::before{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(154,123,45,.04),transparent);pointer-events:none}
 .tn-tag{font-family:var(--font-m);font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
 .tn-label{font-family:var(--font-d);font-size:20px;font-weight:500;color:var(--cream);margin-bottom:4px}
 .tn-value{font-family:var(--font-m);font-size:18px;font-weight:500;color:var(--gold)}
@@ -365,10 +365,10 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 .tree-branch{display:flex;flex-direction:column;gap:12px}
 
 .lever-node{min-width:0}
-.lever-green{border-color:rgba(92,184,122,.3)}
-.lever-green .tn-value{color:#5cb87a}
+.lever-green{border-color:rgba(39,134,74,.25)}
+.lever-green .tn-value{color:var(--green)}
 .lever-gold{border-color:var(--border-strong)}
-.lever-blue{border-color:rgba(90,159,212,.3)}
+.lever-blue{border-color:rgba(46,123,182,.25)}
 .lever-blue .tn-value{color:var(--blue)}
 
 .tree-children{display:flex;flex-direction:column;gap:8px}
@@ -379,7 +379,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 .tl-data{font-family:var(--font-m);font-size:11px;color:var(--text-dim);line-height:1.5}
 .tl-data strong{color:var(--gold-light)}
 .tl-action{font-size:11px;color:var(--text-muted);margin-top:3px;font-style:italic}
-.tl-model{display:inline-block;font-family:var(--font-m);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-dim);background:rgba(201,168,76,.08);padding:2px 6px;border-radius:2px;margin-top:4px}
+.tl-model{display:inline-block;font-family:var(--font-m);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:rgba(154,123,45,.08);padding:2px 6px;border-radius:2px;margin-top:4px}
 
 @media(max-width:900px){.tree-level{grid-template-columns:1fr}}
 </style>
@@ -389,7 +389,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
   <div class="reveal">
     <div class="s-label">Model Context</div>
     <h2 class="s-title">Business <em>Growth Trajectory</em></h2>
-    <p class="s-desc">Monthly average revenue per event alongside event volume. The step-change in January 2026 is dramatic &mdash; but how much is real operational growth vs. gold price?</p>
+    <p class="s-desc">Monthly average revenue per event alongside event volume. The step-change in January 2026 is dramatic - but how much is real operational growth vs. gold price?</p>
   </div>
   <div class="chart-wrap reveal"><canvas id="growthChart"></canvas></div>
   <div class="insight reveal"><strong>Nominal revenue per event jumped 4.2&times; from Dec 2024 to Jan 2026.</strong> But gold prices rose 1.8&times; over the same period. We need to separate the commodity tailwind from genuine operational improvement. See the next section.</div>
@@ -422,7 +422,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
     </div>
   </div>
 
-  <div class="insight reveal" style="margin-top:24px"><strong>The real story:</strong> 2025 saw massive volume scaling (40&rarr;1,298 events) but per-event yield <em>fell</em> in real terms (&pound;9.7k&rarr;&pound;6.0k normalised) &mdash; classic growth-vs-quality tradeoff. Then in Q1 2026, both volume AND real yield jumped hard. The 2.2&times; real growth is still very strong, but commodity prices account for roughly <strong>half of the nominal revenue increase.</strong> A correction in gold/silver prices would compress margins significantly.</div>
+  <div class="insight reveal" style="margin-top:24px"><strong>The real story:</strong> 2025 saw massive volume scaling (40&rarr;1,298 events) but per-event yield <em>fell</em> in real terms (&pound;9.7k&rarr;&pound;6.0k normalised) - classic growth-vs-quality tradeoff. Then in Q1 2026, both volume AND real yield jumped hard. The 2.2&times; real growth is still very strong, but commodity prices account for roughly <strong>half of the nominal revenue increase.</strong> A correction in gold/silver prices would compress margins significantly.</div>
 </section>
 
 <!-- 1c. GOLD & SILVER PRICE CONTEXT -->
@@ -433,37 +433,37 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
     <p class="s-desc">Monthly gold and silver prices in GBP per troy ounce. Gold has risen 2.4&times; since Apr 2023; silver has risen 3.1&times;. Both are at historic highs.</p>
   </div>
   <div class="chart-wrap reveal"><canvas id="metalChart"></canvas></div>
-  <div class="insight reveal"><strong>Key risk:</strong> If gold and silver return to 2024 levels (~&pound;1,800/oz gold, ~&pound;22/oz silver), revenue per event would fall ~50% from current nominal figures even with identical operational performance. The platform should track commodity-normalised metrics alongside nominal &mdash; separating what&rsquo;s controllable (venue selection, dealer quality, scheduling) from what isn&rsquo;t (metal prices).</div>
+  <div class="insight reveal"><strong>Key risk:</strong> If gold and silver return to 2024 levels (~&pound;1,800/oz gold, ~&pound;22/oz silver), revenue per event would fall ~50% from current nominal figures even with identical operational performance. The platform should track commodity-normalised metrics alongside nominal - separating what&rsquo;s controllable (venue selection, dealer quality, scheduling) from what isn&rsquo;t (metal prices).</div>
 </section>
 
 <!-- 2. SEASONALITY -->
 <section id="seasonality">
   <div class="reveal">
-    <div class="s-label">Model 1 &mdash; Timing Engine</div>
+    <div class="s-label">Model 1 - Timing Engine</div>
     <h2 class="s-title">Seasonal <em>Revenue Index</em></h2>
     <p class="s-desc">Commodity-normalised, within-year seasonal index. Each month&rsquo;s normalised revenue is compared to its own year&rsquo;s average (not the all-time average), then averaged across years. This strips out both commodity price moves and year-over-year growth to isolate true seasonality.</p>
   </div>
   <div class="chart-wrap reveal"><canvas id="seasonChart"></canvas></div>
-  <div class="insight reveal"><strong>January&ndash;February is genuinely the strongest period</strong> (~26&ndash;29% above average) even after stripping out commodity price inflation. July remains the trough at 23% below. The rest of the year is relatively flat. The old analysis showed a much larger seasonal swing (up to +92%) but that was inflated by 2026 Q1 commodity prices. The real seasonal effect is more moderate but still meaningful &mdash; January/February are worth prioritising for top venues and dealers.</div>
+  <div class="insight reveal"><strong>January&ndash;February is genuinely the strongest period</strong> (~26&ndash;29% above average) even after stripping out commodity price inflation. July remains the trough at 23% below. The rest of the year is relatively flat. The old analysis showed a much larger seasonal swing (up to +92%) but that was inflated by 2026 Q1 commodity prices. The real seasonal effect is more moderate but still meaningful - January/February are worth prioritising for top venues and dealers.</div>
 </section>
 
 <!-- 3. DIMINISHING RETURNS -->
 <section id="returns">
   <div class="reveal">
-    <div class="s-label">Model 1 &mdash; Timing Engine</div>
+    <div class="s-label">Model 1 - Timing Engine</div>
     <h2 class="s-title">Diminishing <em>Returns Analysis</em></h2>
     <p class="s-desc">Average revenue by visit number to the same area. Does performance decay with repeat visits?</p>
   </div>
   <div class="chart-wrap reveal"><canvas id="returnsChart"></canvas></div>
-  <div class="insight reveal"><strong>Counter to expectation, returns increase with repeat visits.</strong> This is likely survivorship bias &mdash; areas that reach visit 4+ are ones performing well enough to warrant rebooking. But it validates the strategy of returning to proven areas rather than constantly seeking new ones.</div>
+  <div class="insight reveal"><strong>Counter to expectation, returns increase with repeat visits.</strong> This is likely survivorship bias - areas that reach visit 4+ are ones performing well enough to warrant rebooking. But it validates the strategy of returning to proven areas rather than constantly seeking new ones.</div>
 </section>
 
 <!-- 4. DEALER LEADERBOARD -->
 <section id="dealers">
   <div class="reveal">
-    <div class="s-label">Model 2 &mdash; Dealer Performance</div>
+    <div class="s-label">Model 2 - Dealer Performance</div>
     <h2 class="s-title">Dealer <em>Leaderboard</em></h2>
-    <p class="s-desc">Composite score weights: performance vs area average (30%), consistency (25%), margin % (25%), volume (20%). Location-adjusted score controls for area quality &mdash; 1.07 means 7% better than average dealer in the same locations. Click column headers to sort.</p>
+    <p class="s-desc">Composite score weights: performance vs area average (30%), consistency (25%), margin % (25%), volume (20%). Location-adjusted score controls for area quality - 1.07 means 7% better than average dealer in the same locations. Click column headers to sort.</p>
   </div>
   <div class="tbl-wrap reveal">
     <table id="dealerTable">
@@ -480,7 +480,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 <!-- 5. DEALER EXPERTISE -->
 <section id="expertise">
   <div class="reveal">
-    <div class="s-label">Model 2 &mdash; Category Analysis</div>
+    <div class="s-label">Model 2 - Category Analysis</div>
     <h2 class="s-title">Dealer <em>Category Expertise</em></h2>
     <p class="s-desc">Expertise score relative to all dealers in each category. 50 = average; higher = specialist. Colour intensity reflects score. Empty cells mean insufficient data (&lt;15 items).</p>
   </div>
@@ -495,7 +495,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 <!-- 6. REGIONS -->
 <section id="regions">
   <div class="reveal">
-    <div class="s-label">Model 3 &mdash; Area Intelligence</div>
+    <div class="s-label">Model 3 - Area Intelligence</div>
     <h2 class="s-title">Regional <em>Performance</em></h2>
     <p class="s-desc">Average event revenue by region, ordered by performance. Excludes the single "Premium" event (outlier at &pound;110k).</p>
   </div>
@@ -505,7 +505,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 <!-- 7. PATTERNS -->
 <section id="patterns">
   <div class="reveal">
-    <div class="s-label">Model 5 &mdash; Pattern Analysis</div>
+    <div class="s-label">Model 5 - Pattern Analysis</div>
     <h2 class="s-title">What Makes a <em>Great Area</em></h2>
     <p class="s-desc">Top-quartile vs bottom-quartile comparison across all measured characteristics, plus the features most correlated with high revenue.</p>
   </div>
@@ -519,13 +519,13 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
       <div class="feat-list" id="featList"></div>
     </div>
   </div>
-  <div class="insight reveal" style="margin-top:32px"><strong>Payout volume is the #1 predictor (r=0.97)</strong> &mdash; higher-spend areas generate higher revenue. Footfall (r=0.69) and venue quality (r=0.44) are the next strongest signals. Demographics and venue familiarity also matter. Gold-heavy areas outperform SKU-heavy ones.</div>
+  <div class="insight reveal" style="margin-top:32px"><strong>Payout volume is the #1 predictor (r=0.97)</strong> - higher-spend areas generate higher revenue. Footfall (r=0.69) and venue quality (r=0.44) are the next strongest signals. Demographics and venue familiarity also matter. Gold-heavy areas outperform SKU-heavy ones.</div>
 </section>
 
 <!-- 8. POSTCODES -->
 <section id="postcodes">
   <div class="reveal">
-    <div class="s-label">Model 3 &mdash; Area Intelligence</div>
+    <div class="s-label">Model 3 - Area Intelligence</div>
     <h2 class="s-title">Top Postcode <em>Districts</em></h2>
     <p class="s-desc">The 20 highest-revenue postcode districts with at least 3 events. Click headers to sort.</p>
   </div>
@@ -543,7 +543,7 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 <!-- 9. WHITE SPACE -->
 <section id="whitespace">
   <div class="reveal">
-    <div class="s-label">Model 3 &mdash; Expansion</div>
+    <div class="s-label">Model 3 - Expansion</div>
     <h2 class="s-title">White Space <em>Opportunities</em></h2>
     <p class="s-desc">Untapped postcode districts adjacent to high-performing areas. These are places you've never been that are surrounded by strong results.</p>
   </div>
@@ -567,56 +567,56 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
 
 <script>
 // ── Chart.js defaults ──
-Chart.defaults.color='#7a8699';
-Chart.defaults.borderColor='rgba(201,168,76,0.08)';
+Chart.defaults.color='#666666';
+Chart.defaults.borderColor='rgba(0,0,0,0.06)';
 Chart.defaults.font.family="'DM Sans',sans-serif";
 Chart.defaults.font.size=11;
-const gold='#c9a84c',goldLight='#dfc06a',goldDim='rgba(201,168,76,0.3)',blue='#5a9fd4',blueDim='rgba(90,159,212,0.15)';
+const gold='#9a7b2d',goldLight='#b8952a',goldDim='rgba(154,123,45,0.3)',blue='#2e7bb6',blueDim='rgba(46,123,182,0.1)';
 
 // ── 1. GROWTH CHART ──
 const gLabels=['Apr 23','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb','Mar'];
 const gRevenue=[5427,7105,6730,7435,2011,9337,8758,9454,8975,12276,13437,11926,10370,11112,11911,9218,11962,12373,13788,10610,8239,12302,14176,11759,9606,8903,8096,7059,7784,7763,9735,10431,12680,34351,36186,29189];
 const gEvents=[2,3,1,3,1,2,8,11,9,10,12,15,17,29,29,30,31,32,33,37,30,57,70,75,101,101,97,118,129,145,167,151,87,98,161,207];
 new Chart(document.getElementById('growthChart'),{type:'line',data:{labels:gLabels,datasets:[
-{label:'Avg Revenue / Event (£)',data:gRevenue,borderColor:gold,backgroundColor:'rgba(201,168,76,0.08)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
+{label:'Avg Revenue / Event (£)',data:gRevenue,borderColor:gold,backgroundColor:'rgba(154,123,45,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
 {label:'Events / Month',data:gEvents,borderColor:blue,backgroundColor:blueDim,fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,borderDash:[4,4],yAxisID:'y1'}
-]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}}},scales:{y:{position:'left',grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+' events'}}}}});
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}}},scales:{y:{position:'left',grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+' events'}}}}});
 
 // ── 1b. NORMALISED CHART ──
 const nNominal=[5427,7105,6730,7435,2011,9337,8758,9454,8975,12276,13437,11926,10370,11112,11911,9218,11962,12373,13788,10610,8239,12302,14176,11759,9606,8903,8096,7059,7784,7763,9735,10431,12680,34351,36186,29189];
 const nReal=[5532,7217,6922,7613,2134,9522,8770,9486,8899,12276,13405,11303,8984,9636,10510,8032,10198,10509,11077,8403,6649,9671,10518,8280,6464,5805,5027,4517,4930,4760,5622,5565,6180,14399,14819,12582];
 new Chart(document.getElementById('normChart'),{type:'line',data:{labels:gLabels,datasets:[
-{label:'Nominal Revenue (£)',data:nNominal,borderColor:gold,backgroundColor:'rgba(201,168,76,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2},
-{label:'Commodity-Normalised Revenue (£)',data:nReal,borderColor:'#5cb87a',backgroundColor:'rgba(92,184,122,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2.5},
-]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}},tooltip:{callbacks:{label:c=>(c.dataset.label.includes('Nominal')?'Nominal':'Normalised')+': £'+c.raw.toLocaleString()}}},scales:{y:{grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}}}}});
+{label:'Nominal Revenue (£)',data:nNominal,borderColor:gold,backgroundColor:'rgba(154,123,45,0.05)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2},
+{label:'Commodity-Normalised Revenue (£)',data:nReal,borderColor:'#27864a',backgroundColor:'rgba(39,134,74,0.05)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2.5},
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}},tooltip:{callbacks:{label:c=>(c.dataset.label.includes('Nominal')?'Nominal':'Normalised')+': £'+c.raw.toLocaleString()}}},scales:{y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>'£'+v.toLocaleString()}}}}});
 
 // ── 1c. METALS CHART ──
 const mGold=[1550,1560,1540,1545,1481,1560,1600,1590,1610,1601,1603,1707,1888,1862,1833,1863,1911,1924,2030,2128,2085,2100,2250,2400,2500,2550,2700,2600,2650,2730,2900,3150,3360,3669,3891,3769];
 const mSilver=[19.5,19.2,18.5,19.0,18.0,18.2,18.0,18.8,19.5,18.2,18.5,19.8,22.0,23.5,23.0,23.2,22.5,23.0,26.0,24.5,23.5,24.0,25.0,26.5,26.0,27.0,27.5,28.5,30.0,31.0,35.0,42.0,50.0,71.4,64.2,60.9];
 new Chart(document.getElementById('metalChart'),{type:'line',data:{labels:gLabels,datasets:[
-{label:'Gold (£/oz)',data:mGold,borderColor:gold,backgroundColor:'rgba(201,168,76,0.08)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
-{label:'Silver (£/oz)',data:mSilver,borderColor:'#8aa4c0',backgroundColor:'rgba(138,164,192,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,borderDash:[5,3],yAxisID:'y1'}
-]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}},tooltip:{callbacks:{label:c=>c.dataset.label+': £'+c.raw.toLocaleString()}}},scales:{y:{position:'left',grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()},title:{display:true,text:'Gold £/oz',color:'#7a8699'}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>'£'+v.toFixed(0)},title:{display:true,text:'Silver £/oz',color:'#7a8699'}}}}});
+{label:'Gold (£/oz)',data:mGold,borderColor:gold,backgroundColor:'rgba(154,123,45,0.06)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
+{label:'Silver (£/oz)',data:mSilver,borderColor:'#6889a0',backgroundColor:'rgba(104,137,160,0.05)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:5,borderWidth:2,borderDash:[5,3],yAxisID:'y1'}
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}},tooltip:{callbacks:{label:c=>c.dataset.label+': £'+c.raw.toLocaleString()}}},scales:{y:{position:'left',grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>'£'+v.toLocaleString()},title:{display:true,text:'Gold £/oz',color:'#666666'}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>'£'+v.toFixed(0)},title:{display:true,text:'Silver £/oz',color:'#666666'}}}}});
 
 // ── 2. SEASONALITY ──
 const sMonths=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const sIndex=[1.26,1.29,1.05,1.03,0.97,0.89,0.77,0.86,0.84,0.97,0.92,0.95];
-new Chart(document.getElementById('seasonChart'),{type:'bar',data:{labels:sMonths,datasets:[{data:sIndex,backgroundColor:sIndex.map(v=>v>=1?gold:'rgba(122,134,153,0.35)'),borderColor:sIndex.map(v=>v>=1?goldLight:'rgba(122,134,153,0.5)'),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Index: '+c.raw.toFixed(2)+' ('+(c.raw>=1?'+':'')+((c.raw-1)*100).toFixed(0)+'%)'}}},scales:{x:{grid:{color:'rgba(201,168,76,0.05)'},min:0,max:1.5,ticks:{callback:v=>v.toFixed(1)}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('seasonChart'),{type:'bar',data:{labels:sMonths,datasets:[{data:sIndex,backgroundColor:sIndex.map(v=>v>=1?gold:'rgba(0,0,0,0.12)'),borderColor:sIndex.map(v=>v>=1?goldLight:'rgba(0,0,0,0.2)'),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Index: '+c.raw.toFixed(2)+' ('+(c.raw>=1?'+':'')+((c.raw-1)*100).toFixed(0)+'%)'}}},scales:{x:{grid:{color:'rgba(0,0,0,0.04)'},min:0,max:1.5,ticks:{callback:v=>v.toFixed(1)}},y:{grid:{display:false}}}}});
 
 // ── 3. DIMINISHING RETURNS ──
 const dVisits=['1st','2nd','3rd','4th','5th','6th','7th','8th'];
 const dRev=[13064,15763,16761,19744,17779,22246,22081,39765];
 const dAreas=[1063,577,265,124,52,22,10,3];
 new Chart(document.getElementById('returnsChart'),{type:'line',data:{labels:dVisits,datasets:[
-{label:'Avg Revenue (£)',data:dRev,borderColor:gold,backgroundColor:'rgba(201,168,76,0.1)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:gold,borderWidth:2.5,yAxisID:'y'},
-{label:'# Areas with data',data:dAreas,borderColor:'rgba(122,134,153,0.5)',backgroundColor:'rgba(122,134,153,0.08)',fill:true,tension:.3,pointRadius:3,pointBackgroundColor:'#7a8699',borderWidth:1.5,borderDash:[4,4],yAxisID:'y1'}
-]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}}},scales:{y:{position:'left',grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+' areas'}}}}});
+{label:'Avg Revenue (£)',data:dRev,borderColor:gold,backgroundColor:'rgba(154,123,45,0.06)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:gold,borderWidth:2.5,yAxisID:'y'},
+{label:'# Areas with data',data:dAreas,borderColor:'rgba(0,0,0,0.25)',backgroundColor:'rgba(0,0,0,0.04)',fill:true,tension:.3,pointRadius:3,pointBackgroundColor:'#999999',borderWidth:1.5,borderDash:[4,4],yAxisID:'y1'}
+]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',padding:20}}},scales:{y:{position:'left',grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+' areas'}}}}});
 
 // ── 4. REGIONAL CHART ──
 const rData=[
 ['North Wales',38736],['South Wales',26578],['Fenland',18871],['Home Counties',17106],['North West',16863],['Thames Valley',16676],['Cumbria',15332],['South East',15307],['West Country',14732],['East Midlands',14664],['North East',14530],['East Anglia',14091],['South Coast',14057],['Mersey & Peaks',13702],['West Midlands',13586],['Yorkshire',13531],['Severn',10943]
 ];
-new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:rData.map(r=>r[0]),datasets:[{data:rData.map(r=>r[1]),backgroundColor:rData.map((_,i)=>{const t=1-i/rData.length;return `rgba(201,168,76,${.2+t*.6})`}),borderColor:rData.map((_,i)=>{const t=1-i/rData.length;return `rgba(201,168,76,${.4+t*.5})`}),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'£'+c.raw.toLocaleString()+' avg revenue'}}},scales:{x:{grid:{color:'rgba(201,168,76,0.05)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:rData.map(r=>r[0]),datasets:[{data:rData.map(r=>r[1]),backgroundColor:rData.map((_,i)=>{const t=1-i/rData.length;return `rgba(154,123,45,${.15+t*.5})`}),borderColor:rData.map((_,i)=>{const t=1-i/rData.length;return `rgba(154,123,45,${.3+t*.5})`}),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'£'+c.raw.toLocaleString()+' avg revenue'}}},scales:{x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>'£'+v.toLocaleString()}},y:{grid:{display:false}}}}});
 
 // ── 5. DEALER TABLE ──
 const dealers=[
@@ -665,8 +665,8 @@ cats.forEach(c=>{
 const v=scores[c];
 if(v){
   const intensity=Math.min((v-40)/160,.9);
-  const bg=`rgba(201,168,76,${(.05+intensity*.4).toFixed(2)})`;
-  const color=intensity>.3?'var(--gold-light)':'var(--text-dim)';
+  const bg=`rgba(154,123,45,${(.04+intensity*.25).toFixed(2)})`;
+  const color=intensity>.3?'var(--gold)':'var(--text-dim)';
   html+=`<td><span class="hm-cell" style="background:${bg};color:${color}">${v}</span></td>`;
 }else{html+=`<td style="color:var(--text-muted)">-</td>`}
 });
