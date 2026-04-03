@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WeBuyVintage — Model Outputs & Analysis</title>
-<script src="../js/client-redirect.js" data-password-hash="3a54811189e32a62aee733af7df79e029805124809693afdec1a936e6021b1d6"></script>
-<meta name="robots" content="noindex, nofollow">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -154,24 +152,25 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
   <div class="reveal">
     <div class="s-label">Strategic Framework</div>
     <h2 class="s-title">The <em>Profit Tree</em></h2>
-    <p class="s-desc">Every pound of profit comes from three levers: more events, higher revenue per event, and better margin. Here&rsquo;s where the data says the biggest opportunities are &mdash; and what Liam can actually control.</p>
+    <p class="s-desc">Total profit is the product of how many events you run and how much profit each one generates. Profit per event breaks down into how many people walk through the door and how much profit each person contributes. Profit per person is what they sell you, multiplied by the margin you keep.</p>
   </div>
 
   <!-- TREE VISUAL -->
   <div class="reveal" style="overflow-x:auto">
   <div class="tree">
+    <!-- LEVEL 0: ROOT -->
     <div class="tree-root">
       <div class="tree-node root-node">
-        <div class="tn-label">Annual Gross Profit</div>
+        <div class="tn-label">Total Annual Profit</div>
         <div class="tn-value">&pound;32.7m <span class="tn-sub">at 2026 run rate</span></div>
-        <div class="tn-note">2,400 events &times; &pound;13,644 margin</div>
+        <div class="tn-note">Events &times; Profit per Event</div>
       </div>
     </div>
 
-    <div class="tree-connector"><div class="tc-line"></div><div class="tc-branches"><div class="tc-branch"></div><div class="tc-branch"></div><div class="tc-branch"></div></div></div>
+    <div class="tree-connector"><div class="tc-line"></div><div class="tc-branches"><div class="tc-branch"></div><div class="tc-branch"></div></div></div>
 
-    <div class="tree-level">
-      <!-- LEVER 1: MORE EVENTS -->
+    <!-- LEVEL 1: Events × Profit per Event -->
+    <div class="tree-level" style="grid-template-columns:1fr 1fr">
       <div class="tree-branch">
         <div class="tree-node lever-node lever-green">
           <div class="tn-tag">Lever 1</div>
@@ -210,79 +209,130 @@ tbody tr:hover{background:rgba(201,168,76,.04)}
         </div>
       </div>
 
-      <!-- LEVER 2: REVENUE PER EVENT -->
       <div class="tree-branch">
         <div class="tree-node lever-node lever-gold">
           <div class="tn-tag">Lever 2</div>
-          <div class="tn-label">Revenue per Event</div>
-          <div class="tn-value">&pound;13,647 <span class="tn-sub">normalised</span></div>
-          <div class="tn-note">&pound;32,449 nominal &middot; 42% margin</div>
+          <div class="tn-label">Profit per Event</div>
+          <div class="tn-value">&pound;13,644 <span class="tn-sub">margin</span></div>
+          <div class="tn-note">People per Event &times; Profit per Person</div>
         </div>
-        <div class="tree-children">
-          <div class="tree-leaf" data-section="patterns">
-            <div class="tl-icon">&#9678;</div>
-            <div>
-              <div class="tl-title">Venue Quality</div>
-              <div class="tl-data">High footfall venues: <strong>&pound;12,269</strong> vs Low: <strong>&pound;3,797</strong> normalised</div>
-              <div class="tl-action">Prioritise venues scoring 4+ on footfall &mdash; 3.2&times; revenue impact</div>
-              <div class="tl-model">Model 5</div>
-            </div>
-          </div>
-          <div class="tree-leaf" data-section="postcodes">
-            <div class="tl-icon">&#9678;</div>
-            <div>
-              <div class="tl-title">Area Selection</div>
-              <div class="tl-data">Top quartile: <strong>&pound;31,902</strong> vs Bottom: <strong>&pound;3,190</strong> avg revenue</div>
-              <div class="tl-action">Use area scoring model to prioritise high-potential postcodes</div>
-              <div class="tl-model">Model 3 + 5</div>
-            </div>
-          </div>
-          <div class="tree-leaf" data-section="normalised">
-            <div class="tl-icon">&#9670;</div>
-            <div>
-              <div class="tl-title">Commodity Prices</div>
-              <div class="tl-data">~50% of nominal revenue growth is gold/silver price</div>
-              <div class="tl-action">Not controllable &mdash; track normalised metrics to see real performance</div>
-              <div class="tl-model">Commodity Index</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- LEVER 3: MARGIN -->
-      <div class="tree-branch">
-        <div class="tree-node lever-node lever-blue">
-          <div class="tn-tag">Lever 3</div>
-          <div class="tn-label">Margin Optimisation</div>
-          <div class="tn-value">42% <span class="tn-sub">gross margin</span></div>
-          <div class="tn-note">&pound;13,644 margin per event</div>
-        </div>
-        <div class="tree-children">
-          <div class="tree-leaf" data-section="dealers">
-            <div class="tl-icon">&#9678;</div>
-            <div>
-              <div class="tl-title">Dealer Quality</div>
-              <div class="tl-data">Tier A/B: <strong>&pound;3,900</strong> norm margin vs C/D: <strong>&pound;3,140</strong></div>
-              <div class="tl-action">Deploy top dealers to highest-value events; coach underperformers</div>
-              <div class="tl-model">Model 2</div>
+        <!-- LEVEL 2: People × Profit per Person -->
+        <div class="tree-connector" style="padding:6px 0"><div class="tc-line" style="height:14px"></div><div class="tc-branches"><div class="tc-branch"></div><div class="tc-branch"></div></div></div>
+        <div class="tree-level" style="grid-template-columns:1fr 1fr;gap:12px">
+
+          <div class="tree-branch">
+            <div class="tree-node lever-node lever-green" style="padding:14px 16px">
+              <div class="tn-tag">Lever 2a</div>
+              <div class="tn-label" style="font-size:17px">People per Event</div>
+              <div class="tn-value" style="font-size:15px">~25 <span class="tn-sub">avg attendance</span></div>
+            </div>
+            <div class="tree-children">
+              <div class="tree-leaf" data-section="patterns">
+                <div class="tl-icon">&#9678;</div>
+                <div>
+                  <div class="tl-title">Venue &amp; Area Quality</div>
+                  <div class="tl-data">High footfall venues: <strong>4.0</strong> score vs Low: <strong>1.0</strong></div>
+                  <div class="tl-action">Prioritise venues scoring 4+ on footfall &mdash; 3.2&times; revenue impact</div>
+                  <div class="tl-model">Model 5</div>
+                </div>
+              </div>
+              <div class="tree-leaf" data-section="postcodes">
+                <div class="tl-icon">&#9678;</div>
+                <div>
+                  <div class="tl-title">Marketing &amp; Awareness</div>
+                  <div class="tl-data">FB spend, RSVPs, leaflets, repeat visit awareness</div>
+                  <div class="tl-action">Predict attendance per event to decide 3rd dealer, cash float, assistant</div>
+                  <div class="tl-model">Model 6</div>
+                </div>
+              </div>
+              <div class="tree-leaf">
+                <div class="tl-icon">&#9678;</div>
+                <div>
+                  <div class="tl-title">Area Demographics</div>
+                  <div class="tl-data">Sweet spot: market towns, 2&ndash;20k pop, community spirit, old money</div>
+                  <div class="tl-action">Network effect in smaller areas &mdash; everyone knows what&rsquo;s on</div>
+                  <div class="tl-model">Model 3 + 5</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="tree-leaf" data-section="expertise">
-            <div class="tl-icon">&#9678;</div>
-            <div>
-              <div class="tl-title">Category Matching</div>
-              <div class="tl-data">GC: watches 108 expertise &middot; RS: jewellery 82 &middot; MC: gold 88</div>
-              <div class="tl-action">Match dealer specialisms to area item profiles</div>
-              <div class="tl-model">Model 2</div>
+
+          <div class="tree-branch">
+            <div class="tree-node lever-node lever-blue" style="padding:14px 16px">
+              <div class="tn-tag">Lever 2b</div>
+              <div class="tn-label" style="font-size:17px">Profit per Person</div>
+              <div class="tn-value" style="font-size:15px">~&pound;545 <span class="tn-sub">normalised</span></div>
             </div>
-          </div>
-          <div class="tree-leaf">
-            <div class="tl-icon">&#9678;</div>
-            <div>
-              <div class="tl-title">Resale Channels</div>
-              <div class="tl-data">eBay avg &pound;70 &middot; Fellows avg &pound;296 &middot; Elmwoods avg &pound;925</div>
-              <div class="tl-action">Route higher-value items to specialist auctions, not eBay</div>
-              <div class="tl-model">SKU Data</div>
+
+            <!-- LEVEL 3: Revenue per Person × Margin % -->
+            <div class="tree-connector" style="padding:6px 0"><div class="tc-line" style="height:14px"></div><div class="tc-branches"><div class="tc-branch"></div><div class="tc-branch"></div></div></div>
+            <div class="tree-level" style="grid-template-columns:1fr 1fr;gap:10px">
+
+              <div class="tree-branch">
+                <div class="tree-node lever-node lever-gold" style="padding:12px 14px">
+                  <div class="tn-tag">Revenue</div>
+                  <div class="tn-label" style="font-size:15px">Revenue per Person</div>
+                  <div class="tn-value" style="font-size:14px">~&pound;1,298 <span class="tn-sub">avg spend</span></div>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-leaf">
+                    <div class="tl-icon">&#9678;</div>
+                    <div>
+                      <div class="tl-title">Stock Quality / Area Wealth</div>
+                      <div class="tl-data">Top quartile: <strong>&pound;31,902</strong> vs Bottom: <strong>&pound;3,190</strong> per event</div>
+                      <div class="tl-action">Old money areas hold the stock even if economically deprived now</div>
+                      <div class="tl-model">Model 5</div>
+                    </div>
+                  </div>
+                  <div class="tree-leaf" data-section="normalised">
+                    <div class="tl-icon">&#9670;</div>
+                    <div>
+                      <div class="tl-title">Commodity Prices</div>
+                      <div class="tl-data">Gold +2.4&times; since 2023 &middot; ~80% of revenue</div>
+                      <div class="tl-action">Not controllable &mdash; normalise to see real performance</div>
+                      <div class="tl-model">Commodity Index</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tree-branch">
+                <div class="tree-node lever-node lever-blue" style="padding:12px 14px">
+                  <div class="tn-tag">Margin</div>
+                  <div class="tn-label" style="font-size:15px">Margin %</div>
+                  <div class="tn-value" style="font-size:14px">42% <span class="tn-sub">gross margin</span></div>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-leaf" data-section="dealers">
+                    <div class="tl-icon">&#9678;</div>
+                    <div>
+                      <div class="tl-title">Dealer Quality</div>
+                      <div class="tl-data">Tier A/B: <strong>&pound;3,900</strong> norm margin vs C/D: <strong>&pound;3,140</strong></div>
+                      <div class="tl-action">Deploy top dealers to highest-value events</div>
+                      <div class="tl-model">Model 2</div>
+                    </div>
+                  </div>
+                  <div class="tree-leaf" data-section="expertise">
+                    <div class="tl-icon">&#9678;</div>
+                    <div>
+                      <div class="tl-title">Estimation Accuracy</div>
+                      <div class="tl-data">Blanket 30% reduction penalises honest estimators</div>
+                      <div class="tl-action">Per-dealer calibration fixes morale and catches inflation</div>
+                      <div class="tl-model">Model 7</div>
+                    </div>
+                  </div>
+                  <div class="tree-leaf">
+                    <div class="tl-icon">&#9678;</div>
+                    <div>
+                      <div class="tl-title">Resale Channels</div>
+                      <div class="tl-data">eBay avg &pound;70 &middot; Fellows avg &pound;296 &middot; Elmwoods avg &pound;925</div>
+                      <div class="tl-action">Route higher-value items to specialist auctions</div>
+                      <div class="tl-model">SKU Data</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
